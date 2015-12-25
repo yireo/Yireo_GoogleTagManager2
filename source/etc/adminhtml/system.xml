@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * GoogleTagManager plugin for Magento 2
+ *
+ * @package     Yireo_GoogleTagManager2
+ * @author      Yireo
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Open Source License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="googletagmanager2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Yireo GoogleTagManager</label>
+            <tab>advanced</tab>
+            <resource>Yireo_GoogleTagManager2::config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Settings</label>
+                <field id="enabled" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container Public ID</label>
+                    <comment>ID of your Google Tag container</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="method" type="select"  translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Insertion Method</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Backend\Source\Method</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Load Products in Category</label>
+                    <comment>Number of products to load in a specific category overview. 0 to disable</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

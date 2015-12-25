@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @package     Yireo_GoogleTagManager2
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" as="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml" />
+        </referenceContainer>
+
+        <!--
+        <block class="Yireo\GoogleTagManager2\Block\Customer" template="customer.phtml" name="googletagmanager_customer"/>
+        <block class="Yireo\GoogleTagManager2\Block\Order" template="order.phtml" name="googletagmanager_order"/>
+        <block class="Yireo\GoogleTagManager2\Block\Quote" template="quote.phtml" name="googletagmanager_quote"/>
+        <block class="Yireo\GoogleTagManager2\Block\Product" template="product.phtml" name="googletagmanager_product"/>
+        <block class="Yireo\GoogleTagManager2\Block\Category" template="category.phtml" name="googletagmanager_category"/>
+        <block class="Yireo\GoogleTagManager2\Block\Custom" template="custom.phtml" name="googletagmanager_custom"/>
+        <block class="Yireo\GoogleTagManager2\Block\Generic" template="generic.phtml" name="googletagmanager"/>
+        -->
+    </body>
+</page>

@@ -1,0 +1,19 @@
+<?php
+/**
+ * GoogleTagManager plugin for Magento 
+ *
+ * @package     Yireo_GoogleTagManager
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2014 Yireo (http://www.yireo.com/)
+ * @license     Open Software License
+ */
+?>
+<?php if($this->isEnabled()) : ?>
+<?php $product = $this->getProduct(); ?>
+<?php if(!empty($product) && $product->getId() > 0) : ?>
+    <?php $this->addAttribute('productId', $product->getId()); ?>
+    <?php $this->addAttribute('productName', $product->getName()); ?>
+    <?php $this->addAttribute('productSku', $product->getSku()); ?>
+    <?php $this->addAttribute('productPrice', $product->getPrice()); ?>
+<?php endif; ?>
+<?php endif; ?>

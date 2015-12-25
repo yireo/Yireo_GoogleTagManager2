@@ -1,0 +1,27 @@
+<?php
+/**
+ * GoogleTagManager plugin for Magento
+ *
+ * @package     Yireo_GoogleTagManager
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2015 Yireo (http://www.yireo.com/)
+ * @license     Open Software License
+ */
+?>
+<?php if ($this->isEnabled()) : ?>
+    <?php $order = $this->getOrder(); ?>
+    <?php if (!empty($order) && $order->getId() > 0) : ?>
+        <?php $this->addAttribute('transactionEntity', 'ORDER'); ?>
+        <?php $this->addAttribute('transactionId', $order->getIncrementId()); ?>
+        <?php $this->addAttribute('transactionDate', $order->getCreatedAt()); ?>
+        <?php $this->addAttribute('transactionAffiliation', Mage::app()->getWebsite()->getName()); ?>
+        <?php $this->addAttribute('transactionTotal', (float)$order->getGrandTotal()); ?>
+        <?php $this->addAttribute('transactionSubtotal', (float)$order->getSubtotal()); ?>
+        <?php $this->addAttribute('transactionTax', $order->getGrandTotal() - $order->getSubtotal()); ?>
+        <?php $this->addAttribute('transactionShipping', (float)$order->getShippingAmount()); ?>
+        <?php $this->addAttribute('transactionPayment', $order->getPayment()->getMethodInstance()->getTitle()); ?>
+        <?php $this->addAttribute('transactionCurrency', Mage::app()->getStore()->getBaseCurrencyCode()); ?>
+        <?php $this->addAttribute('transactionPromoCode', $order->getCouponCode()); ?>
+        <?php $this->addAttribute('transactionProducts', $this->getItems()); ?>
+    <?php endif; ?>
+<?php endif; ?>
