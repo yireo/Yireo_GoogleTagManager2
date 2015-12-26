@@ -11,7 +11,7 @@
 namespace Yireo\GoogleTagManager2\Block;
 
 /**
- * Class Yireo\GoogleTagManager2\Block\Default
+ * Class Yireo\GoogleTagManager2\Block\Custom
  */
 class Custom extends Generic
 {

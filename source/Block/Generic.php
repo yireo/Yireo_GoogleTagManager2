@@ -19,36 +19,29 @@ class Generic extends Template
 {
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Yireo\GoogleTagManager2\Helper\Data $helper ,
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Yireo\GoogleTagManager2\Helper\Data $helper
      * @param \Yireo\GoogleTagManager2\Model\Container $container
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\Model\Container $container,
-        \Magento\Framework\View\FileSystem $viewFileSystem,
         array $data = []
     )
     {
-        $this->setTemplate('Yireo_GoogleTagManager2::script.phtml');
-
+        $this->storeManager = $storeManager;
+        $this->scopeConfig = $scopeConfig;
         $this->helper = $helper;
         $this->container = $container;
-        echo 'GTM2-template-1: ' . $this->getTemplate() ."\n";
 
         parent::__construct(
             $context,
             $data
         );
-
-        echo 'GTM2-template-2: '.$this->getTemplate() ."\n";
-        echo 'GTM2-module: '.$this->getModuleName() ."\n";
-        echo 'GTM2-area: '.$this->getArea() ."\n";
-        echo 'GTM2-template-file: '.$this->getTemplateFile() ."\n";
-
-        //$params = ['area' => 'frontend', 'module' => 'Yireo_GoogleTagManager2', 'debug' => true];
-        //echo 'GTM2-resolver: ' . $viewFileSystem->getTemplateFileName($this->getTemplate(), $params) . "\n";
     }
 
     /**
@@ -141,5 +134,16 @@ class Generic extends Template
     public function getAttributes()
     {
         return $this->container->getData();
+    }
+
+    /**
+     * Return the current store information
+     *
+     * @return mixed
+     */
+    public function getWebsiteName()
+    {
+        //return $this->storeManager->getStore()->getName();
+        return $this->scopeConfig->getValue('general/store_information/name');
     }
 }

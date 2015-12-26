@@ -36,19 +36,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Framework\View\Element\BlockFactory $blockFactory,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Model\Order $salesOrder,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Customer\Model\Group $customerGroup
+        \Magento\Customer\Model\Group $customerGroup,
+        \Magento\Framework\Pricing\Helper\Data $pricingHelper
     )
     {
         $this->layoutFactory = $layoutFactory;
+        $this->blockFactory = $blockFactory;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->salesOrder = $salesOrder;
         $this->coreRegistry = $coreRegistry;
         $this->customerGroup = $customerGroup;
+        $this->pricingHelper = $pricingHelper;
 
         parent::__construct($context);
     }
@@ -159,12 +163,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function fetchBlock($name, $type, $template)
     {
-        if ($block = $this->layoutFactory->getBlock('googletagmanager_' . $name)) {
+        if ($block = $this->layoutFactory->create()->getBlock('\Yireo\GoogleTagManager2\Block\\' . ucfirst($name))) {
             $this->debug('Helper: Loading block from layout: ' . $name);
             return $block;
         }
 
-        if ($block = $this->layoutFactory->createBlock('googletagmanager/' . $type)->setTemplate('googletagmanager/' . $template)) {
+        if ($block = $this->blockFactory->createBlock('\Yireo\GoogleTagManager2\Block\\' . ucfirst($type))->setTemplate('Yireo_GoogleTagManager2::' . $template)) {
             $this->debug('Helper: Creating new block: ' . $type);
             return $block;
         }
@@ -172,6 +176,19 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->debug('Helper: Unknown block: ' . $name);
 
         return false;
+    }
+
+    /**
+     *
+     */
+    public function getBaseCurrencyCode()
+    {
+        // @todo: Rewrite this to DI
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+        /** @var \Magento\Directory\Model\Currency $currency */
+        $currency = $objectManager->get('\Magento\Directory\Model\Currency');
+        return $currency->getCurrencySymbol();
     }
 
     /**
@@ -184,7 +201,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $childScript = '';
 
         // Load the main script
-        if (!($block = $this->fetchBlock('default', 'default', 'default.phtml'))) {
+        if (!($block = $this->fetchBlock('generic', 'generic', 'generic.phtml'))) {
             return $childScript;
         }
 

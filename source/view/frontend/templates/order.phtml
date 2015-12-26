@@ -14,13 +14,13 @@
         <?php $this->addAttribute('transactionEntity', 'ORDER'); ?>
         <?php $this->addAttribute('transactionId', $order->getIncrementId()); ?>
         <?php $this->addAttribute('transactionDate', $order->getCreatedAt()); ?>
-        <?php $this->addAttribute('transactionAffiliation', Mage::app()->getWebsite()->getName()); ?>
+        <?php $this->addAttribute('transactionAffiliation', $this->getWebsiteName()); ?>
         <?php $this->addAttribute('transactionTotal', (float)$order->getGrandTotal()); ?>
         <?php $this->addAttribute('transactionSubtotal', (float)$order->getSubtotal()); ?>
         <?php $this->addAttribute('transactionTax', $order->getGrandTotal() - $order->getSubtotal()); ?>
         <?php $this->addAttribute('transactionShipping', (float)$order->getShippingAmount()); ?>
         <?php $this->addAttribute('transactionPayment', $order->getPayment()->getMethodInstance()->getTitle()); ?>
-        <?php $this->addAttribute('transactionCurrency', Mage::app()->getStore()->getBaseCurrencyCode()); ?>
+        <?php $this->addAttribute('transactionCurrency', $this->helper->getBaseCurrencyCode()); ?>
         <?php $this->addAttribute('transactionPromoCode', $order->getCouponCode()); ?>
         <?php $this->addAttribute('transactionProducts', $this->getItems()); ?>
     <?php endif; ?>

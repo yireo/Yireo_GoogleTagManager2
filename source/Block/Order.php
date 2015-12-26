@@ -24,19 +24,23 @@ class Order extends Generic
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        array $data = [],
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\Model\Container $container,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Checkout\Model\Session $checkoutSession,
+        array $data = []
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->order = $checkoutSession->getLastRealOrder();
 
         parent::__construct(
             $context,
-            $data,
+            $scopeConfig,
+            $storeManager,
             $helper,
-            $container
+            $container,
+            $data
         );
     }
 

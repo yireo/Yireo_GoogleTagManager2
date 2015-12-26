@@ -15,24 +15,46 @@ namespace Yireo\GoogleTagManager2\Block;
  */
 class Category extends Generic
 {
-
     /**
      * @var \Magento\Framework\View\LayoutInterface
      */
     protected $layout;
 
+    /**
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param array $data
+     * @param \Yireo\GoogleTagManager2\Helper\Data $helper,
+     * @param \Yireo\GoogleTagManager2\Model\Container $container
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     */
     public function __construct(
-        \Magento\Framework\View\LayoutInterface $layout
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Yireo\GoogleTagManager2\Helper\Data $helper,
+        \Yireo\GoogleTagManager2\Model\Container $container,
+        \Magento\Framework\View\LayoutInterface $layout,
+        array $data = []
     ) {
         $this->layout = $layout;
+
+        parent::__construct(
+            $context,
+            $scopeConfig,
+            $storeManager,
+            $helper,
+            $container,
+            $data
+        );
     }
+
     /**
      * @return Mage_Eav_Model_Entity_Collection_Abstract|null
      */
     public function getLoadedProductCollection()
     {
         /** @var Mage_Catalog_Block_Product_List $productListBlock */
-        $productListBlock = $this->layout->getBlock('product_list');
+        $productListBlock = $this->layout->getBlock('category.products.list');
 
         if (empty($productListBlock)) {
             return null;

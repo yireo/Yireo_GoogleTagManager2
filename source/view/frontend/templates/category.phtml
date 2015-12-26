@@ -8,7 +8,7 @@
  * @license     Open Software License
  */
 
-$loadProducts = (int) Mage::helper('googletagmanager')->getConfigValue('category_products');
+$loadProducts = (int) $this->helper->getConfigValue('category_products');
 if ($loadProducts > 0) {
     $productCollection = $this->getLoadedProductCollection();
 }
