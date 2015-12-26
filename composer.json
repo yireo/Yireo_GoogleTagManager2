@@ -19,12 +19,6 @@
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "autoload": {
-        "files": [ "registration.php" ],
-        "psr-4": {
-            "Yireo\\GoogleTagManager2\\": ""
-        }
-    },
     "extra":{
         "map": [
             [

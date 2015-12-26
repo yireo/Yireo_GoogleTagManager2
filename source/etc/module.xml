@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Yireo_GoogleTagManager2" setup_version="1.3.7">
+    <module name="Yireo_GoogleTagManager2" setup_version="0.1.0">
         <sequence/>
     </module>
 </config>
