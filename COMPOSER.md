@@ -11,11 +11,11 @@ to it:
         "repositories": {
             "magento": {
                 "type": "composer",
-                "url": "http://packages.magento.com"
+                "url": "https://packages.magento.com"
             },
             "yireo": {
                 "type":"composer",
-                "url":"http://satis.yireo.com"
+                "url":"https://satis.yireo.com"
             }
         }
     }
