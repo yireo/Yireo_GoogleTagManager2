@@ -22,8 +22,8 @@ class Quote extends Generic
      */
     public function getItemsAsArray()
     {
-        /** @var \Magento\Sales\Model\Quote $quote */
-        $quote = $this->getQuote();
+        /** @var \Magento\Quote\Model\Quote $quote */
+        $quote = $this->quote;
         if (empty($quote)) {
             return array();
         }
