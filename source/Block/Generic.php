@@ -18,6 +18,11 @@ use \Magento\Framework\View\Element\Template;
 class Generic extends Template
 {
     /**
+     * @var \Yireo\GoogleTagManager2\Helper\Data
+     */
+    public $helper;
+
+    /**
      * @var \Yireo\GoogleTagManager2\Model\Container
      */
     protected $container;
@@ -46,11 +51,6 @@ class Generic extends Template
      * @var \Magento\Framework\View\LayoutInterface
      */
     protected $layout;
-
-    /**
-     * @var \Yireo\GoogleTagManager2\Helper\Data
-     */
-    protected $helper;
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
