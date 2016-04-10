@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Open Source License
  */
 

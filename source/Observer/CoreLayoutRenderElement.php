@@ -25,7 +25,7 @@ class CoreLayoutRenderElement implements ObserverInterface
     }
 
     /**
-     * Listen to the event adminhtml_cache_refresh_type
+     * Listen to the event core_layout_render_element
      *
      * @param \Magento\Framework\Event\Observer $observer
      * @return $this
@@ -41,24 +41,29 @@ class CoreLayoutRenderElement implements ObserverInterface
         }
 
         $event = $observer->getEvent();
-        $block = $event->getBlock();
-        if($block->getNameInLayout() == 'root') {
-
-            $transport = $event->getTransport();
-            $html = $transport->getHtml();
-
-            $script = $this->helper->getHeaderScript();
-
-            if (empty($script)) {
-                $this->helper->debug('Observer: Empty script');
-                return $this;
-            }
-
-            $html = preg_replace('/\<body([^\>]+)\>/', '\0'.$script, $html);
-            $this->helper->debug('Observer: Replacing header');
-
-            $transport->setHtml($html);
+        $blockName = $event->getElementName();
+        if(empty($blockName)) {
+            return $this;
         }
+
+        if($blockName != 'root') {
+            return $this;
+        }
+
+        $transport = $event->getTransport();
+        $html = $transport->getHtml();
+
+        $script = $this->helper->getHeaderScript();
+
+        if (empty($script)) {
+            $this->helper->debug('Observer: Empty script');
+            return $this;
+        }
+
+        $html = preg_replace('/\<body([^\>]+)\>/', '\0'.$script, $html);
+        $this->helper->debug('Observer: Replacing header');
+
+        $transport->setHtml($html);
 
         return $this;
     }
