@@ -18,8 +18,46 @@ use \Magento\Framework\View\Element\Template;
 class Generic extends Template
 {
     /**
+     * @var \Yireo\GoogleTagManager2\Model\Container
+     */
+    protected $container;
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
+     * @var \Magento\Sales\Model\Order
+     */
+    protected $order;
+
+    /**
+     * @var \Magento\Quote\Model\Quote
+     */
+    protected $quote;
+
+    /**
+     * @var \Magento\Checkout\Model\Session
+     */
+    protected $checkoutSession;
+
+    /**
+     * @var \Magento\Framework\View\LayoutInterface
+     */
+    protected $layout;
+
+    /**
+     * @var \Yireo\GoogleTagManager2\Helper\Data
+     */
+    protected $helper;
+
+    /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Framework\View\LayoutInterface $layout
      * @param \Yireo\GoogleTagManager2\Helper\Data $helper
      * @param \Yireo\GoogleTagManager2\Model\Container $container
      * @param array $data
@@ -28,6 +66,8 @@ class Generic extends Template
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Framework\View\LayoutInterface $layout,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\Model\Container $container,
         array $data = []
@@ -35,8 +75,12 @@ class Generic extends Template
     {
         $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
+        $this->layout = $layout;
         $this->helper = $helper;
         $this->container = $container;
+        $this->checkoutSession = $checkoutSession;
+        $this->order = $this->checkoutSession->getLastRealOrder();
+        $this->quote = $this->checkoutSession->getQuote();
 
         parent::__construct(
             $context,
@@ -143,7 +187,6 @@ class Generic extends Template
      */
     public function getWebsiteName()
     {
-        //return $this->storeManager->getStore()->getName();
         return $this->scopeConfig->getValue('general/store_information/name');
     }
 }

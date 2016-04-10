@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
          colors="true"
-         bootstrap="./framework/bootstrap.php"
+         bootstrap="../../dev/tests/unit/framework/bootstrap.php"
         >
     <testsuite name="Yireo Unit Tests">
         <directory suffix="Test.php">../../../app/code/Yireo/*/Test/Unit</directory>

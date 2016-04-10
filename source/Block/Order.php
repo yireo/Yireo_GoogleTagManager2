@@ -16,35 +16,6 @@ namespace Yireo\GoogleTagManager2\Block;
 class Order extends Generic
 {
     /**
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param array $data
-     * @param \Yireo\GoogleTagManager2\Helper\Data $helper,
-     * @param \Yireo\GoogleTagManager2\Model\Container $container
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     */
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Yireo\GoogleTagManager2\Helper\Data $helper,
-        \Yireo\GoogleTagManager2\Model\Container $container,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        array $data = []
-    ) {
-        $this->checkoutSession = $checkoutSession;
-        $this->order = $checkoutSession->getLastRealOrder();
-
-        parent::__construct(
-            $context,
-            $scopeConfig,
-            $storeManager,
-            $helper,
-            $container,
-            $data
-        );
-    }
-
-    /**
      * Return all items as array
      *
      * @return array
@@ -52,7 +23,7 @@ class Order extends Generic
     public function getItems()
     {
         /** @var \Magento\Sales\Model\Order $order */
-        $order = $this->getOrder();
+        $order = $this->order;
         if (empty($order)) {
             return array();
         }
