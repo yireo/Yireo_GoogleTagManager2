@@ -28,11 +28,6 @@ class Generic extends Template
     protected $container;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
      * @var \Magento\Sales\Model\Order
      */
     protected $order;
@@ -54,28 +49,19 @@ class Generic extends Template
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Framework\View\LayoutInterface $layout
      * @param \Yireo\GoogleTagManager2\Helper\Data $helper
      * @param \Yireo\GoogleTagManager2\Model\Container $container
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Framework\View\LayoutInterface $layout,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\Model\Container $container,
         array $data = []
     )
     {
-        $this->storeManager = $storeManager;
-        $this->scopeConfig = $scopeConfig;
-        $this->layout = $layout;
         $this->helper = $helper;
         $this->container = $container;
         $this->checkoutSession = $checkoutSession;
@@ -86,6 +72,9 @@ class Generic extends Template
             $context,
             $data
         );
+
+        $this->storeManager = $this->_storeManager;
+        $this->layout = $this->_layout;
     }
 
     /**
