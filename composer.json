@@ -19,12 +19,12 @@
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "extra":{
-        "map": [
-            [
-                "source/*",
-                "Yireo/GoogleTagManager2"
-            ]
+    "autoload": {
+        "psr-4": {
+            "Yireo\\GoogleTagManager2\\": "source"
+        },        
+        "files": [
+            "source/registration.php"
         ]
     }
 }
