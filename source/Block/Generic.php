@@ -176,6 +176,6 @@ class Generic extends Template
      */
     public function getWebsiteName()
     {
-        return $this->scopeConfig->getValue('general/store_information/name');
+        return $this->_scopeConfig->getValue('general/store_information/name');
     }
 }
