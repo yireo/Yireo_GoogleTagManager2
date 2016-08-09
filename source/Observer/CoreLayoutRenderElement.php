@@ -12,8 +12,18 @@ namespace Yireo\GoogleTagManager2\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Class CoreLayoutRenderElement
+ *
+ * @package Yireo\GoogleTagManager2\Observer
+ */
 class CoreLayoutRenderElement implements ObserverInterface
 {
+    /**
+     * @var \Yireo\GoogleTagManager2\Helper\Data
+     */
+    protected $helper;
+
     /**
      * @param \Yireo\GoogleTagManager2\Helper\Data $helper
      */
