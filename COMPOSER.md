@@ -3,22 +3,9 @@
 Use composer to install this extension. First make sure that Magento is installed
 via composer, and that there is a valid `composer.json` file present.
 
-Next, modify the Magento 2 `composer.json` file to add the Yireo Satis repository
-to it:
+Next add our own free composer repository to your Magento 2 installation:
 
-    {
-        ...
-        "repositories": {
-            "magento": {
-                "type": "composer",
-                "url": "https://packages.magento.com"
-            },
-            "yireo": {
-                "type":"composer",
-                "url":"https://satis.yireo.com"
-            }
-        }
-    }
+    composer config repositories.yireo-free composer https://satis.yireo.com
 
 Next, install our module using the following command:
 
