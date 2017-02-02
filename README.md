@@ -5,7 +5,10 @@ Homepage: http://www.yireo.com/software/magento-extensions/googletagmanager2
 Requirements:
 * Magento 2.0.0 Stable
 
-We recommend `composer` to install this package. However, if you want a manual copy instead, these are the steps:
+## Installation
+We recommend `composer` to install this package. See our [COMPOSER.md](COMPOSER.md) instructions.
+
+If you want a manual copy instead, these are the steps:
 * Upload the files in the `source/` folder to the folder `app/code/Yireo/GoogleTagManager2` of your site
 * Run `php -f bin/magento module:enable Yireo_GoogleTagManager2`
 * Run `php -f bin/magento setup:upgrade`
