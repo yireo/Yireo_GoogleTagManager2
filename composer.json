@@ -20,6 +20,9 @@
         "composer/composer":"*@dev"
     },
     "autoload": {
+        "psr-4": {
+            "Yireo\\GoogleTagManager2\\": ""
+        },        
         "files": [
             "registration.php"
         ]
