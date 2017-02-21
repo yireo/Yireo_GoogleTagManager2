@@ -32,6 +32,7 @@ class Quote extends Generic
         foreach($quote->getAllItems() as $item) {
             /** @var \Magento\Sales\Model\Order\Item $item */
             $data[] = array(
+                'productId' => $item->getProduct->getId(),
                 'sku' => $item->getProduct()->getSku(),
                 'name' => $item->getProduct()->getName(),
                 'price' => $item->getProduct()->getPrice(),
