@@ -17,7 +17,8 @@ If you want a manual copy instead, these are the steps:
 * Done
 
 ## Unit testing
-This extension ships with PHPUnit tests. The generic PHPUnit configuration in Magento 2 will pick up on these tests. To only
-test Yireo extensions, copy the file `phpunit.xml.yireo` to your Magento folder `dev/tests/unit`. Next, from within that folder run PHPUnit. For instance:
+This extension ships with PHPUnit tests. The generic PHPUnit configuration in Magento 2 will pick up on these
+tests. To only test Yireo extensions, simply run PHPUnit from within this folder. Note that this assumes that
+the extension is installed via composer. For instance:
 
-    phpunit -c phpunit.yireo.xml
+    phpunit
