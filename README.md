@@ -13,7 +13,7 @@ If you want a manual copy instead, these are the steps:
 * Run `php -f bin/magento module:enable Yireo_GoogleTagManager2`
 * Run `php -f bin/magento setup:upgrade`
 * Flush the Magento cache
-* Configure settings under `Stores > Configuration > Advanced > Yireo GoogleTagManager`
+* Configure settings under `Stores > Configuration > Sales > Yireo GoogleTagManager`
 * Done
 
 ## Unit testing
