@@ -29,7 +29,10 @@ class Category extends Generic
 
         // Fetch the current collection from the block and set pagination
         $collection = $productListBlock->getLoadedProductCollection();
-        $collection->setCurPage($this->getCurrentPage())->setPageSize($this->getLimit());
+        $collection->setCurPage($this->getCurrentPage());
+        if((int) $this->getLimit()) {
+            $collection->setPageSize($this->getLimit());
+        }
 
         return $collection;
     }
