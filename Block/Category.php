@@ -22,11 +22,12 @@ class Category extends Generic
     {
         /** @var \Magento\Catalog\Block\Product\ListProduct $productListBlock */
         $productListBlock = $this->layout->getBlock('category.products.list');
-        $toolbar = $productListBlock->getToolbarBlock();
 
         if (empty($productListBlock)) {
             return null;
         }
+
+        $toolbar = $productListBlock->getToolbarBlock();
 
         // Fetch the current collection from the block and set pagination
         $collection = $productListBlock->getLoadedProductCollection();
