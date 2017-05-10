@@ -22,6 +22,7 @@ class Category extends Generic
     {
         /** @var \Magento\Catalog\Block\Product\ListProduct $productListBlock */
         $productListBlock = $this->layout->getBlock('category.products.list');
+        $toolbar = $productListBlock->getToolbarBlock();
 
         if (empty($productListBlock)) {
             return null;
@@ -29,10 +30,28 @@ class Category extends Generic
 
         // Fetch the current collection from the block and set pagination
         $collection = $productListBlock->getLoadedProductCollection();
-        $collection->setCurPage($this->getCurrentPage());
-        if((int) $this->getLimit()) {
-            $collection->setPageSize($this->getLimit());
+        $collection->setCurPage($this->getCurrentPage())->setPageSize($this->getLimit());
+
+        // use sortable parameters
+        $orders = $productListBlock->getAvailableOrders();
+        if ($orders) {
+            $toolbar->setAvailableOrders($orders);
         }
+        $sort = $productListBlock->getSortBy();
+        if ($sort) {
+            $toolbar->setDefaultOrder($sort);
+        }
+        $dir = $productListBlock->getDefaultDirection();
+        if ($dir) {
+            $toolbar->setDefaultDirection($dir);
+        }
+        $modes = $productListBlock->getModes();
+        if ($modes) {
+            $toolbar->setModes($modes);
+        }
+
+        // set collection to toolbar and apply sort
+        $toolbar->setCollection($collection);
 
         return $collection;
     }
