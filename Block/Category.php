@@ -27,12 +27,36 @@ class Category extends Generic
             return null;
         }
 
+        $toolbar = $productListBlock->getToolbarBlock();
+
         // Fetch the current collection from the block and set pagination
         $collection = $productListBlock->getLoadedProductCollection();
+
         $collection->setCurPage($this->getCurrentPage());
+
         if((int) $this->getLimit()) {
             $collection->setPageSize($this->getLimit());
         }
+        // use sortable parameters
+        $orders = $productListBlock->getAvailableOrders();
+        if ($orders) {
+            $toolbar->setAvailableOrders($orders);
+        }
+        $sort = $productListBlock->getSortBy();
+        if ($sort) {
+            $toolbar->setDefaultOrder($sort);
+        }
+        $dir = $productListBlock->getDefaultDirection();
+        if ($dir) {
+            $toolbar->setDefaultDirection($dir);
+        }
+        $modes = $productListBlock->getModes();
+        if ($modes) {
+            $toolbar->setModes($modes);
+        }
+
+        // set collection to toolbar and apply sort
+        $toolbar->setCollection($collection);
 
         return $collection;
     }
