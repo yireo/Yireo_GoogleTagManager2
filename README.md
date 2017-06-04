@@ -1,5 +1,4 @@
 # Magento 2 module for Google Tag Manager
-=========================================
 Homepage: http://www.yireo.com/software/magento-extensions/googletagmanager2
 
 Requirements:
