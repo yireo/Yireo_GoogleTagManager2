@@ -13,7 +13,7 @@ namespace Yireo\GoogleTagManager2\Test\Unit\Block;
 class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 {
     /**
-     * @var \Yireo\GoogleTagManager2\Block\Customer
+     * @var \Yireo\GoogleTagManager2\Block\Generic
      */
     protected $target;
 
@@ -24,7 +24,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
     {
         parent::setUp();
 
-        $this->target = $this->objectManager->get('Yireo\GoogleTagManager2\Block\Customer');
+        $this->target = $this->objectManager->get('Yireo\GoogleTagManager2\Block\Generic');
     }
 
     /**

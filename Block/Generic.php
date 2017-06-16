@@ -10,7 +10,7 @@
 
 namespace Yireo\GoogleTagManager2\Block;
 
-use \Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Generic
@@ -38,6 +38,11 @@ class Generic extends Template
     protected $quote;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * @var \Magento\Checkout\Model\Session
      */
     protected $checkoutSession;
@@ -46,6 +51,11 @@ class Generic extends Template
      * @var \Magento\Framework\View\LayoutInterface
      */
     protected $layout;
+
+    /**
+     * @var \Magento\Framework\Json\EncoderInterface
+     */
+    protected $jsonEncoder;
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
@@ -59,22 +69,22 @@ class Generic extends Template
         \Magento\Checkout\Model\Session $checkoutSession,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\Model\Container $container,
+        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         array $data = []
-    )
-    {
+    ) {
         $this->helper = $helper;
         $this->container = $container;
         $this->checkoutSession = $checkoutSession;
         $this->order = $this->checkoutSession->getLastRealOrder();
         $this->quote = $this->checkoutSession->getQuote();
+        $this->storeManager = $context->getStoreManager();
+        $this->layout = $context->getLayout();
+        $this->jsonEncoder = $jsonEncoder;
 
         parent::__construct(
             $context,
             $data
         );
-
-        $this->storeManager = $this->_storeManager;
-        $this->layout = $this->_layout;
     }
 
     /**
@@ -177,5 +187,18 @@ class Generic extends Template
     public function getWebsiteName()
     {
         return $this->_scopeConfig->getValue('general/store_information/name');
+    }
+
+    public function getJsonConfiguration()
+    {
+        $configuration = [];
+        if (empty($this->getChildScript())) {
+            return $this->jsonEncoder->encode($configuration);
+        }
+
+        $configuration['attributes'] = $this->getAttributes();
+        $configuration['id'] = $this->getId();
+
+        return $this->jsonEncoder->encode($configuration);
     }
 }

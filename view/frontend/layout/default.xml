@@ -15,7 +15,6 @@
             <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" as="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml"/>
         </referenceContainer>
 
-        <block class="Yireo\GoogleTagManager2\Block\Customer" template="Yireo_GoogleTagManager2::customer.phtml" name="googletagmanager_customer"/>
         <block class="Yireo\GoogleTagManager2\Block\Order" template="Yireo_GoogleTagManager2::order.phtml" name="googletagmanager_order"/>
         <block class="Yireo\GoogleTagManager2\Block\Quote" template="Yireo_GoogleTagManager2::quote.phtml" name="googletagmanager_quote"/>
         <block class="Yireo\GoogleTagManager2\Block\Product" template="Yireo_GoogleTagManager2::product.phtml" name="googletagmanager_product"/>
