@@ -28,30 +28,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Customer\Model\Group $customerGroup
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Model\Order $salesOrder,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Customer\Model\Group $customerGroup,
         \Magento\Framework\Pricing\Helper\Data $pricingHelper
     )
     {
         $this->layoutFactory = $layoutFactory;
         $this->blockFactory = $blockFactory;
-        $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->salesOrder = $salesOrder;
         $this->coreRegistry = $coreRegistry;
-        $this->customerGroup = $customerGroup;
         $this->pricingHelper = $pricingHelper;
 
         parent::__construct($context);
@@ -205,9 +199,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             return $childScript;
         }
 
-        // Add customer-information
-        $this->addCustomer($childScript);
-
         // Add product-information
         $this->addProduct($childScript);
 
@@ -231,27 +222,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $html = $block->toHtml();
 
         return $html;
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addCustomer(&$childScript)
-    {
-        $customer = $this->customerSession->getCustomer();
-
-        if (!empty($customer)) {
-            $customerBlock = $this->fetchBlock('customer', 'customer', 'customer.phtml');
-
-            if ($customerBlock) {
-                $customerBlock->setCustomer($customer);
-
-                $customerGroup = $this->customerGroup->load($customer->getGroupId());
-                $customerBlock->setCustomerGroup($customerGroup);
-
-                $childScript .= $customerBlock->toHtml();
-            }
-        }
     }
 
     /**
