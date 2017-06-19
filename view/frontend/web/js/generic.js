@@ -20,12 +20,12 @@ define([
     var getCustomerSpecificAttributes = function () {
         var customer = getCustomer();
 
-        return {
-            'customerLoggedIn': isLoggedIn() ? 1 : 0,
+        return isLoggedIn() ? {
+            'customerLoggedIn': 1,
             'customerId': customer.id,
             'customerGroupId': customer.group_id,
             'customerGroupCode': customer.group_code.toUpperCase()
-        };
+        } : { 'customerLoggedIn': 0 };
     };
 
     return function (config) {
