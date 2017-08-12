@@ -9,13 +9,31 @@
 
 define([
     'jquery',
+    'underscore',
     'Magento_Customer/js/customer-data',
     'domReady!'
-], function ($, customerData) {
+], function ($, _, customerData) {
     'use strict';
 
     var initDataLayer = function () {
         window.dataLayer = window.dataLayer || [];
+    };
+
+    var monitorCart = function() {
+        var cart = customerData.get('cart');
+        cart.subscribe(function (updatedCart) {
+            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+        });
+
+        var checkout = customerData.get('checkout-data');
+        checkout.subscribe(function (updatedCart) {
+            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+        });
+
+        var customer = customerData.get('customer');
+        customer.subscribe(function (updatedCart) {
+            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+        });
     };
 
     var getCustomer = function () {
@@ -39,28 +57,40 @@ define([
         } : { 'customerLoggedIn': 0 };
     };
 
-    var getQuoteSpecificAttributes = function () {
-        var sectionName = 'yireo-gtm-quote';
-        var quote = customerData.get(sectionName);
+    var getCartSpecificAttributes = function () {
 
-        return quote();
-    };
+        var cart = customerData.get('cart');
+        var quote = customerData.get('yireo-gtm-quote');
+        var order = customerData.get('yireo-gtm-order');
 
-    var getOrderSpecificAttributes = function () {
-        var sectionName = 'yireo-gtm-order';
-        var quote = customerData.get(sectionName);
+        var quoteData = quote();
+        delete quoteData.data_id;
+        if (! _.isEmpty(quoteData)) {
 
-        return quote();
+            // This check should not be needed if the sections.xml was correctly reloading our data
+            if (cart().summary_count == 0) {
+                customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+            }
+
+            return quoteData;
+        }
+
+        var orderData = order();
+        delete orderData.data_id;
+        if (! _.isEmpty(orderData)) {
+            return orderData;
+        }
+
+
+
+        return {};
     };
 
     return function (config) {
         initDataLayer();
+        monitorCart();
 
-        console.log('Order attributes:');
-        console.log(getOrderSpecificAttributes());
-
-
-        var attributes = $.extend(config.attributes, getCustomerSpecificAttributes(), getQuoteSpecificAttributes());
+        var attributes = $.extend(getCartSpecificAttributes(), getCustomerSpecificAttributes(), config.attributes);
 
         console.log('All attributes:');
         console.log(attributes);

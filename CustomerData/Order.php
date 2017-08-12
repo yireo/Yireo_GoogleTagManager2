@@ -142,7 +142,7 @@ class Order implements SectionSourceInterface
      */
     private function getTaxAmount()
     {
-        return (float) $this->order->getGrandTotal() - $this->order->getSubtotal();
+        return (float) $this->order->getTaxAmount();
     }
 
     /**
