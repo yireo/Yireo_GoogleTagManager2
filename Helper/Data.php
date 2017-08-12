@@ -26,6 +26,35 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const METHOD_LAYOUT = 1;
 
     /**
+     * <<<<<<< HEAD
+     * =======
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Framework\Registry $coreRegistry
+     */
+    public function __construct(
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Framework\View\Element\BlockFactory $blockFactory,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Sales\Model\Order $salesOrder,
+        \Magento\Framework\Registry $coreRegistry,
+        \Magento\Framework\Pricing\Helper\Data $pricingHelper
+    )
+    {
+        $this->layoutFactory = $layoutFactory;
+        $this->blockFactory = $blockFactory;
+        $this->checkoutSession = $checkoutSession;
+        $this->salesOrder = $salesOrder;
+        $this->coreRegistry = $coreRegistry;
+        $this->pricingHelper = $pricingHelper;
+
+        parent::__construct($context);
+    }
+
+    /**
+     * >>>>>>> 25d2d833233327ee95db80dcce2bb3edb2a20bc3
      * Check whether the module is enabled
      *
      * @return bool

@@ -8,31 +8,23 @@
  * @license     Open Software License
  */
 
-$moduleName = $this->getRequest()->getModuleName();
-$controllerName = $this->getRequest()->getControllerName();
-$actionName = $this->getRequest()->getActionName();
+/** @var \Yireo\GoogleTagManager2\Block\Generic $block */
+
+$moduleName = $block->getRequest()->getModuleName();
+$controllerName = $block->getRequest()->getControllerName();
+$actionName = $block->getRequest()->getActionName();
 $route = $moduleName.'/'.$controllerName.'/'.$actionName;
 ?>
-<?php if ($this->isEnabled()) : ?>
-    <?php $this->addAttribute('pageType', $route); ?>
+<?php if ($block->isEnabled()) : ?>
+    <?php $block->addAttribute('pageType', $route); ?>
     <noscript>
-        <iframe src="//www.googletagmanager.com/ns.html?id=<?= $this->getId(); ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        <iframe src="//www.googletagmanager.com/ns.html?id=<?= $block->getId(); ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
-    <?php $childScript = $this->getChildScript(); ?>
-    <script>
-    <?php if (!empty($childScript)) : ?>
-            <?php if($this->hasAttributes()) : ?>
-            dataLayer = [<?= $this->getAttributesAsJson(); ?>];
-            <?php endif; ?>
-            <?= $childScript; ?>
-    <?php endif; ?>
-    (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', '<?= $this->getId(); ?>');
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "yireoGenericGtm": <?php echo $block->getJsonConfiguration() ?>
+        }
+    }
     </script>
 <?php endif; ?>

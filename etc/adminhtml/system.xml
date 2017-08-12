@@ -13,7 +13,7 @@
     <system>
         <section id="googletagmanager2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Yireo GoogleTagManager</label>
-            <tab>advanced</tab>
+            <tab>sales</tab>
             <resource>Yireo_GoogleTagManager2::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>

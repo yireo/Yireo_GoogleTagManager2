@@ -42,6 +42,7 @@ class Order extends Generic
             /** @var \Magento\Catalog\Model\Product $product */
             $product = $item->getProduct();
             $data[] = array(
+		'productId' => $product->getId(),
                 'sku' => $item->getSku(),
                 'name' => $item->getName(),
                 'price' => $item->getPrice(),

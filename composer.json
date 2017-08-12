@@ -1,5 +1,5 @@
 {
-    "name": "yireo/yireo_googletagmanager2",
+    "name": "yireo/magento2-googletagmanager2",
     "license": "OSL-3.0",
     "type": "magento2-module",
     "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager",
@@ -20,6 +20,9 @@
         "composer/composer":"*@dev"
     },
     "autoload": {
+        "psr-4": {
+            "Yireo\\GoogleTagManager2\\": ""
+        },        
         "files": [
             "registration.php"
         ]
