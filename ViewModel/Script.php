@@ -63,24 +63,11 @@ class Script
             return $childScript;
         }
 
-        // Add customer-information
-        $this->addCustomer($childScript);
-
         // Add product-information
         $this->addProduct($childScript);
 
         // Add category-information
         $this->addCategory($childScript);
-
-        // Add order-information
-        $lastOrderId = $this->checkoutSession->getLastRealOrderId();
-        if (!empty($lastOrderId)) {
-            $this->addOrder($childScript);
-
-            // Add quote-information
-        } else {
-            $this->addQuote($childScript);
-        }
 
         // Add custom information
         $this->addCustom($childScript);
@@ -94,39 +81,20 @@ class Script
     /**
      * @param $childScript string
      */
-    public function addCustomer(&$childScript)
-    {
-        $customer = $this->customerSession->getCustomer();
-
-        if (!empty($customer)) {
-            $customerBlock = $this->fetchBlock('customer', 'customer', 'customer.phtml');
-
-            if ($customerBlock) {
-                $customerBlock->setCustomer($customer);
-
-                $customerGroup = $this->customerGroup->load($customer->getGroupId());
-                $customerBlock->setCustomerGroup($customerGroup);
-
-                $childScript .= $customerBlock->toHtml();
-            }
-        }
-    }
-
-    /**
-     * @param $childScript string
-     */
     public function addProduct(&$childScript)
     {
         $currentProduct = $this->coreRegistry->registry('current_product');
-
-        if (!empty($currentProduct)) {
-            $productBlock = $this->fetchBlock('product', 'product', 'product.phtml');
-
-            if ($productBlock) {
-                $productBlock->setProduct($currentProduct);
-                $childScript .= $productBlock->toHtml();
-            }
+        if (empty($currentProduct)) {
+            return;
         }
+
+        $productBlock = $this->fetchBlock('product', 'product', 'product.phtml');
+        if (!$productBlock) {
+            return;
+        }
+
+        $productBlock->setProduct($currentProduct);
+        $childScript .= $productBlock->toHtml();
     }
 
     /**
@@ -135,50 +103,17 @@ class Script
     public function addCategory(&$childScript)
     {
         $currentCategory = $this->coreRegistry->registry('current_category');
-
-        if (!empty($currentCategory)) {
-            $categoryBlock = $this->fetchBlock('category', 'category', 'category.phtml');
-
-            if ($categoryBlock) {
-                $categoryBlock->setCategory($currentCategory);
-                $childScript .= $categoryBlock->toHtml();
-            }
+        if (empty($currentCategory)) {
+            return;
         }
-    }
 
-    /**
-     * @param $childScript string
-     */
-    public function addOrder(&$childScript)
-    {
-        $lastOrderId = $this->checkoutSession->getLastRealOrderId();
-
-        if (!empty($lastOrderId)) {
-            $order = $this->salesOrder->loadByIncrementId($lastOrderId);
-            $orderBlock = $this->fetchBlock('order', 'order', 'order.phtml');
-
-            if ($orderBlock) {
-                $orderBlock->setOrder($order);
-                $childScript .= $orderBlock->toHtml();
-            }
+        $categoryBlock = $this->fetchBlock('category', 'category', 'category.phtml');
+        if (!$categoryBlock) {
+            return;
         }
-    }
 
-    /**
-     * @param $childScript string
-     */
-    public function addQuote(&$childScript)
-    {
-        $quote = $this->checkoutSession->getQuote();
-
-        if ($quote->getId() > 0) {
-            $quoteBlock = $this->fetchBlock('quote', 'quote', 'quote.phtml');
-
-            if ($quoteBlock) {
-                $quoteBlock->setQuote($quote);
-                $childScript .= $quoteBlock->toHtml();
-            }
-        }
+        $categoryBlock->setCategory($currentCategory);
+        $childScript .= $categoryBlock->toHtml();
     }
 
     /**

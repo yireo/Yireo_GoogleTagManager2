@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -18,9 +18,14 @@ use Magento\Framework\View\Element\Template;
 class Generic extends Template
 {
     /**
+     * @var \Yireo\GoogleTagManager2\Factory\ViewModelFactory
+     */
+    protected $viewModelFactory;
+
+    /**
      * @var \Yireo\GoogleTagManager2\Helper\Data
      */
-    public $helper;
+    protected $helper;
 
     /**
      * @var \Yireo\GoogleTagManager2\Model\Container
@@ -65,6 +70,7 @@ class Generic extends Template
      * @param array $data
      */
     public function __construct(
+        \Yireo\GoogleTagManager2\Factory\ViewModelFactory $viewModelFactory,
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Yireo\GoogleTagManager2\Helper\Data $helper,
@@ -72,6 +78,7 @@ class Generic extends Template
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         array $data = []
     ) {
+        $this->viewModelFactory = $viewModelFactory;
         $this->helper = $helper;
         $this->container = $container;
         $this->checkoutSession = $checkoutSession;
@@ -87,10 +94,25 @@ class Generic extends Template
         );
     }
 
+    public function getViewModel()
+    {
+        $viewModelClass = str_replace('\Block\\', '\ViewModel\\', get_class($this));
+        return $this->viewModelFactory->create($viewModelClass);
+    }
+
+    /**
+     * @return \Yireo\GoogleTagManager2\Helper\Data
+     */
+    public function getHelper()
+    {
+        return $this->helper;
+    }
+
     /**
      * Return whether this module is enabled or not
      *
      * @return bool
+     * @deprecated Use $this->getHelper()->isEnabled() instead
      */
     public function isEnabled()
     {
@@ -101,6 +123,7 @@ class Generic extends Template
      * Check whether this module is in debugging mode
      *
      * @return bool
+     * @deprecated Use $this->getHelper()->isDebug() instead
      */
     public function isDebug()
     {
@@ -111,6 +134,7 @@ class Generic extends Template
      * Get the GA ID
      *
      * @return mixed
+     * @deprecated Use $this->getHelper()->getId() instead
      */
     public function getId()
     {
@@ -121,13 +145,14 @@ class Generic extends Template
      * Return a configuration value
      *
      * @param null $key
-     * @param null $default_value
+     * @param null $defaultValue
      *
      * @return mixed
+     * @deprecated Use $this->getHelper()->getConfig($key, $defaultValue) instead
      */
-    public function getConfig($key = null, $default_value = null)
+    public function getConfig($key = null, $defaultValue = null)
     {
-        return $this->helper->getConfigValue($key, $default_value);
+        return $this->helper->getConfigValue($key, $defaultValue);
     }
 
     /**
@@ -189,6 +214,9 @@ class Generic extends Template
         return $this->_scopeConfig->getValue('general/store_information/name');
     }
 
+    /**
+     * @return string
+     */
     public function getJsonConfiguration()
     {
         $configuration = [];
