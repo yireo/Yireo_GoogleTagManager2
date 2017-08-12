@@ -16,6 +16,7 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 class Script
 {
     /**
+     * @param \Yireo\GoogleTagManager2\Helper\Data $moduleHelper
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
      * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
      * @param \Magento\Customer\Model\Session $customerSession
@@ -26,6 +27,7 @@ class Script
      * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
      */
     public function __construct(
+        \Yireo\GoogleTagManager2\Helper\Data $moduleHelper,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
         \Magento\Customer\Model\Session $customerSession,
@@ -36,6 +38,7 @@ class Script
         \Magento\Framework\Pricing\Helper\Data $pricingHelper
     )
     {
+        $this->moduleHelper = $moduleHelper;
         $this->layoutFactory = $layoutFactory;
         $this->blockFactory = $blockFactory;
         $this->customerSession = $customerSession;
@@ -51,7 +54,7 @@ class Script
      *
      * @return string
      */
-    public function getHeaderScript()
+    public function getScript()
     {
         $childScript = '';
 
@@ -197,7 +200,7 @@ class Script
      * @param string $classType
      * @param string $template
      *
-     * @return \Magento\Framework\View\Element\Template
+     * @return \Magento\Framework\View\Element\BlockInterface
      */
     public function fetchBlock($className, $classType, $template)
     {
@@ -214,16 +217,26 @@ class Script
         }
 
         if ($block = $this->layoutFactory->create()->getBlock($className)) {
-            $this->debug('Helper: Loading block from layout: ' . $className);
+            $this->moduleHelper->debug('Helper: Loading block from layout: ' . $className);
             return $block;
         }
 
-        if ($block = $this->blockFactory->createBlock($classType)->setTemplate('Yireo_GoogleTagManager2::' . $template)) {
-            $this->debug('Helper: Creating new block: ' . $classType);
+        if ($block = $this->blockFactory->createBlock($classType)->setTemplate($template)) {
+            $this->moduleHelper->debug('Helper: Creating new block: ' . $classType);
             return $block;
         }
 
-        $this->debug('Helper: Unknown block: ' . $className);
+        $this->moduleHelper->debug('Helper: Unknown block: ' . $className);
         throw new \InvalidArgumentException('Helper: Unknown block: ' . $className);
+    }
+
+    /**
+     * Return whether this module is enabled or not
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->moduleHelper->isEnabled();
     }
 }

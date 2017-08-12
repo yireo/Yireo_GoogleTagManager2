@@ -26,38 +26,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const METHOD_LAYOUT = 1;
 
     /**
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Customer\Model\Group $customerGroup
-     */
-    public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Sales\Model\Order $salesOrder,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Customer\Model\Group $customerGroup,
-        \Magento\Framework\Pricing\Helper\Data $pricingHelper
-    )
-    {
-        $this->layoutFactory = $layoutFactory;
-        $this->blockFactory = $blockFactory;
-        $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
-        $this->salesOrder = $salesOrder;
-        $this->coreRegistry = $coreRegistry;
-        $this->customerGroup = $customerGroup;
-        $this->pricingHelper = $pricingHelper;
-
-        parent::__construct($context);
-    }
-
-    /**
      * Check whether the module is enabled
      *
      * @return bool
@@ -108,6 +76,28 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return a configuration value
+     *
+     * @param null $key
+     * @param null $defaultValue
+     *
+     * @return mixed|null
+     */
+    public function getConfigValue($key = null, $defaultValue = null)
+    {
+        $value = $this->scopeConfig->getValue(
+            'googletagmanager2/settings/' . $key,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        if (empty($value)) {
+            $value = $defaultValue;
+        }
+
+        return $value;
+    }
+
+    /**
      * Debugging method
      *
      * @param $string
@@ -131,29 +121,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Return a configuration value
-     *
-     * @param null $key
-     * @param null $defaultValue
-     *
-     * @return mixed|null
-     */
-    public function getConfigValue($key = null, $defaultValue = null)
-    {
-        $value = $this->scopeConfig->getValue(
-            'googletagmanager2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-        if (empty($value)) {
-            $value = $defaultValue;
-        }
-
-        return $value;
-    }
-
-    /**
-     *
+     * @deprecated Use \Yireo\GoogleTagManager2\ViewModel\Generic::getBaseCurrencyCode() instead
      */
     public function getBaseCurrencyCode()
     {
