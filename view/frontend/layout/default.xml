@@ -5,44 +5,19 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="after.body.start">
-            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml">
-                <arguments>
-                    <argument name="viewModel" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Script</argument>
-                </arguments>
-            </block>
+            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml"/>
         </referenceContainer>
 
-        <!--
-        <block class="Yireo\GoogleTagManager2\Block\Customer" template="Yireo_GoogleTagManager2::customer.phtml" name="googletagmanager_customer">
-            <arguments>
-                <argument name="viewModel" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Customer</argument>
-            </arguments>
-        </block>
-        -->
-
-        <block class="Yireo\GoogleTagManager2\Block\Order" template="Yireo_GoogleTagManager2::order.phtml" name="googletagmanager_order">
-        </block>
-
-        <block class="Yireo\GoogleTagManager2\Block\Quote" template="Yireo_GoogleTagManager2::quote.phtml" name="googletagmanager_quote">
-        </block>
-
-        <block class="Yireo\GoogleTagManager2\Block\Product" template="Yireo_GoogleTagManager2::product.phtml" name="googletagmanager_product">
-        </block>
-
-        <block class="Yireo\GoogleTagManager2\Block\Category" template="Yireo_GoogleTagManager2::category.phtml" name="googletagmanager_category">
-        </block>
-
-        <block class="Yireo\GoogleTagManager2\Block\Custom" template="Yireo_GoogleTagManager2::custom.phtml" name="googletagmanager_custom">
-        </block>
-
-        <block class="Yireo\GoogleTagManager2\Block\Generic" template="Yireo_GoogleTagManager2::generic.phtml" name="googletagmanager">
-        </block>
+        <block class="Yireo\GoogleTagManager2\Block\Product" template="Yireo_GoogleTagManager2::product.phtml" name="googletagmanager_product"/>
+        <block class="Yireo\GoogleTagManager2\Block\Category" template="Yireo_GoogleTagManager2::category.phtml" name="googletagmanager_category"/>
+        <block class="Yireo\GoogleTagManager2\Block\Custom" template="Yireo_GoogleTagManager2::custom.phtml" name="googletagmanager_custom"/>
+        <block class="Yireo\GoogleTagManager2\Block\Generic" template="Yireo_GoogleTagManager2::generic.phtml" name="googletagmanager"/>
     </body>
 </page>

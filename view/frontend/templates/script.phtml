@@ -9,9 +9,8 @@
  */
 
 /** @var \Yireo\GoogleTagManager2\Block\Script $block */
-/** @var \Yireo\GoogleTagManager2\ViewModel\Script $viewModel */
-$viewModel = $this->viewModel;
-?>
-<?php if($viewModel->isEnabled()) : ?>
-    <?= $viewModel->getScript(); ?>
-<?php endif; ?>
+$viewModel = $block->getViewModel();
+
+if($viewModel->isEnabled()) {
+    echo $viewModel->getScript();
+}

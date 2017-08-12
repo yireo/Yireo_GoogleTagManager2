@@ -4,23 +4,27 @@
  *
  * @package     Yireo_GoogleTagManager
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (c) 2015 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2017 Yireo (http://www.yireo.com/)
  * @license     Open Software License
  */
 
-$loadProducts = (int) $this->helper->getConfigValue('category_products');
+/** @var \Yireo\GoogleTagManager2\Block\Category $block */
+$helper = $block->getHelper();
+$viewModel = $block->getViewModel();
+
+$loadProducts = (int) $helper->getConfigValue('category_products');
 if ($loadProducts > 0) {
-    $productCollection = $this->getLoadedProductCollection();
+    $productCollection = $block->getLoadedProductCollection();
 }
 ?>
-<?php if($this->isEnabled()) : ?>
-    <?php $category = $this->getCategory(); ?>
+<?php if($helper->isEnabled()) : ?>
+    <?php $category = $block->getCategory(); ?>
     <?php if(!empty($category) && $category->getId() > 0) : ?>
-        <?php $this->addAttribute('categoryId', $category->getId()); ?>
-        <?php $this->addAttribute('categoryName', $category->getName()); ?>
+        <?php $block->addAttribute('categoryId', $category->getId()); ?>
+        <?php $block->addAttribute('categoryName', $category->getName()); ?>
     <?php endif; ?>
     <?php if(!empty($productCollection)) : ?>
-        <?php $this->addAttribute('categorySize', $productCollection->getSize()); ?>
+        <?php $block->addAttribute('categorySize', $productCollection->getSize()); ?>
         <?php $categoryProducts = array(); ?>
         <?php $i = 0; ?>
         <?php foreach($productCollection as $product) : ?>
@@ -33,6 +37,6 @@ if ($loadProducts > 0) {
             <?php $categoryProducts[] = $categoryProduct; ?>
             <?php $i++ ; ?>
         <?php endforeach; ?>
-        <?php $this->addAttribute('categoryProducts', $categoryProducts); ?>
+        <?php $block->addAttribute('categoryProducts', $categoryProducts); ?>
     <?php endif; ?>
 <?php endif; ?>
