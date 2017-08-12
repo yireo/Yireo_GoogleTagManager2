@@ -1,3 +1,12 @@
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @package     Yireo_GoogleTagManager2
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2017 Yireo (https://www.yireo.com/)
+ * @license     Open Software License
+ */
+
 define([
     'jquery',
     'Magento_Customer/js/customer-data',
@@ -5,15 +14,17 @@ define([
 ], function ($, customerData) {
     'use strict';
 
+    var initDataLayer = function () {
+        window.dataLayer = window.dataLayer || [];
+    };
+
     var getCustomer = function () {
         var customer = customerData.get('customer');
-
         return customer();
     };
 
     var isLoggedIn = function () {
         var customer = getCustomer();
-
         return customer && customer.firstname;
     };
 
@@ -28,10 +39,31 @@ define([
         } : { 'customerLoggedIn': 0 };
     };
 
-    return function (config) {
-        window.dataLayer = window.dataLayer || [];
+    var getQuoteSpecificAttributes = function () {
+        var sectionName = 'yireo-gtm-quote';
+        var quote = customerData.get(sectionName);
 
-        var attributes = $.extend(config.attributes, getCustomerSpecificAttributes());
+        return quote();
+    };
+
+    var getOrderSpecificAttributes = function () {
+        var sectionName = 'yireo-gtm-order';
+        var quote = customerData.get(sectionName);
+
+        return quote();
+    };
+
+    return function (config) {
+        initDataLayer();
+
+        console.log('Order attributes:');
+        console.log(getOrderSpecificAttributes());
+
+
+        var attributes = $.extend(config.attributes, getCustomerSpecificAttributes(), getQuoteSpecificAttributes());
+
+        console.log('All attributes:');
+        console.log(attributes);
 
         dataLayer.push(attributes);
 
