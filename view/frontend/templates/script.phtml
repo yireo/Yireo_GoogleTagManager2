@@ -4,12 +4,13 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2017 Yireo (https://www.yireo.com/)
  * @license     Open Software License
  */
 
-/** @var $block \Yireo\GoogleTagManager2\Block\Script */
-?>
-<?php if($this->isEnabled()) : ?>
-    <?= $this->getScript(); ?>
-<?php endif; ?>
+/** @var \Yireo\GoogleTagManager2\Block\Script $block */
+$viewModel = $block->getViewModel();
+
+if($viewModel->isEnabled()) {
+    echo $viewModel->getScript();
+}

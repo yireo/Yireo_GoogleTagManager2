@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -15,13 +15,4 @@ namespace Yireo\GoogleTagManager2\Block;
  */
 class Script extends Generic
 {
-    /**
-     * Return the JavaScript for insertion in the HTML header
-     *
-     * @return string
-     */
-    public function getScript()
-    {
-        return $this->helper->getHeaderScript();
-    }
 }

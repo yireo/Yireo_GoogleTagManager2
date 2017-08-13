@@ -3,10 +3,14 @@
  * GoogleTagManager plugin for Magento 
  *
  * @package     Yireo_GoogleTagManager
- * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (c) 2014 Yireo (http://www.yireo.com/)
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2017 Yireo (https://www.yireo.com/)
  * @license     Open Software License
  */
+
+/** @var \Yireo\GoogleTagManager2\Block\Category $block */
+$helper = $block->getHelper();
+$viewModel = $block->getViewModel();
 ?>
-<?php if($this->isEnabled()) : ?>
+<?php if($helper->isEnabled()) : ?>
 <?php endif; ?>

@@ -8,13 +8,38 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Block;
+namespace Yireo\GoogleTagManager2\ViewModel;
 
 /**
- * Class \Yireo\GoogleTagManager2\Block\Category
+ * Class \Yireo\GoogleTagManager2\ViewModel\Category
  */
-class Category extends Generic
+class Category
 {
+    /**
+     * @var \Magento\Framework\View\LayoutInterface
+     */
+    private $layout;
+
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    private $request;
+
+    /**
+     * Category constructor.
+     *
+     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
+     * @param \Magento\Framework\App\RequestInterface $request
+     */
+    public function __construct(
+        \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Framework\App\RequestInterface $request
+    )
+    {
+        $this->layout = $layoutFactory->create();
+        $this->request = $request;
+    }
+
     /**
      * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
      */
@@ -27,36 +52,9 @@ class Category extends Generic
             return null;
         }
 
-        $toolbar = $productListBlock->getToolbarBlock();
-
         // Fetch the current collection from the block and set pagination
         $collection = $productListBlock->getLoadedProductCollection();
-
-        $collection->setCurPage($this->getCurrentPage());
-
-        if((int) $this->getLimit()) {
-            $collection->setPageSize($this->getLimit());
-        }
-        // use sortable parameters
-        $orders = $productListBlock->getAvailableOrders();
-        if ($orders) {
-            $toolbar->setAvailableOrders($orders);
-        }
-        $sort = $productListBlock->getSortBy();
-        if ($sort) {
-            $toolbar->setDefaultOrder($sort);
-        }
-        $dir = $productListBlock->getDefaultDirection();
-        if ($dir) {
-            $toolbar->setDefaultDirection($dir);
-        }
-        $modes = $productListBlock->getModes();
-        if ($modes) {
-            $toolbar->setModes($modes);
-        }
-
-        // set collection to toolbar and apply sort
-        $toolbar->setCollection($collection);
+        $collection->setCurPage($this->getCurrentPage())->setPageSize($this->getLimit());
 
         return $collection;
     }
@@ -85,7 +83,7 @@ class Category extends Generic
      */
     protected function getCurrentPage()
     {
-        if ($page = (int) $this->getRequest()->getParam('p')) {
+        if ($page = (int)$this->request->getParam('p')) {
             return $page;
         }
 

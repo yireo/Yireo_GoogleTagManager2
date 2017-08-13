@@ -5,18 +5,16 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="after.body.start">
-            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" as="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml"/>
+            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml"/>
         </referenceContainer>
 
-        <block class="Yireo\GoogleTagManager2\Block\Order" template="Yireo_GoogleTagManager2::order.phtml" name="googletagmanager_order"/>
-        <block class="Yireo\GoogleTagManager2\Block\Quote" template="Yireo_GoogleTagManager2::quote.phtml" name="googletagmanager_quote"/>
         <block class="Yireo\GoogleTagManager2\Block\Product" template="Yireo_GoogleTagManager2::product.phtml" name="googletagmanager_product"/>
         <block class="Yireo\GoogleTagManager2\Block\Category" template="Yireo_GoogleTagManager2::category.phtml" name="googletagmanager_category"/>
         <block class="Yireo\GoogleTagManager2\Block\Custom" template="Yireo_GoogleTagManager2::custom.phtml" name="googletagmanager_custom"/>

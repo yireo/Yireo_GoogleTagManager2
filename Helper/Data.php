@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -26,6 +26,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const METHOD_LAYOUT = 1;
 
     /**
+     * <<<<<<< HEAD
+     * =======
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -52,6 +54,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * >>>>>>> 25d2d833233327ee95db80dcce2bb3edb2a20bc3
      * Check whether the module is enabled
      *
      * @return bool
@@ -102,6 +105,28 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return a configuration value
+     *
+     * @param null $key
+     * @param null $defaultValue
+     *
+     * @return mixed|null
+     */
+    public function getConfigValue($key = null, $defaultValue = null)
+    {
+        $value = $this->scopeConfig->getValue(
+            'googletagmanager2/settings/' . $key,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        if (empty($value)) {
+            $value = $defaultValue;
+        }
+
+        return $value;
+    }
+
+    /**
      * Debugging method
      *
      * @param $string
@@ -125,55 +150,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Return a configuration value
-     *
-     * @param null $key
-     * @param null $defaultValue
-     *
-     * @return mixed|null
-     */
-    public function getConfigValue($key = null, $defaultValue = null)
-    {
-        $value = $this->scopeConfig->getValue(
-            'googletagmanager2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-        if (empty($value)) {
-            $value = $defaultValue;
-        }
-
-        return $value;
-    }
-
-    /**
-     * Fetch a specific block
-     *
-     * @param $name
-     * @param $type
-     * @param $template
-     *
-     * @return bool
-     */
-    public function fetchBlock($name, $type, $template)
-    {
-        if ($block = $this->layoutFactory->create()->getBlock('\Yireo\GoogleTagManager2\Block\\' . ucfirst($name))) {
-            $this->debug('Helper: Loading block from layout: ' . $name);
-            return $block;
-        }
-
-        if ($block = $this->blockFactory->createBlock('\Yireo\GoogleTagManager2\Block\\' . ucfirst($type))->setTemplate('Yireo_GoogleTagManager2::' . $template)) {
-            $this->debug('Helper: Creating new block: ' . $type);
-            return $block;
-        }
-
-        $this->debug('Helper: Unknown block: ' . $name);
-
-        return false;
-    }
-
-    /**
-     *
+     * @deprecated Use \Yireo\GoogleTagManager2\ViewModel\Generic::getBaseCurrencyCode() instead
      */
     public function getBaseCurrencyCode()
     {
@@ -183,125 +160,5 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         /** @var \Magento\Directory\Model\Currency $currency */
         $currency = $objectManager->get('\Magento\Directory\Model\Currency');
         return $currency->getCurrencySymbol();
-    }
-
-    /**
-     * Return this header script
-     *
-     * @return string
-     */
-    public function getHeaderScript()
-    {
-        $childScript = '';
-
-        // Load the main script
-        if (!($block = $this->fetchBlock('generic', 'generic', 'generic.phtml'))) {
-            return $childScript;
-        }
-
-        // Add product-information
-        $this->addProduct($childScript);
-
-        // Add category-information
-        $this->addCategory($childScript);
-
-        // Add order-information
-        $lastOrderId = $this->checkoutSession->getLastRealOrderId();
-        if (!empty($lastOrderId)) {
-            $this->addOrder($childScript);
-
-            // Add quote-information
-        } else {
-            $this->addQuote($childScript);
-        }
-
-        // Add custom information
-        $this->addCustom($childScript);
-
-        $block->setChildScript($childScript);
-        $html = $block->toHtml();
-
-        return $html;
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addProduct(&$childScript)
-    {
-        $currentProduct = $this->coreRegistry->registry('current_product');
-
-        if (!empty($currentProduct)) {
-            $productBlock = $this->fetchBlock('product', 'product', 'product.phtml');
-
-            if ($productBlock) {
-                $productBlock->setProduct($currentProduct);
-                $childScript .= $productBlock->toHtml();
-            }
-        }
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addCategory(&$childScript)
-    {
-        $currentCategory = $this->coreRegistry->registry('current_category');
-
-        if (!empty($currentCategory)) {
-            $categoryBlock = $this->fetchBlock('category', 'category', 'category.phtml');
-
-            if ($categoryBlock) {
-                $categoryBlock->setCategory($currentCategory);
-                $childScript .= $categoryBlock->toHtml();
-            }
-        }
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addOrder(&$childScript)
-    {
-        $lastOrderId = $this->checkoutSession->getLastRealOrderId();
-
-        if (!empty($lastOrderId)) {
-            $order = $this->salesOrder->loadByIncrementId($lastOrderId);
-            $orderBlock = $this->fetchBlock('order', 'order', 'order.phtml');
-
-            if ($orderBlock) {
-                $orderBlock->setOrder($order);
-                $childScript .= $orderBlock->toHtml();
-            }
-        }
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addQuote(&$childScript)
-    {
-        $quote = $this->checkoutSession->getQuote();
-
-        if ($quote->getId() > 0) {
-            $quoteBlock = $this->fetchBlock('quote', 'quote', 'quote.phtml');
-
-            if ($quoteBlock) {
-                $quoteBlock->setQuote($quote);
-                $childScript .= $quoteBlock->toHtml();
-            }
-        }
-    }
-
-    /**
-     * @param $childScript string
-     */
-    public function addCustom(&$childScript)
-    {
-        $customBlock = $this->fetchBlock('custom', 'custom', 'custom.phtml');
-
-        if ($customBlock) {
-            $childScript .= $customBlock->toHtml();
-        }
     }
 }

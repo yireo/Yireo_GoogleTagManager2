@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -22,16 +22,23 @@ class CoreLayoutRenderElement implements ObserverInterface
     /**
      * @var \Yireo\GoogleTagManager2\Helper\Data
      */
-    protected $helper;
+    private $helper;
+
+    /**
+     * @var \Yireo\GoogleTagManager2\ViewModel\Script
+     */
+    private $scriptViewModel;
 
     /**
      * @param \Yireo\GoogleTagManager2\Helper\Data $helper
      */
     public function __construct(
-        \Yireo\GoogleTagManager2\Helper\Data $helper
+        \Yireo\GoogleTagManager2\Helper\Data $helper,
+        \Yireo\GoogleTagManager2\ViewModel\Script $scriptViewModel
     )
     {
         $this->helper = $helper;
+        $this->scriptViewModel = $scriptViewModel;
     }
 
     /**
@@ -63,7 +70,7 @@ class CoreLayoutRenderElement implements ObserverInterface
         $transport = $event->getTransport();
         $html = $transport->getHtml();
 
-        $script = $this->helper->getHeaderScript();
+        $script = $this->scriptViewModel->getScript();
 
         if (empty($script)) {
             $this->helper->debug('Observer: Empty script');
