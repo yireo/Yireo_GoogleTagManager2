@@ -1,11 +1,13 @@
 {
   "name": "Yireo_GoogleTagManager2",
-  "repository" : {
-    "type" : "git"
-  , "url" : "https://github.com/yireo/Yireo_GoogleTagManager2.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yireo/Yireo_GoogleTagManager2.git"
   },
   "devDependencies": {
-    "mocha": "^3.5.0"
+    "amd-loader": "0.0.8",
+    "mocha": "^3.5.0",
+    "requirejs": "^2.3.4"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha view/frontend/web/js/test"

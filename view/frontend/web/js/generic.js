@@ -10,8 +10,7 @@
 define([
     'jquery',
     'underscore',
-    'Magento_Customer/js/customer-data',
-    'domReady!'
+    'Magento_Customer/js/customer-data'
 ], function ($, _, customerData) {
     'use strict';
 
@@ -91,9 +90,6 @@ define([
         monitorCart();
 
         var attributes = $.extend(getCartSpecificAttributes(), getCustomerSpecificAttributes(), config.attributes);
-
-        console.log('All attributes:');
-        console.log(attributes);
 
         dataLayer.push(attributes);
 
