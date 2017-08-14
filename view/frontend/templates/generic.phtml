@@ -24,6 +24,6 @@ $route = $moduleName.'/'.$controllerName.'/'.$actionName;
         <iframe src="//www.googletagmanager.com/ns.html?id=<?= $helper->getId(); ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <script type="text/x-magento-init">
-    {"*":{"yireoGenericGtm":<?php echo $block->getJsonConfiguration() ?>}}
+    {"*":{"yireoGoogleTagManager":<?php echo $block->getJsonConfiguration() ?>}}
     </script>
 <?php endif; ?>
