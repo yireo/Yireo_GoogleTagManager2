@@ -10,30 +10,43 @@
 define([
     'jquery',
     'underscore',
-    'Magento_Customer/js/customer-data',
-    'domReady!'
+    'Magento_Customer/js/customer-data'
 ], function ($, _, customerData) {
     'use strict';
 
-    var initDataLayer = function () {
+    var initDataLayer = function (window) {
         window.dataLayer = window.dataLayer || [];
+        return window;
     };
 
-    var monitorCart = function() {
+    var monitorCart = function () {
         var cart = customerData.get('cart');
         cart.subscribe(function (updatedCart) {
             customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
         });
+        return true;
+    };
 
+    var monitorCheckout = function () {
         var checkout = customerData.get('checkout-data');
         checkout.subscribe(function (updatedCart) {
             customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
         });
+        return true;
+    };
 
+    var monitorCustomer = function () {
         var customer = customerData.get('customer');
         customer.subscribe(function (updatedCart) {
             customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
         });
+        return true;
+    };
+
+    var monitorSections = function () {
+        monitorCart();
+        monitorCheckout();
+        monitorCustomer();
     };
 
     var getCustomer = function () {
@@ -50,11 +63,11 @@ define([
         var customer = getCustomer();
 
         return isLoggedIn() ? {
-            'customerLoggedIn': 1,
-            'customerId': customer.id,
-            'customerGroupId': customer.group_id,
-            'customerGroupCode': customer.group_code.toUpperCase()
-        } : { 'customerLoggedIn': 0 };
+                'customerLoggedIn': 1,
+                'customerId': customer.id,
+                'customerGroupId': customer.group_id,
+                'customerGroupCode': customer.group_code.toUpperCase()
+            } : {'customerLoggedIn': 0};
     };
 
     var getCartSpecificAttributes = function () {
@@ -65,7 +78,7 @@ define([
 
         var quoteData = quote();
         delete quoteData.data_id;
-        if (! _.isEmpty(quoteData)) {
+        if (!_.isEmpty(quoteData)) {
 
             // This check should not be needed if the sections.xml was correctly reloading our data
             if (cart().summary_count == 0) {
@@ -77,33 +90,46 @@ define([
 
         var orderData = order();
         delete orderData.data_id;
-        if (! _.isEmpty(orderData)) {
+        if (!_.isEmpty(orderData)) {
             return orderData;
         }
-
-
 
         return {};
     };
 
-    return function (config) {
-        initDataLayer();
-        monitorCart();
+    var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var firstScript = document.getElementsByTagName(scriptTag)[0];
+        var newScript = document.createElement(scriptTag);
+        var dataLayerArg = (dataLayer != 'dataLayer') ? '&l=' + dataLayer : '';
+        newScript.async = true;
+        newScript.src = '//www.googletagmanager.com/gtm.js?id=' + configId + dataLayerArg;
+        firstScript.parentNode.insertBefore(newScript, firstScript);
+    };
 
-        var attributes = $.extend(getCartSpecificAttributes(), getCustomerSpecificAttributes(), config.attributes);
+    return {
+        'initDataLayer': initDataLayer,
+        'monitorSections': monitorSections,
+        'monitorCart': monitorCart,
+        'monitorCustomer': monitorCustomer,
+        'monitorCheckout': monitorCheckout,
+        'getCustomer': getCustomer,
+        'isLoggedIn': isLoggedIn,
+        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
+        'getCartSpecificAttributes': getCartSpecificAttributes,
+        'addScriptElement': addScriptElement,
+        'yireoGoogleTagManager': function (config) {
+            initDataLayer(window);
+            monitorSections();
 
-        console.log('All attributes:');
-        console.log(attributes);
+            var attributes = $.extend(getCartSpecificAttributes(), getCustomerSpecificAttributes(), config.attributes);
 
-        dataLayer.push(attributes);
+            if (config.debug) {
+                console.log(attributes);
+            }
 
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', config.id);
-    }
+            dataLayer.push(attributes);
+            addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
+        }
+    };
 });
