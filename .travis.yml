@@ -5,18 +5,14 @@ php:
   - 7.1
 
 before_script:
+  - npm install -g grunt-cli
+  - npm install
   - phpenv config-rm xdebug.ini
   - composer self-update
   - composer install --dev
-  - composer global require "squizlabs/php_codesniffer=2.*"
-  - composer require magento-ecg/coding-standard
   - phpenv rehash
-  - sed -i 's/\^file\.\*/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
-  - sed -i 's/\^dirname/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
-  - sed -i 's/\^is_writable/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
-  - sed -i 's/\^is_readable/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
-  - sed -i 's/\^exec/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
-  - sed -i 's/\^image\.\*/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+#  - composer create-project --repository=https://repo.magento.com magento/marketplace-eqp magento-coding-standard
 
 script:
-  - ~/.composer/vendor/bin/phpcs --standard=vendor/magento-ecg/coding-standard/Ecg -sv --encoding=utf-8 ./source
+  - npm test
+  #- vendor/bin/phpcs --standard=/apache/magento-coding-standard/MEQP2 --extensions=php --ignore=Test .

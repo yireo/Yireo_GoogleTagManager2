@@ -16,9 +16,9 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 class Category
 {
     /**
-     * @var \Magento\Framework\View\LayoutInterface
+     * @var \Magento\Framework\View\LayoutFactory
      */
-    private $layout;
+    private $layoutFactory;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
@@ -34,9 +34,8 @@ class Category
     public function __construct(
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\App\RequestInterface $request
-    )
-    {
-        $this->layout = $layoutFactory->create();
+    ) {
+        $this->layoutFactory = $layoutFactory;
         $this->request = $request;
     }
 
@@ -46,7 +45,7 @@ class Category
     public function getLoadedProductCollection()
     {
         /** @var \Magento\Catalog\Block\Product\ListProduct $productListBlock */
-        $productListBlock = $this->layout->getBlock('category.products.list');
+        $productListBlock = $this->layoutFactory->create()->getBlock('category.products.list');
 
         if (empty($productListBlock)) {
             return null;
@@ -67,7 +66,7 @@ class Category
     protected function getLimit()
     {
         /** @var \Magento\Catalog\Block\Product\ProductList\Toolbar $productListBlockToolbar */
-        $productListBlockToolbar = $this->layout->getBlock('product_list_toolbar');
+        $productListBlockToolbar = $this->layoutFactory->create()->getBlock('product_list_toolbar');
         if (empty($productListBlockToolbar)) {
             return 9;
         }

@@ -18,6 +18,11 @@ use Magento\Framework\View\Element\Template;
 class Generic extends Template
 {
     /**
+     * @var string
+     */
+    protected $_template = 'generic.phtml';
+
+    /**
      * @var \Yireo\GoogleTagManager2\Factory\ViewModelFactory
      */
     protected $viewModelFactory;

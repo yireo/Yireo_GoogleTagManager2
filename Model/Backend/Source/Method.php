@@ -20,8 +20,7 @@ class Method
      */
     public function __construct(
         \Yireo\GoogleTagManager2\Helper\Data $helper
-    )
-    {
+    ) {
         $this->helper = $helper;
     }
 
@@ -32,9 +31,9 @@ class Method
      */
     public function toOptionArray()
     {
-        return array(
-            array('value' => '0', 'label'=> __('Observer')),
-            array('value' => '1', 'label'=> __('XML Layout')),
-        );
+        return [
+            ['value' => '0', 'label' => __('Observer')],
+            ['value' => '1', 'label' => __('XML Layout')],
+        ];
     }
 }

@@ -105,7 +105,7 @@ class Quote implements SectionSourceInterface
      */
     private function getTaxAmount()
     {
-        return (float) $this->quote->getGrandTotal() - $this->quote->getSubtotal();
+        return (float)$this->quote->getGrandTotal() - $this->quote->getSubtotal();
     }
 
     /**
@@ -129,17 +129,17 @@ class Quote implements SectionSourceInterface
     private function getItemsAsArray()
     {
         $quote = $this->quote;
-        $data = array();
+        $data = [];
 
-        foreach($quote->getItemsCollection() as $item) {
+        foreach ($quote->getItemsCollection() as $item) {
             /** @var \Magento\Sales\Model\Order\Item $item */
-            $data[] = array(
+            $data[] = [
                 'productId' => $item->getProduct()->getId(),
                 'sku' => $item->getProduct()->getSku(),
                 'name' => $item->getProduct()->getName(),
                 'price' => $item->getProduct()->getPrice(),
                 'quantity' => $item->getQty(),
-            );
+            ];
         }
 
         return $data;

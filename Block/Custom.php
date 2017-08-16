@@ -1,6 +1,6 @@
 <?php
 /**
- * GoogleTagManager plugin for Magento 
+ * GoogleTagManager plugin for Magento
  *
  * @package     Yireo_GoogleTagManager
  * @author      Yireo (https://www.yireo.com/)
@@ -15,4 +15,8 @@ namespace Yireo\GoogleTagManager2\Block;
  */
 class Custom extends Generic
 {
+    /**
+     * @var string
+     */
+    protected $_template = 'custom.phtml';
 }

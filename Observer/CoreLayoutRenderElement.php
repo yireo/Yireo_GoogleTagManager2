@@ -35,8 +35,7 @@ class CoreLayoutRenderElement implements ObserverInterface
     public function __construct(
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         \Yireo\GoogleTagManager2\ViewModel\Script $scriptViewModel
-    )
-    {
+    ) {
         $this->helper = $helper;
         $this->scriptViewModel = $scriptViewModel;
     }
@@ -45,6 +44,7 @@ class CoreLayoutRenderElement implements ObserverInterface
      * Listen to the event core_layout_render_element
      *
      * @param \Magento\Framework\Event\Observer $observer
+     *
      * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -59,11 +59,11 @@ class CoreLayoutRenderElement implements ObserverInterface
 
         $event = $observer->getEvent();
         $blockName = $event->getElementName();
-        if(empty($blockName)) {
+        if (empty($blockName)) {
             return $this;
         }
 
-        if($blockName != 'root') {
+        if ($blockName != 'root') {
             return $this;
         }
 
@@ -77,7 +77,7 @@ class CoreLayoutRenderElement implements ObserverInterface
             return $this;
         }
 
-        $html = preg_replace('/\<body([^\>]+)\>/', '\0'.$script, $html);
+        $html = preg_replace('/\<body([^\>]+)\>/', '\0' . $script, $html);
         $this->helper->debug('Observer: Replacing header');
 
         $transport->setHtml($html);

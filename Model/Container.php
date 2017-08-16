@@ -22,8 +22,7 @@ class Container extends \Magento\Framework\DataObject
     public function __construct(
         \Yireo\GoogleTagManager2\Helper\Data $helper,
         array $data = []
-    )
-    {
+    ) {
         $this->helper = $helper;
 
         parent::__construct($data);

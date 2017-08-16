@@ -15,4 +15,8 @@ namespace Yireo\GoogleTagManager2\Block;
  */
 class Product extends Generic
 {
+    /**
+     * @var string
+     */
+    protected $_template = 'product.phtml';
 }

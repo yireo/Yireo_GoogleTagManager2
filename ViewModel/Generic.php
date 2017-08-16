@@ -15,6 +15,9 @@ namespace Yireo\GoogleTagManager2\ViewModel;
  */
 class Generic
 {
+    /**
+     * @var \Magento\Directory\Model\Currency
+     */
     private $currency;
 
     /**
@@ -24,8 +27,7 @@ class Generic
      */
     public function __construct(
         \Magento\Directory\Model\Currency $currency
-    )
-    {
+    ) {
         $this->currency = $currency;
     }
 

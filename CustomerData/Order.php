@@ -32,9 +32,16 @@ class Order implements SectionSourceInterface
      */
     private $currency;
 
-
+    /**
+     * Order constructor.
+     *
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Sales\Model\OrderFactory $orderFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Directory\Model\Currency $currency
+     */
     public function __construct(
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Directory\Model\Currency $currency
@@ -68,7 +75,7 @@ class Order implements SectionSourceInterface
             'transactionShipping' => $this->getShippingAmount(),
             'transactionPayment' => $this->getPaymentLabel(),
             'transactionCurrency' => $this->getBaseCurrency(),
-            'transactionPromoCode'=> $this->getPromoCode(),
+            'transactionPromoCode' => $this->getPromoCode(),
             'transactionProducts' => $this->getItemsAsArray()
         ];
     }
@@ -142,7 +149,7 @@ class Order implements SectionSourceInterface
      */
     private function getTaxAmount()
     {
-        return (float) $this->order->getTaxAmount();
+        return (float)$this->order->getTaxAmount();
     }
 
     /**
@@ -150,7 +157,7 @@ class Order implements SectionSourceInterface
      */
     private function getPromoCode()
     {
-        return (string) $this->order->getCouponCode();
+        return (string)$this->order->getCouponCode();
     }
 
     /**
@@ -179,17 +186,17 @@ class Order implements SectionSourceInterface
     private function getItemsAsArray()
     {
         $order = $this->order;
-        $data = array();
+        $data = [];
 
-        foreach($order->getItemsCollection() as $item) {
+        foreach ($order->getItemsCollection() as $item) {
             /** @var \Magento\Sales\Model\Order\Item $item */
-            $data[] = array(
+            $data[] = [
                 'productId' => $item->getProduct()->getId(),
                 'sku' => $item->getProduct()->getSku(),
                 'name' => $item->getProduct()->getName(),
                 'price' => $item->getProduct()->getPrice(),
                 'quantity' => $item->getQty(),
-            );
+            ];
         }
 
         return $data;

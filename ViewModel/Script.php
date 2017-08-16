@@ -19,8 +19,8 @@ class Script
      * @param \Yireo\GoogleTagManager2\Helper\Data $moduleHelper
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
      * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
      * @param \Magento\Sales\Model\Order $salesOrder
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Customer\Model\Group $customerGroup
@@ -30,14 +30,13 @@ class Script
         \Yireo\GoogleTagManager2\Helper\Data $moduleHelper,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Model\Order $salesOrder,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Customer\Model\Group $customerGroup,
         \Magento\Framework\Pricing\Helper\Data $pricingHelper
-    )
-    {
+    ) {
         $this->moduleHelper = $moduleHelper;
         $this->layoutFactory = $layoutFactory;
         $this->blockFactory = $blockFactory;

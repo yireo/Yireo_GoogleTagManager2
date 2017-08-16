@@ -26,23 +26,55 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const METHOD_LAYOUT = 1;
 
     /**
-     * <<<<<<< HEAD
-     * =======
+     * @var \Magento\Framework\View\LayoutFactory
+     */
+    private $layoutFactory;
+
+    /**
+     * @var \Magento\Framework\View\Element\BlockFactory
+     */
+    private $blockFactory;
+
+    /**
+     * @var \Magento\Checkout\Model\Session\Proxy
+     */
+    private $checkoutSession;
+
+    /**
+     * @var \Magento\Sales\Model\Order
+     */
+    private $salesOrder;
+
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    private $coreRegistry;
+
+    /**
+     * @var \Magento\Framework\Pricing\Helper\Data
+     */
+    private $pricingHelper;
+
+    /**
+     * Data constructor.
+     *
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
+     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param \Magento\Sales\Model\Order $salesOrder
      * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Model\Order $salesOrder,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Framework\Pricing\Helper\Data $pricingHelper
-    )
-    {
+    ) {
         $this->layoutFactory = $layoutFactory;
         $this->blockFactory = $blockFactory;
         $this->checkoutSession = $checkoutSession;
@@ -54,7 +86,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * >>>>>>> 25d2d833233327ee95db80dcce2bb3edb2a20bc3
      * Check whether the module is enabled
      *
      * @return bool
@@ -147,18 +178,5 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_logger->info('Yireo_GoogleTagManager: ' . $string);
 
         return true;
-    }
-
-    /**
-     * @deprecated Use \Yireo\GoogleTagManager2\ViewModel\Generic::getBaseCurrencyCode() instead
-     */
-    public function getBaseCurrencyCode()
-    {
-        // @todo: Rewrite this to DI
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        /** @var \Magento\Directory\Model\Currency $currency */
-        $currency = $objectManager->get('\Magento\Directory\Model\Currency');
-        return $currency->getCurrencySymbol();
     }
 }

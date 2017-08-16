@@ -1,26 +1,39 @@
 <?php
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @package     Yireo_GoogleTagManager2
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
 
 namespace Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData;
 
+/**
+ * Class Customer
+ *
+ * @package Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData
+ */
 class Customer
 {
     /**
      * @var \Magento\Customer\Model\Session
      */
-    protected $customerSession;
+    private $customerSession;
 
     /**
      * @var \Magento\Customer\Api\GroupRepositoryInterface
      */
-    protected $groupRepository;
+    private $groupRepository;
 
     /**
      * Customer constructor.
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      */
     public function __construct(
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
     ) {
         $this->customerSession = $customerSession;

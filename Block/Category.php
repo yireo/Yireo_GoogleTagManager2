@@ -16,6 +16,11 @@ namespace Yireo\GoogleTagManager2\Block;
 class Category extends Generic
 {
     /**
+     * @var string
+     */
+    protected $_template = 'category.phtml';
+
+    /**
      * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
      */
     public function getLoadedProductCollection()
@@ -34,7 +39,7 @@ class Category extends Generic
 
         $collection->setCurPage($this->getCurrentPage());
 
-        if((int) $this->getLimit()) {
+        if ((int)$this->getLimit()) {
             $collection->setPageSize($this->getLimit());
         }
         // use sortable parameters
@@ -66,7 +71,7 @@ class Category extends Generic
      *
      * @return int
      */
-    protected function getLimit()
+    private function getLimit()
     {
         /** @var \Magento\Catalog\Block\Product\ProductList\Toolbar $productListBlockToolbar */
         $productListBlockToolbar = $this->layout->getBlock('product_list_toolbar');
@@ -83,9 +88,9 @@ class Category extends Generic
      * @return int
      * @throws \Exception
      */
-    protected function getCurrentPage()
+    private function getCurrentPage()
     {
-        if ($page = (int) $this->getRequest()->getParam('p')) {
+        if ($page = (int)$this->getRequest()->getParam('p')) {
             return $page;
         }
 
