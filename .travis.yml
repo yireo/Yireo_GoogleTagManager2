@@ -1,0 +1,22 @@
+language: php
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+
+before_script:
+  - phpenv config-rm xdebug.ini
+  - composer self-update
+  - composer install --dev
+  - composer global require "squizlabs/php_codesniffer=2.*"
+  - composer require magento-ecg/coding-standard
+  - phpenv rehash
+  - sed -i 's/\^file\.\*/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+  - sed -i 's/\^dirname/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+  - sed -i 's/\^is_writable/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+  - sed -i 's/\^is_readable/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+  - sed -i 's/\^exec/\^foobar/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+  - sed -i 's/\^image\.\*/\^foobar\.\*/g' vendor/magento-ecg/coding-standard/Ecg/Sniffs/Security/ForbiddenFunctionSniff.php
+
+script:
+  - ~/.composer/vendor/bin/phpcs --standard=vendor/magento-ecg/coding-standard/Ecg -sv --encoding=utf-8 ./source
