@@ -225,9 +225,6 @@ class Generic extends Template
     public function getJsonConfiguration()
     {
         $configuration = [];
-        if (empty($this->getChildScript())) {
-            return $this->jsonEncoder->encode($configuration);
-        }
 
         $configuration['attributes'] = $this->getAttributes();
         $configuration['id'] = $this->getId();
