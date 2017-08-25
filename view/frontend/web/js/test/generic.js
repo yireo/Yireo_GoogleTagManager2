@@ -1,3 +1,7 @@
+/**
+ * MochaJS tests
+ */
+
 const requirejs = require('requirejs');
 requirejs.config({
     baseUrl: __dirname,
