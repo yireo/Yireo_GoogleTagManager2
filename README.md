@@ -38,3 +38,8 @@ tests. To only test Yireo extensions, simply run PHPUnit from within this folder
 the extension is installed via composer. For instance:
 
     phpunit
+
+The JavaScript code ships with MochaJS unit tests. To install the stuff, simply run (within this extension directory) the following:
+
+    npm install
+    npm test
