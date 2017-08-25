@@ -102,6 +102,7 @@ class Generic extends Template
     public function getViewModel()
     {
         $viewModelClass = str_replace('\Block\\', '\ViewModel\\', get_class($this));
+        $viewModelClass = preg_replace('/\\\Interceptor$/', '', $viewModelClass);
         return $this->viewModelFactory->create($viewModelClass);
     }
 
