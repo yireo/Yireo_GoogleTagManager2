@@ -43,3 +43,8 @@ The JavaScript code ships with MochaJS unit tests. To install the stuff, simply 
 
     npm install
     npm test
+
+Or just use `yarn`:
+
+    yarn
+    npm test
