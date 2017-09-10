@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "magento/framework": "^100.1.0,^101.0.0",
+        "magento/framework": "^100.1.0|^101.0.0",
         "php": ">=7.0.0"
     },
     "require-dev":{
