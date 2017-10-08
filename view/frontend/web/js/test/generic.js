@@ -1,3 +1,7 @@
+/**
+ * MochaJS tests
+ */
+
 const requirejs = require('requirejs');
 requirejs.config({
     baseUrl: __dirname,
@@ -20,6 +24,7 @@ var config = {'attributes': {'id': 'my-gtm-test-id'}};
 var generic = requirejs('generic');
 
 var assert = require('assert');
+
 describe('GTM dataLayer', function () {
     it('is not already initialized in window', function () {
         assert.equal(window.dataLayer, undefined);

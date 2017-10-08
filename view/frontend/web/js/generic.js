@@ -61,12 +61,14 @@ define([
 
     var getCustomerSpecificAttributes = function () {
         var customer = getCustomer();
+        var customerGroup = customer.group_code;
+        var customerGroupCode = (customerGroup) ? customerGroup.toUpperCase() : 'UNKNOWN';
 
         return isLoggedIn() ? {
                 'customerLoggedIn': 1,
                 'customerId': customer.id,
                 'customerGroupId': customer.group_id,
-                'customerGroupCode': customer.group_code.toUpperCase()
+                'customerGroupCode': customerGroupCode
             } : {'customerLoggedIn': 0};
     };
 
