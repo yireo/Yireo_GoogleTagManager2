@@ -11,11 +11,17 @@ vagrant up
 
 BOX_IP=$(vagrant ssh -- ip route | awk 'END{print $NF}')
 echo "Registered ip: $BOX_IP"
-# http://magento2.local/ | 192.168.70.70
 
-#TEST_URL=$BOX_IP nosetests testcase.py
-
-# @todo Run actual tests
+# Run actual tests
+vagrant ssh -c 'cd /vagrant/source; 
+chmod 755 bin/magento;
+composer require yireo/magento2-googletagmanager2; 
+bin/magento module:enable Yireo_GoogleTagManager2;
+bin/magento setup:upgrade
+cd vendor/yireo/magento2-googletagmanager2;
+npm install;
+npm test;
+phpunit;'
 
 vagrant destroy -f
 cd ..
