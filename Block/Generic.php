@@ -229,6 +229,9 @@ class Generic extends Template
 
         $configuration['attributes'] = $this->getAttributes();
         $configuration['id'] = $this->getId();
+        if($this->getHelper()->isDebug()){
+            $configuration['debug'] = true;
+        }
 
         return $this->jsonEncoder->encode($configuration);
     }
