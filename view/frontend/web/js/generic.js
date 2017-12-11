@@ -69,7 +69,11 @@ define([
                 'customerId': customer.id,
                 'customerGroupId': customer.group_id,
                 'customerGroupCode': customerGroupCode
-            } : {'customerLoggedIn': 0};
+            } : {
+                'customerLoggedIn': 0,
+                'customerGroupId': 0,
+                'customerGroupCode': 'UNKNOWN'
+            };
     };
 
     var getCartSpecificAttributes = function () {
