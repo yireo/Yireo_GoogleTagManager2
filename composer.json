@@ -26,5 +26,11 @@
         "files": [
             "registration.php"
         ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "mkdir -p dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/",
+            "cp -R vendor/yireo/magento2-googletagmanager2/view/frontend/web/js/jasmine-test/* dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/"
+        ]
     }
 }
