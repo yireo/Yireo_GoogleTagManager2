@@ -3,7 +3,7 @@
     <default>
         <googletagmanager2>
             <settings>
-                <enabled>1</enabled>
+                <enabled>0</enabled>
                 <method>1</method>
                 <category_products>3</category_products>
             </settings>
