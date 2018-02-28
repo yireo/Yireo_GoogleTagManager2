@@ -125,6 +125,11 @@ define([
         'getCartSpecificAttributes': getCartSpecificAttributes,
         'addScriptElement': addScriptElement,
         'yireoGoogleTagManager': function (config) {
+            if (typeof config.id === 'undefined' || !config.id) {
+                console.warn('GTM identifier empty, terminating GTM initialization.');
+                return;
+            }
+
             initDataLayer(window);
             monitorSections();
 
