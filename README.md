@@ -4,6 +4,8 @@ Homepage: https://www.yireo.com/software/magento-extensions/googletagmanager2
 Requirements:
 * Magento 2.1.0 Stable
 
+See `composer.json` for other requirements.
+
 ### Instructions for using composer
 Use composer to install this extension. First make sure that Magento is installed via composer, and that there is a valid `composer.json` file present.
 
