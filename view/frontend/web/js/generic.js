@@ -82,16 +82,12 @@ define([
         var quote = customerData.get('yireo-gtm-quote');
         var order = customerData.get('yireo-gtm-order');
 
-        var quoteData = quote();
-        delete quoteData.data_id;
-        if (!_.isEmpty(quoteData)) {
-
-            // This check should not be needed if the sections.xml was correctly reloading our data
-            if (cart().summary_count == 0) {
-                customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+        if (cart().summary_count > 0) {
+            var quoteData = quote();
+            delete quoteData.data_id;
+            if (!_.isEmpty(quoteData)) {
+                return quoteData;
             }
-
-            return quoteData;
         }
 
         var orderData = order();
