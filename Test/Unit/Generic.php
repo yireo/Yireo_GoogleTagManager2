@@ -44,19 +44,19 @@ class Generic extends \PHPUnit_Framework_TestCase
      *
      * @return mixed
      */
-    protected function _getConfigValue($path, $pathPrefix = 'googletagmanager2/settings')
+    protected function getConfigValue($path, $pathPrefix = 'googletagmanager2/settings')
     {
         if (strstr($path, '/') == false) {
             $path = $pathPrefix . '/' . $path;
         }
 
-        return $this->_getScopeConfig()->getValue($path);
+        return $this->getScopeConfig()->getValue($path);
     }
 
     /**
      * @return mixed
      */
-    protected function _getScopeConfig()
+    protected function getScopeConfig()
     {
         return $this->objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
     }

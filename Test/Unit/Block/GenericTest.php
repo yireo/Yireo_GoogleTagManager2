@@ -40,7 +40,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
      */
     public function testIsEnabled()
     {
-        $this->assertEquals($this->target->isEnabled(), (bool)$this->_getConfigValue('enabled'));
+        $this->assertEquals($this->target->isEnabled(), (bool)$this->getConfigValue('enabled'));
     }
 
     /**
@@ -49,7 +49,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
      */
     public function testIsDebug()
     {
-        $this->assertEquals($this->target->isDebug(), (bool)$this->_getConfigValue('debug'));
+        $this->assertEquals($this->target->isDebug(), (bool)$this->getConfigValue('debug'));
     }
 
     /**
@@ -80,7 +80,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
      */
     /*public function testGetWebsiteName()
     {
-        $scopeConfig = $this->_getScopeConfig();
+        $scopeConfig = $this->getScopeConfig();
         $scopeConfig->setData('general/store_information/name', 'Test Website');
         $this->assertNotEmpty($this->target->getWebsiteName());
     }*/

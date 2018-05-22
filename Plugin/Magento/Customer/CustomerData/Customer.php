@@ -9,6 +9,7 @@
  */
 
 namespace Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData;
+
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\CustomerData\Customer as CustomerData;
 use Magento\Customer\Model\Session;

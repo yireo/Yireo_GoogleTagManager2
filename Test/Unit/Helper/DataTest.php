@@ -41,7 +41,7 @@ class DataTest extends Generic
      */
     public function testIsEnabled()
     {
-        $this->assertEquals($this->target->isEnabled(), (bool)$this->_getConfigValue('enabled'));
+        $this->assertEquals($this->target->isEnabled(), (bool)$this->getConfigValue('enabled'));
     }
 
     /**
@@ -50,6 +50,6 @@ class DataTest extends Generic
      */
     public function testIsDebug()
     {
-        $this->assertEquals($this->target->isDebug(), (bool)$this->_getConfigValue('debug'));
+        $this->assertEquals($this->target->isDebug(), (bool)$this->getConfigValue('debug'));
     }
 }

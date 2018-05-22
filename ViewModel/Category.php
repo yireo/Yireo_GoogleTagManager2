@@ -9,6 +9,7 @@
  */
 
 namespace Yireo\GoogleTagManager2\ViewModel;
+
 use Exception;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;

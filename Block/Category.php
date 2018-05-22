@@ -9,6 +9,7 @@
  */
 
 namespace Yireo\GoogleTagManager2\Block;
+
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
