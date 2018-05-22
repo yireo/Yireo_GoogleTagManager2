@@ -9,6 +9,12 @@
  */
 
 namespace Yireo\GoogleTagManager2\ViewModel;
+use Exception;
+use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\LayoutFactory;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Category
@@ -16,35 +22,36 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 class Category
 {
     /**
-     * @var \Magento\Framework\View\LayoutFactory
+     * @var LayoutFactory
      */
     private $layoutFactory;
 
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     private $request;
 
     /**
      * Category constructor.
      *
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Framework\App\RequestInterface $request
+     * @param LayoutFactory $layoutFactory
+     * @param RequestInterface $request
      */
     public function __construct(
-        \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\App\RequestInterface $request
+        LayoutFactory $layoutFactory,
+        RequestInterface $request
     ) {
         $this->layoutFactory = $layoutFactory;
         $this->request = $request;
     }
 
     /**
-     * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
+     * @return AbstractCollection|null
+     * @throws Exception
      */
     public function getLoadedProductCollection()
     {
-        /** @var \Magento\Catalog\Block\Product\ListProduct $productListBlock */
+        /** @var ListProduct $productListBlock */
         $productListBlock = $this->layoutFactory->create()->getBlock('category.products.list');
 
         if (empty($productListBlock)) {
@@ -65,7 +72,7 @@ class Category
      */
     protected function getLimit()
     {
-        /** @var \Magento\Catalog\Block\Product\ProductList\Toolbar $productListBlockToolbar */
+        /** @var Toolbar $productListBlockToolbar */
         $productListBlockToolbar = $this->layoutFactory->create()->getBlock('product_list_toolbar');
         if (empty($productListBlockToolbar)) {
             return 9;
@@ -78,7 +85,7 @@ class Category
      * Return the current page as set in the URL
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getCurrentPage()
     {

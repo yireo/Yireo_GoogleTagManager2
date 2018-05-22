@@ -10,7 +10,13 @@
 
 namespace Yireo\GoogleTagManager2\CustomerData;
 
+use Magento\Checkout\Model\Session\Proxy;
 use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Directory\Model\Currency;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Model\Order\Item;
+use Magento\Sales\Model\OrderFactory;
 
 /**
  * Class \Yireo\GoogleTagManager2\CustomerData\Order
@@ -23,28 +29,28 @@ class Order implements SectionSourceInterface
     private $order;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
     /**
-     * @var \Magento\Directory\Model\Currency
+     * @var Currency
      */
     private $currency;
 
     /**
      * Order constructor.
      *
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Sales\Model\OrderFactory $orderFactory
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Directory\Model\Currency $currency
+     * @param Proxy $checkoutSession
+     * @param OrderFactory $orderFactory
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Currency $currency
      */
     public function __construct(
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Sales\Model\OrderFactory $orderFactory,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Directory\Model\Currency $currency
+        Proxy $checkoutSession,
+        OrderFactory $orderFactory,
+        ScopeConfigInterface $scopeConfig,
+        Currency $currency
     ) {
         if (!$checkoutSession->getLastRealOrderId()) {
             return;
@@ -57,6 +63,7 @@ class Order implements SectionSourceInterface
 
     /**
      * @return array
+     * @throws LocalizedException
      */
     public function getSectionData()
     {
@@ -138,6 +145,7 @@ class Order implements SectionSourceInterface
 
     /**
      * @return mixed
+     * @throws LocalizedException
      */
     private function getPaymentLabel()
     {
@@ -181,7 +189,8 @@ class Order implements SectionSourceInterface
     /**
      * Return all order items as array
      *
-     * @return string
+     * @return array
+     * @throws LocalizedException
      */
     private function getItemsAsArray()
     {
@@ -189,7 +198,7 @@ class Order implements SectionSourceInterface
         $data = [];
 
         foreach ($order->getItemsCollection() as $item) {
-            /** @var \Magento\Sales\Model\Order\Item $item */
+            /** @var Item $item */
             $data[] = [
                 'productId' => $item->getProduct()->getId(),
                 'sku' => $item->getProduct()->getSku(),

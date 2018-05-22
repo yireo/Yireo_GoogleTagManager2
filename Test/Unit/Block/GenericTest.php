@@ -10,6 +10,8 @@
 
 namespace Yireo\GoogleTagManager2\Test\Unit\Block;
 
+use Yireo\GoogleTagManager2\Block\Generic;
+
 /**
  * Class GenericTest
  *
@@ -18,7 +20,7 @@ namespace Yireo\GoogleTagManager2\Test\Unit\Block;
 class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 {
     /**
-     * @var \Yireo\GoogleTagManager2\Block\Generic
+     * @var Generic
      */
     protected $target;
 
@@ -29,12 +31,12 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
     {
         parent::setUp();
 
-        $this->target = $this->objectManager->get('Yireo\GoogleTagManager2\Block\Generic');
+        $this->target = $this->objectManager->get(Generic::class);
     }
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Block\Generic::isEnabled
+     * @covers Generic::isEnabled
      */
     public function testIsEnabled()
     {
@@ -43,7 +45,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Block\Generic::isDebug
+     * @covers Generic::isDebug
      */
     public function testIsDebug()
     {
@@ -52,7 +54,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Block\Generic::addAttribute
+     * @covers Generic::addAttribute
      */
     public function testAddAttribute()
     {
@@ -63,7 +65,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Block\Generic::getAttributesAsJson
+     * @covers Generic::getAttributesAsJson
      */
     public function testGetAttributesAsJson()
     {
@@ -74,7 +76,7 @@ class GenericTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Block\Generic::getWebsiteName
+     * @covers Generic::getWebsiteName
      */
     /*public function testGetWebsiteName()
     {

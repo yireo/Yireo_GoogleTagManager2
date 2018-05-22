@@ -9,6 +9,10 @@
  */
 
 namespace Yireo\GoogleTagManager2\Block;
+use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Category
@@ -21,11 +25,12 @@ class Category extends Generic
     protected $_template = 'category.phtml';
 
     /**
-     * @return \Magento\Eav\Model\Entity\Collection\AbstractCollection|null
+     * @return AbstractCollection|null
+     * @throws LocalizedException
      */
     public function getLoadedProductCollection()
     {
-        /** @var \Magento\Catalog\Block\Product\ListProduct $productListBlock */
+        /** @var ListProduct $productListBlock */
         $productListBlock = $this->layout->getBlock('category.products.list');
 
         if (empty($productListBlock)) {
@@ -73,7 +78,7 @@ class Category extends Generic
      */
     private function getLimit()
     {
-        /** @var \Magento\Catalog\Block\Product\ProductList\Toolbar $productListBlockToolbar */
+        /** @var Toolbar $productListBlockToolbar */
         $productListBlockToolbar = $this->layout->getBlock('product_list_toolbar');
         if (empty($productListBlockToolbar)) {
             return 9;

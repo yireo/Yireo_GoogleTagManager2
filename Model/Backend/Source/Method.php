@@ -10,16 +10,23 @@
 
 namespace Yireo\GoogleTagManager2\Model\Backend\Source;
 
+use Yireo\GoogleTagManager2\Helper\Data;
+
 /**
  * Class Yireo\GoogleTagManager2\Model\Backend\Source\Method
  */
 class Method
 {
     /**
-     * @param \Yireo\GoogleTagManager2\Helper\Data $helper
+     * @var Data
+     */
+    private $helper;
+
+    /**
+     * @param Data $helper
      */
     public function __construct(
-        \Yireo\GoogleTagManager2\Helper\Data $helper
+        Data $helper
     ) {
         $this->helper = $helper;
     }

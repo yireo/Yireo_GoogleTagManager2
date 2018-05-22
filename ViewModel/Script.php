@@ -10,32 +10,88 @@
 
 namespace Yireo\GoogleTagManager2\ViewModel;
 
+use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
+use Magento\Customer\Model\Group as CustomerGroup;
+use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
+use Magento\Framework\Pricing\Helper\Data as PricingHelper;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\BlockFactory;
+use Magento\Framework\View\Element\BlockInterface;
+use Magento\Framework\View\LayoutFactory;
+use Magento\Sales\Model\Order;
+use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
+
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Script
  */
 class Script
 {
     /**
-     * @param \Yireo\GoogleTagManager2\Helper\Data $moduleHelper
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Sales\Model\Order $salesOrder
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Customer\Model\Group $customerGroup
-     * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
+     * @var DataHelper
+     */
+    private $moduleHelper;
+
+    /**
+     * @var LayoutFactory
+     */
+    private $layoutFactory;
+
+    /**
+     * @var PricingHelper
+     */
+    private $pricingHelper;
+
+    /**
+     * @var CustomerSessionProxy
+     */
+    private $customerSession;
+
+    /**
+     * @var BlockFactory
+     */
+    private $blockFactory;
+
+    /**
+     * @var CheckoutSessionProxy
+     */
+    private $checkoutSession;
+
+    /**
+     * @var Order
+     */
+    private $salesOrder;
+
+    /**
+     * @var Registry
+     */
+    private $coreRegistry;
+
+    /**
+     * @var CustomerGroup
+     */
+    private $customerGroup;
+
+    /**
+     * @param DataHelper $moduleHelper
+     * @param LayoutFactory $layoutFactory
+     * @param BlockFactory $blockFactory
+     * @param CustomerSessionProxy $customerSession
+     * @param CheckoutSessionProxy $checkoutSession
+     * @param Order $salesOrder
+     * @param Registry $coreRegistry
+     * @param CustomerGroup $customerGroup
+     * @param PricingHelper $pricingHelper
      */
     public function __construct(
-        \Yireo\GoogleTagManager2\Helper\Data $moduleHelper,
-        \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Sales\Model\Order $salesOrder,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Customer\Model\Group $customerGroup,
-        \Magento\Framework\Pricing\Helper\Data $pricingHelper
+        DataHelper $moduleHelper,
+        LayoutFactory $layoutFactory,
+        BlockFactory $blockFactory,
+        CustomerSessionProxy $customerSession,
+        CheckoutSessionProxy $checkoutSession,
+        Order $salesOrder,
+        Registry $coreRegistry,
+        CustomerGroup $customerGroup,
+        PricingHelper $pricingHelper
     ) {
         $this->moduleHelper = $moduleHelper;
         $this->layoutFactory = $layoutFactory;
@@ -134,7 +190,7 @@ class Script
      * @param string $classType
      * @param string $template
      *
-     * @return \Magento\Framework\View\Element\BlockInterface
+     * @return BlockInterface
      */
     public function fetchBlock($className, $classType, $template)
     {

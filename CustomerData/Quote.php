@@ -10,7 +10,13 @@
 
 namespace Yireo\GoogleTagManager2\CustomerData;
 
+use Magento\Checkout\Model\Cart;
 use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Directory\Model\Currency;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Quote\Model\Quote as QuoteModel;
+use Magento\Sales\Model\Order\Item;
 
 /**
  * Class \Yireo\GoogleTagManager2\CustomerData\Quote
@@ -18,28 +24,31 @@ use Magento\Customer\CustomerData\SectionSourceInterface;
 class Quote implements SectionSourceInterface
 {
     /**
-     * @var \Magento\Quote\Model\Quote
+     * @var QuoteModel
      */
     private $quote;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
     /**
-     * @var \Magento\Directory\Model\Currency
+     * @var Currency
      */
     private $currency;
 
     /**
-     * @param \Magento\Checkout\Model\Cart $cart
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param Cart $cart
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Currency $currency
+     *
+     * @throws LocalizedException
      */
     public function __construct(
-        \Magento\Checkout\Model\Cart $cart,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Directory\Model\Currency $currency
+        Cart $cart,
+        ScopeConfigInterface $scopeConfig,
+        Currency $currency
     ) {
         $this->cart = $cart;
         $this->order = $cart->getLastRealOrder();
@@ -124,7 +133,8 @@ class Quote implements SectionSourceInterface
     /**
      * Return all quote items as array
      *
-     * @return string
+     * @return array
+     * @throws LocalizedException
      */
     private function getItemsAsArray()
     {
@@ -132,7 +142,7 @@ class Quote implements SectionSourceInterface
         $data = [];
 
         foreach ($quote->getItemsCollection() as $item) {
-            /** @var \Magento\Sales\Model\Order\Item $item */
+            /** @var Item $item */
             $data[] = [
                 'productId' => $item->getProduct()->getId(),
                 'sku' => $item->getProduct()->getSku(),

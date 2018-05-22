@@ -10,17 +10,20 @@
 
 namespace Yireo\GoogleTagManager2\Model;
 
+use Magento\Framework\DataObject;
+use Yireo\GoogleTagManager2\Helper\Data;
+
 /**
  * Class \Yireo\GoogleTagManager2\Model\Container
  */
-class Container extends \Magento\Framework\DataObject
+class Container extends DataObject
 {
     /**
-     * @param \Yireo\GoogleTagManager2\Helper\Data $helper
+     * @param Data $helper
      * @param array $data
      */
     public function __construct(
-        \Yireo\GoogleTagManager2\Helper\Data $helper,
+        Data $helper,
         array $data = []
     ) {
         $this->helper = $helper;

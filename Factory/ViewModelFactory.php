@@ -10,23 +10,26 @@
 
 namespace Yireo\GoogleTagManager2\Factory;
 
+use Magento\Framework\ObjectManagerInterface;
+use Yireo\GoogleTagManager2\ViewModel\Generic;
+
 /**
  * Class \Yireo\GoogleTagManager2\Factory\ViewModelFactory
  */
 class ViewModelFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
     /**
      * ViewModelFactory constructor.
      *
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager
+        ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
     }
@@ -50,6 +53,6 @@ class ViewModelFactory
      */
     private function createGeneric()
     {
-        return $this->objectManager->create(\Yireo\GoogleTagManager2\ViewModel\Generic::class);
+        return $this->objectManager->create(Generic::class);
     }
 }

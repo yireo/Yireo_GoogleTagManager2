@@ -10,15 +10,18 @@
 
 namespace Yireo\GoogleTagManager2\Test\Unit\Helper;
 
+use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
+use Yireo\GoogleTagManager2\Test\Unit\Generic;
+
 /**
  * Class DataTest
  *
  * @package Yireo\GoogleTagManager2\Test\Unit\Helper
  */
-class DataTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
+class DataTest extends Generic
 {
     /**
-     * @var \Yireo\GoogleTagManager2\Helper\Data
+     * @var DataHelper
      */
     protected $target;
 
@@ -29,12 +32,12 @@ class DataTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
     {
         parent::setUp();
 
-        $this->target = $this->objectManager->get('Yireo\GoogleTagManager2\Helper\Data');
+        $this->target = $this->objectManager->get(DataHelper::class);
     }
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Helper\Data::getConfigValue
+     * @covers DataHelper::getConfigValue
      */
     public function testIsEnabled()
     {
@@ -43,7 +46,7 @@ class DataTest extends \Yireo\GoogleTagManager2\Test\Unit\Generic
 
     /**
      * @test
-     * @covers \Yireo\GoogleTagManager2\Helper\Data::getConfigValue
+     * @covers DataHelper::getConfigValue
      */
     public function testIsDebug()
     {

@@ -10,7 +10,17 @@
 
 namespace Yireo\GoogleTagManager2\Block;
 
+use Magento\Checkout\Model\Session;
+use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Framework\View\LayoutInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\StoreManagerInterface;
+use Yireo\GoogleTagManager2\Factory\ViewModelFactory;
+use Yireo\GoogleTagManager2\Helper\Data;
+use Yireo\GoogleTagManager2\Model\Container;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Generic
@@ -23,64 +33,66 @@ class Generic extends Template
     protected $_template = 'generic.phtml';
 
     /**
-     * @var \Yireo\GoogleTagManager2\Factory\ViewModelFactory
+     * @var ViewModelFactory
      */
     protected $viewModelFactory;
 
     /**
-     * @var \Yireo\GoogleTagManager2\Helper\Data
+     * @var Data
      */
     protected $helper;
 
     /**
-     * @var \Yireo\GoogleTagManager2\Model\Container
+     * @var Container
      */
     protected $container;
 
     /**
-     * @var \Magento\Sales\Model\Order
+     * @var Order
      */
     protected $order;
 
     /**
-     * @var \Magento\Quote\Model\Quote
+     * @var Quote
      */
     protected $quote;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     protected $storeManager;
 
     /**
-     * @var \Magento\Checkout\Model\Session
+     * @var Session
      */
     protected $checkoutSession;
 
     /**
-     * @var \Magento\Framework\View\LayoutInterface
+     * @var LayoutInterface
      */
     protected $layout;
 
     /**
-     * @var \Magento\Framework\Json\EncoderInterface
+     * @var EncoderInterface
      */
     protected $jsonEncoder;
 
     /**
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Yireo\GoogleTagManager2\Helper\Data $helper
-     * @param \Yireo\GoogleTagManager2\Model\Container $container
+     * @param ViewModelFactory $viewModelFactory
+     * @param Context $context
+     * @param Session $checkoutSession
+     * @param Data $helper
+     * @param Container $container
+     * @param EncoderInterface $jsonEncoder
      * @param array $data
      */
     public function __construct(
-        \Yireo\GoogleTagManager2\Factory\ViewModelFactory $viewModelFactory,
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Yireo\GoogleTagManager2\Helper\Data $helper,
-        \Yireo\GoogleTagManager2\Model\Container $container,
-        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
+        ViewModelFactory $viewModelFactory,
+        Context $context,
+        Session $checkoutSession,
+        Data $helper,
+        Container $container,
+        EncoderInterface $jsonEncoder,
         array $data = []
     ) {
         $this->viewModelFactory = $viewModelFactory;
@@ -107,7 +119,7 @@ class Generic extends Template
     }
 
     /**
-     * @return \Yireo\GoogleTagManager2\Helper\Data
+     * @return Data
      */
     public function getHelper()
     {

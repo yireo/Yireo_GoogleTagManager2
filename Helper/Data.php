@@ -10,12 +10,21 @@
 
 namespace Yireo\GoogleTagManager2\Helper;
 
+use Magento\Checkout\Model\Session\Proxy;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context as HelperContext;
+use Magento\Framework\Pricing\Helper\Data as DataHelper;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\BlockFactory;
+use Magento\Framework\View\LayoutFactory;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class \Yireo\GoogleTagManager2\Helper\Data
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
      * Constant for the observer method
@@ -28,32 +37,32 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const METHOD_LAYOUT = 1;
 
     /**
-     * @var \Magento\Framework\View\LayoutFactory
+     * @var LayoutFactory
      */
     private $layoutFactory;
 
     /**
-     * @var \Magento\Framework\View\Element\BlockFactory
+     * @var BlockFactory
      */
     private $blockFactory;
 
     /**
-     * @var \Magento\Checkout\Model\Session\Proxy
+     * @var Proxy
      */
     private $checkoutSession;
 
     /**
-     * @var \Magento\Sales\Model\Order
+     * @var Order
      */
     private $salesOrder;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $coreRegistry;
 
     /**
-     * @var \Magento\Framework\Pricing\Helper\Data
+     * @var DataHelper
      */
     private $pricingHelper;
     /**
@@ -64,23 +73,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Data constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
-     * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
-     * @param \Magento\Sales\Model\Order $salesOrder
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
+     * @param HelperContext $context
+     * @param LayoutFactory $layoutFactory
+     * @param BlockFactory $blockFactory
+     * @param Proxy $checkoutSession
+     * @param Order $salesOrder
+     * @param Registry $coreRegistry
+     * @param DataHelper $pricingHelper
      * @param CookieHelper $cookieHelper
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\View\Element\BlockFactory $blockFactory,
-        \Magento\Checkout\Model\Session\Proxy $checkoutSession,
-        \Magento\Sales\Model\Order $salesOrder,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Framework\Pricing\Helper\Data $pricingHelper,
+        HelperContext $context,
+        LayoutFactory $layoutFactory,
+        BlockFactory $blockFactory,
+        Proxy $checkoutSession,
+        Order $salesOrder,
+        Registry $coreRegistry,
+        DataHelper $pricingHelper,
         CookieHelper $cookieHelper
     ) {
         parent::__construct($context);
@@ -165,7 +174,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $value = $this->scopeConfig->getValue(
             'googletagmanager2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ScopeInterface::SCOPE_STORE
         );
 
         if (empty($value)) {

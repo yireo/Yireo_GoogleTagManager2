@@ -9,6 +9,12 @@
  */
 
 namespace Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\CustomerData\Customer as CustomerData;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class Customer
@@ -18,34 +24,37 @@ namespace Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData;
 class Customer
 {
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var Session
      */
     private $customerSession;
 
     /**
-     * @var \Magento\Customer\Api\GroupRepositoryInterface
+     * @var GroupRepositoryInterface
      */
     private $groupRepository;
 
     /**
      * Customer constructor.
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+     * @param Proxy $customerSession
+     * @param GroupRepositoryInterface $groupRepository
      */
     public function __construct(
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+        Proxy $customerSession,
+        GroupRepositoryInterface $groupRepository
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
     }
 
     /**
-     * @param \Magento\Customer\CustomerData\Customer $subject
+     * @param CustomerData $subject
      * @param $result
+     *
      * @return mixed
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function afterGetSectionData(\Magento\Customer\CustomerData\Customer $subject, $result)
+    public function afterGetSectionData(CustomerData $subject, $result)
     {
         if (empty($result)) {
             return $result;
