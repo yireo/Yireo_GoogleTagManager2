@@ -10,6 +10,8 @@
 
 namespace Yireo\GoogleTagManager2\Helper;
 
+use Magento\Cookie\Helper\Cookie as CookieHelper;
+
 /**
  * Class \Yireo\GoogleTagManager2\Helper\Data
  */
@@ -54,6 +56,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Framework\Pricing\Helper\Data
      */
     private $pricingHelper;
+    /**
+     * @var CookieHelper
+     */
+    private $cookieHelper;
 
     /**
      * Data constructor.
@@ -65,6 +71,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Sales\Model\Order $salesOrder
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
+     * @param CookieHelper $cookieHelper
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -73,16 +80,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session\Proxy $checkoutSession,
         \Magento\Sales\Model\Order $salesOrder,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Framework\Pricing\Helper\Data $pricingHelper
+        \Magento\Framework\Pricing\Helper\Data $pricingHelper,
+        CookieHelper $cookieHelper
     ) {
+        parent::__construct($context);
+
         $this->layoutFactory = $layoutFactory;
         $this->blockFactory = $blockFactory;
         $this->checkoutSession = $checkoutSession;
         $this->salesOrder = $salesOrder;
         $this->coreRegistry = $coreRegistry;
         $this->pricingHelper = $pricingHelper;
-
-        parent::__construct($context);
+        $this->cookieHelper = $cookieHelper;
     }
 
     /**
@@ -92,7 +101,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isEnabled()
     {
-        return (bool)$this->getConfigValue('enabled', false);
+        $enabled = (bool)$this->getConfigValue('enabled', false);
+        if (!$enabled) {
+            return false;
+        }
+
+        if ($this->cookieHelper->isCookieRestrictionModeEnabled()) {
+            return !$this->cookieHelper->isUserNotAllowSaveCookie();
+        }
+
+        return true;
     }
 
     /**
