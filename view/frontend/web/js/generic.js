@@ -54,6 +54,16 @@ define([
         return customer();
     };
 
+    var getQuote = function () {
+        var quote = customerData.get('yireo-gtm-quote');
+        return quote();
+    };
+
+    var getOrder = function () {
+        var order = customerData.get('yireo-gtm-order');
+        return order();
+    };
+
     var isLoggedIn = function () {
         var customer = getCustomer();
         return customer && customer.firstname;
@@ -76,27 +86,33 @@ define([
             };
     };
 
-    var getCartSpecificAttributes = function () {
-
+    var getCartSpecificAttributes = function (callback) {
         var cart = customerData.get('cart');
-        var quote = customerData.get('yireo-gtm-quote');
-        var order = customerData.get('yireo-gtm-order');
 
         if (cart().summary_count > 0) {
-            var quoteData = quote();
+            var quoteData = getQuote();
             delete quoteData.data_id;
             if (!_.isEmpty(quoteData)) {
-                return quoteData;
+                callback(quoteData);
+                return;
             }
         }
 
-        var orderData = order();
+        var orderData = getOrder();
         delete orderData.data_id;
         if (!_.isEmpty(orderData)) {
-            return orderData;
+            callback(orderData);
+            return;
         }
 
-        return {};
+        // If order data doesn't exist yet, we'll wait for it to be loaded
+        customerData.reload(['yireo-gtm-order'], true).done(function (sections) {
+            var orderData = getOrder();
+            delete orderData.data_id;
+            if (!_.isEmpty(orderData)) {
+                callback(orderData);
+            }
+        });
     };
 
     var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
@@ -116,6 +132,8 @@ define([
         'monitorCustomer': monitorCustomer,
         'monitorCheckout': monitorCheckout,
         'getCustomer': getCustomer,
+        'getQuote': getQuote(),
+        'getOrder': getOrder(),
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
@@ -129,14 +147,18 @@ define([
             initDataLayer(window);
             monitorSections();
 
-            var attributes = $.extend(getCartSpecificAttributes(), getCustomerSpecificAttributes(), config.attributes);
+            var attributes = $.extend(getCustomerSpecificAttributes(), config.attributes);
 
-            if (config.debug) {
-                console.log(attributes);
-            }
+            getCartSpecificAttributes(function (cartAttributes) {
+                attributes = $.extend(cartAttributes, attributes);
 
-            dataLayer.push(attributes);
-            addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
+                if (config.debug) {
+                    console.log(attributes);
+                }
+
+                dataLayer.push(attributes);
+                addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
+            });
         }
     };
 });
