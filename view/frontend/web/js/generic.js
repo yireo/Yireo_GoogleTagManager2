@@ -111,8 +111,13 @@ define([
             delete orderData.data_id;
             if (!_.isEmpty(orderData)) {
                 callback(orderData);
+                return;
             }
-        });
+
+            callback({});
+        }.fail(function () {
+            callback({});
+        }));
     };
 
     var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
@@ -132,8 +137,8 @@ define([
         'monitorCustomer': monitorCustomer,
         'monitorCheckout': monitorCheckout,
         'getCustomer': getCustomer,
-        'getQuote': getQuote(),
-        'getOrder': getOrder(),
+        'getQuote': getQuote,
+        'getOrder': getOrder,
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
