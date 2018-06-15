@@ -204,7 +204,7 @@ class Order implements SectionSourceInterface
                 'sku' => $item->getProduct()->getSku(),
                 'name' => $item->getProduct()->getName(),
                 'price' => $item->getProduct()->getPrice(),
-                'quantity' => $item->getQty(),
+                'quantity' => $item->getQtyOrdered(),
             ];
         }
 
