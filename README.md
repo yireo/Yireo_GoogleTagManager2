@@ -25,7 +25,7 @@ Done.
 
 
 ## Instructions for manual copy
-We recommend `composer` to install this package. If you want a manual copy instead, these are the steps:
+We recommend `composer` to install this package. If you want a manual copy instead, these are the steps. However, please note that we do NOT recommend you to do this.
 
 * Upload the files in the `source/` folder to the folder `app/code/Yireo/GoogleTagManager2` of your site
 * Run `php -f bin/magento module:enable Yireo_GoogleTagManager2`

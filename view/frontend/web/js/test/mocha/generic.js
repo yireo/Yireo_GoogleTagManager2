@@ -7,7 +7,7 @@ requirejs.config({
     baseUrl: __dirname,
     nodeRequire: require,
     paths: {
-        'generic': '../generic',
+        'generic': '../../generic',
         'jquery': './mock/jquery',
         'underscore': './mock/underscore',
         'Magento_Customer/js/customer-data': './mock/customerData'

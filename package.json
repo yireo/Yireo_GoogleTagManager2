@@ -6,11 +6,13 @@
   },
   "devDependencies": {
     "amd-loader": "0.0.8",
+    "casperjs": "^1.1.4",
     "jsdom": "^11.0.0",
     "mocha": "^3.5.0",
     "requirejs": "^2.3.4"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha view/frontend/web/js/test"
+    "mocha": "./node_modules/mocha/bin/mocha view/frontend/web/js/test/mocha",
+    "casper": "./node_modules/casperjs/bin/casperjs view/frontend/web/js/test/casper"
   }
 }
