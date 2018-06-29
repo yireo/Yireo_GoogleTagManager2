@@ -54,12 +54,12 @@ define([
         return customer();
     };
 
-    var getQuote = function () {
+    var getGtmQuote = function () {
         var quote = customerData.get('yireo-gtm-quote');
         return quote();
     };
 
-    var getOrder = function () {
+    var getGtmOrder = function () {
         var order = customerData.get('yireo-gtm-order');
         return order();
     };
@@ -90,7 +90,7 @@ define([
         var cart = customerData.get('cart');
 
         if (cart().summary_count > 0) {
-            var quoteData = getQuote();
+            var quoteData = getGtmQuote();
             delete quoteData.data_id;
             if (!_.isEmpty(quoteData)) {
                 callback(quoteData);
@@ -98,16 +98,15 @@ define([
             }
         }
 
-        var orderData = getOrder();
+        var orderData = getGtmOrder();
         delete orderData.data_id;
         if (!_.isEmpty(orderData)) {
             callback(orderData);
             return;
         }
 
-        // If order data doesn't exist yet, we'll wait for it to be loaded
         customerData.reload(['yireo-gtm-order'], true).done(function (sections) {
-            var orderData = getOrder();
+            var orderData = getGtmOrder();
             delete orderData.data_id;
             if (!_.isEmpty(orderData)) {
                 callback(orderData);
@@ -138,8 +137,8 @@ define([
         'monitorCustomer': monitorCustomer,
         'monitorCheckout': monitorCheckout,
         'getCustomer': getCustomer,
-        'getQuote': getQuote,
-        'getOrder': getOrder,
+        'getGtmQuote': getGtmQuote,
+        'getGtmOrder': getGtmOrder,
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
