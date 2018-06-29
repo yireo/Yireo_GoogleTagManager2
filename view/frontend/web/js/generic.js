@@ -115,6 +115,7 @@ define([
             }
 
             callback({});
+            return;
         });
 
         callback({});
