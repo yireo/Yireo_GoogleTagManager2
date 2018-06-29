@@ -44,9 +44,9 @@ the extension is installed via composer. For instance:
 The JavaScript code ships with MochaJS unit tests. To install the stuff, simply run (within this extension directory) the following:
 
     npm install
-    npm test
+    npm run mocha
 
 Or just use `yarn`:
 
     yarn
-    npm test
+    npm run mocha
