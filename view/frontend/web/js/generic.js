@@ -115,9 +115,9 @@ define([
             }
 
             callback({});
-        }.fail(function () {
-            callback({});
-        }));
+        });
+
+        callback({});
     };
 
     var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
