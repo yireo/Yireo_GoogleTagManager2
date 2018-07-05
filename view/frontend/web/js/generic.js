@@ -105,6 +105,7 @@ define([
             return;
         }
 
+        // @todo: This call is made every time again and again, while it should not
         customerData.reload(['yireo-gtm-order'], true).done(function (sections) {
             var orderData = getGtmOrder();
             delete orderData.data_id;
@@ -114,7 +115,6 @@ define([
             }
 
             callback({});
-            return;
         });
 
         callback({});

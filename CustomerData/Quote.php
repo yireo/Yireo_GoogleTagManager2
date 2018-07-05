@@ -16,6 +16,7 @@ use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote as QuoteModel;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
 
 /**
@@ -39,11 +40,19 @@ class Quote implements SectionSourceInterface
     private $currency;
 
     /**
+     * @var Cart
+     */
+    private $cart;
+
+    /**
+     * @var OrderInterface
+     */
+    private $order;
+
+    /**
      * @param Cart $cart
      * @param ScopeConfigInterface $scopeConfig
      * @param Currency $currency
-     *
-     * @throws LocalizedException
      */
     public function __construct(
         Cart $cart,
@@ -59,11 +68,13 @@ class Quote implements SectionSourceInterface
 
     /**
      * @return array
+     * @throws LocalizedException
      */
     public function getSectionData()
     {
         if ($this->hasQuote() === false) {
-            return [];
+            return [
+            ];
         }
 
         return [

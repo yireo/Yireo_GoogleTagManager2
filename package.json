@@ -13,6 +13,6 @@
   },
   "scripts": {
     "mocha": "./node_modules/mocha/bin/mocha view/frontend/web/js/test/mocha",
-    "casper": "./node_modules/casperjs/bin/casperjs view/frontend/web/js/test/casper/index.js"
+    "casper": "./node_modules/casperjs/bin/casperjs --engine=slimerjs view/frontend/web/js/test/casper/index.js"
   }
 }
