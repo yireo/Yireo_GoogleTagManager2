@@ -7,19 +7,13 @@
  * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
+declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Helper;
 
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context as HelperContext;
-use Magento\Framework\Pricing\Helper\Data as DataHelper;
-use Magento\Framework\Registry;
-use Magento\Framework\View\Element\BlockFactory;
-use Magento\Framework\View\LayoutFactory;
-use Magento\Sales\Model\Order;
-use Magento\Store\Model\ScopeInterface;
+use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\Helper\Data
@@ -27,139 +21,77 @@ use Magento\Store\Model\ScopeInterface;
 class Data extends AbstractHelper
 {
     /**
-     * Constant for the observer method
+     * @var Config
      */
-    const METHOD_OBSERVER = 0;
-
-    /**
-     * Constant for the layout method
-     */
-    const METHOD_LAYOUT = 1;
-
-    /**
-     * @var LayoutFactory
-     */
-    private $layoutFactory;
-
-    /**
-     * @var BlockFactory
-     */
-    private $blockFactory;
-
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
-     * @var Order
-     */
-    private $salesOrder;
-
-    /**
-     * @var Registry
-     */
-    private $coreRegistry;
-
-    /**
-     * @var DataHelper
-     */
-    private $pricingHelper;
-    /**
-     * @var CookieHelper
-     */
-    private $cookieHelper;
+    private $config;
 
     /**
      * Data constructor.
      *
      * @param HelperContext $context
-     * @param LayoutFactory $layoutFactory
-     * @param BlockFactory $blockFactory
-     * @param CheckoutSession $checkoutSession
-     * @param Order $salesOrder
-     * @param Registry $coreRegistry
-     * @param DataHelper $pricingHelper
-     * @param CookieHelper $cookieHelper
+     * @param Config $config
      */
     public function __construct(
         HelperContext $context,
-        LayoutFactory $layoutFactory,
-        BlockFactory $blockFactory,
-        CheckoutSession $checkoutSession,
-        Order $salesOrder,
-        Registry $coreRegistry,
-        DataHelper $pricingHelper,
-        CookieHelper $cookieHelper
+        Config $config
     ) {
         parent::__construct($context);
-
-        $this->layoutFactory = $layoutFactory;
-        $this->blockFactory = $blockFactory;
-        $this->checkoutSession = $checkoutSession;
-        $this->salesOrder = $salesOrder;
-        $this->coreRegistry = $coreRegistry;
-        $this->pricingHelper = $pricingHelper;
-        $this->cookieHelper = $cookieHelper;
+        $this->config = $config;
     }
 
     /**
      * Check whether the module is enabled
      *
      * @return bool
+     * @deprecated Use Config::isEnabled()
      */
     public function isEnabled()
     {
-        $enabled = (bool)$this->getConfigValue('enabled', false);
-        if (!$enabled) {
-            return false;
-        }
-
-        if ($this->cookieHelper->isCookieRestrictionModeEnabled()) {
-            return !$this->cookieHelper->isUserNotAllowSaveCookie();
-        }
-
-        return true;
+        return $this->config->isEnabled();
     }
 
     /**
      * Check whether the module is in debugging mode
      *
      * @return bool
+     * @deprecated Use Config::isDebug()
      */
     public function isDebug()
     {
-        return (bool)$this->getConfigValue('debug');
+        return $this->config->isDebug();
     }
 
     /**
      * Return the GA ID
      *
      * @return string
+     * @deprecated Use Config::getId()
      */
     public function getId()
     {
-        return $this->getConfigValue('id');
+        return $this->config->getId();
     }
 
     /**
      * Check whether the insertion method is the observer method
      *
      * @return bool
+     * @deprecated Use Config::isMethodObserver()
      */
     public function isMethodObserver()
     {
-        return ($this->getConfigValue('method') == self::METHOD_OBSERVER);
+        return $this->config->isMethodObserver();
     }
 
     /**
      * Check whether the insertion method is the layout method
      *
      * @return bool
+     * @deprecated Use Config::isMethodLayout()
      */
     public function isMethodLayout()
     {
-        return ($this->getConfigValue('method') == self::METHOD_LAYOUT);
+        return $this->config->isMethodLayout();
     }
 
     /**
@@ -169,19 +101,11 @@ class Data extends AbstractHelper
      * @param null $defaultValue
      *
      * @return mixed|null
+     * @deprecated Use Config::getConfigValue()
      */
     public function getConfigValue($key = null, $defaultValue = null)
     {
-        $value = $this->scopeConfig->getValue(
-            'googletagmanager2/settings/' . $key,
-            ScopeInterface::SCOPE_STORE
-        );
-
-        if (empty($value)) {
-            $value = $defaultValue;
-        }
-
-        return $value;
+        return $this->config->getConfigValue($key, $defaultValue);
     }
 
     /**
@@ -194,7 +118,7 @@ class Data extends AbstractHelper
      */
     public function debug($string, $variable = null)
     {
-        if ($this->isDebug() == false) {
+        if ($this->config->isDebug() == false) {
             return false;
         }
 

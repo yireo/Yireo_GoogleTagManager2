@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\DeleteAnyOrder2\Test\Integration\CustomerData;
+namespace Yireo\GoogleTagManager2\Test\Integration\CustomerData;
 
 use Magento\Directory\Model\Currency;
 use Mockery;
@@ -17,7 +17,7 @@ use Yireo\GoogleTagManager2\CustomerData\Order as TestTarget;
 /**
  * Class OrderTest
  *
- * @package Yireo\DeleteAnyOrder2\Test\Integration\CustomerData
+ * @package Yireo\GoogleTagManager2\Test\Integration\CustomerData
  */
 class OrderTest extends TestCase
 {

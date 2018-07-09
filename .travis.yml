@@ -1,8 +1,8 @@
 sudo: false
 language: php
 php:
-  - 5.6
   - 7.0
+  - 7.1
 
 before_script:
   - npm install -g grunt-cli
@@ -12,7 +12,8 @@ before_script:
 
 script:
   - npm test
-  #- composer self-update
-  #- composer install --prefer-dist
+  - composer self-update
+  - composer install --prefer-dist
+  - phpunit -c vendor/yireo/magento2-googletagmanager2/phpunit.xml vendor/yireo/magento2-googletagmanager2/Test/Unit
   #- composer create-project --repository=https://repo.magento.com magento/marketplace-eqp magento-coding-standard
   #- magento-coding-standard/vendor/bin/phpcs --standard=/apache/magento-coding-standard/MEQP2 --extensions=php --ignore=Test .

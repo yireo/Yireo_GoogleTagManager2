@@ -1,55 +1,72 @@
 <?php
-/**
- * GoogleTagManager2 plugin for Magento
- *
- * @package     Yireo_GoogleTagManager2
- * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
- * @license     Open Source License
- */
+declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Unit\Helper;
 
-use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
-use Yireo\GoogleTagManager2\Test\Unit\Generic;
+use Magento\TestFramework\ObjectManager;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+
+use Yireo\GoogleTagManager2\Helper\Data;
+use Magento\Framework\App\Helper\Context as HelperContext;
+use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class DataTest
  *
  * @package Yireo\GoogleTagManager2\Test\Unit\Helper
  */
-class DataTest extends Generic
+class DataTest extends TestCase
 {
     /**
-     * @var DataHelper
+     * Test whether the debug flag works
      */
-    protected $target;
-
-    /**
-     * Setup method
-     */
-    protected function setUp()
+    public function testDebug()
     {
-        parent::setUp();
+        $target = $this->getTarget();
+        $rt = $target->debug('foo', 'bar');
+        $this->assertFalse($rt);
 
-        $this->target = $this->objectManager->get(DataHelper::class);
+        $target = $this->getTarget(['debug' => 1]);
+        $rt = $target->debug('foo', 'bar');
+        $this->assertTrue($rt);
     }
 
     /**
-     * @test
-     * @covers DataHelper::getConfigValue
+     * @return Data
      */
-    public function testIsEnabled()
+    private function getTarget(array $configData = []): Data
     {
-        $this->assertEquals($this->target->isEnabled(), (bool)$this->getConfigValue('enabled'));
+        $helperContext = $this->getHelperContextMock();
+        $config = $this->getConfigMock($configData);
+        $target = new Data($helperContext, $config);
+        return $target;
     }
 
     /**
-     * @test
-     * @covers DataHelper::getConfigValue
+     * @return HelperContext
      */
-    public function testIsDebug()
+    private function getHelperContextMock(): HelperContext
     {
-        $this->assertEquals($this->target->isDebug(), (bool)$this->getConfigValue('debug'));
+        $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        return $helper->getObject(HelperContext::class);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Config
+     */
+    private function getConfigMock(array $configData = []): Config
+    {
+        $config = Mockery::mock(Config::class);
+
+        if (isset($configData['debug']) && $configData['debug'] == true) {
+            $config->allows()->isDebug()->andReturns(true);
+        } else {
+            $config->allows()->isDebug()->andReturns(false);
+        }
+
+        return $config;
     }
 }
