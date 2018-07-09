@@ -10,13 +10,14 @@
 
 namespace Yireo\GoogleTagManager2\CustomerData;
 
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Item;
-use Magento\Sales\Model\OrderFactory;
 
 /**
  * Class \Yireo\GoogleTagManager2\CustomerData\Order
@@ -27,6 +28,11 @@ class Order implements SectionSourceInterface
      * @var \Magento\Sales\Model\Order
      */
     private $order;
+
+    /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
 
     /**
      * @var ScopeConfigInterface
@@ -41,22 +47,16 @@ class Order implements SectionSourceInterface
     /**
      * Order constructor.
      *
-     * @param Proxy $checkoutSession
-     * @param OrderFactory $orderFactory
+     * @param CheckoutSession $checkoutSession
      * @param ScopeConfigInterface $scopeConfig
      * @param Currency $currency
      */
     public function __construct(
-        Proxy $checkoutSession,
-        OrderFactory $orderFactory,
+        CheckoutSession $checkoutSession,
         ScopeConfigInterface $scopeConfig,
         Currency $currency
     ) {
-        if (!$checkoutSession->getLastRealOrderId()) {
-            return;
-        }
-
-        $this->order = $orderFactory->create()->loadByIncrementId($checkoutSession->getLastRealOrderId());
+        $this->checkoutSession = $checkoutSession;
         $this->scopeConfig = $scopeConfig;
         $this->currency = $currency;
     }
@@ -70,6 +70,8 @@ class Order implements SectionSourceInterface
         if ($this->hasOrder() === false) {
             return [];
         }
+
+        $this->order = $this->getOrder();
 
         return [
             'transactionEntity' => 'ORDER',
@@ -85,6 +87,14 @@ class Order implements SectionSourceInterface
             'transactionPromoCode' => $this->getPromoCode(),
             'transactionProducts' => $this->getItemsAsArray()
         ];
+    }
+
+    /**
+     * @return OrderInterface
+     */
+    private function getOrder(): OrderInterface
+    {
+        return $this->checkoutSession->getLastRealOrder();
     }
 
     /**
@@ -173,24 +183,19 @@ class Order implements SectionSourceInterface
      */
     private function hasOrder()
     {
-        $order = $this->order;
-
-        if (empty($this->order)) {
+        try {
+            $this->getOrder();
+        } catch (\Exception $e) {
             return false;
         }
 
-        if ($order->getItems()) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**
      * Return all order items as array
      *
      * @return array
-     * @throws LocalizedException
      */
     private function getItemsAsArray()
     {

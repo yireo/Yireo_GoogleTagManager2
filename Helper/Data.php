@@ -10,7 +10,7 @@
 
 namespace Yireo\GoogleTagManager2\Helper;
 
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context as HelperContext;
@@ -47,7 +47,7 @@ class Data extends AbstractHelper
     private $blockFactory;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     private $checkoutSession;
 
@@ -76,7 +76,7 @@ class Data extends AbstractHelper
      * @param HelperContext $context
      * @param LayoutFactory $layoutFactory
      * @param BlockFactory $blockFactory
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Order $salesOrder
      * @param Registry $coreRegistry
      * @param DataHelper $pricingHelper
@@ -86,7 +86,7 @@ class Data extends AbstractHelper
         HelperContext $context,
         LayoutFactory $layoutFactory,
         BlockFactory $blockFactory,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Order $salesOrder,
         Registry $coreRegistry,
         DataHelper $pricingHelper,

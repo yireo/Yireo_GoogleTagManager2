@@ -12,8 +12,7 @@ namespace Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData;
 
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\CustomerData\Customer as CustomerData;
-use Magento\Customer\Model\Session;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -25,7 +24,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class Customer
 {
     /**
-     * @var Session
+     * @var CustomerSession
      */
     private $customerSession;
 
@@ -36,11 +35,11 @@ class Customer
 
     /**
      * Customer constructor.
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param GroupRepositoryInterface $groupRepository
      */
     public function __construct(
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         GroupRepositoryInterface $groupRepository
     ) {
         $this->customerSession = $customerSession;

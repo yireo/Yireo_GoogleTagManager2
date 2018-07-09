@@ -19,6 +19,11 @@ use Yireo\GoogleTagManager2\Helper\Data;
 class Container extends DataObject
 {
     /**
+     * @var Data
+     */
+    protected $helper;
+
+    /**
      * @param Data $helper
      * @param array $data
      */
