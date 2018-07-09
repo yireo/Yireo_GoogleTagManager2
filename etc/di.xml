@@ -3,4 +3,12 @@
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="yireo_googletagmanager2_magento_customer_customerdata_customer" type="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer"/>
     </type>
+
+    <type name="Yireo\GoogleTagManager2\ViewModel\Script">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
 </config>
+

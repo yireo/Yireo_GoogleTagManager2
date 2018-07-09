@@ -10,9 +10,9 @@
 
 namespace Yireo\GoogleTagManager2\ViewModel;
 
-use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Group as CustomerGroup;
-use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\BlockFactory;
@@ -42,7 +42,7 @@ class Script
     private $pricingHelper;
 
     /**
-     * @var CustomerSessionProxy
+     * @var CustomerSession
      */
     private $customerSession;
 
@@ -52,7 +52,7 @@ class Script
     private $blockFactory;
 
     /**
-     * @var CheckoutSessionProxy
+     * @var CheckoutSession
      */
     private $checkoutSession;
 
@@ -75,8 +75,8 @@ class Script
      * @param DataHelper $moduleHelper
      * @param LayoutFactory $layoutFactory
      * @param BlockFactory $blockFactory
-     * @param CustomerSessionProxy $customerSession
-     * @param CheckoutSessionProxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param Order $salesOrder
      * @param Registry $coreRegistry
      * @param CustomerGroup $customerGroup
@@ -86,8 +86,8 @@ class Script
         DataHelper $moduleHelper,
         LayoutFactory $layoutFactory,
         BlockFactory $blockFactory,
-        CustomerSessionProxy $customerSession,
-        CheckoutSessionProxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         Order $salesOrder,
         Registry $coreRegistry,
         CustomerGroup $customerGroup,
