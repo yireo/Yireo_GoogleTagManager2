@@ -1,36 +1,40 @@
 {
-    "name": "yireo/magento2-googletagmanager2",
-    "license": "OSL-3.0",
-    "type": "magento2-module",
-    "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager",
-    "description": "Add Google Tag Manager to Magento",
-    "keywords":[ "composer-installer", "magento"],
-    "authors": [
-        {
-            "name": "Jisse Reitsma (Yireo)",
-            "email": "jisse@yireo.com"
-        }
-    ],
-    "require": {
-        "magento/module-catalog": "^100.1|^101.0|^102.0",
-        "php": ">=7.0.0"
-    },
-    "require-dev":{
-        "phpunit/phpunit":"*",
-        "composer/composer":"*@dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Yireo\\GoogleTagManager2\\": ""
-        },        
-        "files": [
-            "registration.php"
-        ]
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "mkdir -p dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/",
-            "cp -R vendor/yireo/magento2-googletagmanager2/view/frontend/web/js/jasmine-test/* dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/"
-        ]
+  "name": "yireo/magento2-googletagmanager2",
+  "license": "OSL-3.0",
+  "type": "magento2-module",
+  "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager",
+  "description": "Add Google Tag Manager to Magento",
+  "keywords": [
+    "composer-installer",
+    "magento"
+  ],
+  "authors": [
+    {
+      "name": "Jisse Reitsma (Yireo)",
+      "email": "jisse@yireo.com"
     }
+  ],
+  "require": {
+    "magento/module-catalog": "^100.1|^101.0|^102.0",
+    "php": ">=7.0.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0",
+    "composer/composer": "*@dev",
+    "mockery/mockery": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Yireo\\GoogleTagManager2\\": ""
+    },
+    "files": [
+      "registration.php"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "mkdir -p dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/",
+      "cp -R vendor/yireo/magento2-googletagmanager2/view/frontend/web/js/jasmine-test/* dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/"
+    ]
+  }
 }

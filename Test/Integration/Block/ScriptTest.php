@@ -6,11 +6,9 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Block;
 use Magento\Framework\App\Cache\Manager as CacheManager;
 use Magento\Framework\App\Config\ValueFactory;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\View\LayoutInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Request;
 use Magento\TestFramework\TestCase\AbstractController;
-use Magento\Cms\Controller\Index\Index;
 
 /**
  *
