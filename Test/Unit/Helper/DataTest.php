@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Unit\Helper;
 
-use Magento\TestFramework\ObjectManager;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -48,7 +48,7 @@ class DataTest extends TestCase
      */
     private function getHelperContextMock(): HelperContext
     {
-        $helper = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
+        $helper = new ObjectManagerHelper($this);
         return $helper->getObject(HelperContext::class);
     }
 
