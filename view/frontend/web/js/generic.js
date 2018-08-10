@@ -28,10 +28,16 @@ define([
     };
 
     var monitorCheckout = function () {
-        var checkout = customerData.get('checkout-data');
-        checkout.subscribe(function (updatedCart) {
-            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
-        });
+
+        var quote = getQuote()
+
+        if (quote.totals) {
+            quote.totals.subscribe(function (newValue) {
+                customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
+            });
+
+        }
+
         return true;
     };
 
@@ -54,12 +60,12 @@ define([
         return customer();
     };
 
-    var getGtmQuote = function () {
+    var getQuote = function () {
         var quote = customerData.get('yireo-gtm-quote');
         return quote();
     };
 
-    var getGtmOrder = function () {
+    var getOrder = function () {
         var order = customerData.get('yireo-gtm-order');
         return order();
     };
@@ -90,7 +96,7 @@ define([
         var cart = customerData.get('cart');
 
         if (cart().summary_count > 0) {
-            var quoteData = getGtmQuote();
+            var quoteData = getQuote();
             delete quoteData.data_id;
             if (!_.isEmpty(quoteData)) {
                 callback(quoteData);
@@ -98,26 +104,24 @@ define([
             }
         }
 
-        var orderData = getGtmOrder();
+        var orderData = getOrder();
         delete orderData.data_id;
         if (!_.isEmpty(orderData)) {
             callback(orderData);
             return;
         }
 
-        // @todo: This call is made every time again and again, while it should not
+
+        // If order data doesn't exist yet, we'll wait for it to be loaded
         customerData.reload(['yireo-gtm-order'], true).done(function (sections) {
-            var orderData = getGtmOrder();
+            var orderData = getOrder();
             delete orderData.data_id;
             if (!_.isEmpty(orderData)) {
                 callback(orderData);
-                return;
             }
-
-            callback({});
         });
 
-        callback({});
+        callback();
     };
 
     var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
@@ -137,8 +141,8 @@ define([
         'monitorCustomer': monitorCustomer,
         'monitorCheckout': monitorCheckout,
         'getCustomer': getCustomer,
-        'getGtmQuote': getGtmQuote,
-        'getGtmOrder': getGtmOrder,
+        'getQuote': getQuote(),
+        'getOrder': getOrder(),
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
@@ -155,15 +159,18 @@ define([
             var attributes = $.extend(getCustomerSpecificAttributes(), config.attributes);
 
             getCartSpecificAttributes(function (cartAttributes) {
-                attributes = $.extend(cartAttributes, attributes);
+                if (cartAttributes) {
+                    attributes = $.extend(cartAttributes, attributes);
 
-                if (config.debug) {
-                    console.log(attributes);
+                    if (config.debug) {
+                        console.log(attributes);
+                    }
                 }
 
                 dataLayer.push(attributes);
                 addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
             });
+
         }
     };
 });
