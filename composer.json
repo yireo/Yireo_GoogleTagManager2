@@ -15,12 +15,17 @@
     }
   ],
   "require": {
-    "magento/module-catalog": "^100.1|^101.0|^102.0",
+    "magento/module-catalog": "^100.1|^101.0|^102.0|^103.0",
+    "magento/module-checkout": "^100.1",
+    "magento/module-customer": "^100.1|^101.0|^102.0",
+    "magento/module-directory": "^100.1",
+    "magento/module-quote": "^100.1|^101.0",
+    "magento/module-sales": "^100.1|^101.0|^102.0",
+    "magento/module-store": "^100.1|^101.0",
     "php": ">=7.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
-    "composer/composer": "*@dev",
     "mockery/mockery": "^1.1"
   },
   "autoload": {
