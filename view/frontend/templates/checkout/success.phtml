@@ -1,0 +1,7 @@
+<?php /** @var \Yireo\GoogleTagManager2\ViewModel\Success $viewModel */ ?>
+<?php $viewModel = $block->getData('viewModel') ?>
+<?php if ($viewModel->isEnabled()) : ?>
+    <?php foreach ($viewModel->getOrderData() as $item => $value) : ?>
+        <?php $viewModel->addAttribute($item, $value) ?>
+    <?php endforeach; ?>
+<?php endif; ?>
