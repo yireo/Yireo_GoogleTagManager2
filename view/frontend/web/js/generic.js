@@ -120,6 +120,7 @@ define([
         callback({});
     };
 
+    var existingNodes = [];
     var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
         window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
         var firstScript = document.getElementsByTagName(scriptTag)[0];
@@ -127,7 +128,11 @@ define([
         var dataLayerArg = (dataLayer != 'dataLayer') ? '&l=' + dataLayer : '';
         newScript.async = true;
         newScript.src = '//www.googletagmanager.com/gtm.js?id=' + configId + dataLayerArg;
-        firstScript.parentNode.insertBefore(newScript, firstScript);
+
+        if (existingNodes.indexOf(newScript.src) === -1) {
+            firstScript.parentNode.insertBefore(newScript, firstScript);
+            existingNodes.push(newScript.src);
+        }
     };
 
     return {
