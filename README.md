@@ -2,7 +2,7 @@
 Homepage: https://www.yireo.com/software/magento-extensions/googletagmanager2
 
 Minimum requirements:
-* Magento 2.1.0 Stable
+* Magento 2.2.0 Stable
 
 See `composer.json` for other requirements.
 
