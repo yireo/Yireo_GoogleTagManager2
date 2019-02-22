@@ -8,14 +8,17 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Directory\Model\Currency;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Generic
  */
-class Generic
+class Generic implements ArgumentInterface
 {
     /**
      * @var Currency

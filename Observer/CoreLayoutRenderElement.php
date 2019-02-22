@@ -13,6 +13,7 @@ namespace Yireo\GoogleTagManager2\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Yireo\GoogleTagManager2\Config;
 use Yireo\GoogleTagManager2\Helper\Data;
 use Yireo\GoogleTagManager2\ViewModel\Script;
 
@@ -34,15 +35,23 @@ class CoreLayoutRenderElement implements ObserverInterface
     private $scriptViewModel;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @param Data $helper
      * @param Script $scriptViewModel
+     * @param Config $config
      */
     public function __construct(
         Data $helper,
-        Script $scriptViewModel
+        Script $scriptViewModel,
+        Config $config
     ) {
         $this->helper = $helper;
         $this->scriptViewModel = $scriptViewModel;
+        $this->config = $config;
     }
 
     /**
@@ -55,11 +64,11 @@ class CoreLayoutRenderElement implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if ($this->helper->isEnabled() == false) {
+        if ($this->config->isEnabled() == false) {
             return $this;
         }
 
-        if ($this->helper->isMethodObserver() == false) {
+        if ($this->config->isMethodObserver() == false) {
             return $this;
         }
 

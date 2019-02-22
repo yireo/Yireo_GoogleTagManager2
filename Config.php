@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2;
 
-
+use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Cookie\Helper\Cookie as CookieHelper;
 
 /**
  * Class Config
@@ -85,7 +84,7 @@ class Config
      */
     public function getId(): string
     {
-        return (string) $this->getConfigValue('id');
+        return (string)$this->getConfigValue('id');
     }
 
     /**
@@ -111,12 +110,12 @@ class Config
     /**
      * Return a configuration value
      *
-     * @param null $key
+     * @param string $key
      * @param null $defaultValue
      *
      * @return mixed|null
      */
-    public function getConfigValue($key = null, $defaultValue = null)
+    public function getConfigValue(string $key, $defaultValue = null)
     {
         $value = $this->scopeConfig->getValue(
             'googletagmanager2/settings/' . $key,

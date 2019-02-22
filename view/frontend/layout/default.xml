@@ -5,19 +5,42 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="after.body.start">
-            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" template="Yireo_GoogleTagManager2::script.phtml"/>
+            <block class="Yireo\GoogleTagManager2\Block\Script" name="googletagmanager_script" template="script.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Script</argument>
+                </arguments>
+            </block>
         </referenceContainer>
 
-        <block class="Yireo\GoogleTagManager2\Block\Product" template="Yireo_GoogleTagManager2::product.phtml" name="googletagmanager_product"/>
-        <block class="Yireo\GoogleTagManager2\Block\Category" template="Yireo_GoogleTagManager2::category.phtml" name="googletagmanager_category"/>
-        <block class="Yireo\GoogleTagManager2\Block\Custom" template="Yireo_GoogleTagManager2::custom.phtml" name="googletagmanager_custom"/>
-        <block class="Yireo\GoogleTagManager2\Block\Generic" template="Yireo_GoogleTagManager2::generic.phtml" name="googletagmanager"/>
+        <block class="Yireo\GoogleTagManager2\Block\Product" template="product.phtml" name="googletagmanager_product">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Generic</argument>
+            </arguments>
+        </block>
+
+        <block class="Yireo\GoogleTagManager2\Block\Category" template="category.phtml" name="googletagmanager_category">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Category</argument>
+            </arguments>
+        </block>
+
+        <block class="Yireo\GoogleTagManager2\Block\Custom" template="custom.phtml" name="googletagmanager_custom">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Custom</argument>
+            </arguments>
+        </block>
+
+        <block class="Yireo\GoogleTagManager2\Block\Generic" template="generic.phtml" name="googletagmanager">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Generic</argument>
+            </arguments>
+        </block>
     </body>
 </page>

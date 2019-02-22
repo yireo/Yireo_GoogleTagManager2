@@ -18,9 +18,9 @@ use Magento\Framework\View\LayoutInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Factory\ViewModelFactory;
 use Yireo\GoogleTagManager2\Helper\Data;
 use Yireo\GoogleTagManager2\Model\Container;
+use Yireo\GoogleTagManager2\ViewModel\Generic as GenericViewModel;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Generic
@@ -31,11 +31,6 @@ class Generic extends Template
      * @var string
      */
     protected $_template = 'generic.phtml';
-
-    /**
-     * @var ViewModelFactory
-     */
-    protected $viewModelFactory;
 
     /**
      * @var Data
@@ -78,7 +73,6 @@ class Generic extends Template
     protected $jsonEncoder;
 
     /**
-     * @param ViewModelFactory $viewModelFactory
      * @param Context $context
      * @param Session $checkoutSession
      * @param Data $helper
@@ -87,7 +81,6 @@ class Generic extends Template
      * @param array $data
      */
     public function __construct(
-        ViewModelFactory $viewModelFactory,
         Context $context,
         Session $checkoutSession,
         Data $helper,
@@ -95,7 +88,6 @@ class Generic extends Template
         EncoderInterface $jsonEncoder,
         array $data = []
     ) {
-        $this->viewModelFactory = $viewModelFactory;
         $this->helper = $helper;
         $this->container = $container;
         $this->checkoutSession = $checkoutSession;
@@ -111,11 +103,12 @@ class Generic extends Template
         );
     }
 
+    /**
+     * @return GenericViewModel
+     */
     public function getViewModel()
     {
-        $viewModelClass = str_replace('\Block\\', '\ViewModel\\', get_class($this));
-        $viewModelClass = preg_replace('/\\\Interceptor$/', '', $viewModelClass);
-        return $this->viewModelFactory->create($viewModelClass);
+        return $this->getData('view_model');
     }
 
     /**

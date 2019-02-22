@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Exception;
@@ -15,12 +17,13 @@ use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\LayoutFactory;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Category
  */
-class Category
+class Category implements ArgumentInterface
 {
     /**
      * @var LayoutFactory

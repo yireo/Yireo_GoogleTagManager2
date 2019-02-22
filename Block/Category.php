@@ -14,6 +14,7 @@ use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\Exception\LocalizedException;
+use Yireo\GoogleTagManager2\ViewModel\Category as CategoryViewModel;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Category
@@ -24,6 +25,14 @@ class Category extends Generic
      * @var string
      */
     protected $_template = 'category.phtml';
+
+    /**
+     * @return CategoryViewModel
+     */
+    public function getViewModel()
+    {
+        return $this->getData('view_model');
+    }
 
     /**
      * @return AbstractCollection|null

@@ -8,11 +8,15 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\GoogleTagManager2\ViewModel;
+
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Custom
  */
-class Custom
+class Custom implements ArgumentInterface
 {
 }

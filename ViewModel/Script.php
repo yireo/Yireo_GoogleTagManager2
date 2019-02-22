@@ -8,6 +8,8 @@
  * @license     Open Source License (OSL v3)
  */
 
+declare(strict_types=1);
+
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -15,6 +17,7 @@ use Magento\Customer\Model\Group as CustomerGroup;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\BlockFactory;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutFactory;
@@ -24,7 +27,7 @@ use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Script
  */
-class Script
+class Script implements ArgumentInterface
 {
     /**
      * @var DataHelper
