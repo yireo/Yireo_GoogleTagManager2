@@ -10,8 +10,9 @@
 define([
     'jquery',
     'underscore',
-    'Magento_Customer/js/customer-data'
-], function ($, _, customerData) {
+    'Magento_Customer/js/customer-data',
+    'Yireo_GoogleTagManager2/js/quote-wrapper'
+], function ($, _, customerData, quoteWrapper) {
     'use strict';
 
     var initDataLayer = function (window) {
@@ -21,31 +22,33 @@ define([
 
     var monitorCart = function () {
         var cart = customerData.get('cart');
-        cart.subscribe(function (updatedCart) {
-            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
-        });
+        cart.subscribe(reloadSections);
         return true;
     };
 
-    var monitorCheckout = function () {
-        var checkout = customerData.get('checkout-data');
-        checkout.subscribe(function (updatedCart) {
-            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
-        });
+    var monitorQuote = function () {
+        if (quoteWrapper.isQuoteAvailable()) {
+            var quote = quoteWrapper.getQuote();
+            if (quote.totals) {
+                quote.totals.subscribe(reloadSections);
+            }
+        }
         return true;
     };
 
     var monitorCustomer = function () {
         var customer = customerData.get('customer');
-        customer.subscribe(function (updatedCart) {
-            customerData.reload(['yireo-gtm-quote', 'yireo-gtm-order']);
-        });
+        customer.subscribe(reloadSections);
         return true;
     };
 
+    var reloadSections = _.debounce(function (data) {
+        customerData.reload(['yireo-gtm-quote']);
+    }, 1000, true);
+
     var monitorSections = function () {
         monitorCart();
-        monitorCheckout();
+        monitorQuote();
         monitorCustomer();
     };
 
@@ -59,11 +62,6 @@ define([
         return quote();
     };
 
-    var getGtmOrder = function () {
-        var order = customerData.get('yireo-gtm-order');
-        return order();
-    };
-
     var isLoggedIn = function () {
         var customer = getCustomer();
         return customer && customer.firstname;
@@ -75,15 +73,15 @@ define([
         var customerGroupCode = (customerGroup) ? customerGroup.toUpperCase() : 'UNKNOWN';
 
         return isLoggedIn() ? {
-                'customerLoggedIn': 1,
-                'customerId': customer.id,
-                'customerGroupId': customer.group_id,
-                'customerGroupCode': customerGroupCode
-            } : {
-                'customerLoggedIn': 0,
-                'customerGroupId': 0,
-                'customerGroupCode': 'UNKNOWN'
-            };
+            'customerLoggedIn': 1,
+            'customerId': customer.id,
+            'customerGroupId': customer.group_id,
+            'customerGroupCode': customerGroupCode
+        } : {
+            'customerLoggedIn': 0,
+            'customerGroupId': 0,
+            'customerGroupCode': 'UNKNOWN'
+        };
     };
 
     var getCartSpecificAttributes = function (callback) {
@@ -94,28 +92,8 @@ define([
             delete quoteData.data_id;
             if (!_.isEmpty(quoteData)) {
                 callback(quoteData);
-                return;
             }
         }
-
-        var orderData = getGtmOrder();
-        delete orderData.data_id;
-        if (!_.isEmpty(orderData)) {
-            callback(orderData);
-            return;
-        }
-
-        // @todo: This call is made every time again and again, while it should not
-        customerData.reload(['yireo-gtm-order'], true).done(function (sections) {
-            var orderData = getGtmOrder();
-            delete orderData.data_id;
-            if (!_.isEmpty(orderData)) {
-                callback(orderData);
-                return;
-            }
-
-            callback({});
-        });
 
         callback({});
     };
@@ -140,10 +118,9 @@ define([
         'monitorSections': monitorSections,
         'monitorCart': monitorCart,
         'monitorCustomer': monitorCustomer,
-        'monitorCheckout': monitorCheckout,
+        'monitorQuote': monitorQuote,
         'getCustomer': getCustomer,
         'getGtmQuote': getGtmQuote,
-        'getGtmOrder': getGtmOrder,
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
@@ -160,7 +137,9 @@ define([
             var attributes = $.extend(getCustomerSpecificAttributes(), config.attributes);
 
             getCartSpecificAttributes(function (cartAttributes) {
-                attributes = $.extend(cartAttributes, attributes);
+                if (cartAttributes) {
+                    attributes = $.extend(cartAttributes, attributes);
+                }
 
                 if (config.debug) {
                     console.log(attributes);

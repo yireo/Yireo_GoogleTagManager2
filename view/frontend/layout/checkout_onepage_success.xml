@@ -13,7 +13,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="after.body.start">
-            <block template="Yireo_GoogleTagManager2::checkout/success.phtml"
+            <block template="Yireo_GoogleTagManager2::success.phtml"
                    name="googletagmanager_success"
                    before="googletagmanager_script">
                 <arguments>
