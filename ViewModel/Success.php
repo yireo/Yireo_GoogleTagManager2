@@ -140,28 +140,28 @@ class Success implements ArgumentInterface
      * @param OrderInterface $order
      * @return string
      */
-    private function getPaymentLabel($order): string
+    public function getPaymentLabel($order): string
     {
         $payment = $order->getPayment();
 
-        return $payment ? $payment->getMethodInstance()->getTitle() : '';
+        return $payment ? $payment->getMethod() : '';
     }
 
     /**
      * @param OrderInterface $order
      * @return array
      */
-    private function getItemsAsArray($order): array
+    public function getItemsAsArray($order): array
     {
         $data = [];
 
         foreach ($order->getItemsCollection() as $item) {
             /** @var Item $item */
             $data[] = [
-                'productId' => $item->getProduct()->getId(),
-                'sku' => $item->getProduct()->getSku(),
-                'name' => $item->getProduct()->getName(),
-                'price' => $item->getProduct()->getPrice(),
+                'productId' => $item->getProductId(),
+                'sku' => $item->getSku(),
+                'name' => $item->getName(),
+                'price' => $item->getPriceInclTax(),
                 'quantity' => $item->getQtyOrdered(),
             ];
         }
