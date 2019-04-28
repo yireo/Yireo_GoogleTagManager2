@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "license": "OSL-3.0",
   "type": "magento2-module",
-  "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager",
+  "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager2",
   "description": "Add Google Tag Manager to Magento",
   "keywords": [
     "composer-installer",
