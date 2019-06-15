@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\ViewModel;
 
+use InvalidArgumentException;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Group as CustomerGroup;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -23,6 +24,7 @@ use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
+use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Script
@@ -73,6 +75,10 @@ class Script implements ArgumentInterface
      * @var CustomerGroup
      */
     private $customerGroup;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @param DataHelper $moduleHelper
@@ -84,6 +90,7 @@ class Script implements ArgumentInterface
      * @param Registry $coreRegistry
      * @param CustomerGroup $customerGroup
      * @param PricingHelper $pricingHelper
+     * @param Config $config
      */
     public function __construct(
         DataHelper $moduleHelper,
@@ -94,7 +101,8 @@ class Script implements ArgumentInterface
         Order $salesOrder,
         Registry $coreRegistry,
         CustomerGroup $customerGroup,
-        PricingHelper $pricingHelper
+        PricingHelper $pricingHelper,
+        Config $config
     ) {
         $this->moduleHelper = $moduleHelper;
         $this->layoutFactory = $layoutFactory;
@@ -105,6 +113,7 @@ class Script implements ArgumentInterface
         $this->coreRegistry = $coreRegistry;
         $this->customerGroup = $customerGroup;
         $this->pricingHelper = $pricingHelper;
+        $this->config = $config;
     }
 
     /**
@@ -214,13 +223,14 @@ class Script implements ArgumentInterface
             return $block;
         }
 
-        if ($block = $this->blockFactory->createBlock($classType)->setTemplate($template)) {
+        $arguments = ['view_model' => Generic::class];
+        if ($block = $this->blockFactory->createBlock($classType, $arguments)->setTemplate($template)) {
             $this->moduleHelper->debug('Helper: Creating new block: ' . $classType);
             return $block;
         }
 
         $this->moduleHelper->debug('Helper: Unknown block: ' . $className);
-        throw new \InvalidArgumentException('Helper: Unknown block: ' . $className);
+        throw new InvalidArgumentException('Helper: Unknown block: ' . $className);
     }
 
     /**
@@ -230,6 +240,6 @@ class Script implements ArgumentInterface
      */
     public function isEnabled()
     {
-        return $this->moduleHelper->isEnabled();
+        return $this->config->isEnabled();
     }
 }

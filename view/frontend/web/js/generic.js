@@ -15,6 +15,27 @@ define([
 ], function ($, _, customerData, quoteWrapper) {
     'use strict';
 
+    var isValidConfig = function(config) {
+        if (typeof config.id === 'undefined' || !config.id) {
+            console.warn('GTM identifier empty, terminating GTM initialization.');
+            return false;
+        }
+
+        return true;
+    };
+
+    var isAllowedByCookieRestrictionMode = function(config) {
+        if (!config.cookie_restriction_mode) {
+            return true;
+        }
+
+        if (!$.cookie(config.cookie_restriction_mode)){
+            return false;
+        }
+
+        return true;
+    }
+
     var initDataLayer = function (window) {
         window.dataLayer = window.dataLayer || [];
         return window;
@@ -114,6 +135,8 @@ define([
     };
 
     return {
+        'isValid': isValidConfig,
+        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
         'initDataLayer': initDataLayer,
         'monitorSections': monitorSections,
         'monitorCart': monitorCart,
@@ -126,8 +149,11 @@ define([
         'getCartSpecificAttributes': getCartSpecificAttributes,
         'addScriptElement': addScriptElement,
         'yireoGoogleTagManager': function (config) {
-            if (typeof config.id === 'undefined' || !config.id) {
-                console.warn('GTM identifier empty, terminating GTM initialization.');
+            if (isValidConfig(config) === false) {
+                return;
+            }
+
+            if (isAllowedByCookieRestrictionMode(config) === false) {
                 return;
             }
 

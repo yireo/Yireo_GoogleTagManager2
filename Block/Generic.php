@@ -21,6 +21,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Yireo\GoogleTagManager2\Helper\Data;
 use Yireo\GoogleTagManager2\Model\Container;
 use Yireo\GoogleTagManager2\ViewModel\Generic as GenericViewModel;
+use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\Block\Generic
@@ -71,6 +72,10 @@ class Generic extends Template
      * @var EncoderInterface
      */
     protected $jsonEncoder;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @param Context $context
@@ -86,6 +91,7 @@ class Generic extends Template
         Data $helper,
         Container $container,
         EncoderInterface $jsonEncoder,
+        Config $config,
         array $data = []
     ) {
         $this->helper = $helper;
@@ -96,6 +102,7 @@ class Generic extends Template
         $this->storeManager = $context->getStoreManager();
         $this->layout = $context->getLayout();
         $this->jsonEncoder = $jsonEncoder;
+        $this->config = $config;
 
         parent::__construct(
             $context,
@@ -127,7 +134,7 @@ class Generic extends Template
      */
     public function isEnabled()
     {
-        return $this->helper->isEnabled();
+        return $this->config->isEnabled();
     }
 
     /**
@@ -138,7 +145,7 @@ class Generic extends Template
      */
     public function isDebug()
     {
-        return $this->helper->isDebug();
+        return $this->config->isDebug();
     }
 
     /**
@@ -163,7 +170,7 @@ class Generic extends Template
      */
     public function getConfig($key = null, $defaultValue = null)
     {
-        return $this->helper->getConfigValue($key, $defaultValue);
+        return $this->config->getConfigValue($key, $defaultValue);
     }
 
     /**
@@ -189,14 +196,14 @@ class Generic extends Template
     public function getAttributesAsJson()
     {
         $attributes = $this->getAttributes();
-        return json_encode($attributes);
+        return $this->jsonEncoder->encode($attributes);
     }
 
     /**
      * Add a new attribute to the GA container
      *
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      *
      * @return object
      */
@@ -222,7 +229,7 @@ class Generic extends Template
      */
     public function getWebsiteName()
     {
-        return $this->_scopeConfig->getValue('general/store_information/name');
+        return (string) $this->_scopeConfig->getValue('general/store_information/name');
     }
 
     /**
@@ -232,6 +239,7 @@ class Generic extends Template
     {
         $configuration = [];
 
+        $configuration['cookie_restriction_mode'] = $this->config->getCookieRestrictionModeName();
         $configuration['attributes'] = $this->getAttributes();
         $configuration['id'] = $this->getId();
         if ($this->getHelper()->isDebug()) {

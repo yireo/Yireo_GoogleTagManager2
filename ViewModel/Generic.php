@@ -14,6 +14,7 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Directory\Model\Currency;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Generic
@@ -24,16 +25,23 @@ class Generic implements ArgumentInterface
      * @var Currency
      */
     private $currency;
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * Generic constructor.
      *
      * @param Currency $currency
+     * @param Config $config
      */
     public function __construct(
-        Currency $currency
+        Currency $currency,
+        Config $config
     ) {
         $this->currency = $currency;
+        $this->config = $config;
     }
 
     /**
@@ -42,5 +50,15 @@ class Generic implements ArgumentInterface
     public function getBaseCurrencyCode()
     {
         return $this->currency->getCurrencySymbol();
+    }
+
+    /**
+     * Return whether this module is enabled or not
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->config->isEnabled();
     }
 }

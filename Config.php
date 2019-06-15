@@ -60,11 +60,19 @@ class Config
             return false;
         }
 
-        if ($this->cookieHelper->isCookieRestrictionModeEnabled()) {
-            return !$this->cookieHelper->isUserNotAllowSaveCookie();
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieRestrictionModeName(): string
+    {
+        if ((bool)$this->cookieHelper->isCookieRestrictionModeEnabled()) {
+            return CookieHelper::IS_USER_ALLOWED_SAVE_COOKIE;
         }
 
-        return true;
+        return '';
     }
 
     /**
