@@ -2,10 +2,10 @@
 /**
  * GoogleTagManager2 plugin for Magento
  *
- * @package     Yireo_GoogleTagManager2
- * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
- * @license     Open Source License (OSL v3)
+ * @package   Yireo_GoogleTagManager2
+ * @author    Jisse Reitsma <jisse@yireo.com>
+ * @copyright 2017 Yireo (https://www.yireo.com/)
+ * @license   Open Source License (OSL v3)
  */
 declare(strict_types=1);
 
@@ -17,6 +17,11 @@ use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\Helper\Data
+ *
+ * @package   Yireo_GoogleTagManager2
+ * @author    Jisse Reitsma <jisse@yireo.com>
+ * @copyright 2017 Yireo (https://www.yireo.com/)
+ * @license   Open Source License (OSL v3)
  */
 class Data extends AbstractHelper
 {
@@ -29,7 +34,7 @@ class Data extends AbstractHelper
      * Data constructor.
      *
      * @param HelperContext $context
-     * @param Config $config
+     * @param Config        $config
      */
     public function __construct(
         HelperContext $context,
@@ -42,7 +47,7 @@ class Data extends AbstractHelper
     /**
      * Check whether the module is enabled
      *
-     * @return bool
+     * @return     bool
      * @deprecated Use Config::isEnabled()
      */
     public function isEnabled()
@@ -53,7 +58,7 @@ class Data extends AbstractHelper
     /**
      * Check whether the module is in debugging mode
      *
-     * @return bool
+     * @return     bool
      * @deprecated Use Config::isDebug()
      */
     public function isDebug()
@@ -64,7 +69,7 @@ class Data extends AbstractHelper
     /**
      * Return the GA ID
      *
-     * @return string
+     * @return     string
      * @deprecated Use Config::getId()
      */
     public function getId()
@@ -75,7 +80,7 @@ class Data extends AbstractHelper
     /**
      * Check whether the insertion method is the observer method
      *
-     * @return bool
+     * @return     bool
      * @deprecated Use Config::isMethodObserver()
      */
     public function isMethodObserver()
@@ -86,7 +91,7 @@ class Data extends AbstractHelper
     /**
      * Check whether the insertion method is the layout method
      *
-     * @return bool
+     * @return     bool
      * @deprecated Use Config::isMethodLayout()
      */
     public function isMethodLayout()
@@ -97,13 +102,13 @@ class Data extends AbstractHelper
     /**
      * Return a configuration value
      *
-     * @param null $key
-     * @param null $defaultValue
+     * @param string $key          Configuration path
+     * @param null   $defaultValue Default value for the key
      *
-     * @return mixed|null
+     * @return     mixed|null
      * @deprecated Use Config::getConfigValue()
      */
-    public function getConfigValue($key = null, $defaultValue = null)
+    public function getConfigValue(string $key = '', $defaultValue = null)
     {
         return $this->config->getConfigValue($key, $defaultValue);
     }
@@ -111,8 +116,8 @@ class Data extends AbstractHelper
     /**
      * Debugging method
      *
-     * @param $string
-     * @param null $variable
+     * @param string $string   String to debug
+     * @param null   $variable Variable to dump to debug message
      *
      * @return bool
      */
