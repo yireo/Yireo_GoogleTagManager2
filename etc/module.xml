@@ -4,6 +4,7 @@
         <sequence>
             <module name="Magento_Catalog"/>
             <module name="Magento_Checkout"/>
+            <module name="Magento_Cookie"/>
             <module name="Magento_Customer"/>
             <module name="Magento_Directory"/>
             <module name="Magento_Quote"/>
