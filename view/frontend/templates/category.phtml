@@ -1,6 +1,6 @@
 <?php
 /**
- * GoogleTagManager plugin for Magento 
+ * GoogleTagManager plugin for Magento
  *
  * @package     Yireo_GoogleTagManager
  * @author      Yireo (http://www.yireo.com/)
@@ -12,30 +12,32 @@
 $helper = $block->getHelper();
 $viewModel = $block->getViewModel();
 
-$loadProducts = (int) $helper->getConfigValue('category_products');
+$loadProducts = (int)$helper->getConfigValue('category_products');
 if ($loadProducts > 0) {
     $productCollection = $block->getLoadedProductCollection();
 }
 ?>
-<?php if($helper->isEnabled()) : ?>
+<?php if ($helper->isEnabled()) : ?>
     <?php $category = $block->getCategory(); ?>
-    <?php if(!empty($category) && $category->getId() > 0) : ?>
+    <?php if (!empty($category) && $category->getId() > 0) : ?>
         <?php $block->addAttribute('categoryId', $category->getId()); ?>
         <?php $block->addAttribute('categoryName', $category->getName()); ?>
     <?php endif; ?>
-    <?php if(!empty($productCollection)) : ?>
+    <?php if (!empty($productCollection)) : ?>
         <?php $block->addAttribute('categorySize', $productCollection->getSize()); ?>
         <?php $categoryProducts = array(); ?>
         <?php $i = 0; ?>
-        <?php foreach($productCollection as $product) : ?>
-            <?php if ($i > $loadProducts) break; ?>
+        <?php foreach ($productCollection as $product) : ?>
+            <?php if ($i > $loadProducts) {
+                break;
+            } ?>
             <?php $categoryProduct = array(); ?>
             <?php $categoryProduct['id'] = $product->getId(); ?>
             <?php $categoryProduct['name'] = $product->getName(); ?>
             <?php $categoryProduct['sku'] = $product->getSku(); ?>
             <?php $categoryProduct['price'] = $product->getPrice(); ?>
             <?php $categoryProducts[] = $categoryProduct; ?>
-            <?php $i++ ; ?>
+            <?php $i++; ?>
         <?php endforeach; ?>
         <?php $block->addAttribute('categoryProducts', $categoryProducts); ?>
     <?php endif; ?>

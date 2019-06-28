@@ -16,14 +16,16 @@ $viewModel = $block->getViewModel();
 $moduleName = $block->getRequest()->getModuleName();
 $controllerName = $block->getRequest()->getControllerName();
 $actionName = $block->getRequest()->getActionName();
-$route = $moduleName.'/'.$controllerName.'/'.$actionName;
+$route = $moduleName . '/' . $controllerName . '/' . $actionName;
 ?>
 <?php if ($helper->isEnabled()) : ?>
     <?php $block->addAttribute('pageType', $route); ?>
     <noscript>
-        <iframe src="//www.googletagmanager.com/ns.html?id=<?= $helper->getId(); ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        <iframe src="//www.googletagmanager.com/ns.html?id=<?= $helper->getId(); ?>" height="0" width="0"
+                style="display:none;visibility:hidden"></iframe>
     </noscript>
     <script type="text/x-magento-init">
     {"*":{"yireoGoogleTagManager":<?php echo $block->getJsonConfiguration() ?>}}
+
     </script>
 <?php endif; ?>
