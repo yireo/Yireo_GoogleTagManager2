@@ -1,2 +1,0 @@
-- Magento 2.2
-- Magento 2.3
