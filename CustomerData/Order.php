@@ -13,7 +13,6 @@ namespace Yireo\GoogleTagManager2\CustomerData;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -40,25 +39,17 @@ class Order implements SectionSourceInterface
     private $scopeConfig;
 
     /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
      * Order constructor.
      *
      * @param CheckoutSession $checkoutSession
      * @param ScopeConfigInterface $scopeConfig
-     * @param Currency $currency
      */
     public function __construct(
         CheckoutSession $checkoutSession,
-        ScopeConfigInterface $scopeConfig,
-        Currency $currency
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->scopeConfig = $scopeConfig;
-        $this->currency = $currency;
     }
 
     /**
@@ -126,7 +117,7 @@ class Order implements SectionSourceInterface
      */
     private function getBaseCurrency(): string
     {
-        return (string) $this->currency->getCurrencySymbol();
+        return (string) $this->order->getOrderCurrencyCode();
     }
 
     /**
