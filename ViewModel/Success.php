@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Checkout\Model\Session;
-use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
@@ -52,11 +51,6 @@ class Success implements ArgumentInterface
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
-    
-    /**
-     * @var Currency
-     */
-    private $currency;
 
     /**
      * Generic constructor.
@@ -65,22 +59,19 @@ class Success implements ArgumentInterface
      * @param Session $checkoutSession
      * @param OrderRepositoryInterface $orderRepository
      * @param ScopeConfigInterface $scopeConfig
-     * @param Currency $currency
      */
     public function __construct(
         Config $config,
         Generic $generic,
         Session $checkoutSession,
         OrderRepositoryInterface $orderRepository,
-        ScopeConfigInterface $scopeConfig,
-        Currency $currency
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->config = $config;
         $this->generic = $generic;
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
         $this->scopeConfig = $scopeConfig;
-        $this->currency = $currency;
     }
 
     /**
@@ -122,7 +113,7 @@ class Success implements ArgumentInterface
             'transactionTax' => (float) $order->getTaxAmount(),
             'transactionShipping' => (float) $order->getShippingAmount(),
             'transactionPayment' => $this->getPaymentLabel($order),
-            'transactionCurrency' => (string) $this->currency->getCurrencySymbol(),
+            'transactionCurrency' => (string) $order->getOrderCurrencyCode(),
             'transactionPromoCode' => (string) $order->getCouponCode(),
             'transactionProducts' => $this->getItemsAsArray($order)
         ];

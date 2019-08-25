@@ -12,7 +12,6 @@ namespace Yireo\GoogleTagManager2\CustomerData;
 
 use Magento\Checkout\Model\Cart;
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote as QuoteModel;
@@ -35,11 +34,6 @@ class Quote implements SectionSourceInterface
     private $scopeConfig;
 
     /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
      * @var Cart
      */
     private $cart;
@@ -52,18 +46,15 @@ class Quote implements SectionSourceInterface
     /**
      * @param Cart $cart
      * @param ScopeConfigInterface $scopeConfig
-     * @param Currency $currency
      */
     public function __construct(
         Cart $cart,
-        ScopeConfigInterface $scopeConfig,
-        Currency $currency
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->cart = $cart;
         $this->order = $cart->getLastRealOrder();
         $this->quote = $cart->getQuote();
         $this->scopeConfig = $scopeConfig;
-        $this->currency = $currency;
     }
 
     /**
@@ -109,7 +100,7 @@ class Quote implements SectionSourceInterface
      */
     private function getBaseCurrency()
     {
-        return $this->currency->getCurrencySymbol();
+        return (string) $this->quote->getQuoteCurrencyCode();
     }
 
     /**
