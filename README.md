@@ -6,6 +6,8 @@ Minimum requirements:
 
 See `composer.json` for other requirements.
 
+[![Build Status](https://travis-ci.org/yireo/Yireo_GoogleTagManager2.svg?branch=master)](https://travis-ci.org/yireo/Yireo_GoogleTagManager2) [![Coverage Status](https://coveralls.io/repos/github/yireo/Yireo_GoogleTagManager2/badge.svg?branch=master)](https://coveralls.io/github/yireo/Yireo_GoogleTagManager2?branch=master)
+
 ## See also
 - [Installation](INSTALL.md)
 - [Usage](USAGE.md)
