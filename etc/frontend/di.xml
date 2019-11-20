@@ -1,5 +1,30 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Yireo\GoogleTagManager2\ViewModel\Script">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\Helper\Data">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\CustomerData\Order">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Customer\CustomerData\SectionPoolInterface">
         <arguments>
             <argument name="sectionSourceMap" xsi:type="array">
@@ -7,5 +32,13 @@
                 <item name="yireo-gtm-order" xsi:type="string">Yireo\GoogleTagManager2\CustomerData\Order</item>
             </argument>
         </arguments>
+    </type>
+
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="yireo_googletagmanager2_magento_customer_customerdata_customer" type="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer"/>
+    </type>
+
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="yireo_googletagmanager2_magento_checkout_customer_data_cart" type="Yireo\GoogleTagManager2\Plugin\Magento\Checkout\CustomerData\Cart"/>
     </type>
 </config>
