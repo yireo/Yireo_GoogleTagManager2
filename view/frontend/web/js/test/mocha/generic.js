@@ -42,28 +42,6 @@ describe('GTM dataLayer', function () {
     });
 });
 
-
-describe('GTM cart monitor', function () {
-    it('more or less works', function() {
-        var generic = requirejs('generic');
-        assert.ok(generic.monitorCart());
-    });
-});
-
-describe('GTM checkout monitor', function () {
-    it('more or less works', function() {
-        var generic = requirejs('generic');
-        assert.ok(generic.monitorCheckout());
-    });
-});
-
-describe('GTM customer monitor', function () {
-    it('more or less works', function() {
-        var generic = requirejs('generic');
-        assert.ok(generic.monitorCustomer());
-    });
-});
-
 describe('GTM customer section', function () {
     it('looks ok', function() {
         var generic = requirejs('generic');

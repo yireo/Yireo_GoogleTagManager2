@@ -4,25 +4,32 @@
  *
  * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\CustomerData;
+namespace Yireo\GoogleTagManager2\Plugin\Magento\Checkout\CustomerData;
 
-use Magento\Checkout\Model\Cart;
-use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Checkout\CustomerData\Cart as CustomerData;
+use Magento\Checkout\Model\Cart as CheckoutCart;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote as QuoteModel;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
 
 /**
- * Class \Yireo\GoogleTagManager2\CustomerData\Quote
+ * Class Cart
+ *
+ * @package Yireo\GoogleTagManager2\Plugin\Magento\Checkout\CustomerData
  */
-class Quote implements SectionSourceInterface
+class Cart
 {
+    /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
     /**
      * @var QuoteModel
      */
@@ -34,55 +41,49 @@ class Quote implements SectionSourceInterface
     private $scopeConfig;
 
     /**
-     * @var Cart
-     */
-    private $cart;
-
-    /**
-     * @var OrderInterface
-     */
-    private $order;
-
-    /**
-     * @param Cart $cart
+     * @param CheckoutSession $checkoutSession
+     * @param CheckoutCart $checkoutCart
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        Cart $cart,
+        CheckoutSession $checkoutSession,
+        CheckoutCart $checkoutCart,
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->cart = $cart;
-        $this->order = $cart->getLastRealOrder();
-        $this->quote = $cart->getQuote();
+        $this->checkoutSession = $checkoutSession;
+        $this->quote = $checkoutCart->getQuote();
         $this->scopeConfig = $scopeConfig;
     }
 
     /**
+     * @param CustomerData $subject
+     * @param array $result
      * @return array
-     * @throws LocalizedException
      */
-    public function getSectionData()
+    public function afterGetSectionData(CustomerData $subject, $result)
     {
-        if ($this->hasQuote() === false) {
-            return [
-            ];
+        if (empty($result) || !is_array($result)) {
+            return $result;
         }
 
-        return [
+        $result['gtm'] = [
             'transactionEntity' => 'QUOTE',
-            'transactionId' => $this->getId(),
+            'transactionId' => $this->getQuoteId(),
             'transactionAffiliation' => $this->getWebsiteName(),
             'transactionTotal' => $this->getTotalAmount(),
             'transactionTax' => $this->getTaxAmount(),
             'transactionCurrency' => $this->getBaseCurrency(),
             'transactionProducts' => $this->getItemsAsArray()
         ];
+
+        return $result;
     }
+
 
     /**
      * @return int
      */
-    private function getId()
+    private function getQuoteId()
     {
         return $this->quote->getId();
     }
@@ -120,6 +121,39 @@ class Quote implements SectionSourceInterface
     }
 
     /**
+     * @return OrderInterface
+     */
+    private function getOrder(): OrderInterface
+    {
+        return $this->checkoutSession->getLastRealOrder();
+    }
+
+    /**
+     * @return string
+     */
+    private function getOrderId(): string
+    {
+        if ($this->hasOrder() === false) {
+            return '';
+        }
+
+        return (string) $this->getOrder()->getIncrementId();
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasOrder()
+    {
+        $order = $this->getOrder();
+        if ($quote->getItems()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @return bool
      */
     private function hasQuote()
@@ -136,7 +170,6 @@ class Quote implements SectionSourceInterface
      * Return all quote items as array
      *
      * @return array
-     * @throws LocalizedException
      */
     private function getItemsAsArray()
     {

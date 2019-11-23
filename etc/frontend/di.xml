@@ -25,15 +25,6 @@
         </arguments>
     </type>
 
-    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
-        <arguments>
-            <argument name="sectionSourceMap" xsi:type="array">
-                <item name="yireo-gtm-quote" xsi:type="string">Yireo\GoogleTagManager2\CustomerData\Quote</item>
-                <item name="yireo-gtm-order" xsi:type="string">Yireo\GoogleTagManager2\CustomerData\Order</item>
-            </argument>
-        </arguments>
-    </type>
-
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="yireo_googletagmanager2_magento_customer_customerdata_customer" type="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer"/>
     </type>
