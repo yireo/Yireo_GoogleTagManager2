@@ -1,5 +1,5 @@
 # Installation
-# Minimum requirements
+## Minimum requirements
 - Magento 2.2.0 Stable
 
 See `composer.json` for other requirements.
@@ -40,3 +40,13 @@ We recommend `composer` to install this package. If you want a manual copy inste
 * Configure settings under `Stores > Configuration > Sales > Yireo GoogleTagManager`
 * Done
 
+## Removing the extension
+If you are not the person having added this extension, we very strongly recommend you to have a technical person look into the deinstallation of our module. Deinstalling Magento modules is a technical matter, peanuts for a developer and our extension is not different in any way.
+
+If you have installed this extension via `composer`, simply follow the `composer` procedure again:
+
+    composer remove yireo/magento2-googletagmanager2
+
+If you have copied files to `app/code/Yireo/GoogleTagManager2`, remove them.
+
+Next, follow your deployment procedure to copy changes to your live site. Theoretically, you can modify the `core_config_data` configuration table to remove configuration values from there. Note that Magento does not offer a solid uninstall procedure for this anyway.
