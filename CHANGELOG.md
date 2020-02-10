@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2020-02-10
+### Added
+- Add ACL file for configuring access to config
+
 ## [1.1.0] - 2019-11-23
 ### Added
 - Major rewrite to remove custom sections in favor of DI plugin
