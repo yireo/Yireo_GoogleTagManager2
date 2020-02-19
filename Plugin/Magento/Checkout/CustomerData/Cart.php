@@ -146,7 +146,7 @@ class Cart
     private function hasOrder()
     {
         $order = $this->getOrder();
-        if ($quote->getItems()) {
+        if ($order->getItems()) {
             return true;
         }
 
