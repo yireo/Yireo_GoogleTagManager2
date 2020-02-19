@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Yireo GoogleTagManager2 for Magento
+ *
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Yireo_GoogleTagManager2::config" title="Yireo GoogleTagManager2" translate="title" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
