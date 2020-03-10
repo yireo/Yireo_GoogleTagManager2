@@ -1,5 +1,7 @@
 # Configuration
-Login to your [Google Tag Manager](http://www.google.com/tagmanager/) account. Follow the Google instructions to create a new Google Tag Manager **container**. Extract the **Container Public ID** from your new container. Configure your new ID in Magento through **System > Configuration > [Sales] Google Tag Manager**.
+Login to your [Google Tag Manager](http://www.google.com/tagmanager/) account. Follow the Google instructions to
+create a new Google Tag Manager **container**. Extract the **Container Public ID** from your new container. Configure
+your new ID in Magento through **Store > Configuration > [Sales] Google Tag Manager**.
 
 # Features
 The extension has the following configuration options:
