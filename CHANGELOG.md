@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2020-03-31
+### Added
+- Add support for existing data layer (@sprankhub)
+
 ## [1.1.1] - 2020-02-10
 ### Added
 - Add ACL file for configuring access to config
