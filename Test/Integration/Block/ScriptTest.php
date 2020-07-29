@@ -23,7 +23,7 @@ class ScriptTest extends AbstractController
     /**
      * Setup method
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->configure();
@@ -34,7 +34,7 @@ class ScriptTest extends AbstractController
      */
     public function testCanHandleGetRequests()
     {
-        $this->getRequest()->setMethod(Request::METHOD_GET);
+        $this->getRequest()->setMethod('GET');
         $this->dispatch($this->uri);
         $this->assertSame(200, $this->getResponse()->getHttpResponseCode());
     }
@@ -46,7 +46,7 @@ class ScriptTest extends AbstractController
     {
         $this->dispatch('checkout/index/cart');
         $body = $this->getResponse()->getBody();
-        $this->assertContains('yireoGoogleTagManager', $body);
+        $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManager'));
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -11,12 +12,9 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Unit;
 
-use Mockery;
 use PHPUnit\Framework\TestCase;
-
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
-
 use Yireo\GoogleTagManager2\Config;
 
 /**
@@ -117,13 +115,12 @@ class ConfigTest extends TestCase
      */
     private function getScopeConfigMock(): ScopeConfigInterface
     {
-        $this->scopeConfig = Mockery::mock(ScopeConfigInterface::class);
-
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
         foreach ($this->settings as $path => $value) {
-            $this->scopeConfig->allows()->getValue($path, 'store')->andReturns($value);
+            $scopeConfig->method('getValue')->with($path)->willReturn($value);
         }
 
-        return $this->scopeConfig;
+        return $scopeConfig;
     }
 
     /**
@@ -131,10 +128,9 @@ class ConfigTest extends TestCase
      */
     private function getCookieHelperMock(): CookieHelper
     {
-        $cookieHelper = Mockery::mock(CookieHelper::class);
-        $cookieHelper->allows()->isCookieRestrictionModeEnabled()->andReturns(true);
-        $cookieHelper->allows()->isUserNotAllowSaveCookie()->andReturns(false);
-
+        $cookieHelper = $this->createMock(CookieHelper::class);
+        $cookieHelper->method('isCookieRestrictionModeEnabled')->willReturn(true);
+        $cookieHelper->method('isUserNotAllowSaveCookie')->willReturn(false);
         return $cookieHelper;
     }
 
@@ -146,7 +142,7 @@ class ConfigTest extends TestCase
     private function setScopeConfigValue($path, $value, $prefix = true)
     {
         if ($prefix) {
-            $path = 'googletagmanager2/settings/'.$path;
+            $path = 'googletagmanager2/settings/' . $path;
         }
 
         $this->settings[$path] = $value;

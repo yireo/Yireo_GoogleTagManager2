@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 29 July 2020
+### Added
+- Magento 2.4 support
+
+## [2.0.0] - 2020-07-21
+### Removed
+- Legacy CustomerData class
+- Dev dependency with Mockery
+
+### Fixed
+- Upgrade PHPUnit to be 2.4 compatible
+- Bumped minimum PHP to 7.2
+
 ## [1.1.3] - 2020-05-30
 ### Fixed
 - Add a new CSP whitelist for M2.3.5+

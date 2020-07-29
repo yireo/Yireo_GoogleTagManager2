@@ -19,12 +19,6 @@
         </arguments>
     </type>
 
-    <type name="Yireo\GoogleTagManager2\CustomerData\Order">
-        <arguments>
-            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-        </arguments>
-    </type>
-
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="yireo_googletagmanager2_magento_customer_customerdata_customer" type="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer"/>
     </type>
