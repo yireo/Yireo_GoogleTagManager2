@@ -16,8 +16,8 @@ use InvalidArgumentException;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Group as CustomerGroup;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\BlockFactory;
 use Magento\Framework\View\Element\BlockInterface;
@@ -25,6 +25,8 @@ use Magento\Framework\View\LayoutFactory;
 use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
 use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
+use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Script
@@ -67,18 +69,23 @@ class Script implements ArgumentInterface
     private $salesOrder;
 
     /**
-     * @var Registry
-     */
-    private $coreRegistry;
-
-    /**
      * @var CustomerGroup
      */
     private $customerGroup;
+
     /**
      * @var Config
      */
     private $config;
+
+    /**
+     * @var GetCurrentProduct
+     */
+    private $getCurrentProduct;
+    /**
+     * @var GetCurrentCategory
+     */
+    private $getCurrentCategory;
 
     /**
      * @param DataHelper $moduleHelper
@@ -87,10 +94,11 @@ class Script implements ArgumentInterface
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
      * @param Order $salesOrder
-     * @param Registry $coreRegistry
      * @param CustomerGroup $customerGroup
      * @param PricingHelper $pricingHelper
      * @param Config $config
+     * @param GetCurrentProduct $getCurrentProduct
+     * @param GetCurrentCategory $getCurrentCategory
      */
     public function __construct(
         DataHelper $moduleHelper,
@@ -99,10 +107,11 @@ class Script implements ArgumentInterface
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
         Order $salesOrder,
-        Registry $coreRegistry,
         CustomerGroup $customerGroup,
         PricingHelper $pricingHelper,
-        Config $config
+        Config $config,
+        GetCurrentProduct $getCurrentProduct,
+        GetCurrentCategory $getCurrentCategory
     ) {
         $this->moduleHelper = $moduleHelper;
         $this->layoutFactory = $layoutFactory;
@@ -110,10 +119,11 @@ class Script implements ArgumentInterface
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->salesOrder = $salesOrder;
-        $this->coreRegistry = $coreRegistry;
         $this->customerGroup = $customerGroup;
         $this->pricingHelper = $pricingHelper;
         $this->config = $config;
+        $this->getCurrentProduct = $getCurrentProduct;
+        $this->getCurrentCategory = $getCurrentCategory;
     }
 
     /**
@@ -150,9 +160,10 @@ class Script implements ArgumentInterface
      */
     public function addProduct(&$childScript)
     {
-        $currentProduct = $this->coreRegistry->registry('current_product');
-        if (empty($currentProduct)) {
-            return;
+        try {
+            $currentProduct = $this->getCurrentProduct->get();
+        } catch (NoSuchEntityException $e) {
+            return null;
         }
 
         $productBlock = $this->fetchBlock('product', 'product', 'product.phtml');
@@ -169,8 +180,9 @@ class Script implements ArgumentInterface
      */
     public function addCategory(&$childScript)
     {
-        $currentCategory = $this->coreRegistry->registry('current_category');
-        if (empty($currentCategory)) {
+        try {
+            $currentCategory = $this->getCurrentCategory->get();
+        } catch (NoSuchEntityException $e) {
             return;
         }
 
