@@ -11,6 +11,7 @@
 namespace Yireo\GoogleTagManager2\Block;
 
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Data\CollectionFactory;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -83,7 +84,10 @@ class Generic extends Template
      * @param Data $helper
      * @param Container $container
      * @param EncoderInterface $jsonEncoder
+     * @param Config $config
      * @param array $data
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function __construct(
         Context $context,
