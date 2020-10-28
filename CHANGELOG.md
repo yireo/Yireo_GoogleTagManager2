@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Category Sort By not working properly with 2.4.X because of weird product loading (70)
 - Refactored legacy Registry into request
+- Move Config class to new namespace
+- PHPCS fixes for Magento Marketplace compliance
 
 ## [2.0.1] - 29 July 2020
 ### Added

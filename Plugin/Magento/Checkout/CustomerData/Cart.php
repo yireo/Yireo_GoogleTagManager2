@@ -73,7 +73,6 @@ class Cart
         return $result;
     }
 
-
     /**
      * @return int
      */
