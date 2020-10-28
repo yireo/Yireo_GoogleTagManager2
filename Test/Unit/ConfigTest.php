@@ -16,9 +16,6 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Yireo\GoogleTagManager2\Config;
 
-/**
- * Class ConfigTest
- */
 class ConfigTest extends TestCase
 {
     /**

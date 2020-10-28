@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Yireo\GoogleTagManager2\Test\Unit\Helper;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 use Yireo\GoogleTagManager2\Helper\Data;
@@ -31,14 +30,14 @@ class DataTest extends TestCase
     }
 
     /**
+     * @param array $configData
      * @return Data
      */
     private function getTarget(array $configData = []): Data
     {
         $helperContext = $this->getHelperContextMock();
         $config = $this->getConfigMock($configData);
-        $target = new Data($helperContext, $config);
-        return $target;
+        return new Data($helperContext, $config);
     }
 
     /**
@@ -51,13 +50,12 @@ class DataTest extends TestCase
     }
 
     /**
-     * @param array $data
-     *
+     * @param array $configData
      * @return Config
      */
     private function getConfigMock(array $configData = []): Config
     {
-        $config = Mockery::mock(Config::class);
+        $config = $this->createMock(Config::class);
 
         if (isset($configData['debug']) && $configData['debug'] == true) {
             $config->allows()->isDebug()->andReturns(true);
