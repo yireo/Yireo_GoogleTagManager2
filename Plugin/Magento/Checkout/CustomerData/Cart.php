@@ -17,9 +17,6 @@ use Magento\Quote\Model\Quote as QuoteModel;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
 
-/**
- * Class Cart
- */
 class Cart
 {
     /**

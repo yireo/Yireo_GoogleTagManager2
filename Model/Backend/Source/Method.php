@@ -11,9 +11,6 @@ namespace Yireo\GoogleTagManager2\Model\Backend\Source;
 
 use Yireo\GoogleTagManager2\Helper\Data;
 
-/**
- * Class Yireo\GoogleTagManager2\Model\Backend\Source\Method
- */
 class Method
 {
     /**

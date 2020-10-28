@@ -12,9 +12,6 @@ namespace Yireo\GoogleTagManager2\Model;
 use Magento\Framework\DataObject;
 use Yireo\GoogleTagManager2\Helper\Data;
 
-/**
- * Class \Yireo\GoogleTagManager2\Model\Container
- */
 class Container extends DataObject
 {
     /**

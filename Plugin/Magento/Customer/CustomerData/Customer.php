@@ -15,9 +15,6 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class Customer
- */
 class Customer
 {
     /**

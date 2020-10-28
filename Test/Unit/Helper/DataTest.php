@@ -10,9 +10,6 @@ use Yireo\GoogleTagManager2\Helper\Data;
 use Magento\Framework\App\Helper\Context as HelperContext;
 use Yireo\GoogleTagManager2\Config;
 
-/**
- * Class DataTest
- */
 class DataTest extends TestCase
 {
     /**

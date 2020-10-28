@@ -14,13 +14,6 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context as HelperContext;
 use Yireo\GoogleTagManager2\Config;
 
-/**
- * Class \Yireo\GoogleTagManager2\Helper\Data
- *
- * @author    Jisse Reitsma <jisse@yireo.com>
- * @copyright 2017 Yireo (https://www.yireo.com/)
- * @license   Open Source License (OSL v3)
- */
 class Data extends AbstractHelper
 {
     /**

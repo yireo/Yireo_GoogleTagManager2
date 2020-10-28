@@ -12,9 +12,6 @@ namespace Yireo\GoogleTagManager2\Factory;
 use Magento\Framework\ObjectManagerInterface;
 use Yireo\GoogleTagManager2\ViewModel\Generic;
 
-/**
- * Class \Yireo\GoogleTagManager2\Factory\ViewModelFactory
- */
 class ViewModelFactory
 {
     /**

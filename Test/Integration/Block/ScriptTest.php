@@ -10,9 +10,6 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Request;
 use Magento\TestFramework\TestCase\AbstractController;
 
-/**
- *
- */
 class ScriptTest extends AbstractController
 {
     /**
