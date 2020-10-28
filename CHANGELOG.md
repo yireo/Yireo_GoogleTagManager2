@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.2] - 28 October 2020
 ### Fixed
+- Category Sort By not working properly with 2.4.X because of weird product loading (70)
 - Refactored legacy Registry into request
 
 ## [2.0.1] - 29 July 2020
