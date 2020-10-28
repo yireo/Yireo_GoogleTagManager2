@@ -13,8 +13,6 @@ use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class DataTest
- *
- * @package Yireo\GoogleTagManager2\Test\Unit\Helper
  */
 class DataTest extends TestCase
 {

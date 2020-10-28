@@ -9,8 +9,6 @@ use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Config
- *
- * @package Yireo\GoogleTagManager2
  */
 class Config
 {

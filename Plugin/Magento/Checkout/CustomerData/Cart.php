@@ -2,7 +2,6 @@
 /**
  * GoogleTagManager2 plugin for Magento
  *
- * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
@@ -20,8 +19,6 @@ use Magento\Sales\Model\Order\Item;
 
 /**
  * Class Cart
- *
- * @package Yireo\GoogleTagManager2\Plugin\Magento\Checkout\CustomerData
  */
 class Cart
 {

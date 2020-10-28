@@ -3,7 +3,6 @@
 /**
  * GoogleTagManager2 plugin for Magento
  *
- * @package     Yireo_GoogleTagManager2
  * @author      Yireo (https://www.yireo.com/)
  * @copyright   Copyright 2018 Yireo (https://www.yireo.com/)
  * @license     Open Source License
@@ -19,8 +18,6 @@ use Yireo\GoogleTagManager2\Config;
 
 /**
  * Class ConfigTest
- *
- * @package Yireo\GoogleTagManager2\Test\Unit
  */
 class ConfigTest extends TestCase
 {

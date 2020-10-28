@@ -2,7 +2,6 @@
 /**
  * GoogleTagManager2 plugin for Magento
  *
- * @package   Yireo_GoogleTagManager2
  * @author    Jisse Reitsma <jisse@yireo.com>
  * @copyright 2017 Yireo (https://www.yireo.com/)
  * @license   Open Source License (OSL v3)
@@ -18,7 +17,6 @@ use Yireo\GoogleTagManager2\Config;
 /**
  * Class \Yireo\GoogleTagManager2\Helper\Data
  *
- * @package   Yireo_GoogleTagManager2
  * @author    Jisse Reitsma <jisse@yireo.com>
  * @copyright 2017 Yireo (https://www.yireo.com/)
  * @license   Open Source License (OSL v3)
