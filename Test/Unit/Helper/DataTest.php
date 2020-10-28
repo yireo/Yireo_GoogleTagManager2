@@ -55,9 +55,9 @@ class DataTest extends TestCase
         $config = $this->createMock(Config::class);
 
         if (isset($configData['debug']) && $configData['debug'] == true) {
-            $config->allows()->isDebug()->andReturns(true);
+            $config->method('isDebug')->willReturn(true);
         } else {
-            $config->allows()->isDebug()->andReturns(false);
+            $config->method('isDebug')->willReturn(false);
         }
 
         return $config;
