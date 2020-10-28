@@ -12,7 +12,7 @@ namespace Yireo\GoogleTagManager2\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Helper\Data;
 use Yireo\GoogleTagManager2\ViewModel\Script;
 

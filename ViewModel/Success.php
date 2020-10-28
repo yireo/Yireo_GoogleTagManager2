@@ -17,7 +17,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\GoogleTagManager2\Block\Generic;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
 

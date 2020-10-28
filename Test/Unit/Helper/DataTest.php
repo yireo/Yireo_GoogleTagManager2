@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 use Yireo\GoogleTagManager2\Helper\Data;
 use Magento\Framework\App\Helper\Context as HelperContext;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 
 class DataTest extends TestCase
 {

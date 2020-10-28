@@ -1,15 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2;
+namespace Yireo\GoogleTagManager2\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class Config
- */
 class Config
 {
     /**

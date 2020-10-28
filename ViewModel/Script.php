@@ -23,7 +23,7 @@ use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 
@@ -81,6 +81,7 @@ class Script implements ArgumentInterface
      * @var GetCurrentProduct
      */
     private $getCurrentProduct;
+
     /**
      * @var GetCurrentCategory
      */

@@ -14,7 +14,7 @@ namespace Yireo\GoogleTagManager2\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 
 class ConfigTest extends TestCase
 {

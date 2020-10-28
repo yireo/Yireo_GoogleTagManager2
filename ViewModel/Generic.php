@@ -13,7 +13,7 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Directory\Model\Currency;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Generic

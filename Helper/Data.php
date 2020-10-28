@@ -12,7 +12,7 @@ namespace Yireo\GoogleTagManager2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context as HelperContext;
-use Yireo\GoogleTagManager2\Config;
+use Yireo\GoogleTagManager2\Config\Config;
 
 class Data extends AbstractHelper
 {
