@@ -9,9 +9,6 @@
 
 namespace Yireo\GoogleTagManager2\Block;
 
-/**
- * Class Yireo\GoogleTagManager2\Block\Product
- */
 class Product extends Generic
 {
     /**

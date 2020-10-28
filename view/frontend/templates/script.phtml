@@ -11,5 +11,5 @@
 $viewModel = $block->getViewModel();
 
 if ($viewModel->isEnabled()) {
-    echo $viewModel->getScript();
+    echo /** @noEscape */$viewModel->getScript();
 }

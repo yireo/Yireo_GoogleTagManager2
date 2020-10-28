@@ -13,9 +13,6 @@ namespace Yireo\GoogleTagManager2\Block;
 
 use Yireo\GoogleTagManager2\ViewModel\Script as ScriptViewModel;
 
-/**
- * Class \Yireo\GoogleTagManager2\Block\Script
- */
 class Script extends Generic
 {
     /**

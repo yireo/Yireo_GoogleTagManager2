@@ -11,9 +11,9 @@
 $helper = $block->getHelper();
 $viewModel = $block->getViewModel();
 ?>
-<?php if ($helper->isEnabled()) : ?>
+<?php if ($helper->isEnabled()): ?>
     <?php $product = $block->getProduct(); ?>
-    <?php if (!empty($product) && $product->getId() > 0) : ?>
+    <?php if (!empty($product) && $product->getId() > 0): ?>
         <?php $block->addAttribute('productId', $product->getId()); ?>
         <?php $block->addAttribute('productName', $product->getName()); ?>
         <?php $block->addAttribute('productSku', $product->getSku()); ?>

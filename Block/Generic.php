@@ -23,9 +23,6 @@ use Yireo\GoogleTagManager2\Model\Container;
 use Yireo\GoogleTagManager2\ViewModel\Generic as GenericViewModel;
 use Yireo\GoogleTagManager2\Config;
 
-/**
- * Class \Yireo\GoogleTagManager2\Block\Generic
- */
 class Generic extends Template
 {
     /**

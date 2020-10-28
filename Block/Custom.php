@@ -13,9 +13,6 @@ namespace Yireo\GoogleTagManager2\Block;
 
 use Yireo\GoogleTagManager2\ViewModel\Custom as CustomViewModel;
 
-/**
- * Class Yireo\GoogleTagManager2\Block\Custom
- */
 class Custom extends Generic
 {
     /**

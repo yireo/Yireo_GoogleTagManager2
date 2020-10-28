@@ -16,9 +16,6 @@ use Yireo\GoogleTagManager2\Config;
 use Yireo\GoogleTagManager2\Helper\Data;
 use Yireo\GoogleTagManager2\ViewModel\Script;
 
-/**
- * Class CoreLayoutRenderElement
- */
 class CoreLayoutRenderElement implements ObserverInterface
 {
     /**

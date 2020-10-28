@@ -16,21 +16,21 @@ if ($loadProducts > 0) {
     $productCollection = $block->getLoadedProductCollection();
 }
 ?>
-<?php if ($helper->isEnabled()) : ?>
+<?php if ($helper->isEnabled()): ?>
     <?php $category = $block->getCategory(); ?>
-    <?php if (!empty($category) && $category->getId() > 0) : ?>
+    <?php if (!empty($category) && $category->getId() > 0): ?>
         <?php $block->addAttribute('categoryId', $category->getId()); ?>
         <?php $block->addAttribute('categoryName', $category->getName()); ?>
     <?php endif; ?>
-    <?php if (!empty($productCollection)) : ?>
+    <?php if (!empty($productCollection)): ?>
         <?php $block->addAttribute('categorySize', $productCollection->getSize()); ?>
-        <?php $categoryProducts = array(); ?>
+        <?php $categoryProducts = []; ?>
         <?php $i = 0; ?>
-        <?php foreach ($productCollection as $product) : ?>
+        <?php foreach ($productCollection as $product): ?>
             <?php if ($i > $loadProducts) {
                 break;
             } ?>
-            <?php $categoryProduct = array(); ?>
+            <?php $categoryProduct = []; ?>
             <?php $categoryProduct['id'] = $product->getId(); ?>
             <?php $categoryProduct['name'] = $product->getName(); ?>
             <?php $categoryProduct['sku'] = $product->getSku(); ?>

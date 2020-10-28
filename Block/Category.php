@@ -14,9 +14,6 @@ use Magento\Framework\Data\Collection;
 use Magento\Framework\Exception\LocalizedException;
 use Yireo\GoogleTagManager2\ViewModel\Category as CategoryViewModel;
 
-/**
- * Class \Yireo\GoogleTagManager2\Block\Category
- */
 class Category extends Generic
 {
     /**
