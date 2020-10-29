@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.3] - 29 October 2020
+### Fixed
+- Fix error when block is not present
+
 ## [2.0.2] - 28 October 2020
 ### Fixed
 - Category Sort By not working properly with 2.4.X because of weird product loading (70)

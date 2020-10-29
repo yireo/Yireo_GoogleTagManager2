@@ -37,6 +37,10 @@ class Category extends Generic
     {
         /** @var ListProduct $productListBlock */
         $productListBlock = $this->layout->getBlock('category.products.list');
+        if (!$productListBlock) {
+            return;
+        }
+
         $productListBlock->toHtml();
         return $productListBlock->getLoadedProductCollection();
     }
