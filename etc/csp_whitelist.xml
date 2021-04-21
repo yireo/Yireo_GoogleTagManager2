@@ -4,7 +4,7 @@
     <policies>
         <policy id="script-src">
             <values>
-                <value id="yireo-google-tagmanager" type="host">www.googletagmanager.com</value>
+                <value id="yireo-google-tagmanager" type="host">www.googletagmanager.com2</value>
             </values>
         </policy>
     </policies>
