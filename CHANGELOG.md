@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.4] - 30 April 2022
 ### Fixed
 - Fix block retrieval with Layout instead LayoutFactory (@sprankhub)
+- Make sure view model is set correctly (@sprankhub)
 
 ## [2.0.3] - 29 October 2020
 ### Fixed
