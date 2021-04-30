@@ -235,7 +235,7 @@ class Script implements ArgumentInterface
             return $block;
         }
 
-        $arguments = ['view_model' => Generic::class];
+        $arguments = ['data' => ['view_model' => Generic::class]];
         if ($block = $this->blockFactory->createBlock($classType, $arguments)->setTemplate($template)) {
             $this->moduleHelper->debug('Helper: Creating new block: ' . $classType);
             return $block;
