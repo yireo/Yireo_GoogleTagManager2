@@ -36,7 +36,7 @@
             </arguments>
         </block>
 
-        <block class="Yireo\GoogleTagManager2\Block\Generic" template="generic.phtml" name="googletagmanager">
+        <block class="Yireo\GoogleTagManager2\Block\Generic" template="generic.phtml" name="googletagmanager_generic">
             <arguments>
                 <argument name="view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Generic</argument>
             </arguments>

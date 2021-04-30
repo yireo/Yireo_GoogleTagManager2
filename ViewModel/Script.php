@@ -20,7 +20,7 @@ use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\BlockFactory;
 use Magento\Framework\View\Element\BlockInterface;
-use Magento\Framework\View\LayoutFactory;
+use Magento\Framework\View\LayoutInterface;
 use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Helper\Data as DataHelper;
 use Yireo\GoogleTagManager2\Config\Config;
@@ -38,9 +38,9 @@ class Script implements ArgumentInterface
     private $moduleHelper;
 
     /**
-     * @var LayoutFactory
+     * @var LayoutInterface
      */
-    private $layoutFactory;
+    private $layout;
 
     /**
      * @var PricingHelper
@@ -89,7 +89,7 @@ class Script implements ArgumentInterface
 
     /**
      * @param DataHelper $moduleHelper
-     * @param LayoutFactory $layoutFactory
+     * @param LayoutInterface $layout
      * @param BlockFactory $blockFactory
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
@@ -102,7 +102,7 @@ class Script implements ArgumentInterface
      */
     public function __construct(
         DataHelper $moduleHelper,
-        LayoutFactory $layoutFactory,
+        LayoutInterface $layout,
         BlockFactory $blockFactory,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
@@ -114,7 +114,7 @@ class Script implements ArgumentInterface
         GetCurrentCategory $getCurrentCategory
     ) {
         $this->moduleHelper = $moduleHelper;
-        $this->layoutFactory = $layoutFactory;
+        $this->layout = $layout;
         $this->blockFactory = $blockFactory;
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
@@ -216,11 +216,9 @@ class Script implements ArgumentInterface
      *
      * @return BlockInterface
      */
-    public function fetchBlock($className, $classType, $template)
+    public function fetchBlock($blockName, $classType, $template)
     {
-        if (!strstr($className, '\\')) {
-            $className = '\Yireo\GoogleTagManager2\Block\\' . ucfirst($className);
-        }
+        $blockName = 'googletagmanager_' . $blockName;
 
         if (!strstr($classType, '\\')) {
             $classType = '\Yireo\GoogleTagManager2\Block\\' . ucfirst($classType);
@@ -230,8 +228,8 @@ class Script implements ArgumentInterface
             $template = 'Yireo_GoogleTagManager2::' . $template;
         }
 
-        if ($block = $this->layoutFactory->create()->getBlock($className)) {
-            $this->moduleHelper->debug('Helper: Loading block from layout: ' . $className);
+        if ($block = $this->layout->getBlock($blockName)) {
+            $this->moduleHelper->debug('Helper: Loading block from layout: ' . $blockName);
             return $block;
         }
 
@@ -241,8 +239,8 @@ class Script implements ArgumentInterface
             return $block;
         }
 
-        $this->moduleHelper->debug('Helper: Unknown block: ' . $className);
-        throw new InvalidArgumentException('Helper: Unknown block: ' . $className);
+        $this->moduleHelper->debug('Helper: Unknown block: ' . $blockName);
+        throw new InvalidArgumentException('Helper: Unknown block: ' . $blockName);
     }
 
     /**
