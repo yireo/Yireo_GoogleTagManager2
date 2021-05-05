@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.4] - 30 April 2022
+## [2.0.5] - 5 May 2021
+### Fixed
+Re-add CSP whitelisting
+
+## [2.0.4] - 30 April 2021
 ### Fixed
 - Fix block retrieval with Layout instead LayoutFactory (@sprankhub)
 - Make sure view model is set correctly (@sprankhub)
