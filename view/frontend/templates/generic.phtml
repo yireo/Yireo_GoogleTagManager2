@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -7,7 +7,9 @@
  * @license     Open Software License
  */
 
-/** @var \Yireo\GoogleTagManager2\Block\Generic $block */
+use Yireo\GoogleTagManager2\Block\Generic;
+
+/** @var Generic $block */
 $helper = $block->getHelper();
 $viewModel = $block->getViewModel();
 
@@ -24,7 +26,9 @@ $route = $moduleName . '/' . $controllerName . '/' . $actionName;
                 height="0" width="0"
                 style="display:none;visibility:hidden"></iframe>
     </noscript>
-    <script type="text/x-magento-init">
-    {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $block->getJsonConfiguration() ?>}}
+    <script>
+        require(['yireoGoogleTagManager'], function(yireoGoogleTagManager) {
+            yireoGoogleTagManager.yireoGoogleTagManager(<?=  /* @noEscape */ $block->getJsonConfiguration() ?>);
+        })
     </script>
 <?php endif; ?>
