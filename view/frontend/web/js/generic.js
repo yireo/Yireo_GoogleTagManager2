@@ -25,6 +25,10 @@ define([
         return false;
     };
 
+    var isDebug = function(config) {
+        return !!config.debug;
+    }
+
     var isValidConfig = function(config) {
         if (typeof config.id === 'undefined' || !config.id) {
             console.warn('GTM identifier empty, terminating GTM initialization.');
@@ -122,6 +126,11 @@ define([
 
             var attributes = $.extend(getCustomerSpecificAttributes(), config.attributes);
             attributes = $.extend(getCartSpecificAttributes(), attributes);
+
+            if (isDebug(config)) {
+                console.log('GTM debugging', attributes, config);
+            }
+            console.log('GTM debugging', attributes.categoryProducts);
 
             dataLayer.push(attributes);
             addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
