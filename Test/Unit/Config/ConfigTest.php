@@ -9,8 +9,9 @@
  */
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Unit;
+namespace Yireo\GoogleTagManager2\Test\Unit\Config;
 
+use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
@@ -24,21 +25,16 @@ class ConfigTest extends TestCase
     private $settings = [];
 
     /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
      * @test
      * @covers Config::isEnabled
      */
     public function testIsEnabled()
     {
         $this->setScopeConfigValue('enabled', 1);
-        $this->assertEquals($this->getTarget()->isEnabled(), true);
+        $this->assertEquals(true, $this->getTarget()->isEnabled());
 
         $this->setScopeConfigValue('enabled', 0);
-        $this->assertEquals($this->getTarget()->isEnabled(), false);
+        $this->assertEquals(false, $this->getTarget()->isEnabled());
     }
 
     /**
@@ -48,10 +44,10 @@ class ConfigTest extends TestCase
     public function testIsDebug()
     {
         $this->setScopeConfigValue('debug', 1);
-        $this->assertEquals($this->getTarget()->isDebug(), true);
+        $this->assertEquals(true, $this->getTarget()->isDebug());
 
         $this->setScopeConfigValue('debug', 0);
-        $this->assertEquals($this->getTarget()->isDebug(), false);
+        $this->assertEquals(false, $this->getTarget()->isDebug());
     }
 
     /**
@@ -61,10 +57,10 @@ class ConfigTest extends TestCase
     public function testGetId()
     {
         $this->setScopeConfigValue('id', 42);
-        $this->assertEquals($this->getTarget()->getId(), 42);
+        $this->assertEquals(42, $this->getTarget()->getId());
 
         $this->setScopeConfigValue('id', null);
-        $this->assertEquals($this->getTarget()->getId(), null);
+        $this->assertEquals(null, $this->getTarget()->getId());
     }
 
     /**
@@ -73,9 +69,9 @@ class ConfigTest extends TestCase
     private function getTarget(): Config
     {
         $scopeConfig = $this->getScopeConfigMock();
+        $storeManager = $this->createMock(StoreManagerInterface::class);
         $cookieHelper = $this->getCookieHelperMock();
-        $target = new Config($scopeConfig, $cookieHelper);
-        return $target;
+        return new Config($scopeConfig, $storeManager, $cookieHelper);
     }
 
     /**
@@ -103,16 +99,12 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @param $path
-     * @param $value
-     * @param bool $prefix
+     * @param string $path
+     * @param mixed $value
      */
-    private function setScopeConfigValue($path, $value, $prefix = true)
+    private function setScopeConfigValue(string $path, $value)
     {
-        if ($prefix) {
-            $path = 'googletagmanager2/settings/' . $path;
-        }
-
+        $path = 'googletagmanager2/settings/' . $path;
         $this->settings[$path] = $value;
     }
 }
