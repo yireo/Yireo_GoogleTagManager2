@@ -27,13 +27,6 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="method" type="select"  translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Insertion Method</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Backend\Source\Method</source_model>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
