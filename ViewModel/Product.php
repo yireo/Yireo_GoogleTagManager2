@@ -20,7 +20,7 @@ use Yireo\GoogleTagManager2\Api\ProductViewModelInterface;
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Product
  */
-class Product implements ArgumentInterface,ProductViewModelInterface
+class Product implements ArgumentInterface, ProductViewModelInterface
 {
     /**
      * @var RequestInterface
@@ -47,7 +47,7 @@ class Product implements ArgumentInterface,ProductViewModelInterface
         RequestInterface $request,
         AttributesViewModelInterface $attributesViewModel,
         ProductRepositoryInterface $productRepository
-    ){
+    ) {
         $this->request = $request;
         $this->attributesViewModel = $attributesViewModel;
         $this->productRepository = $productRepository;

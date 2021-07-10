@@ -12,5 +12,5 @@ if (!count($attributes->getAttributes())) {
 ?>
 <script>
 window.dataLayer = window.dataLayer || [];
-window.dataLayer.push(<?= $attributes->getAttributesAsJson() ?>);
+window.dataLayer.push(<?= /* @noEscape */ $attributes->getAttributesAsJson() ?>);
 </script>
