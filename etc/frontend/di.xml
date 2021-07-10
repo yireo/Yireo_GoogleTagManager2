@@ -20,10 +20,14 @@
     </type>
 
     <type name="Magento\Customer\CustomerData\Customer">
-        <plugin name="yireo_googletagmanager2_magento_customer_customerdata_customer" type="Yireo\GoogleTagManager2\Plugin\Magento\Customer\CustomerData\Customer"/>
+        <plugin name="Yireo_GoogleTagManager2::addDataToCustomerSection" type="Yireo\GoogleTagManager2\Plugin\AddDataToCustomerSection"/>
     </type>
 
     <type name="Magento\Checkout\CustomerData\Cart">
-        <plugin name="yireo_googletagmanager2_magento_checkout_customer_data_cart" type="Yireo\GoogleTagManager2\Plugin\Magento\Checkout\CustomerData\Cart"/>
+        <plugin name="Yireo_GoogleTagManager2::addAdditionalDataToCartSection" type="Yireo\GoogleTagManager2\Plugin\AddDataToCartSection"/>
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="Yireo_GoogleTagManager2::getProductsFromCategoryBlockPlugin" type="Yireo\GoogleTagManager2\Plugin\GetProductsFromCategoryBlockPlugin"/>
     </type>
 </config>

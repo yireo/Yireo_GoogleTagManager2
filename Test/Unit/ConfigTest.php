@@ -68,32 +68,6 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @test
-     * @covers Config::isMethodObserver
-     */
-    public function testIsMethodObserver()
-    {
-        $this->setScopeConfigValue('method', Config::METHOD_OBSERVER);
-        $this->assertEquals($this->getTarget()->isMethodObserver(), true);
-
-        $this->setScopeConfigValue('method', Config::METHOD_LAYOUT);
-        $this->assertEquals($this->getTarget()->isMethodObserver(), false);
-    }
-
-    /**
-     * @test
-     * @covers Config::isMethodLayout
-     */
-    public function testIsMethodLayout()
-    {
-        $this->setScopeConfigValue('method', Config::METHOD_LAYOUT);
-        $this->assertEquals($this->getTarget()->isMethodLayout(), true);
-
-        $this->setScopeConfigValue('method', Config::METHOD_OBSERVER);
-        $this->assertEquals($this->getTarget()->isMethodLayout(), false);
-    }
-
-    /**
      * @return Config
      */
     private function getTarget(): Config

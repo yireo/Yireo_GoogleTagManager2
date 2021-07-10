@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -7,16 +8,12 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types=1);
-
 namespace Yireo\GoogleTagManager2\ViewModel;
 
+use Exception;
 use Magento\Checkout\Model\Session;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Block\Generic;
 use Yireo\GoogleTagManager2\Config\Config;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
@@ -27,14 +24,9 @@ use Magento\Sales\Model\Order\Item;
 class Success implements ArgumentInterface
 {
     /**
-     * @var \Yireo\GoogleTagManager2\Helper\Data
+     * @var Config
      */
     private $config;
-    
-    /**
-     * @var Generic
-     */
-    private $generic;
     
     /**
      * @var Session
@@ -45,68 +37,38 @@ class Success implements ArgumentInterface
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
-    
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
 
     /**
      * Generic constructor.
      * @param Config $config
-     * @param Generic $generic
      * @param Session $checkoutSession
      * @param OrderRepositoryInterface $orderRepository
-     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         Config $config,
-        Generic $generic,
         Session $checkoutSession,
-        OrderRepositoryInterface $orderRepository,
-        ScopeConfigInterface $scopeConfig
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->config = $config;
-        $this->generic = $generic;
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
-        $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function isEnabled()
-    {
-        return $this->config->isEnabled();
-    }
-
-    /**
-     * @param $attribute
-     * @param $value
-     * @return object
-     */
-    public function addAttribute($attribute, $value)
-    {
-        return $this->generic->addAttribute($attribute, $value);
-    }
-
-    /**
-     * @return OrderItemInterface[]
-     */
-    public function getOrderData()
+    public function getOrderAttributes(): array
     {
         if ($this->hasOrder() === false) {
             return [];
         }
 
-        $order = $this->orderRepository->get($this->checkoutSession->getLastRealOrder()->getId());
-
+        $order = $this->getOrder();
         return [
             'transactionEntity' => 'ORDER',
             'transactionId' => (string) $order->getIncrementId(),
             'transactionDate' => (string) $order->getCreatedAt(),
-            'transactionAffiliation' => (string) $this->scopeConfig->getValue('general/store_information/name'),
+            'transactionAffiliation' => $this->config->getStoreName(),
             'transactionTotal' => (float) $order->getGrandTotal(),
             'transactionSubtotal' => (float) $order->getSubTotal(),
             'transactionTax' => (float) $order->getTaxAmount(),
@@ -121,7 +83,7 @@ class Success implements ArgumentInterface
     /**
      * @return OrderInterface
      */
-    private function getOrder()
+    private function getOrder(): OrderInterface
     {
         return $this->orderRepository->get($this->checkoutSession->getLastRealOrder()->getId());
     }
@@ -130,10 +92,9 @@ class Success implements ArgumentInterface
      * @param OrderInterface $order
      * @return string
      */
-    public function getPaymentLabel($order): string
+    public function getPaymentLabel(OrderInterface $order): string
     {
         $payment = $order->getPayment();
-
         return $payment ? $payment->getMethod() : '';
     }
 
@@ -141,7 +102,7 @@ class Success implements ArgumentInterface
      * @param OrderInterface $order
      * @return array
      */
-    public function getItemsAsArray($order): array
+    public function getItemsAsArray(OrderInterface $order): array
     {
         $data = [];
 
@@ -166,7 +127,7 @@ class Success implements ArgumentInterface
     {
         try {
             $this->getOrder();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 

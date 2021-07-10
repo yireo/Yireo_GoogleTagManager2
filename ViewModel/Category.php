@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -7,95 +7,115 @@
  * @license     Open Source License (OSL v3)
  */
 
-declare(strict_types=1);
-
 namespace Yireo\GoogleTagManager2\ViewModel;
 
-use Exception;
-use Magento\Catalog\Block\Product\ListProduct;
-use Magento\Catalog\Block\Product\ProductList\Toolbar;
-use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\View\LayoutFactory;
+use Yireo\GoogleTagManager2\Api\AttributesViewModelInterface;
+use Yireo\GoogleTagManager2\Api\CategoryViewModelInterface;
 
 /**
  * Class \Yireo\GoogleTagManager2\ViewModel\Category
  */
-class Category implements ArgumentInterface
+class Category implements ArgumentInterface, CategoryViewModelInterface
 {
-    /**
-     * @var LayoutFactory
-     */
-    private $layoutFactory;
-
     /**
      * @var RequestInterface
      */
     private $request;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
+     * @var AttributesViewModelInterface
+     */
+    private $attributesViewModel;
+
+    /**
      * Category constructor.
      *
-     * @param LayoutFactory $layoutFactory
      * @param RequestInterface $request
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param AttributesViewModelInterface $attributesViewModel
      */
     public function __construct(
-        LayoutFactory $layoutFactory,
-        RequestInterface $request
+        RequestInterface $request,
+        CategoryRepositoryInterface $categoryRepository,
+        AttributesViewModelInterface $attributesViewModel
     ) {
-        $this->layoutFactory = $layoutFactory;
         $this->request = $request;
+        $this->categoryRepository = $categoryRepository;
+        $this->attributesViewModel = $attributesViewModel;
     }
 
     /**
-     * @return AbstractCollection|null
-     * @throws Exception
+     * @return CategoryInterface
+     * @throws NoSuchEntityException
      */
-    public function getLoadedProductCollection()
+    public function getCurrentCategory(): CategoryInterface
     {
-        /** @var ListProduct $productListBlock */
-        $productListBlock = $this->layoutFactory->create()->getBlock('category.products.list');
-
-        if (empty($productListBlock)) {
-            return null;
-        }
-
-        // Fetch the current collection from the block and set pagination
-        $collection = $productListBlock->getLoadedProductCollection();
-        $collection->setCurPage($this->getCurrentPage())->setPageSize($this->getLimit());
-
-        return $collection;
+        return $this->categoryRepository->get((int)$this->request->getParam('id'));
     }
 
     /**
-     * Return the current page limit, as set by the toolbar block
-     *
-     * @return int
+     * @param CategoryInterface $category
      */
-    protected function getLimit()
+    public function addCategory(CategoryInterface $category)
     {
-        /** @var Toolbar $productListBlockToolbar */
-        $productListBlockToolbar = $this->layoutFactory->create()->getBlock('product_list_toolbar');
-        if (empty($productListBlockToolbar)) {
-            return 9;
+        $attributes = $this->mapCategoryAttributes($category);
+        foreach ($attributes as $attributeName => $attributeValue) {
+            $this->attributesViewModel->addAttribute($attributeName, $attributeValue);
         }
-
-        return $productListBlockToolbar->getLimit();
     }
 
     /**
-     * Return the current page as set in the URL
-     *
-     * @return int
-     * @throws Exception
+     * @param ProductInterface $product
      */
-    protected function getCurrentPage()
+    public function addCategoryProduct(ProductInterface $product)
     {
-        if ($page = (int)$this->request->getParam('p')) {
-            return $page;
-        }
+        $categoryProducts = $this->attributesViewModel->getAttribute('categoryProducts', []);
+        $categoryProducts[$product->getId()] = $this->mapProductAttributes($product);
+        $this->attributesViewModel->addAttribute('categoryProducts', $categoryProducts);
+    }
 
-        return 1;
+    /**
+     * @param int $categorySize
+     */
+    public function setCategorySize(int $categorySize)
+    {
+        $this->attributesViewModel->addAttribute('categorySize', $categorySize);
+    }
+
+    /**
+     * @param CategoryInterface $category
+     * @return array
+     */
+    public function mapCategoryAttributes(CategoryInterface $category): array
+    {
+        return [
+            'categoryId' => $category->getId(),
+            'categoryName' => $category->getName()
+        ];
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return array
+     */
+    public function mapProductAttributes(ProductInterface $product): array
+    {
+        return [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'sku' => $product->getSku(),
+            'price' => $product->getPrice()
+        ];
     }
 }

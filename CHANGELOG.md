@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 10 July 2021
+### Fixed
+- Various styling issues (PHPCS, PHPStan)
+- Increase framework requirement to 101.2 because of ViewModel bug
+
+### Added
+- Enabled debugging in JS (dumping attributes and config)
+- New Attributes ViewModel to collect data after initialize output
+- Add API interfaces to guarantee backwards compatibility in future
+- Added XML layout container `gooogletagmanager_container` for most datalayer blocks
+- Added debug utility class
+- Renamed existing plugin interceptors
+
+### Removed
+- Rewrite x-magento-init into simple require() for performance
+- Refactored `Category` block to no longer depend on `onLoadedProductCollection`
+- Removed all block classes (`Script`, `Category`, `Product`, `Generic`, `Custom`)
+- Remove `\Yireo\GoogleTagManager2\Util\GetCurrentProduct`
+- Remove `\Yireo\GoogleTagManager2\Util\GetCurrentCategory`
+- Remove helper
+- Remove container model
+- Remove entire observer-based input method
+- Remove ViewModelFactory
+
 ## [2.0.5] - 5 May 2021
 ### Fixed
 Re-add CSP whitelisting

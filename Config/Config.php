@@ -1,24 +1,16 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
-class Config
+class Config implements ArgumentInterface
 {
-    /**
-     * Constant for the observer method
-     */
-    const METHOD_OBSERVER = 0;
-
-    /**
-     * Constant for the layout method
-     */
-    const METHOD_LAYOUT = 1;
-
     /**
      * @var ScopeConfigInterface
      */
@@ -30,16 +22,24 @@ class Config
     private $cookieHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * Config constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
+     * @param StoreManagerInterface $storeManager
      * @param CookieHelper $cookieHelper
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager,
         CookieHelper $cookieHelper
     ) {
         $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
     }
 
@@ -50,24 +50,12 @@ class Config
      */
     public function isEnabled(): bool
     {
-        $enabled = (bool)$this->getConfigValue('enabled', false);
+        $enabled = (bool)$this->getModuleConfigValue('enabled', false);
         if (!$enabled) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCookieRestrictionModeName(): string
-    {
-        if ((bool)$this->cookieHelper->isCookieRestrictionModeEnabled()) {
-            return CookieHelper::IS_USER_ALLOWED_SAVE_COOKIE;
-        }
-
-        return '';
     }
 
     /**
@@ -77,7 +65,7 @@ class Config
      */
     public function isDebug(): bool
     {
-        return (bool)$this->getConfigValue('debug');
+        return (bool)$this->getModuleConfigValue('debug');
     }
 
     /**
@@ -87,27 +75,48 @@ class Config
      */
     public function getId(): string
     {
-        return (string)$this->getConfigValue('id');
+        return (string)$this->getModuleConfigValue('id');
     }
 
     /**
-     * Check whether the insertion method is the observer method
-     *
-     * @return bool
+     * @return int
      */
-    public function isMethodObserver(): bool
+    public function getCategoryProducts(): int
     {
-        return ($this->getConfigValue('method') == self::METHOD_OBSERVER);
+        return (int)$this->getModuleConfigValue('category_products');
     }
 
     /**
-     * Check whether the insertion method is the layout method
-     *
-     * @return bool
+     * @return string
      */
-    public function isMethodLayout(): bool
+    public function getStoreName(): string
     {
-        return ($this->getConfigValue('method') == self::METHOD_LAYOUT);
+        return (string)$this->getConfigValue('general/store_information/name');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieRestrictionModeName(): string
+    {
+        if ($this->cookieHelper->isCookieRestrictionModeEnabled()) {
+            return CookieHelper::IS_USER_ALLOWED_SAVE_COOKIE;
+        }
+
+        return '';
+    }
+
+    /**
+     * Return a configuration value
+     *
+     * @param string $key
+     * @param null $defaultValue
+     *
+     * @return mixed|null
+     */
+    public function getModuleConfigValue(string $key, $defaultValue = null)
+    {
+        return $this->getConfigValue('googletagmanager2/settings/' . $key, $defaultValue);
     }
 
     /**
@@ -120,10 +129,15 @@ class Config
      */
     public function getConfigValue(string $key, $defaultValue = null)
     {
-        $value = $this->scopeConfig->getValue(
-            'googletagmanager2/settings/' . $key,
-            ScopeInterface::SCOPE_STORE
-        );
+        try {
+            $value = $this->scopeConfig->getValue(
+                $key,
+                ScopeInterface::SCOPE_STORE,
+                $this->storeManager->getStore()
+            );
+        } catch (NoSuchEntityException $e) {
+            return $defaultValue;
+        }
 
         if (empty($value)) {
             $value = $defaultValue;
