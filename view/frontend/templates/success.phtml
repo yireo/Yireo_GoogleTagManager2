@@ -1,7 +1,16 @@
-<?php /** @var \Yireo\GoogleTagManager2\ViewModel\Success $viewModel */ ?>
-<?php $viewModel = $block->getData('viewModel') ?>
-<?php if ($viewModel->isEnabled()): ?>
-    <?php foreach ($viewModel->getOrderData() as $item => $value): ?>
-        <?php $viewModel->addAttribute($item, $value) ?>
-    <?php endforeach; ?>
-<?php endif; ?>
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Api\AttributesViewModelInterface;
+use Yireo\GoogleTagManager2\ViewModel\Success;
+
+/** @var Template $block */
+/** @var Success $successViewModel */
+/** @var AttributesViewModelInterface $attributesViewModel */
+
+$successViewModel = $block->getSuccessViewModel();
+$attributesViewModel = $block->getAttributesViewModel();
+
+foreach ($successViewModel->getOrderAttributes() as $name => $value) {
+    $attributesViewModel->addAttribute($name, $value);
+}

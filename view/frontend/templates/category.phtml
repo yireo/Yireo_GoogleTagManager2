@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * GoogleTagManager plugin for Magento
  *
@@ -7,37 +8,10 @@
  * @license     Open Software License
  */
 
-/** @var \Yireo\GoogleTagManager2\Block\Category $block */
-$helper = $block->getHelper();
-$viewModel = $block->getViewModel();
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\ViewModel\Category;
 
-$loadProducts = (int)$helper->getConfigValue('category_products');
-if ($loadProducts > 0) {
-    $productCollection = $block->getLoadedProductCollection();
-}
-?>
-<?php if ($helper->isEnabled()): ?>
-    <?php $category = $block->getCategory(); ?>
-    <?php if (!empty($category) && $category->getId() > 0): ?>
-        <?php $block->addAttribute('categoryId', $category->getId()); ?>
-        <?php $block->addAttribute('categoryName', $category->getName()); ?>
-    <?php endif; ?>
-    <?php if (!empty($productCollection)): ?>
-        <?php $block->addAttribute('categorySize', $productCollection->getSize()); ?>
-        <?php $categoryProducts = []; ?>
-        <?php $i = 0; ?>
-        <?php foreach ($productCollection as $product): ?>
-            <?php if ($i > $loadProducts) {
-                break;
-            } ?>
-            <?php $categoryProduct = []; ?>
-            <?php $categoryProduct['id'] = $product->getId(); ?>
-            <?php $categoryProduct['name'] = $product->getName(); ?>
-            <?php $categoryProduct['sku'] = $product->getSku(); ?>
-            <?php $categoryProduct['price'] = $product->getPrice(); ?>
-            <?php $categoryProducts[] = $categoryProduct; ?>
-            <?php $i++; ?>
-        <?php endforeach; ?>
-        <?php $block->addAttribute('categoryProducts', $categoryProducts); ?>
-    <?php endif; ?>
-<?php endif; ?>
+/** @var Template $block */
+/** @var Category $categoryViewModel */
+$categoryViewModel = $block->getCategoryViewModel();
+$categoryViewModel->addCategory($categoryViewModel->getCurrentCategory());

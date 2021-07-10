@@ -124,15 +124,15 @@ define([
 
             initDataLayer(window);
 
-            var attributes = $.extend(getCustomerSpecificAttributes(), config.attributes);
+            let attributes = config.attributes;
+            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
             attributes = $.extend(getCartSpecificAttributes(), attributes);
 
             if (isDebug(config)) {
                 console.log('GTM debugging', attributes, config);
             }
-            console.log('GTM debugging', attributes.categoryProducts);
 
-            dataLayer.push(attributes);
+            window.dataLayer.push(attributes);
             addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
         }
     };

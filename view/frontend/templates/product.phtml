@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * GoogleTagManager plugin for Magento
  *
@@ -7,16 +7,10 @@
  * @license     Open Software License
  */
 
-/** @var \Yireo\GoogleTagManager2\Block\Product $block */
-$helper = $block->getHelper();
-$viewModel = $block->getViewModel();
-?>
-<?php if ($helper->isEnabled()): ?>
-    <?php $product = $block->getProduct(); ?>
-    <?php if (!empty($product) && $product->getId() > 0): ?>
-        <?php $block->addAttribute('productId', $product->getId()); ?>
-        <?php $block->addAttribute('productName', $product->getName()); ?>
-        <?php $block->addAttribute('productSku', $product->getSku()); ?>
-        <?php $block->addAttribute('productPrice', $product->getPrice()); ?>
-    <?php endif; ?>
-<?php endif; ?>
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Api\ProductViewModelInterface;
+
+/** @var Template $block */
+/** @var ProductViewModelInterface $productViewModel */
+$productViewModel = $block->getProductViewModel();
+$productViewModel->addProduct($productViewModel->getCurrentProduct());

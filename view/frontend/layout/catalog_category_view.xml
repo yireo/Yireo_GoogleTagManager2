@@ -4,7 +4,7 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
@@ -13,12 +13,14 @@
     <body>
         <referenceContainer name="googletagmanager_container">
             <block class="Magento\Framework\View\Element\Template"
-                   name="googletagmanager_success"
-                   template="Yireo_GoogleTagManager2::success.phtml"
+                   name="googletagmanager_category"
+                   before="googletagmanager_main_script"
+                   template="Yireo_GoogleTagManager2::category.phtml"
                    ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
-                    <argument name="success_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Success</argument>
-                    <argument name="attributes_view_model" xsi:type="object">Yireo\GoogleTagManager2\Api\AttributesViewModelInterface</argument>
+                    <argument name="category_view_model" xsi:type="object">
+                        Yireo\GoogleTagManager2\Api\CategoryViewModelInterface
+                    </argument>
                 </arguments>
             </block>
         </referenceContainer>
