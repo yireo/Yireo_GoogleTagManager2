@@ -4,7 +4,8 @@
         <googletagmanager2>
             <settings>
                 <enabled>0</enabled>
-                <method>1</method>
+                <id/>
+                <debug>0</debug>
                 <category_products>3</category_products>
             </settings>
         </googletagmanager2>
