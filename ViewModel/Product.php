@@ -94,6 +94,6 @@ class Product implements ArgumentInterface, ProductViewModelInterface
      */
     public function getProductPrice(ProductInterface $product): float
     {
-        return $product->getFinalPrice();
+        return (float) $product->getFinalPrice();
     }
 }
