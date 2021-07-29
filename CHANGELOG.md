@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 29 July 2021
+### Fixed
+- Fix error on cart configure page (@Irinina)
+
 ## [2.1.1] - 10 July 2021
 ### Fixed
 - Make sure \Yireo\GoogleTagManager2\ViewModel\Product::getProductPrice() always returns float
