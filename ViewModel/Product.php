@@ -59,7 +59,12 @@ class Product implements ArgumentInterface, ProductViewModelInterface
      */
     public function getCurrentProduct(): ProductInterface
     {
-        return $this->productRepository->getById((int)$this->request->getParam('id'));
+        $productId = $this->request->getParam('product_id');
+        if (!$productId) {
+            $productId = $this->request->getParam('id');
+        }
+
+        return $this->productRepository->getById((int)$productId);
     }
 
     /**
