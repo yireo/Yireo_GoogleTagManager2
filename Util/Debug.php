@@ -8,7 +8,7 @@
  * @license   Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Helper;
+namespace Yireo\GoogleTagManager2\Util;
 
 use Psr\Log\LoggerInterface;
 use Yireo\GoogleTagManager2\Config\Config;
