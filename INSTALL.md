@@ -21,15 +21,6 @@ Configuration > Advanced > Advanced**.
 
 Done.
 
-## Upgrade notice for version 1.0 and later
-Original extension versions started at version 0.0.1, which probably means that your `composer.json` matches versions as follows:
-
-    "yireo/magento2-googletagmanager2": "^0.0.5"
-    
-This excludes upgrades towards the new major version 1.0 and higher. To fix this, use the following command:
-
-    composer require yireo/magento2-googletagmanager2:^1.0
-
 ## Instructions for manual copy
 We recommend `composer` to install this package. If you want a manual copy instead, these are the steps. However, please note that we do NOT recommend you to do this.
 
