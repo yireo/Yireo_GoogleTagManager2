@@ -1,8 +1,6 @@
 # Installation
 ## Minimum requirements
-- Magento 2.2.0 Stable
-
-See `composer.json` for other requirements.
+We are using strict requirements in the composer file, to make sure compatibility follows from the composer requirements. When you have questions regarding compatibility, install the extension via composer. If it works, it is because it is compatible. If it does not work, it is because it is not compatible. When a new version of Magento comes out, the composer command fails, while you think it should actually work, open a support ticket so we can look into this.
 
 ## Instructions for using composer
 Use composer to install this extension. First make sure that Magento is installed via composer, and that there is a valid `composer.json` file present.
