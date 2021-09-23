@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3] - 23 September 2021
+### Fixed
+- Prevent Fatal Error with `Amasty_Xlanding`
+
 ## [2.1.2] - 29 July 2021
 ### Fixed
 - Fix error on cart configure page (@Irinina)
