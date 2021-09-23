@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * GoogleTagManager plugin for Magento
  *
@@ -8,10 +7,15 @@
  * @license     Open Software License
  */
 
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\ViewModel\Category;
 
 /** @var Template $block */
 /** @var Category $categoryViewModel */
-$categoryViewModel = $block->getCategoryViewModel();
-$categoryViewModel->addCategory($categoryViewModel->getCurrentCategory());
+try {
+    $categoryViewModel = $block->getCategoryViewModel();
+    $categoryViewModel->addCategory($categoryViewModel->getCurrentCategory());
+} catch (NoSuchEntityException $e) {
+    return '';
+}
