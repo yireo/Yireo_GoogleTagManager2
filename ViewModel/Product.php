@@ -14,6 +14,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Yireo\GoogleTagManager2\Api\AttributesViewModelInterface;
 use Yireo\GoogleTagManager2\Api\ProductViewModelInterface;
 
@@ -46,11 +47,13 @@ class Product implements ArgumentInterface, ProductViewModelInterface
     public function __construct(
         RequestInterface $request,
         AttributesViewModelInterface $attributesViewModel,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        StoreManagerInterface $storeManager
     ) {
         $this->request = $request;
         $this->attributesViewModel = $attributesViewModel;
         $this->productRepository = $productRepository;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -64,7 +67,7 @@ class Product implements ArgumentInterface, ProductViewModelInterface
             $productId = $this->request->getParam('id');
         }
 
-        return $this->productRepository->getById((int)$productId);
+        return $this->productRepository->getById((int)$productId, false, $this->storeManager->getStore()->getId());
     }
 
     /**
