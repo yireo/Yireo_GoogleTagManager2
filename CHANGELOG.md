@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.4] - 17 February 2021
+### Fixed
+Fix duplicate product loading #85 (@sprankhub)
+
+
 ## [2.1.3] - 23 September 2021
 ### Fixed
 - Prevent Fatal Error with `Amasty_Xlanding`
