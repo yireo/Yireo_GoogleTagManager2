@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.4] - 17 February 2021
+## [2.1.4] - 17 February 2022
 ### Fixed
 Fix duplicate product loading #85 (@sprankhub)
 
