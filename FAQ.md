@@ -4,3 +4,7 @@ this. If you want this to be included, either create and send a Pull
 Request to share this with the community. Or send a mail to
 [info@yireo.com](mailto:info@yireo.com) so we can discuss to start a
 custom project (paid per hour) for this.
+
+# Does this extension work together with OneStepCheckout?
+Yes, this extension works nicely together with
+[onestepcheckout.com](https://www.onestepcheckout.com/)
