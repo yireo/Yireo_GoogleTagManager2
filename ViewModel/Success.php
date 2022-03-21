@@ -11,6 +11,7 @@
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Exception;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -108,13 +109,18 @@ class Success implements ArgumentInterface
 
         foreach ($order->getItemsCollection([], true) as $item) {
             /** @var Item $item */
-            $data[] = [
+            $itemData = [
                 'productId' => $item->getProductId(),
                 'sku' => $item->getSku(),
                 'name' => $item->getName(),
                 'price' => $item->getPriceInclTax(),
                 'quantity' => $item->getQtyOrdered(),
             ];
+            $parentSku = $item->getProduct()->getData(ProductInterface::SKU);
+            if ($parentSku !== $item->getSku()) {
+                $itemData['parentsku'] = $parentSku;
+            }
+            $data[] = $itemData;
         }
 
         return $data;
