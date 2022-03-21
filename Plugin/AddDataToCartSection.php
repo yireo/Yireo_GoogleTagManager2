@@ -9,6 +9,7 @@
 
 namespace Yireo\GoogleTagManager2\Plugin;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\CustomerData\Cart as CustomerData;
 use Magento\Checkout\Model\Cart as CheckoutCart;
@@ -171,13 +172,19 @@ class AddDataToCartSection
 
         foreach ($quote->getItemsCollection() as $item) {
             /** @var Item $item */
-            $data[] = [
+            $itemData = [
                 'productId' => $item->getProduct()->getId(),
                 'sku' => $item->getProduct()->getSku(),
                 'name' => $item->getProduct()->getName(),
                 'price' => $item->getProduct()->getPrice(),
                 'quantity' => $item->getQty(),
             ];
+            // getData makes sure the chosen simple product / product options are ignored
+            $parentSku = $item->getProduct()->getData(ProductInterface::SKU);
+            if ($parentSku !== $item->getProduct()->getSku()) {
+                $itemData['parentsku'] = $parentSku;
+            }
+            $data[] = $itemData;
         }
 
         return $data;
