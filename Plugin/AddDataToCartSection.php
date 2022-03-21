@@ -169,7 +169,7 @@ class AddDataToCartSection
         $quote = $this->quote;
         $data = [];
 
-        foreach ($quote->getItemsCollection() as $item) {
+        foreach ($quote->getAllVisibleItems() as $item) {
             /** @var Item $item */
             $data[] = [
                 'productId' => $item->getProduct()->getId(),
