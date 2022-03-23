@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.6] - 23 March 2022
+### Fixed
+- Add ecommerce push on checkout success #90 (@sprankhub)
+
 ## [2.1.5] - 21 March 2022
 ### Fixed
 - Fix Duplicate Product Tracking #88 (@sprankhub)
