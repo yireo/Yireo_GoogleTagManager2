@@ -67,17 +67,19 @@ class Success implements ArgumentInterface
         $order = $this->getOrder();
         return [
             'transactionEntity' => 'ORDER',
-            'transactionId' => (string) $order->getIncrementId(),
+            'transactionId' => $this->getTransactionId($order),
             'transactionDate' => (string) $order->getCreatedAt(),
-            'transactionAffiliation' => $this->config->getStoreName(),
-            'transactionTotal' => (float) $order->getGrandTotal(),
+            'transactionAffiliation' => $this->getTransactionAffiliation(),
+            'transactionTotal' => $this->getTransactionTotal($order),
             'transactionSubtotal' => (float) $order->getSubTotal(),
-            'transactionTax' => (float) $order->getTaxAmount(),
-            'transactionShipping' => (float) $order->getShippingAmount(),
+            'transactionTax' => $this->getTransactionTax($order),
+            'transactionShipping' => $this->getTransactionShipping($order),
             'transactionPayment' => $this->getPaymentLabel($order),
             'transactionCurrency' => (string) $order->getOrderCurrencyCode(),
-            'transactionPromoCode' => (string) $order->getCouponCode(),
-            'transactionProducts' => $this->getItemsAsArray($order)
+            'transactionPromoCode' => $this->getTransactionPromoCode($order),
+            'transactionProducts' => $this->getItemsAsArray($order),
+            'ecommerce' => $this->getEcommerceAttributesAsArray($order),
+            'event' => 'transaction',
         ];
     }
 
@@ -138,5 +140,52 @@ class Success implements ArgumentInterface
         }
 
         return true;
+    }
+
+    private function getEcommerceAttributesAsArray(OrderInterface $order): array
+    {
+        return [
+            'purchase' => [
+                'actionField' => [
+                    'id' => $this->getTransactionId($order),
+                    'affiliation' => $this->getTransactionAffiliation(),
+                    'revenue' => $this->getTransactionTotal($order),
+                    'tax' => $this->getTransactionTax($order),
+                    'shipping' => $this->getTransactionShipping($order),
+                    'coupon' => $this->getTransactionPromoCode($order),
+                ],
+                'products' => $this->getItemsAsArray($order),
+            ],
+        ];
+    }
+
+    private function getTransactionId(OrderInterface $order): string
+    {
+        return (string)$order->getIncrementId();
+    }
+
+    private function getTransactionAffiliation(): string
+    {
+        return $this->config->getStoreName();
+    }
+
+    private function getTransactionTotal(OrderInterface $order): float
+    {
+        return (float)$order->getGrandTotal();
+    }
+
+    private function getTransactionTax(OrderInterface $order): float
+    {
+        return (float)$order->getTaxAmount();
+    }
+
+    private function getTransactionShipping(OrderInterface $order): float
+    {
+        return (float)$order->getShippingAmount();
+    }
+
+    private function getTransactionPromoCode(OrderInterface $order): string
+    {
+        return (string)$order->getCouponCode();
     }
 }
