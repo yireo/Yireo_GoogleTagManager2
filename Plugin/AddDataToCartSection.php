@@ -57,13 +57,14 @@ class AddDataToCartSection
      */
     public function afterGetSectionData(CustomerData $subject, $result)
     {
-        if (empty($result) || !is_array($result)) {
+        $quoteId = $this->getQuoteId();
+        if (empty($result) || !is_array($result) || empty($quoteId)) {
             return $result;
         }
 
         $result['gtm'] = [
             'transactionEntity' => 'QUOTE',
-            'transactionId' => $this->getQuoteId(),
+            'transactionId' => $quoteId,
             'transactionAffiliation' => $this->getWebsiteName(),
             'transactionTotal' => $this->getTotalAmount(),
             'transactionTax' => $this->getTaxAmount(),
@@ -77,23 +78,23 @@ class AddDataToCartSection
     /**
      * @return int
      */
-    private function getQuoteId()
+    private function getQuoteId(): int
     {
-        return $this->quote->getId();
+        return (int) $this->quote->getId();
     }
 
     /**
      * @return string
      */
-    private function getWebsiteName()
+    private function getWebsiteName(): string
     {
-        return $this->scopeConfig->getValue('general/store_information/name');
+        return (string) $this->scopeConfig->getValue('general/store_information/name');
     }
 
     /**
      * @return string
      */
-    private function getBaseCurrency()
+    private function getBaseCurrency(): string
     {
         return (string) $this->quote->getQuoteCurrencyCode();
     }
@@ -101,7 +102,7 @@ class AddDataToCartSection
     /**
      * @return float
      */
-    private function getTotalAmount()
+    private function getTotalAmount(): float
     {
         return (float)$this->quote->getGrandTotal();
     }
@@ -109,7 +110,7 @@ class AddDataToCartSection
     /**
      * @return float
      */
-    private function getTaxAmount()
+    private function getTaxAmount(): float
     {
         return (float)$this->quote->getGrandTotal() - $this->quote->getSubtotal();
     }
@@ -137,7 +138,7 @@ class AddDataToCartSection
     /**
      * @return bool
      */
-    private function hasOrder()
+    private function hasOrder(): bool
     {
         $order = $this->getOrder();
         if ($order->getItems()) {
@@ -150,7 +151,7 @@ class AddDataToCartSection
     /**
      * @return bool
      */
-    private function hasQuote()
+    private function hasQuote(): bool
     {
         $quote = $this->quote;
         if ($quote->getItems()) {
@@ -165,7 +166,7 @@ class AddDataToCartSection
      *
      * @return array
      */
-    private function getItemsAsArray()
+    private function getItemsAsArray(): array
     {
         $quote = $this->quote;
         $data = [];
