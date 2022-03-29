@@ -112,7 +112,7 @@ class Success implements ArgumentInterface
         foreach ($order->getItemsCollection([], true) as $item) {
             /** @var Item $item */
             $itemData = [
-                'productId' => $item->getProductId(),
+                'id' => $item->getProductId(),
                 'sku' => $item->getSku(),
                 'name' => $item->getName(),
                 'price' => $item->getPriceInclTax(),
