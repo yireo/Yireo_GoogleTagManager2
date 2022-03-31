@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.7] - 31 March 2022
 ### Fixed
 - Prevent adding quote data to success page #91
 - Add additional field for ecommerce push #93 (@sprankhub)
