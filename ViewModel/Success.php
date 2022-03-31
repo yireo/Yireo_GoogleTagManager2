@@ -113,6 +113,7 @@ class Success implements ArgumentInterface
             /** @var Item $item */
             $itemData = [
                 'productId' => $item->getProductId(),
+                'id' => $item->getProductId(),
                 'sku' => $item->getSku(),
                 'name' => $item->getName(),
                 'price' => $item->getPriceInclTax(),
