@@ -146,16 +146,17 @@ class Success implements ArgumentInterface
     private function getEcommerceAttributesAsArray(OrderInterface $order): array
     {
         return [
-            'purchase' => [
+            'currencyCode' => (string)$order->getOrderCurrencyCode(),
+            'purchase'     => [
                 'actionField' => [
-                    'id' => $this->getTransactionId($order),
+                    'id'          => $this->getTransactionId($order),
                     'affiliation' => $this->getTransactionAffiliation(),
-                    'revenue' => $this->getTransactionTotal($order),
-                    'tax' => $this->getTransactionTax($order),
-                    'shipping' => $this->getTransactionShipping($order),
-                    'coupon' => $this->getTransactionPromoCode($order),
+                    'revenue'     => $this->getTransactionTotal($order),
+                    'tax'         => $this->getTransactionTax($order),
+                    'shipping'    => $this->getTransactionShipping($order),
+                    'coupon'      => $this->getTransactionPromoCode($order),
                 ],
-                'products' => $this->getItemsAsArray($order),
+                'products'    => $this->getItemsAsArray($order),
             ],
         ];
     }
