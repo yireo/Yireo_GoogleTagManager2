@@ -69,6 +69,14 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEnhancedEcommerce(): bool
+    {
+        return (bool)$this->getModuleConfigValue('enhanced_ecommerce');
+    }
+
+    /**
      * Return the GA ID
      *
      * @return string

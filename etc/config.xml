@@ -6,6 +6,7 @@
                 <enabled>0</enabled>
                 <id/>
                 <debug>0</debug>
+                <enhanced_ecommerce>0</enhanced_ecommerce>
                 <category_products>3</category_products>
             </settings>
         </googletagmanager2>

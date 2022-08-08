@@ -1,81 +1,35 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Block;
 
-use Magento\Framework\App\Cache\Manager as CacheManager;
-use Magento\Framework\App\Config\ValueFactory;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\Request;
-use Magento\TestFramework\TestCase\AbstractController;
+use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
+use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertContainerInLayout;
 
-class ScriptTest extends AbstractController
+/**
+ * @magentoAppArea frontend
+ */
+class ScriptTest extends PageTestCase
 {
-    /**
-     * @var string
-     */
-    private $uri;
+    use AssertContainerInLayout;
 
     /**
-     * Setup method
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id test
      */
-    protected function setUp(): void
+    public function testValidBlockContent()
     {
-        parent::setUp();
-        $this->configure();
-    }
+        $this->assertEnabledFlagIsWorking();
 
-    /**
-     *
-     */
-    public function testCanHandleGetRequests()
-    {
-        $this->getRequest()->setMethod('GET');
-        $this->dispatch($this->uri);
-        $this->assertSame(200, $this->getResponse()->getHttpResponseCode());
-    }
+        $this->layout->getUpdate()->addPageHandles(['empty', '1column']);
+        $this->layout->generateXml();
 
-    /**
-     * Test whether the page contains valid body content
-     */
-    public function testValidBodyContent()
-    {
-        $this->dispatch('checkout/index/cart');
+        $this->dispatch('/');
+
+        $this->assertContainerInLayout('before.body.end');
+        $this->assertStringContainsString('Yireo_GoogleTagManager2', $this->layout->getUpdate()->asString());
+
         $body = $this->getResponse()->getBody();
-        $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManager'));
-    }
-
-    /**
-     * Configure settings
-     */
-    private function configure()
-    {
-        $settings = [
-            'googletagmanager2/settings/enabled' => 1,
-            'googletagmanager2/settings/id' => 'dummy',
-        ];
-
-        $configValueFactory = $this->getObjectManager()->get(ValueFactory::class);
-
-        foreach ($settings as $settingPath => $settingValue) {
-            $configValueFactory->create()
-                ->load($settingPath, 'path')
-                ->setPath($settingPath)
-                ->setValue($settingValue)
-                ->save();
-        }
-
-        /** @var CacheManager $cacheManager */
-        $cacheManager = $this->getObjectManager()->get(CacheManager::class);
-        $cacheManager->clean(['config']);
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        return Bootstrap::getObjectManager();
+        $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManager'), 'Script not found in HTML body: ' . $body);
     }
 }

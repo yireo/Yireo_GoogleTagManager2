@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Yireo\GoogleTagManager2\Api\CategoryViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Category"/>
-    <preference for="Yireo\GoogleTagManager2\Api\ProductViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Product"/>
-    <preference for="Yireo\GoogleTagManager2\Api\AttributesViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Attributes"/>
-    <preference for="Yireo\GoogleTagManager2\Api\CommonsViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Commons"/>
-</config>

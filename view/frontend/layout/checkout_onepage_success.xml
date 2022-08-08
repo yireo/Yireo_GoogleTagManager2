@@ -4,23 +4,26 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2022 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="googletagmanager_container">
-            <block class="Magento\Framework\View\Element\Template"
-                   name="googletagmanager_success"
-                   template="Yireo_GoogleTagManager2::success.phtml"
-                   ifconfig="googletagmanager2/settings/enabled">
-                <arguments>
-                    <argument name="success_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Success</argument>
-                    <argument name="attributes_view_model" xsi:type="object">Yireo\GoogleTagManager2\Api\AttributesViewModelInterface</argument>
-                </arguments>
-            </block>
-        </referenceContainer>
+        <referenceBlock name="yireo.data-layer">
+            <arguments>
+                <argument name="data_layer_processors" xsi:type="array">
+                    <item name="succcess_page" xsi:type="object">Yireo\GoogleTagManager2\DataLayerProcessor\SuccessPage</item>
+                </argument>
+
+                <argument name="data_layer" xsi:type="array">
+                    <item name="page" xsi:type="array">
+                        <item name="type" xsi:type="string">confirmation</item>
+                    </item>
+                    <item name="foobar" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Order</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

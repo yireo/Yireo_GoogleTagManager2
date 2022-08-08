@@ -1,23 +1,5 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Yireo\GoogleTagManager2\ViewModel\Success">
-        <arguments>
-            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-        </arguments>
-    </type>
-
-    <type name="Yireo\GoogleTagManager2\Plugin\AddDataToCartSection">
-        <arguments>
-            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
-        </arguments>
-    </type>
-
-    <type name="Yireo\GoogleTagManager2\Plugin\AddDataToCustomerSection">
-        <arguments>
-            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
-        </arguments>
-    </type>
-
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="Yireo_GoogleTagManager2::addDataToCustomerSection" type="Yireo\GoogleTagManager2\Plugin\AddDataToCustomerSection"/>
     </type>

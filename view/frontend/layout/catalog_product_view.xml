@@ -4,25 +4,36 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2022 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="googletagmanager_container">
-            <block class="Magento\Framework\View\Element\Template"
-                   name="googletagmanager_product"
-                   before="googletagmanager_main_script"
-                   template="Yireo_GoogleTagManager2::product.phtml"
-                   ifconfig="googletagmanager2/settings/enabled">
-                <arguments>
-                    <argument name="product_view_model" xsi:type="object">
-                        Yireo\GoogleTagManager2\Api\ProductViewModelInterface
-                    </argument>
-                </arguments>
-            </block>
-        </referenceContainer>
+        <referenceBlock name="yireo_googletagmanager2.data-layer">
+            <arguments>
+                <argument name="data_layer_processors" xsi:type="array">
+                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayerProcessor\Product</item>
+                </argument>
+                <argument name="data_layer" xsi:type="array">
+                    <item name="event" xsi:type="string">productImpression</item>
+                    <item name="page" xsi:type="array">
+                        <item name="type" xsi:type="string">product</item>
+                    </item>
+                    <item name="productId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductId</item>
+                    <item name="productName" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductName</item>
+                    <item name="productSku" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductSku</item>
+                    <item name="productPrice" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductPrice</item>
+                    <item name="google_tag_params" xsi:type="array">
+                        <item name="ecomm_category" xsi:type="array">
+                            <item name="current_category"
+                                  xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryName
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

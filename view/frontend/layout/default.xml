@@ -4,54 +4,57 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2019 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2022 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="datalayer_default"/>
+
     <body>
-        <referenceContainer name="after.body.start">
-            <container name="googletagmanager_container">
-                <block class="Magento\Framework\View\Element\Template"
-                       template="Yireo_GoogleTagManager2::custom.phtml"
-                       name="googletagmanager_custom"
-                       ifconfig="googletagmanager2/settings/enabled">
-                    <arguments>
-                        <argument name="attributes_view_model" xsi:type="object">
-                            Yireo\GoogleTagManager2\Api\AttributesViewModelInterface
-                        </argument>
-                    </arguments>
-                </block>
-
-                <block class="Magento\Framework\View\Element\Template"
-                       name="googletagmanager_main_script"
-                       template="Yireo_GoogleTagManager2::script-main.phtml"
-                       ifconfig="googletagmanager2/settings/enabled">
-                    <arguments>
-                        <argument name="commons_view_model" xsi:type="object">
-                            Yireo\GoogleTagManager2\Api\CommonsViewModelInterface
-                        </argument>
-                        <argument name="attributes_view_model" xsi:type="object">
-                            Yireo\GoogleTagManager2\Api\AttributesViewModelInterface
-                        </argument>
-                        <argument name="config" xsi:type="object">
-                            Yireo\GoogleTagManager2\Config\Config
-                        </argument>
-                    </arguments>
-                </block>
-            </container>
-        </referenceContainer>
-
         <referenceContainer name="before.body.end">
-            <block class="Magento\Framework\View\Element\Template"
-                   name="googletagmanager_footer_script"
-                   template="Yireo_GoogleTagManager2::script-footer.phtml"
-                   ifconfig="googletagmanager2/settings/enabled">
+            <block
+                name="yireo_googletagmanager2.data-layer"
+                template="Yireo_GoogleTagManager2::data-layer.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+            >
                 <arguments>
-                    <argument name="attributes_view_model" xsi:type="object">
-                        Yireo\GoogleTagManager2\Api\AttributesViewModelInterface
+                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+
+                    <argument name="data_layer_processors" xsi:type="array">
+                        <item name="ecommerce" xsi:type="object">Yireo\GoogleTagManager2\DataLayerProcessor\Ecommerce</item>
                     </argument>
+
+                    <argument name="data_layer" xsi:type="array">
+                        <!--
+                        @todo: Are these needed?
+                        <item name="accountId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\AccountId</item>
+                        <item name="liveOnly" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\LiveOnly</item>
+                        -->
+                        <item name="version" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Version</item>
+                        <item name="event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Event</item>
+                        <item name="pageType" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
+                        <item name="page" xsi:type="array">
+                            <item name="virtual_page" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage</item>
+                            <item name="breadcrumb" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\Breadcrumbs</item>
+                        </item>
+                        <item name="user" xsi:type="array">
+                            <item name="has_transacted" xsi:type="boolean">false</item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block
+                name="yireo_googletagmanager2.script-main"
+                template="Yireo_GoogleTagManager2::luma/script-main.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+            >
+                <arguments>
+                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons</argument>
                 </arguments>
             </block>
         </referenceContainer>

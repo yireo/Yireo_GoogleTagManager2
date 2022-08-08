@@ -1,6 +1,6 @@
 {
   "name": "yireo/magento2-googletagmanager2",
-  "version": "2.1.8",
+  "version": "3.0.0",
   "license": "OSL-3.0",
   "type": "magento2-module",
   "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager2",
@@ -16,21 +16,22 @@
     }
   ],
   "require": {
-    "magento/framework": "^101.2|^102.0|^103.0",
-    "magento/module-catalog": "^100.1|^101.0|^102.0|^103.0|^104.0",
+    "magento/framework": "^103.0",
+    "magento/module-catalog": "^104.0",
     "magento/module-checkout": "^100.1",
     "magento/module-cookie": "^100.0",
-    "magento/module-customer": "^100.1|^101.0|^102.0|^103.0",
+    "magento/module-customer": "^103.0",
     "magento/module-directory": "^100.1",
-    "magento/module-quote": "^100.1|^101.0",
-    "magento/module-sales": "^100.1|^101.0|^102.0|^103.0",
-    "magento/module-store": "^100.1|^101.0",
-    "php": ">=7.2.0",
+    "magento/module-quote": "^101.0",
+    "magento/module-sales": "^103.0",
+    "magento/module-store": "^101.0",
+    "php": "^8.1",
     "ext-json": "*",
     "ext-pcre": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "~6.0"
+    "phpunit/phpunit": "^9.0",
+    "yireo/magento2-integration-test-helper": "*"
   },
   "autoload": {
     "psr-4": {
@@ -38,12 +39,6 @@
     },
     "files": [
       "registration.php"
-    ]
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "mkdir -p dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/",
-      "cp -R vendor/yireo/magento2-googletagmanager2/view/frontend/web/js/jasmine-test/* dev/tests/js/jasmine/tests/app/code/Yireo/GoogleTagManager2/"
     ]
   }
 }

@@ -1,0 +1,43 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+
+/** @var DataLayer $dataLayerViewModel */
+/** @var Config $config */
+/** @var Template $block */
+$dataLayerViewModel = $block->getDataLayerViewModel();
+$dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
+$config = $block->getConfig();
+$events = (array)$block->getEvents();
+
+// see https://developers.google.com/analytics/devguides/collection/ua/gtm/enhanced-ecommerce#add
+?>
+<script>
+    require(['jquery'], function ($) {
+        $('.product-item-info button.action.tocart').click(function (element) {
+            console.log('Add to cart', element);
+            /*
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                'event': 'addToCart',
+                'ecommerce': {
+                    'currencyCode': '<?= $dataLayerViewModel->getDataLayer()['currencyCode'] ?>',
+                    'add': {
+                        'products': [{
+                            'name': 'Triblend Android T-Shirt',
+                            'id': '12345',
+                            'price': '15.25',
+                            'brand': 'Google',
+                            'category': 'Apparel',
+                            'variant': 'Gray',
+                            'quantity': 1
+                        }]
+                    }
+                }
+            });
+            */
+        });
+    });
+</script>
