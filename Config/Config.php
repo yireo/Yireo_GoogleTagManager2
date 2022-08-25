@@ -83,13 +83,14 @@ class Config implements ArgumentInterface
      */
     public function getId(): string
     {
+        // @todo: Validate that this starts with GTM-
         return (string)$this->getModuleConfigValue('id');
     }
 
     /**
      * @return int
      */
-    public function getCategoryProducts(): int
+    public function getMaximumCategoryProducts(): int
     {
         return (int)$this->getModuleConfigValue('category_products');
     }

@@ -92,22 +92,6 @@ define([
         return {};
     };
 
-    var existingNodes = [];
-
-    var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
-        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        var firstScript = document.getElementsByTagName(scriptTag)[0];
-        var newScript = document.createElement(scriptTag);
-        var dataLayerArg = (dataLayer != 'dataLayer') ? '&l=' + dataLayer : '';
-        newScript.async = true;
-        newScript.src = '//www.googletagmanager.com/gtm.js?id=' + configId + dataLayerArg;
-
-        if (existingNodes.indexOf(newScript.src) === -1) {
-            firstScript.parentNode.insertBefore(newScript, firstScript);
-            existingNodes.push(newScript.src);
-        }
-    };
-
     return {
         'isValid': isValidConfig,
         'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
@@ -116,7 +100,6 @@ define([
         'isLoggedIn': isLoggedIn,
         'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
         'getCartSpecificAttributes': getCartSpecificAttributes,
-        'addScriptElement': addScriptElement,
         'yireoGoogleTagManager': function (config) {
             if (isDisabled(config)) {
                 return;
@@ -129,11 +112,11 @@ define([
             attributes = $.extend(getCartSpecificAttributes(), attributes);
 
             if (isDebug(config)) {
-                console.log('GTM debugging', attributes, config);
+                console.log('GTM debugging (js)', attributes, config);
             }
 
+            window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
-            addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
         }
     };
 });

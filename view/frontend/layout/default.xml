@@ -10,9 +10,31 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="datalayer_default"/>
-
     <body>
+        <referenceBlock name="head.additional">
+            <block
+                name="yireo_googletagmanager2.script"
+                template="Yireo_GoogleTagManager2::script.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+            >
+                <arguments>
+                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceContainer name="after.body.start">
+            <block
+                name="yireo_googletagmanager2.iframe"
+                template="Yireo_GoogleTagManager2::iframe.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+            >
+                <arguments>
+                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
         <referenceContainer name="before.body.end">
             <block
                 name="yireo_googletagmanager2.data-layer"
@@ -48,8 +70,8 @@
             </block>
 
             <block
-                name="yireo_googletagmanager2.script-main"
-                template="Yireo_GoogleTagManager2::luma/script-main.phtml"
+                name="yireo_googletagmanager2.script-additions"
+                template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
                 ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="layout_load_before">
+        <observer name="Yireo_GoogleTagManager2" instance="Yireo\GoogleTagManager2\Observer\AddAdditionalLayoutHandles" />
+    </event>
+</config>

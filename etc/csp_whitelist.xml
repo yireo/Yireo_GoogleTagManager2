@@ -4,7 +4,36 @@
     <policies>
         <policy id="script-src">
             <values>
-                <value id="yireo-google-tagmanager" type="host">www.googletagmanager.com</value>
+                <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
+                <value id="tagmanager.google.com" type="host">tagmanager.google.com</value>
+                <!--<value id="unsafe-eval" type="host">unsafe-eval</value>-->
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="*.google-analytics.com" type="host">*.google-analytics.com</value>
+                <value id="*.analytics.google.com" type="host">*.analytics.google.com</value>
+                <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="tagmanager.google.com" type="host">tagmanager.google.com</value>
+                <value id="fonts.google.com" type="host">fonts.google.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
+                <value id="*.google-analytics.com" type="host">*.google-analytics.com</value>
+                <value id=".com" type="host">www.googletagmanager.com</value>
+                <value id="ssl.gstatic.com" type="host">ssl.gstatic.com</value>
+                <value id="www.gstatic.com" type="host">www.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="fonts.gstatic.com" type="host">fonts.gstatic.com</value>
             </values>
         </policy>
     </policies>

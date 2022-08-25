@@ -23,10 +23,15 @@ class PageTestCase extends AbstractController
         $this->layout = $this->objectManager->get(Layout::class);
     }
 
-    protected function assertDataLayerEquals($expectedValue, string $dataLayerKey)
+    protected function getDataFromDataLayer(): array
     {
         $dataLayer = $this->objectManager->get(DataLayer::class);
-        $data = $dataLayer->getDataLayer();
+        return $dataLayer->getDataLayer();
+    }
+
+    protected function assertDataLayerEquals($expectedValue, string $dataLayerKey)
+    {
+        $data = $this->getDataFromDataLayer();
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey($dataLayerKey, $data, json_encode($data, JSON_PRETTY_PRINT));
         $this->assertEquals($expectedValue, $data[$dataLayerKey]);

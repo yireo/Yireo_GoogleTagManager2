@@ -35,6 +35,9 @@ class ProductDataMapper
             if ($prefix) {
                 $dataLayerKey = $prefix . ucfirst($dataLayerKey);
             }
+
+            // @todo: Add support here for Extension Attributes
+            // @todo: Add support for EAV values (like with color IDs)
             $productData[$dataLayerKey] = $product->getData($attributeName);
         }
 
@@ -43,6 +46,9 @@ class ProductDataMapper
 
         $this->productPrice->setProduct($product);
         $productData['price'] = $this->productPrice->addData();
+
+        // @todo: Add "variant" reference to Configurable Product
+        // @todo: Add "brand" reference to manufacturer
 
         return $productData;
     }

@@ -19,3 +19,14 @@
 ## Add a product to cart
 - Check if window.dataLayer is updated
 
+## Login
+Generate an event like the following only once:
+```html
+<script>
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({
+ 'event' : 'login',
+ 'loginMethod' : 'email' // this should be replaced by your developer
+});
+</script>
+```

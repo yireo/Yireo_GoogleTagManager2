@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Ecommerce;
+namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
 use Yireo\GoogleTagManager2\DataLayer\Tag\MergeTagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
@@ -22,6 +22,6 @@ class CurrentProduct implements MergeTagInterface
     public function mergeData(): array
     {
         $product = $this->getCurrentProduct->get();
-        return $this->productDataMapper->mapByProduct($product, 'product');
+        return $this->productDataMapper->mapByProduct($product);
     }
 }

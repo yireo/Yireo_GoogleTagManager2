@@ -10,21 +10,17 @@ use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
 
 class GetProductsFromCategoryBlockPlugin
 {
-    private Config $config;
     private CategorySize $categorySize;
     private GetCurrentCategoryProducts $getCurrentCategoryProducts;
 
     /**
      * GetProductsFromCategoryBlockPlugin constructor.
-     * @param Config $config
      * @param CategorySize $categorySize
      */
     public function __construct(
-        Config $config,
         CategorySize $categorySize,
         GetCurrentCategoryProducts $getCurrentCategoryProducts
     ) {
-        $this->config = $config;
         $this->categorySize = $categorySize;
         $this->getCurrentCategoryProducts = $getCurrentCategoryProducts;
     }

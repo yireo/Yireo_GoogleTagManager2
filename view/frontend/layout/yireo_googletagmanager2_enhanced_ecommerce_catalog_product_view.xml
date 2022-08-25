@@ -14,8 +14,18 @@
         <referenceBlock name="yireo_googletagmanager2.data-layer">
             <arguments>
                 <argument name="data_layer" xsi:type="array">
+                    <!-- @todo: https://developers.google.com/analytics/devguides/collection/ua/gtm/enhanced-ecommerce -->
                     <item name="ecommerce" xsi:type="array">
-                        <item name="impressions" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                        <item name="detail" xsi:type="array">
+                            <item name="actionField" xsi:type="array">
+                                <item name="list" xsi:type="string">todo</item>
+                            </item>
+                            <item name="products" xsi:type="array">
+                                <item name="current" xsi:type="object">
+                                    Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct
+                                </item>
+                            </item>
+                        </item>
                     </item>
                 </argument>
             </arguments>
