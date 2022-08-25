@@ -50,14 +50,11 @@
                     </argument>
 
                     <argument name="data_layer" xsi:type="array">
-                        <!--
-                        @todo: Are these needed?
-                        <item name="accountId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\AccountId</item>
-                        <item name="liveOnly" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\LiveOnly</item>
-                        -->
                         <item name="version" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Version</item>
                         <item name="event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Event</item>
                         <item name="pageType" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
+                        <item name="pagePath" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath</item>
+                        <item name="pageTitle" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle</item>
                         <item name="page" xsi:type="array">
                             <item name="virtual_page" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage</item>
                             <item name="breadcrumb" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\Breadcrumbs</item>

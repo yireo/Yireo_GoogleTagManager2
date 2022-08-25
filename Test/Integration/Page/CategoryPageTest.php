@@ -44,5 +44,15 @@ class CategoryPageTest extends PageTestCase
         $this->assertArrayHasKey('ecommerce', $data);
         $this->assertArrayHasKey('impressions', $data['ecommerce']);
         $this->assertNotEmpty($data['ecommerce']['impressions']);
+
+        foreach ($data['ecommerce']['impressions'] as $productData) {
+            $this->assertNotEmpty($productData['name']);
+            $this->assertNotEmpty($productData['id']);
+            $this->assertNotEmpty($productData['sku']);
+            $this->assertNotEmpty($productData['price']);
+            $this->assertNotEmpty($productData['category']);
+            $this->assertNotEmpty($productData['position']);
+            // @todo: Test for brand, variant, etc?
+        }
     }
 }

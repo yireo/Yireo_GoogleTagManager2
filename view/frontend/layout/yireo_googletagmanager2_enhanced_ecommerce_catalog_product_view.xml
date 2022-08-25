@@ -18,7 +18,7 @@
                     <item name="ecommerce" xsi:type="array">
                         <item name="detail" xsi:type="array">
                             <item name="actionField" xsi:type="array">
-                                <item name="list" xsi:type="string">todo</item>
+                                <item name="list" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductCategory</item>
                             </item>
                             <item name="products" xsi:type="array">
                                 <item name="current" xsi:type="object">

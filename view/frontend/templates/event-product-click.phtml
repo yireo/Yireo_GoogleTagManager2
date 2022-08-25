@@ -1,0 +1,37 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var $block Template */
+/** @var $dataLayer \Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct */
+$currentCategoryName = '';
+$currentProduct = $block->getCurrentProduct();
+?>
+<script>
+    requirejs(['jquery'], function($) {
+        $(document).bind('ajaxComplete', function(evt, jqXhr, opts) {
+            dataLayer.push({
+                ...
+            });
+        });
+    });
+
+    function onProductClick() {
+        console.log('onProductClick');
+        dataLayer.push({ecommerce: null});
+        dataLayer.push({
+            'event': 'productClick',
+            'ecommerce': {
+                'click': {
+                    'actionField': {'list': '<?= $currentCategoryName ?>'},
+                    'products': [{
+                        <?= $currentProduct->mergeData() ?>
+                    }]
+                }
+            },
+            'eventCallback': function () {
+                document.location = '<?= $currentProduct->getUrl() ?>';
+            }
+        });
+    }
+</script>

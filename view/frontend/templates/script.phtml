@@ -14,3 +14,9 @@ $config = $block->getConfig();
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','<?= $config->getId() ?>');</script>
 <!-- End Google Tag Manager -->
+
+<?php if($config->isDebug()): ?>
+<script>
+    const YIREO_GOOGLETAGMANAGER2_DEBUG = true;
+</script>
+<?php endif; ?>
