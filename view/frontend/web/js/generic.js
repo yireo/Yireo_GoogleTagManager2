@@ -59,16 +59,14 @@ define([
 
     var getCustomerSpecificAttributes = function () {
         var customer = customerData.get('customer');
-        var customerGroup = customer().gtm.group_code;
-        var customerGroupCode = (customerGroup) ? customerGroup.toUpperCase() : 'UNKNOWN';
+        var gtmData = customer().gtm;
+        if (isLoggedIn() && gtmData) {
+            return gtmData;
+        }
 
-        return isLoggedIn() ? {
-            'customerLoggedIn': 1,
-            'customerId': customer().gtm.id,
-            'customerGroupId': customer().gtm.group_id,
-            'customerGroupCode': customerGroupCode
-        } : {
+        return {
             'customerLoggedIn': 0,
+            'customerId': 0,
             'customerGroupId': 0,
             'customerGroupCode': 'UNKNOWN'
         };
@@ -100,7 +98,7 @@ define([
     var subscribeToCustomerChanges = function(callback) {
         var customer = customerData.get('customer');
         customer.subscribe(function (updatedCustomer) {
-            const attributes = getCartSpecificAttributes();
+            const attributes = getCustomerSpecificAttributes();
             if (isDebug()) {
                 console.log('GTM customer change (js)', attributes);
             }

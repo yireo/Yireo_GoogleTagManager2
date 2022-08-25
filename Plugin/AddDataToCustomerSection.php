@@ -56,9 +56,10 @@ class AddDataToCustomerSection
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
 
         $gtmData = [
-            'id' => $this->customerSession->getCustomerId(),
-            'group_id' => $customerGroup->getId(),
-            'group_code' => $customerGroup->getCode()
+            'customerLoggedIn' => 1,
+            'customerId' => $this->customerSession->getCustomerId(),
+            'customerGroupId' => $customerGroup->getId(),
+            'customerGroupCode' => strtoupper($customerGroup->getCode())
         ];
 
         $gtmData = array_merge($gtmData, $this->customerSessionDataProvider->get());
