@@ -103,9 +103,10 @@ dataLayer.push({
 });
 ```
 
-## Other triggers
+## Other things
 - `checkoutOption`
 - `gtm.dom`
+- Add logout event
 
 ## Container export and import
 See https://support.google.com/tagmanager/answer/6106997?hl=en
