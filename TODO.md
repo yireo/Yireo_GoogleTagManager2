@@ -3,30 +3,6 @@
 ```js
 dataLayer.push({ ecommerce: null });
 dataLayer.push({
-    'event': 'productClick',
-    'ecommerce': {
-      'click': {
-        'actionField': {'list': 'Search Results'},      // Optional list property.
-        'products': [{
-          'name': productObj.name,                      // Name or ID is required.
-          'id': productObj.id,
-          'price': productObj.price,
-          'brand': productObj.brand,
-          'category': productObj.cat,
-          'variant': productObj.variant,
-          'position': productObj.position
-         }]
-       }
-     },
-     'eventCallback': function() {
-       document.location = productObj.url
-     }
-  });
-```
-
-```js
-dataLayer.push({ ecommerce: null });
-dataLayer.push({
   'ecommerce': {
     'promoView': {
       'promotions': [

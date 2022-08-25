@@ -24,3 +24,39 @@ $config = $commons->getConfiguration();
 <script type="text/x-magento-init">
     {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
 </script>
+
+<script>
+    require(['jquery'], function($) {
+        $('.product-items a.product').click(function(event) {
+            const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
+            var $parent = $(this).parent();
+            var regex = /_(\d+)$/;
+            var matches = $parent.attr('id').match(regex);
+            var productId = matches[1];
+
+            const gtmData = {
+                'event': 'productClick',
+                'ecommerce': {
+                    'click': {
+                        'actionField': {'list': document.title},
+                        'products': [{
+                            id: productId
+                        }]
+                    }
+                }
+            }
+
+            if (debug) {
+                console.log('GTM event productClick', gtmData);
+            }
+
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push(gtmData);
+
+            if (debug) {
+                event.preventDefault();
+                console.log('GTM click here to go next page', $(this).attr('href'));
+            }
+        });
+    })
+</script>
