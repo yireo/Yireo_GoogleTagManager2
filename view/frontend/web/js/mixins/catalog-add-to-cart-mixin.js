@@ -16,7 +16,7 @@ define(['jquery'], function ($) {
             }
 
             if (debug) {
-                console.log('catalog-add-to-cart-mixin', productData);
+                console.log('GTM catalog-add-to-cart-mixin', productData);
             }
 
             dataLayer.push({ecommerce: null});

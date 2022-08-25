@@ -5,8 +5,6 @@ Homepage: https://www.yireo.com/software/magento-extensions/googletagmanager2
 
 
 Supported versions:
-* Magento 2.2
-* Magento 2.3
 * Magento 2.4
 
 See `composer.json` for other requirements.

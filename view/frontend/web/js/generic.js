@@ -13,24 +13,26 @@ define([
 ], function ($, _, customerData) {
     'use strict';
 
-    var isDisabled = function(config) {
-        if (isValidConfig(config) === false) {
+    var moduleConfig = {};
+
+    var isDisabled = function() {
+        if (isValidConfig() === false) {
             return true;
         }
 
-        if (isAllowedByCookieRestrictionMode(config) === false) {
+        if (isAllowedByCookieRestrictionMode() === false) {
             return true;
         }
 
         return false;
     };
 
-    var isDebug = function(config) {
-        return !!config.debug;
+    var isDebug = function() {
+        return !!moduleConfig.debug;
     }
 
-    var isValidConfig = function(config) {
-        if (typeof config.id === 'undefined' || !config.id) {
+    var isValidConfig = function() {
+        if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
             console.warn('GTM identifier empty, terminating GTM initialization.');
             return false;
         }
@@ -38,42 +40,32 @@ define([
         return true;
     };
 
-    var isAllowedByCookieRestrictionMode = function(config) {
-        if (!config.cookie_restriction_mode) {
+    var isAllowedByCookieRestrictionMode = function() {
+        if (!moduleConfig.cookie_restriction_mode) {
             return true;
         }
 
-        if (!$.cookie(config.cookie_restriction_mode)){
+        if (!$.cookie(moduleConfig.cookie_restriction_mode)){
             return false;
         }
 
         return true;
     };
 
-    var initDataLayer = function (window) {
-        window.dataLayer = window.dataLayer || [];
-        return window;
-    };
-
-    var getCustomer = function () {
-        var customer = customerData.get('customer');
-        return customer();
-    };
-
     var isLoggedIn = function () {
-        var customer = getCustomer();
-        return customer && customer.firstname;
+        var customer = customerData.get('customer');
+        return customer() && customer().firstname;
     };
 
     var getCustomerSpecificAttributes = function () {
-        var customer = getCustomer();
-        var customerGroup = customer.group_code;
+        var customer = customerData.get('customer');
+        var customerGroup = customer().gtm.group_code;
         var customerGroupCode = (customerGroup) ? customerGroup.toUpperCase() : 'UNKNOWN';
 
         return isLoggedIn() ? {
             'customerLoggedIn': 1,
-            'customerId': customer.id,
-            'customerGroupId': customer.group_id,
+            'customerId': customer().gtm.id,
+            'customerGroupId': customer().gtm.group_id,
             'customerGroupCode': customerGroupCode
         } : {
             'customerLoggedIn': 0,
@@ -92,31 +84,60 @@ define([
         return {};
     };
 
-    return {
-        'isValid': isValidConfig,
-        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
-        'initDataLayer': initDataLayer,
-        'getCustomer': getCustomer,
-        'isLoggedIn': isLoggedIn,
-        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
-        'getCartSpecificAttributes': getCartSpecificAttributes,
-        'yireoGoogleTagManager': function (config) {
-            if (isDisabled(config)) {
-                return;
-            }
-
-            initDataLayer(window);
-
-            let attributes = config.attributes;
-            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
-            attributes = $.extend(getCartSpecificAttributes(), attributes);
-
-            if (isDebug(config)) {
-                console.log('GTM debugging (js)', attributes, config);
+    var subscribeToCartChanges = function(callback) {
+        var cart = customerData.get('cart');
+        cart.subscribe(function (updatedCart) {
+            const attributes = getCartSpecificAttributes();
+            if (isDebug()) {
+                console.log('GTM cart change (js)', attributes);
             }
 
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
+        });
+    }
+
+    var subscribeToCustomerChanges = function(callback) {
+        var customer = customerData.get('customer');
+        customer.subscribe(function (updatedCustomer) {
+            const attributes = getCartSpecificAttributes();
+            if (isDebug()) {
+                console.log('GTM customer change (js)', attributes);
+            }
+
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push(attributes);
+        });
+    }
+
+    return {
+        'isValid': isValidConfig,
+        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
+        'isLoggedIn': isLoggedIn,
+        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
+        'getCartSpecificAttributes': getCartSpecificAttributes,
+        'yireoGoogleTagManager': function (config) {
+            moduleConfig = config;
+
+            if (isDisabled()) {
+                return;
+            }
+
+            window.dataLayer = window.dataLayer || [];
+
+            let attributes = {};
+            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
+            attributes = $.extend(getCartSpecificAttributes(), attributes);
+
+            if (isDebug()) {
+                console.log('GTM initial state (js)', attributes);
+            }
+
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push(attributes);
+
+            subscribeToCartChanges();
+            subscribeToCustomerChanges();
         }
     };
 });

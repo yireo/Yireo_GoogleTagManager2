@@ -43,9 +43,6 @@ This extension adds the following attributes automatically to the data layer. Th
 
 Note that on a product page with an URL that also identifies a category, both the product attributes and the category attributes are added.
 
-# Technical details
-This module does not use XML rewrites to change core classes. It uses two insertion modes - one using the XML layout, one using an observed event `core_block_abstract_to_html_after`.
-
 # Tip
 When you want to track conversions in your Magento checkout, our extension helps out as well: It adds the relevant information to all your checkout and cart pages. Do you want to know which variables are on the success page? Use the [Yireo CheckoutTester](https://github.com/yireo/Yireo_CheckoutTester2) extension to preview that page and view its HTML source.
 

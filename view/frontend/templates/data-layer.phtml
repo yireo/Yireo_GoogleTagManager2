@@ -20,7 +20,7 @@ $events = (array)$block->getEvents();
     window.dataLayer.push({ecommerce: null});
     <?php endif; ?>
     <?php if ($config->isDebug()): ?>
-    console.log('GTM debugging (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    console.log('GTM initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
     <?php endif; ?>
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
 </script>

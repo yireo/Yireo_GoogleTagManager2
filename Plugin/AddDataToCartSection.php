@@ -17,37 +17,31 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Model\Quote as QuoteModel;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Item;
+use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
 
 class AddDataToCartSection
 {
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
-     * @var QuoteModel
-     */
-    private $quote;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
+    private CheckoutSession $checkoutSession;
+    private QuoteModel $quote;
+    private ScopeConfigInterface $scopeConfig;
+    private CheckoutSessionDataProvider $checkoutSessionDataProvider;
 
     /**
      * @param CheckoutSession $checkoutSession
      * @param CheckoutCart $checkoutCart
      * @param ScopeConfigInterface $scopeConfig
+     * @param CheckoutSessionDataProvider $checkoutSessionDataProvider
      */
     public function __construct(
         CheckoutSession $checkoutSession,
         CheckoutCart $checkoutCart,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        CheckoutSessionDataProvider $checkoutSessionDataProvider
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->quote = $checkoutCart->getQuote();
         $this->scopeConfig = $scopeConfig;
+        $this->checkoutSessionDataProvider = $checkoutSessionDataProvider;
     }
 
     /**
@@ -62,7 +56,7 @@ class AddDataToCartSection
             return $result;
         }
 
-        $result['gtm'] = [
+        $gtmData = [
             'transactionEntity' => 'QUOTE',
             'transactionId' => $quoteId,
             'transactionAffiliation' => $this->getWebsiteName(),
@@ -71,6 +65,11 @@ class AddDataToCartSection
             'transactionCurrency' => $this->getBaseCurrency(),
             'transactionProducts' => $this->getItemsAsArray()
         ];
+
+        $gtmData = array_merge($gtmData, $this->checkoutSessionDataProvider->get());
+        $result = array_merge($result, ['gtm' => $gtmData]);
+
+        $this->checkoutSessionDataProvider->clear();
 
         return $result;
     }

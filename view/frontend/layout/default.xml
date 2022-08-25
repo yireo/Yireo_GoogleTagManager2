@@ -43,6 +43,7 @@
             >
                 <arguments>
                     <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+
                     <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
 
                     <argument name="data_layer_processors" xsi:type="array">
