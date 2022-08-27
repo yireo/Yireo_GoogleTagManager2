@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Yireo\GoogleTagManager2\Config\Config;
 
-class Event implements AddTagInterface
+class Event implements TagInterface
 {
     private Config $config;
 
@@ -14,7 +14,7 @@ class Event implements AddTagInterface
         $this->config = $config;
     }
 
-    public function addData()
+    public function get()
     {
         return null;
     }

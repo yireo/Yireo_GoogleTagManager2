@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\App\RequestInterface;
 
-class PageType implements AddTagInterface
+class PageType implements TagInterface
 {
     private RequestInterface $request;
 
@@ -14,7 +14,7 @@ class PageType implements AddTagInterface
         $this->request = $request;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         $moduleName = $this->request->getModuleName();
         $controllerName = $this->request->getControllerName();

@@ -11,6 +11,6 @@ class VersionTest extends TestCase
     public function testIfVersionIsSemantic()
     {
         $version = ObjectManager::getInstance()->get(Version::class);
-        $this->assertTrue((bool)preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+)$/', $version->addData()));
+        $this->assertTrue((bool)preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+)$/', $version->get()));
     }
 }

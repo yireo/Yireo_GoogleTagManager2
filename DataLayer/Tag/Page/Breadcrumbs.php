@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Page;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Magento\Catalog\Helper\Data as CatalogHelper;
 
-class Breadcrumbs implements AddTagInterface
+class Breadcrumbs implements TagInterface
 {
     private CatalogHelper $catalogHelper;
 
@@ -15,7 +15,7 @@ class Breadcrumbs implements AddTagInterface
         $this->catalogHelper = $catalogHelper;
     }
 
-    public function addData(): array
+    public function get(): array
     {
         $data = [];
         $breadcrumbs = $this->catalogHelper->getBreadcrumbPath();

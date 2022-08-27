@@ -10,7 +10,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Item;
 use Yireo\GoogleTagManager2\Config\Config;
 
-class Order implements AddTagInterface
+class Order implements TagInterface
 {
     private CheckoutSession $checkoutSession;
     private OrderRepositoryInterface $orderRepository;
@@ -65,7 +65,7 @@ class Order implements AddTagInterface
     /**
      * @return array
      */
-    public function addData(): array
+    public function get(): array
     {
         if ($this->hasOrder() === false) {
             return [];

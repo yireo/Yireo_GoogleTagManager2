@@ -13,7 +13,7 @@ class ProductPrice implements ProductTagInterface
         $this->product = $product;
     }
 
-    public function addData(): float
+    public function get(): float
     {
         return $this->product->getFinalPrice();
     }

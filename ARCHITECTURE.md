@@ -5,7 +5,7 @@ Note that this document only applies to version 3.0 and higher.
 ## Extensibility in general
 - XML layout arguments
 - Injectable interfaces in namespace `Yireo\GoogleTagManager2\Api\`
-- Interfaces to enforce certain behaviour (like `MergeTagInterface`)
+- Interfaces to enforce certain behaviour (like `TagInterface`)
 
 Don't touch anything else. If you want to add something in a way that is not supported, open a GitHub Issue and let's discuss how to support it anyway.
 
@@ -27,7 +27,7 @@ A tag `version` could be added to the datalayer with an XML layout statement lik
 </argument>
 ```
 
-If the `xsi:type` is `object`, then the value could refer to a class. A restriction within the Yireo GoogleTagManager2 is that this class implements either `Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface` or `Yireo\GoogleTagManager2\DataLayer\Tag\MergeTagInterface`:
+If the `xsi:type` is `object`, then the value could refer to a class. A restriction within the Yireo GoogleTagManager2 is that this class implements `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface`:
 
 ```xml
 <argument name="data_layer" xsi:type="array">
@@ -35,9 +35,7 @@ If the `xsi:type` is `object`, then the value could refer to a class. A restrict
 </argument>
 ```
 
-In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface` and it returns a simple string (so, the version). This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property, not the PHP class.
-
-If the `Yireo\GoogleTagManager2\DataLayer\Tag\MergeTagInterface` is used instead, the return value of the class needs to be an associative array. Each value in that array is added to the datalayer under the name in that associative array. In other words, the item name in the XML layout is arbitrary, the PHP classes determines the structure.
+In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface` and it returns a simple string (so, the version). This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property.
 
 The namespace `Yireo\GoogleTagManager2\DataLayer\Tag` contains all tag classes, offered out-of-the-box. If you want to add more values, you can add them through the XML layout. You can do this through a theme. If you also want to add your own custom tag class, create a module instead, make it dependent on the `Yireo_GoogleTagManager2` module (both in your `composer.json` file and your `etc/module.xml` file) and use the tag interfaces as mentioned.
 

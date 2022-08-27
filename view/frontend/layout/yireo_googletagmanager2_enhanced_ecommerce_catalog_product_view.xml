@@ -20,11 +20,7 @@
                             <item name="actionField" xsi:type="array">
                                 <item name="list" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductCategory</item>
                             </item>
-                            <item name="products" xsi:type="array">
-                                <item name="current" xsi:type="object">
-                                    Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct
-                                </item>
-                            </item>
+                            <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProducts</item>
                         </item>
                     </item>
                 </argument>

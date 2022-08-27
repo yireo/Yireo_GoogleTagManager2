@@ -6,7 +6,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class CurrencyCode implements AddTagInterface
+class CurrencyCode implements TagInterface
 {
     private StoreManagerInterface $storeManager;
     private LoggerInterface $logger;
@@ -19,7 +19,7 @@ class CurrencyCode implements AddTagInterface
         $this->logger = $logger;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         try {
             return $this->storeManager->getStore()->getCurrentCurrencyCode() ?: '';

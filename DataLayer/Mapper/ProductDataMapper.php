@@ -42,10 +42,10 @@ class ProductDataMapper
         }
 
         $this->productCategory->setProduct($product);
-        $productData['category'] = $this->productCategory->addData();
+        $productData['category'] = $this->productCategory->get();
 
         $this->productPrice->setProduct($product);
-        $productData['price'] = $this->productPrice->addData();
+        $productData['price'] = $this->productPrice->get();
 
         // @todo: Add "variant" reference to Configurable Product
         // @todo: Add "brand" reference to manufacturer

@@ -2,9 +2,9 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 
-class CategorySize implements AddTagInterface
+class CategorySize implements TagInterface
 {
     private $size = 0;
 
@@ -13,7 +13,7 @@ class CategorySize implements AddTagInterface
         $this->size = $size;
     }
 
-    public function addData(): int
+    public function get(): int
     {
         return $this->size;
     }

@@ -7,7 +7,7 @@ use Yireo\GoogleTagManager2\Config\Config;
 /**
  * @see https://developers.google.com/tag-platform/tag-manager/api/v1/reference/accounts/containers/tags
  */
-class AccountId implements AddTagInterface
+class AccountId implements TagInterface
 {
     private Config $config;
 
@@ -17,7 +17,7 @@ class AccountId implements AddTagInterface
         $this->config = $config;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         return $this->config->getId();
     }

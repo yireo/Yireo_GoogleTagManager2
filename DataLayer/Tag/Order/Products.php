@@ -4,9 +4,9 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 
-class Products implements AddTagInterface
+class Products implements TagInterface
 {
     private ProductDataMapper $productDataMapper;
     private CheckoutSession $checkoutSession;
@@ -19,7 +19,7 @@ class Products implements AddTagInterface
         $this->checkoutSession = $checkoutSession;
     }
 
-    public function addData(): array
+    public function get(): array
     {
         $products = [];
         foreach ($this->checkoutSession->getLastRealOrder()->getAllItems() as $item) {

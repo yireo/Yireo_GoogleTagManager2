@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-class Version implements AddTagInterface
+class Version implements TagInterface
 {
     private ComponentRegistrar $composerRegistrar;
 
@@ -17,7 +17,7 @@ class Version implements AddTagInterface
         $this->composerRegistrar = $composerRegistrar;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         $path = $this->composerRegistrar->getPath('module', 'Yireo_GoogleTagManager2');
         $composerPath = $path.'/composer.json';

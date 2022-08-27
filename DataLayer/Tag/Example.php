@@ -2,9 +2,9 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
-class Example implements AddTagInterface
+class Example implements TagInterface
 {
-    public function addData(): string
+    public function get(): string
     {
         return '';
     }

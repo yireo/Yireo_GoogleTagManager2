@@ -3,10 +3,10 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Ecommerce;
 
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetProductsFromCategoryBlock;
 
-class Value implements AddTagInterface
+class Value implements TagInterface
 {
     private GetProductsFromCategoryBlock $getProductsInCategory;
     private Config $config;
@@ -19,7 +19,7 @@ class Value implements AddTagInterface
         $this->config = $config;
     }
 
-    public function addData(): ?float
+    public function get(): ?float
     {
         if (!$this->config->getIsEnabledEnhancedEcommercePushing()) {
             return null;
