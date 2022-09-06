@@ -23,7 +23,7 @@ class ProductCategory implements ProductTagInterface
         $this->product = $product;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         $category = $this->product->getCategory();
         if (is_object($category) && $category instanceof CategoryInterface) {

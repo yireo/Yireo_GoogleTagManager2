@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\UrlInterface;
 
-class PagePath implements AddTagInterface
+class PagePath implements TagInterface
 {
     private UrlInterface $url;
 
@@ -14,7 +14,7 @@ class PagePath implements AddTagInterface
         $this->url = $url;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         return $this->url->getCurrentUrl();
     }

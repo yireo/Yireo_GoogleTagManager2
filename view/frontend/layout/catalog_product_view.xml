@@ -21,10 +21,11 @@
                     <item name="page" xsi:type="array">
                         <item name="type" xsi:type="string">product</item>
                     </item>
-                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
+                    <item name="productId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductId</item>
+                    <item name="productName" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProductName</item>
                     <item name="google_tag_params" xsi:type="array">
                         <item name="ecomm_category" xsi:type="array">
-                            <item name="current_category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory</item>
+                            <item name="current_category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryName</item>
                         </item>
                     </item>
                 </argument>

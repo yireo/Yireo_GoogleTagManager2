@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Yireo\GoogleTagManager2\Config\Config;
 
-class CheckoutConfiguration implements AddTagInterface
+class CheckoutConfiguration implements TagInterface
 {
     private Config $config;
 
@@ -15,7 +15,7 @@ class CheckoutConfiguration implements AddTagInterface
         $this->config = $config;
     }
 
-    public function addData(): array
+    public function get(): array
     {
         return [
             'trackCartAsCheckoutStep' => $this->config->isDataLayerTrackCartAsCheckoutStep(),

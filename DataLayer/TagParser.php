@@ -3,8 +3,6 @@
 namespace Yireo\GoogleTagManager2\DataLayer;
 
 use Yireo\GoogleTagManager2\DataLayerProcessor\ProcessorInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\MergeTagInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use RuntimeException;
 
@@ -34,13 +32,8 @@ class TagParser
      */
     private function convertTag($tagName, $tagValue, $data)
     {
-        if ($tagValue instanceof AddTagInterface) {
-            $data[$tagName] = $tagValue->addData();
-        }
-
-        if ($tagValue instanceof MergeTagInterface) {
-            $data = array_merge_recursive($data, $tagValue->mergeData());
-            unset($data[$tagName]);
+        if ($tagValue instanceof TagInterface) {
+            $data[$tagName] = $tagValue->get();
         }
 
         if (is_object($tagValue) && !$tagValue instanceof TagInterface) {

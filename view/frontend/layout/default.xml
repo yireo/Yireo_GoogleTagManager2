@@ -64,6 +64,13 @@
                             <item name="has_transacted" xsi:type="boolean">false</item>
                         </item>
                     </argument>
+
+                    <argument name="data_layer_mapping" xsi:type="array">
+                        <item name="product" xsi:type="array">
+                            <item name="entity_id" xsi:type="string">id</item>
+                            <item name="manufacturer" xsi:type="string">brand</item>
+                        </item>
+                    </argument>
                 </arguments>
             </block>
 

@@ -21,17 +21,10 @@
                     <item name="page" xsi:type="array">
                         <item name="type" xsi:type="string">category</item>
                     </item>
-                    <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory</item>
+                    <item name="categoryId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryId</item>
+                    <item name="categoryName" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryName</item>
                     <item name="categorySize" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize</item>
                     <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
-                    <!--
-                    <item name="google_tag_params" xsi:type="array">
-                        <item name="ecomm_category" xsi:type="array">
-                            <item name="current_category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory</item>
-                            <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
-                        </item>
-                    </item>
-                    -->
                 </argument>
             </arguments>
         </referenceBlock>

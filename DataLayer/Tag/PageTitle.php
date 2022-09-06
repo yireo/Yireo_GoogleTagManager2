@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\View\Page\Title;
 
-class PageTitle implements AddTagInterface
+class PageTitle implements TagInterface
 {
     private Title $pageTitle;
 
@@ -14,7 +14,7 @@ class PageTitle implements AddTagInterface
         $this->pageTitle = $pageTitle;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         return $this->pageTitle->get();
     }

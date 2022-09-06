@@ -7,7 +7,7 @@ use Magento\Framework\App\State;
 /**
  * @see https://developers.google.com/tag-platform/tag-manager/api/v1/reference/accounts/containers/tags
  */
-class LiveOnly implements AddTagInterface
+class LiveOnly implements TagInterface
 {
     private State $state;
 
@@ -19,7 +19,7 @@ class LiveOnly implements AddTagInterface
         $this->state = $state;
     }
 
-    public function addData(): bool
+    public function get(): bool
     {
         // @todo: Make this configurable
         return (bool)$this->state->getMode() === State::MODE_PRODUCTION;

@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
-class PaymentLabel implements AddTagInterface
+class PaymentLabel implements TagInterface
 {
     private Order $order;
 
@@ -18,7 +18,7 @@ class PaymentLabel implements AddTagInterface
     /**
      * @return string
      */
-    public function addData(): string
+    public function get(): string
     {
         $payment = $this->order->getOrder()->getPayment();
         return $payment ? $payment->getMethod() : '';

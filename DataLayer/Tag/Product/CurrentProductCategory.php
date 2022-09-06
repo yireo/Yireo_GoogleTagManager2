@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 
-class CurrentProductCategory implements AddTagInterface
+class CurrentProductCategory implements TagInterface
 {
     private ProductCategory $productCategory;
     private GetCurrentProduct $getCurrentProduct;
@@ -19,9 +19,9 @@ class CurrentProductCategory implements AddTagInterface
     }
 
 
-    public function addData()
+    public function get()
     {
         $this->productCategory->setProduct($this->getCurrentProduct->get());
-        return $this->productCategory->addData();
+        return $this->productCategory->get();
     }
 }

@@ -3,12 +3,12 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 
-class Products implements AddTagInterface
+class Products implements TagInterface
 {
     private GetCurrentCategoryProducts $getCurrentCategoryProducts;
     private GetCurrentCategory $getCurrentCategory;
@@ -27,7 +27,7 @@ class Products implements AddTagInterface
         $this->config = $config;
     }
 
-    public function addData(): array
+    public function get(): array
     {
         $productsData = [];
         $i = 1;

@@ -2,15 +2,15 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\MergeTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 
-class CurrentProduct implements MergeTagInterface
+class CurrentProducts implements TagInterface
 {
     private GetCurrentProduct $getCurrentProduct;
     private ProductDataMapper $productDataMapper;
-
+    
     public function __construct(
         GetCurrentProduct $getCurrentProduct,
         ProductDataMapper $productDataMapper
@@ -18,10 +18,13 @@ class CurrentProduct implements MergeTagInterface
         $this->getCurrentProduct = $getCurrentProduct;
         $this->productDataMapper = $productDataMapper;
     }
-
-    public function mergeData(): array
+    
+    public function get(): array
     {
         $product = $this->getCurrentProduct->get();
-        return $this->productDataMapper->mapByProduct($product);
+        
+        return [
+            $this->productDataMapper->mapByProduct($product)
+        ];
     }
 }

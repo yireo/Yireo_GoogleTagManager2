@@ -4,9 +4,9 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag\Page;
 
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\AddTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 
-class VirtualPage implements AddTagInterface
+class VirtualPage implements TagInterface
 {
     private StoreManagerInterface $storeManager;
 
@@ -16,7 +16,7 @@ class VirtualPage implements AddTagInterface
         $this->storeManager = $storeManager;
     }
 
-    public function addData(): string
+    public function get(): string
     {
         /** @var Store $store */
         $store = $this->storeManager->getStore();
