@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
 
-class CurrentCategoryName implements TagInterface
+class CurrentCategory implements ArgumentInterface
 {
     private GetCurrentCategory $getCurrentCategory;
 
@@ -15,8 +15,13 @@ class CurrentCategoryName implements TagInterface
         $this->getCurrentCategory = $getCurrentCategory;
     }
 
-    public function get(): string
+    public function getId(): int
     {
-        return $this->getCurrentCategory->get()->getName();
+        return (int)$this->getCurrentCategory->get()->getId();
+    }
+
+    public function getName(): string
+    {
+        return (string)$this->getCurrentCategory->get()->getName();
     }
 }

@@ -2,12 +2,22 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer;
 
+use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\DataLayerProcessor\ProcessorInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
 use RuntimeException;
 
 class TagParser
 {
+    private ObjectManagerInterface $objectManager;
+
+    public function __construct(
+        ObjectManagerInterface $objectManager
+    ) {
+        $this->objectManager = $objectManager;
+    }
+
     /**
      * @param array $data
      * @param ProcessorInterface[] $processors
@@ -32,6 +42,12 @@ class TagParser
      */
     private function convertTag($tagName, $tagValue, $data)
     {
+        if (is_string($tagValue) && preg_match('/([\w\\\-\_]+)\:\:([\w]+)/', $tagValue, $tagMatch)) {
+            $tagValue = $this->getValueFromCallable($tagMatch[1], $tagMatch[2]);
+            $data[$tagName] = $tagValue;
+            return $data;
+        }
+
         if ($tagValue instanceof TagInterface) {
             $data[$tagName] = $tagValue->get();
         }
@@ -53,5 +69,28 @@ class TagParser
         }
 
         return $data;
+    }
+
+    /**
+     * @param string $className
+     * @param string $classMethod
+     * @return false|mixed
+     */
+    private function getValueFromCallable(string $className, string $classMethod)
+    {
+        if (!class_exists($className)) {
+            return false;
+        }
+
+        if (!method_exists($className, $classMethod)) {
+            return false;
+        }
+
+        $object = $this->objectManager->get($className);
+        if (!$object instanceof ArgumentInterface) {
+            return false;
+        }
+
+        return call_user_func([$object, $classMethod]);
     }
 }

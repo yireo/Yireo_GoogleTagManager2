@@ -35,7 +35,17 @@ If the `xsi:type` is `object`, then the value could refer to a class. A restrict
 </argument>
 ```
 
-In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface` and it returns a simple string (so, the version). This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property.
+In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface` and it returns a simple string (so, the version) via the implemented `get()` method. This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property.
+
+Instead of using a class (with `xsi:type="object"`), you could also set the value to a callable (class plus method):
+
+```xml
+<argument name="data_layer" xsi:type="array">
+    <item name="version" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Version::getVersion</item>
+</argument>
+```
+
+In this case, the class still needs to implement `Magento\Framework\View\Element\Block\ArgumentInterface`. And obviously the method specified needs to return something usable for the data layer.
 
 The namespace `Yireo\GoogleTagManager2\DataLayer\Tag` contains all tag classes, offered out-of-the-box. If you want to add more values, you can add them through the XML layout. You can do this through a theme. If you also want to add your own custom tag class, create a module instead, make it dependent on the `Yireo_GoogleTagManager2` module (both in your `composer.json` file and your `etc/module.xml` file) and use the tag interfaces as mentioned.
 

@@ -29,10 +29,11 @@ $config = $commons->getConfiguration();
     require(['jquery'], function($) {
         $('.product-items a.product').click(function(event) {
             const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
-            var $parent = $(this).parent();
-            var regex = /_(\d+)$/;
-            var matches = $parent.attr('id').match(regex);
-            var productId = matches[1];
+            const debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS || false;
+            const $parent = $(this).parent();
+            const regex = /_(\d+)$/;
+            const matches = $parent.attr('id').match(regex);
+            const productId = matches[1];
 
             const gtmData = {
                 'event': 'productClick',
@@ -53,7 +54,7 @@ $config = $commons->getConfiguration();
             dataLayer.push({ ecommerce: null });
             dataLayer.push(gtmData);
 
-            if (debug) {
+            if (debugClicks) {
                 event.preventDefault();
                 console.log('GTM click here to go next page', $(this).attr('href'));
             }

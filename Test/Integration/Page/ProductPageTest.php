@@ -43,15 +43,15 @@ class ProductPageTest extends PageTestCase
         $this->assertArrayHasKey('ecommerce', $data);
         $this->assertArrayHasKey('detail', $data['ecommerce']);
         $this->assertNotEmpty($data['ecommerce']['detail']);
-        $this->assertNotEmpty($data['ecommerce']['detail'][0]);
+        $this->assertArrayHasKey('products', $data['ecommerce']['detail'], var_export($data['ecommerce']['detail'], true));
 
-        $productData = $data['ecommerce']['detail'][0];
+        $productData = array_shift($data['ecommerce']['detail']['products']);
         $this->assertNotEmpty($productData['name']);
         $this->assertNotEmpty($productData['id']);
         $this->assertNotEmpty($productData['price']);
         $this->assertNotEmpty($productData['category']);
 
-        $actionFieldList = $data['ecommerce']['actionField']['list'];
+        $actionFieldList = $data['ecommerce']['detail']['actionField']['list'];
         $this->assertNotEmpty($actionFieldList);
     }
 }
