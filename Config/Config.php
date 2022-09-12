@@ -69,6 +69,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether mouse clicks are debugged as well
+     *
+     * @return bool
+     */
+    public function isDebugClicks(): bool
+    {
+        return $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
+    }
+
+    /**
      * @return bool
      */
     public function isEnhancedEcommerce(): bool

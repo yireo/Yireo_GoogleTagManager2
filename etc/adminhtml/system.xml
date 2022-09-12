@@ -37,6 +37,13 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="debug_clicks" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Clicks</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="debug">1</field>
+                    </depends>
+                </field>
                 <field id="enhanced_ecommerce" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enhanced Ecommerce</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

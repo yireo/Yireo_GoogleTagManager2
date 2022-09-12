@@ -2,8 +2,15 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\ObjectManager;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
+use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
 /**
@@ -12,6 +19,7 @@ use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLay
 class CategoryPageTest extends PageTestCase
 {
     use CreateCategory;
+    use CreateProduct;
     use AssertHandleInLayout;
 
     /**
@@ -23,7 +31,9 @@ class CategoryPageTest extends PageTestCase
     {
         $this->assertEnabledFlagIsWorking();
 
+        /** @var CategoryInterface $category */
         $category = $this->createCategories()[0];
+        $this->createProducts(3, ['category_ids' => [$category->getId()]]);
 
         $this->dispatch('catalog/category/view/id/' . $category->getId());
         $this->assertRequestActionName('view');
@@ -43,8 +53,18 @@ class CategoryPageTest extends PageTestCase
         $data = $this->getDataFromDataLayer();
         $this->assertArrayHasKey('ecommerce', $data);
         $this->assertArrayHasKey('impressions', $data['ecommerce']);
-        $this->assertNotEmpty($data['ecommerce']['impressions']);
 
+        $products = $this->getProductsByCategory($category);
+        if (!count($products) > 0) {
+            $this->markTestIncomplete('Category fixture ' . $category->getId() . ' does not have any products');
+        }
+
+        $products = $this->getProductsByCurrentCategory();
+        if (!count($products) > 0) {
+            $this->markTestIncomplete('Current category ' . $category->getId() . ' does not have any products');
+        }
+
+        $this->assertNotEmpty($data['ecommerce']['impressions']);
         foreach ($data['ecommerce']['impressions'] as $productData) {
             $this->assertNotEmpty($productData['name']);
             $this->assertNotEmpty($productData['id']);
@@ -54,5 +74,16 @@ class CategoryPageTest extends PageTestCase
             $this->assertNotEmpty($productData['position']);
             // @todo: Test for brand, variant, etc?
         }
+    }
+
+    private function getProductsByCategory(CategoryInterface $category): array
+    {
+        return $category->getProductCollection()->toArray();
+    }
+
+    private function getProductsByCurrentCategory(): array
+    {
+        $getCurrentCategoryProducts = $this->objectManager->get(GetCurrentCategoryProducts::class);
+        return $getCurrentCategoryProducts->getProducts();
     }
 }

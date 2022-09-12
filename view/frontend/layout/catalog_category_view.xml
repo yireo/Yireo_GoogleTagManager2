@@ -21,8 +21,8 @@
                     <item name="page" xsi:type="array">
                         <item name="type" xsi:type="string">category</item>
                     </item>
-                    <item name="categoryId" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryId</item>
-                    <item name="categoryName" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategoryName</item>
+                    <item name="categoryId" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory::getId</item>
+                    <item name="categoryName" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory::getName</item>
                     <item name="categorySize" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize</item>
                     <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
                 </argument>
