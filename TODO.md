@@ -83,6 +83,8 @@ dataLayer.push({
 - `checkoutOption`
 - `gtm.dom`
 - Add logout event
+- Add GA4 support
+- MaxServ_DataLayer, Dmg_DataLayer
 
 ## Container export and import
 See https://support.google.com/tagmanager/answer/6106997?hl=en
