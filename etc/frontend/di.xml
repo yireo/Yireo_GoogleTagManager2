@@ -11,4 +11,16 @@
     <type name="Magento\Catalog\Block\Product\ListProduct">
         <plugin name="Yireo_GoogleTagManager2::getProductsFromCategoryBlockPlugin" type="Yireo\GoogleTagManager2\Plugin\GetProductsFromCategoryBlockPlugin"/>
     </type>
+
+    <virtualType name="Yireo\GoogleTagManager2\DataLayer\Tag\Product\VirtualCurrentProductWithProductPrefix" type="Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct">
+        <arguments>
+            <argument name="prefix" xsi:type="string">product</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Yireo\GoogleTagManager2\DataLayer\Tag\Category\VirtualCurrentCategoryWithCategoryPrefix" type="Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory">
+        <arguments>
+            <argument name="prefix" xsi:type="string">category</argument>
+        </arguments>
+    </virtualType>
 </config>

@@ -2,8 +2,9 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
+use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
@@ -15,6 +16,12 @@ class Products implements TagInterface
     private ProductDataMapper $productDataMapper;
     private Config $config;
 
+    /**
+     * @param GetCurrentCategoryProducts $getCurrentCategoryProducts
+     * @param GetCurrentCategory $getCurrentCategory
+     * @param ProductDataMapper $productDataMapper
+     * @param Config $config
+     */
     public function __construct(
         GetCurrentCategoryProducts $getCurrentCategoryProducts,
         GetCurrentCategory $getCurrentCategory,
@@ -27,6 +34,10 @@ class Products implements TagInterface
         $this->config = $config;
     }
 
+    /**
+     * @return array
+     * @throws NoSuchEntityException
+     */
     public function get(): array
     {
         $productsData = [];

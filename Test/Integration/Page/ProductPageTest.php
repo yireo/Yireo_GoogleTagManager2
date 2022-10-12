@@ -38,7 +38,6 @@ class ProductPageTest extends PageTestCase
         $this->assertDataLayerEquals($product->getId(), 'productId');
         $this->assertDataLayerEquals('catalog/product/view', 'pageType');
 
-        $this->assertHandleInLayout('yireo_googletagmanager2_enhanced_ecommerce_catalog_product_view');
         $data = $this->getDataFromDataLayer();
         $this->assertArrayHasKey('ecommerce', $data);
         $this->assertArrayHasKey('detail', $data['ecommerce']);

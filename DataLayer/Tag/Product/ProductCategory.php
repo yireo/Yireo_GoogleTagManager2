@@ -12,17 +12,28 @@ class ProductCategory implements ProductTagInterface
     private ProductInterface $product;
     private GetCategoryFromProduct $getCategoryFromProduct;
 
+    /**
+     * @param GetCategoryFromProduct $getCategoryFromProduct
+     */
     public function __construct(
         GetCategoryFromProduct $getCategoryFromProduct
     ) {
         $this->getCategoryFromProduct = $getCategoryFromProduct;
     }
 
-    public function setProduct(ProductInterface $product)
+    /**
+     * @param ProductInterface $product
+     * @return $this
+     */
+    public function setProduct(ProductInterface $product): ProductCategory
     {
         $this->product = $product;
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function get(): string
     {
         $category = $this->product->getCategory();

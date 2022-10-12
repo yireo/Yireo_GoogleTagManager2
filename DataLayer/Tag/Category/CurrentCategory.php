@@ -2,26 +2,39 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
-use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
+use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
 
-class CurrentCategory implements ArgumentInterface
+class CurrentCategory implements MergeTagInterface
 {
     private GetCurrentCategory $getCurrentCategory;
+    private CategoryDataMapper $categoryDataMapper;
+    private string $prefix;
 
+    /**
+     * @param GetCurrentCategory $getCurrentCategory
+     * @param CategoryDataMapper $categoryDataMapper
+     * @param string $prefix
+     */
     public function __construct(
         GetCurrentCategory $getCurrentCategory,
+        CategoryDataMapper $categoryDataMapper,
+        string $prefix = ''
     ) {
         $this->getCurrentCategory = $getCurrentCategory;
+        $this->categoryDataMapper = $categoryDataMapper;
+        $this->prefix = $prefix;
     }
 
-    public function getId(): int
+    /**
+     * @return string[]
+     * @throws NoSuchEntityException
+     */
+    public function merge(): array
     {
-        return (int)$this->getCurrentCategory->get()->getId();
-    }
-
-    public function getName(): string
-    {
-        return (string)$this->getCurrentCategory->get()->getName();
+        $currentCategory = $this->getCurrentCategory->get();
+        return $this->categoryDataMapper->mapByCategory($currentCategory, $this->prefix);
     }
 }

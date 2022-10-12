@@ -44,16 +44,33 @@
                         <field id="debug">1</field>
                     </depends>
                 </field>
-                <field id="enhanced_ecommerce" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enhanced Ecommerce</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum Products in Category</label>
+                    <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Maximum Products in Category</label>
-                    <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
+                <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
+                    <comment>Product EAV attributes to show in datalayer</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Category EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
+                    <comment>Category EAV attributes to show in datalayer</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
+                    <comment>Customer EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

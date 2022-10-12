@@ -1,19 +1,22 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayerProcessor;
+namespace Yireo\GoogleTagManager2\DataLayer\Processor;
 
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Store\Model\StoreManagerInterface;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\GuestDataMapper;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
-use Yireo\GoogleTagManager2\Helper\Product as ProductHelper;
 
 class SuccessPage implements ProcessorInterface
 {
@@ -38,11 +41,6 @@ class SuccessPage implements ProcessorInterface
     protected $priceFormatter;
 
     /**
-     * @var ProductHelper
-     */
-    protected $productHelper;
-
-    /**
      * @var CategoryRepositoryInterface
      */
     protected $categoryRepository;
@@ -51,6 +49,10 @@ class SuccessPage implements ProcessorInterface
      * @var StoreManagerInterface
      */
     protected $storeManager;
+    private ProductDataMapper $productDataMapper;
+    private CustomerDataMapper $customerDataMapper;
+    private CustomerRepositoryInterface $customerRepository;
+    private GuestDataMapper $guestDataMapper;
 
     /**
      * @param ProductRepositoryInterface $productRepository
@@ -58,8 +60,11 @@ class SuccessPage implements ProcessorInterface
      * @param CheckoutSession $checkoutSession
      * @param Config $config
      * @param PriceFormatter $priceFormatter
-     * @param ProductHelper $productHelper
      * @param StoreManagerInterface $storeManager
+     * @param ProductDataMapper $productDataMapper
+     * @param CustomerDataMapper $customerDataMapper
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param GuestDataMapper $guestDataMapper
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -67,16 +72,22 @@ class SuccessPage implements ProcessorInterface
         CheckoutSession $checkoutSession,
         Config $config,
         PriceFormatter $priceFormatter,
-        ProductHelper $productHelper,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        ProductDataMapper $productDataMapper,
+        CustomerDataMapper $customerDataMapper,
+        CustomerRepositoryInterface $customerRepository,
+        GuestDataMapper $guestDataMapper
     ) {
         $this->productRepository = $productRepository;
         $this->checkoutSession = $checkoutSession;
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
-        $this->productHelper = $productHelper;
         $this->categoryRepository = $categoryRepository;
         $this->storeManager = $storeManager;
+        $this->productDataMapper = $productDataMapper;
+        $this->customerDataMapper = $customerDataMapper;
+        $this->customerRepository = $customerRepository;
+        $this->guestDataMapper = $guestDataMapper;
     }
 
     /**
@@ -101,10 +112,6 @@ class SuccessPage implements ProcessorInterface
             ]
         ];
 
-        if ($this->config->getIsDynamicRemarketingEnabled()) {
-            $data['google_tag_params']['ecomm_pagetype'] = 'purchase';
-        }
-
         return $data;
     }
 
@@ -114,6 +121,14 @@ class SuccessPage implements ProcessorInterface
      */
     protected function getActionField($order): array
     {
+        if ($order->getCustomerId() > 0) {
+            $customer = $this->customerRepository->getById($order->getCustomerId());
+            $customerData = $this->customerDataMapper->mapByCustomer($customer);
+        } else {
+            $customerData = $this->guestDataMapper->mapByOrder($order);
+        }
+
+
         return [
             'id' => $order->getIncrementId(),
             'affiliation' => $this->config->getStoreName($this->storeManager->getStore()->getId()),
@@ -124,13 +139,7 @@ class SuccessPage implements ProcessorInterface
             'coupon' => $order->getCouponCode(),
             'date' => date("Y-m-d", strtotime($order->getCreatedAt())),
             'paymentType' => $this->getPaymentType($order),
-            'customer' => [
-                'name' => $order->getCustomerName(),
-                'firstname' => $order->getCustomerFirstname(),
-                'lastname' => $order->getCustomerLastname(),
-                'middlename' => $order->getCustomerMiddlename(),
-                'email' => $order->getCustomerEmail()
-            ]
+            'customer' => $customerData
         ];
     }
 
@@ -168,9 +177,8 @@ class SuccessPage implements ProcessorInterface
                     continue;
                 }
 
-                $itemData = $this->productHelper->getProductData($product);
+                $itemData = $this->productDataMapper->mapByProduct($product);
 
-                // override product keys with order item keys
                 $itemData = array_replace($itemData, [
                     'quantity' => $item->getQtyOrdered(),
                     'unit_price' => $this->priceFormatter->format((float) $item->getPriceInclTax())

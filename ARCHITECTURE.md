@@ -50,13 +50,13 @@ In this case, the class still needs to implement `Magento\Framework\View\Element
 The namespace `Yireo\GoogleTagManager2\DataLayer\Tag` contains all tag classes, offered out-of-the-box. If you want to add more values, you can add them through the XML layout. You can do this through a theme. If you also want to add your own custom tag class, create a module instead, make it dependent on the `Yireo_GoogleTagManager2` module (both in your `composer.json` file and your `etc/module.xml` file) and use the tag interfaces as mentioned.
 
 ## Data layer processors
-On top of the layout-based datalayer approach, which is already quite flexible, you can also parse entries via data layer processors as well: Classes that are defined through the XML layout argument `data_layer_processors` of the main block and are implementing `\Yireo\GoogleTagManager2\DataLayerProcessor\ProcessorInterface`: 
+On top of the layout-based datalayer approach, which is already quite flexible, you can also parse entries via data layer processors as well: Classes that are defined through the XML layout argument `data_layer_processors` of the main block and are implementing `\Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface`: 
 
 ```xml
 <referenceBlock name="yireo_googletagmanager2.data-layer">
     <arguments>
         <argument name="data_layer_processors" xsi:type="array">
-            <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayerProcessor\Category</item>
+            <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Category</item>
         </argument>
     </arguments>
 </referenceBlock>

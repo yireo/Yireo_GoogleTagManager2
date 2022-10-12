@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayerProcessor;
+namespace Yireo\GoogleTagManager2\DataLayer\Processor;
 
-class Category implements ProcessorInterface
+class Product implements ProcessorInterface
 {
     /**
      * @inheritDoc

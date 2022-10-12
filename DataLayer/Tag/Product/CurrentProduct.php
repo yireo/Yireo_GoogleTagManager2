@@ -2,64 +2,39 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
-use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 
-class CurrentProduct implements ArgumentInterface
+class CurrentProduct implements MergeTagInterface
 {
     private GetCurrentProduct $getCurrentProduct;
-    private ProductCategory $productCategory;
+    private ProductDataMapper $productDataMapper;
+    private string $prefix;
 
     /**
      * @param GetCurrentProduct $getCurrentProduct
-     * @param ProductCategory $productCategory
+     * @param ProductDataMapper $productDataMapper
+     * @param string $prefix
      */
     public function __construct(
         GetCurrentProduct $getCurrentProduct,
-        ProductCategory $productCategory
+        ProductDataMapper $productDataMapper,
+        string $prefix = ''
     ) {
         $this->getCurrentProduct = $getCurrentProduct;
-        $this->productCategory = $productCategory;
+        $this->productDataMapper = $productDataMapper;
+        $this->prefix = $prefix;
     }
 
-    public function getId(): int
+    /**
+     * @return string[]
+     * @throws NoSuchEntityException
+     */
+    public function merge(): array
     {
-        return (int)$this->getCurrentProduct->get()->getId();
-    }
-
-    public function getName(): string
-    {
-        return (string)$this->getCurrentProduct->get()->getName();
-    }
-
-    public function getSku(): string
-    {
-        return (string)$this->getCurrentProduct->get()->getSku();
-    }
-
-    public function getCreatedAt(): string
-    {
-        return (string)$this->getCurrentProduct->get()->getCreatedAt();
-    }
-
-    public function getTypeId(): string
-    {
-        return (string)$this->getCurrentProduct->get()->getTypeId();
-    }
-
-    public function getAttributeSetId(): int
-    {
-        return (int)$this->getCurrentProduct->get()->getAttributeSetId();
-    }
-
-    public function getPrice(): float
-    {
-        return (float)$this->getCurrentProduct->get()->getFinalPrice();
-    }
-
-    public function getCategoryName()
-    {
-        $this->productCategory->setProduct($this->getCurrentProduct->get());
-        return $this->productCategory->get();
+        $currentProduct = $this->getCurrentProduct->get();
+        return $this->productDataMapper->mapByProduct($currentProduct, $this->prefix);
     }
 }

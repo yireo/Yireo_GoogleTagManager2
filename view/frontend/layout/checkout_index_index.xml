@@ -13,7 +13,16 @@
     <body>
         <referenceBlock name="yireo_googletagmanager2.data-layer">
             <arguments>
-                <argument name="checkout_configuration" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CheckoutConfiguration</argument>
+                <argument name="data_layer_processors" xsi:type="array">
+                    <item name="checkout" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Checkout</item>
+                </argument>
+
+                <argument name="data_layer" xsi:type="array">
+                    <item name="event" xsi:type="string">checkout</item>
+                    <item name="page" xsi:type="array">
+                        <item name="type" xsi:type="string">checkout</item>
+                    </item>
+                </argument>
             </arguments>
         </referenceBlock>
     </body>

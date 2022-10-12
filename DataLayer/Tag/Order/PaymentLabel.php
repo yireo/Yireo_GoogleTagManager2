@@ -2,7 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
 class PaymentLabel implements TagInterface

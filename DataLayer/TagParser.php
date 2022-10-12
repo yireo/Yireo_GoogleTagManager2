@@ -4,8 +4,9 @@ namespace Yireo\GoogleTagManager2\DataLayer;
 
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Yireo\GoogleTagManager2\DataLayerProcessor\ProcessorInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
+use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use RuntimeException;
 
 class TagParser
@@ -42,17 +43,16 @@ class TagParser
      */
     private function convertTag($tagName, $tagValue, $data)
     {
-        if (is_string($tagValue) && preg_match('/([\w\\\-\_]+)\:\:([\w]+)/', $tagValue, $tagMatch)) {
-            $tagValue = $this->getValueFromCallable($tagMatch[1], $tagMatch[2]);
-            $data[$tagName] = $tagValue;
-            return $data;
+        if ($tagValue instanceof MergeTagInterface) {
+            unset($data[$tagName]);
+            $data = array_merge($data, $tagValue->merge());
         }
 
         if ($tagValue instanceof TagInterface) {
             $data[$tagName] = $tagValue->get();
         }
 
-        if (is_object($tagValue) && !$tagValue instanceof TagInterface) {
+        if (is_object($tagValue) && !$tagValue instanceof TagInterface && !$tagValue instanceof MergeTagInterface) {
             throw new RuntimeException('Unknown variable in data layer: ' . get_class($tagValue));
         }
 

@@ -16,9 +16,7 @@ $events = (array)$block->getEvents();
 ?>
 <script>
     window.dataLayer = window.dataLayer || [];
-    <?php if ($config->isEnhancedEcommerce()): ?>
     window.dataLayer.push({ecommerce: null});
-    <?php endif; ?>
     <?php if ($config->isDebug()): ?>
     console.log('GTM initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
     <?php endif; ?>

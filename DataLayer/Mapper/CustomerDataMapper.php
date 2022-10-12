@@ -2,12 +2,12 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\CamelCase;
 
-class CategoryDataMapper
+class CustomerDataMapper
 {
     private CamelCase $camelCase;
     private Config $config;
@@ -29,32 +29,32 @@ class CategoryDataMapper
     }
 
     /**
-     * @param CategoryInterface $category
+     * @param CustomerInterface $customer
      * @param string $prefix
      * @return array
      */
-    public function mapByCategory(CategoryInterface $category, string $prefix = ''): array
+    public function mapByCustomer(CustomerInterface $customer, string $prefix = ''): array
     {
-        $categoryData = [];
-        $categoryFields = $this->getCategoryFields();
-        foreach ($categoryFields as $categoryAttributeCode) {
-            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($categoryAttributeCode));
-            $attributeValue = $this->getAttributeValue->getCategoryAttributeValue($category, $categoryAttributeCode);
+        $customerData = [];
+        $customerFields = $this->getCustomerFields();
+        foreach ($customerFields as $customerAttributeCode) {
+            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($customerAttributeCode));
+            $attributeValue = $this->getAttributeValue->getCustomerAttributeValue($customer, $customerAttributeCode);
             if (empty($attributeValue)) {
                 continue;
             }
 
-            $categoryData[$dataLayerKey] = $attributeValue;
+            $customerData[$dataLayerKey] = $attributeValue;
         }
 
-        return $categoryData;
+        return $customerData;
     }
 
     /**
      * @return string[]
      */
-    public function getCategoryFields(): array
+    public function getCustomerFields(): array
     {
-        return array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes());
+        return array_merge(['id'], $this->config->getCustomerEavAttributeCodes());
     }
 }

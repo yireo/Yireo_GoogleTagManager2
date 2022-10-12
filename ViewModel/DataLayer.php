@@ -6,7 +6,7 @@ use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
-use Yireo\GoogleTagManager2\DataLayerProcessor\ProcessorInterface;
+use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
 
 class DataLayer implements ArgumentInterface
 {
@@ -48,7 +48,8 @@ class DataLayer implements ArgumentInterface
         }
 
         $data = (array)$block->getData('data_layer');
-        $processors = (array)$block->getData('processors');
+        $processors = (array)$block->getData('data_layer_processors');
+
         return $this->variableParser->parse($data, $processors);
     }
 

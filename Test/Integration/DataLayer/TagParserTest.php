@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer;
 
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
 
 class TagParserTest extends TestCase

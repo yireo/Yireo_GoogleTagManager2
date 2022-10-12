@@ -2,7 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Page;
 
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Magento\Catalog\Helper\Data as CatalogHelper;
 
 class Breadcrumbs implements TagInterface

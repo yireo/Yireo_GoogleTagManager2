@@ -79,14 +79,6 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isEnhancedEcommerce(): bool
-    {
-        return (bool)$this->getModuleConfigValue('enhanced_ecommerce');
-    }
-
-    /**
      * Return the GA ID
      *
      * @return string
@@ -103,6 +95,30 @@ class Config implements ArgumentInterface
     public function getMaximumCategoryProducts(): int
     {
         return (int)$this->getModuleConfigValue('category_products');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProductEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('product_eav_attributes'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategoryEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('category_eav_attributes'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCustomerEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('customer_eav_attributes'));
     }
 
     /**

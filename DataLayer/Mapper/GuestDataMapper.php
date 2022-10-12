@@ -2,12 +2,13 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\CamelCase;
 
-class CategoryDataMapper
+class GuestDataMapper
 {
     private CamelCase $camelCase;
     private Config $config;
@@ -29,32 +30,34 @@ class CategoryDataMapper
     }
 
     /**
-     * @param CategoryInterface $category
+     * @param OrderInterface $order
      * @param string $prefix
      * @return array
+     * @throws LocalizedException
      */
-    public function mapByCategory(CategoryInterface $category, string $prefix = ''): array
+    public function mapByOrder(OrderInterface $order, string $prefix = ''): array
     {
-        $categoryData = [];
-        $categoryFields = $this->getCategoryFields();
-        foreach ($categoryFields as $categoryAttributeCode) {
-            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($categoryAttributeCode));
-            $attributeValue = $this->getAttributeValue->getCategoryAttributeValue($category, $categoryAttributeCode);
+        $guestData = [];
+        $guestFields = $this->getGuestFields();
+        foreach ($guestFields as $guestAttributeCode) {
+            $guestAttributeCode = 'customer_' . $guestAttributeCode;
+            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($guestAttributeCode));
+            $attributeValue = $this->getAttributeValue->getAttributeValue($order, 'order', $guestAttributeCode);
             if (empty($attributeValue)) {
                 continue;
             }
 
-            $categoryData[$dataLayerKey] = $attributeValue;
+            $guestData[$dataLayerKey] = $attributeValue;
         }
 
-        return $categoryData;
+        return $guestData;
     }
 
     /**
      * @return string[]
      */
-    public function getCategoryFields(): array
+    public function getGuestFields(): array
     {
-        return array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes());
+        return array_merge(['id'], $this->config->getCustomerEavAttributeCodes());
     }
 }

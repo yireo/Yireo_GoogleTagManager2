@@ -14,21 +14,32 @@
         <referenceBlock name="yireo_googletagmanager2.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayerProcessor\Product</item>
+                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Product</item>
                 </argument>
+
                 <argument name="data_layer" xsi:type="array">
-                    <item name="event" xsi:type="string">productImpression</item>
+                    <item name="event" xsi:type="string">productDetailImpression</item>
                     <item name="page" xsi:type="array">
                         <item name="type" xsi:type="string">product</item>
                     </item>
-                    <item name="productId" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct::getId</item>
-                    <item name="productName" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct::getName</item>
-                    <item name="productSku" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct::getSku</item>
-                    <item name="productPrice" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct::getPrice</item>
-                    <item name="productCategory" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct::getCategoryName</item>
+                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\VirtualCurrentProductWithProductPrefix</item>
                     <item name="google_tag_params" xsi:type="array">
                         <item name="ecomm_category" xsi:type="array">
-                            <item name="current_category" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory::getName</item>
+                            <item name="current_category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentCategoryName</item>
+                        </item>
+                    </item>
+                    <item name="ecommerce" xsi:type="array">
+                        <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
+                        <item name="detail" xsi:type="array">
+                            <item name="action" xsi:type="string">detail</item>
+                            <item name="actionField" xsi:type="array">
+                                <item name="list" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentCategoryName</item>
+                            </item>
+                            <item name="products" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
+                                </item>
+                            </item>
                         </item>
                     </item>
                 </argument>

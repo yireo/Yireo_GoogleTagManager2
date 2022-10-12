@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\App\State;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 /**
  * @see https://developers.google.com/tag-platform/tag-manager/api/v1/reference/accounts/containers/tags

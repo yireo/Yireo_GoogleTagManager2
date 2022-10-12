@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\App\RequestInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 class PageType implements TagInterface
 {

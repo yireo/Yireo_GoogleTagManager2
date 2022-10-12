@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Framework\Component\ComponentRegistrar;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 class Version implements TagInterface
 {

@@ -13,9 +13,14 @@
     <body>
         <referenceBlock name="yireo_googletagmanager2.data-layer">
             <arguments>
+                <argument name="data_layer_processors" xsi:type="array">
+                    <item name="cart" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Cart</item>
+                </argument>
+
                 <argument name="data_layer" xsi:type="array">
-                    <item name="ecommerce" xsi:type="array">
-                        <item name="impressions" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                    <item name="event" xsi:type="string">cart</item>
+                    <item name="page" xsi:type="array">
+                        <item name="type" xsi:type="string">cart</item>
                     </item>
                 </argument>
             </arguments>

@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
-use Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 class Products implements TagInterface
 {
