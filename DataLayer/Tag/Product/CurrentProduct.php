@@ -11,21 +11,17 @@ class CurrentProduct implements MergeTagInterface
 {
     private GetCurrentProduct $getCurrentProduct;
     private ProductDataMapper $productDataMapper;
-    private string $prefix;
 
     /**
      * @param GetCurrentProduct $getCurrentProduct
      * @param ProductDataMapper $productDataMapper
-     * @param string $prefix
      */
     public function __construct(
         GetCurrentProduct $getCurrentProduct,
         ProductDataMapper $productDataMapper,
-        string $prefix = ''
     ) {
         $this->getCurrentProduct = $getCurrentProduct;
         $this->productDataMapper = $productDataMapper;
-        $this->prefix = $prefix;
     }
 
     /**
@@ -35,6 +31,6 @@ class CurrentProduct implements MergeTagInterface
     public function merge(): array
     {
         $currentProduct = $this->getCurrentProduct->get();
-        return $this->productDataMapper->mapByProduct($currentProduct, $this->prefix);
+        return $this->productDataMapper->mapByProduct($currentProduct);
     }
 }

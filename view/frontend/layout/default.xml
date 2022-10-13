@@ -42,7 +42,9 @@
                 ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
-                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                    <argument name="data_layer_view_model" xsi:type="object">
+                        Yireo\GoogleTagManager2\ViewModel\DataLayer
+                    </argument>
 
                     <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
 
@@ -53,18 +55,21 @@
                     <argument name="data_layer" xsi:type="array">
                         <item name="version" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Version</item>
                         <item name="event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Event</item>
-                        <item name="pageType" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
-                        <item name="pagePath" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath</item>
-                        <item name="pageTitle" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle</item>
-                        <item name="page" xsi:type="array">
-                            <item name="virtual_page" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage</item>
-                            <item name="breadcrumb" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Page\Breadcrumbs</item>
+                        <item name="page_type" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
+                        <item name="page_path" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath</item>
+                        <item name="page_title" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle</item>
+                        <item name="virtual_page" xsi:type="object">
+                            Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage
+                        </item>
+                        <item name="breadcrumb" xsi:type="object">
+                            Yireo\GoogleTagManager2\DataLayer\Tag\Page\Breadcrumbs
                         </item>
                         <item name="user" xsi:type="array">
                             <item name="has_transacted" xsi:type="boolean">false</item>
                         </item>
                         <item name="ecommerce" xsi:type="array">
-                            <item name="currencyCode" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
+                            <item name="currency" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode
+                            </item>
                         </item>
                     </argument>
 
@@ -83,8 +88,11 @@
                 ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
-                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
-                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons</argument>
+                    <argument name="data_layer_view_model" xsi:type="object">
+                        Yireo\GoogleTagManager2\ViewModel\DataLayer
+                    </argument>
+                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons
+                    </argument>
                 </arguments>
             </block>
         </referenceContainer>

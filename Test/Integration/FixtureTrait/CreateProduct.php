@@ -2,17 +2,13 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\FixtureTrait;
 
-use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Model\Config as CatalogConfig;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Visibility;
-use Magento\Eav\Api\Data\AttributeSetInterface;
 use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
-use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\ObjectManager;
 
 trait CreateProduct

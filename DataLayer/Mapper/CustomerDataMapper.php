@@ -53,7 +53,7 @@ class CustomerDataMapper
     /**
      * @return string[]
      */
-    public function getCustomerFields(): array
+    private function getCustomerFields(): array
     {
         return array_merge(['id'], $this->config->getCustomerEavAttributeCodes());
     }

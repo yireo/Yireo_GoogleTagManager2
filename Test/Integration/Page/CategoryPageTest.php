@@ -44,15 +44,14 @@ class CategoryPageTest extends PageTestCase
         $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
         $this->assertNotEmpty($block);
 
-        $this->assertDataLayerEquals($category->getName(), 'categoryName');
-        $this->assertDataLayerEquals($category->getId(), 'categoryId');
-        $this->assertDataLayerEquals(0, 'categorySize');
-        $this->assertDataLayerEquals('catalog/category/view', 'pageType');
+        $this->assertDataLayerEquals($category->getName(), 'category_name');
+        $this->assertDataLayerEquals($category->getId(), 'category_id');
+        $this->assertDataLayerEquals(0, 'category_size');
+        $this->assertDataLayerEquals('category', 'page_type');
 
-        $this->assertHandleInLayout('yireo_googletagmanager2_enhanced_ecommerce_catalog_category_view');
         $data = $this->getDataFromDataLayer();
         $this->assertArrayHasKey('ecommerce', $data);
-        $this->assertArrayHasKey('impressions', $data['ecommerce']);
+        $this->assertArrayHasKey('items', $data['ecommerce']);
 
         $products = $this->getProductsByCategory($category);
         if (!count($products) > 0) {
@@ -64,11 +63,11 @@ class CategoryPageTest extends PageTestCase
             $this->markTestIncomplete('Current category ' . $category->getId() . ' does not have any products');
         }
 
-        $this->assertNotEmpty($data['ecommerce']['impressions']);
-        foreach ($data['ecommerce']['impressions'] as $productData) {
-            $this->assertNotEmpty($productData['name']);
-            $this->assertNotEmpty($productData['id']);
-            $this->assertNotEmpty($productData['sku']);
+        $this->assertNotEmpty($data['ecommerce']['items']);
+        foreach ($data['ecommerce']['items'] as $productData) {
+            $this->assertNotEmpty($productData['item_name']);
+            $this->assertNotEmpty($productData['item_id']);
+            $this->assertNotEmpty($productData['item_sku']);
             $this->assertNotEmpty($productData['price']);
             $this->assertNotEmpty($productData['category']);
             $this->assertNotEmpty($productData['position']);

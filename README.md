@@ -1,17 +1,19 @@
 # Magento 2 module for Google Tag Manager
-Homepage: https://www.yireo.com/software/magento-extensions/googletagmanager2
+
+**Also see: https://www.yireo.com/software/magento-extensions/googletagmanager2**
+
+Version 3.0 and up include only support for GA4.
 
 [![Latest Stable Version](https://poser.pugx.org/yireo/magento2-googletagmanager2/v)](//packagist.org/packages/yireo/magento2-googletagmanager2) [![Total Downloads](https://poser.pugx.org/yireo/magento2-googletagmanager2/downloads)](//packagist.org/packages/yireo/magento2-googletagmanager2)  [![License](https://poser.pugx.org/yireo/magento2-googletagmanager2/license)](//packagist.org/packages/yireo/magento2-googletagmanager2)
-
-
-Supported versions:
-* Magento 2.4
-
-See `composer.json` for other requirements.
 
 [![ExtDN Unit Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-unit-tests.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-unit-tests.yml)
 [![ExtDN Static Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-static-tests.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-static-tests.yml)
 [![ExtDN Integration Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml)
+
+## Requirements
+Supported versions: Magento 2.4.3 or higher
+
+See `composer.json` for other requirements.
 
 
 ## See also
@@ -20,3 +22,6 @@ See `composer.json` for other requirements.
 - [Testing](TESTING.md)
 - [CHANGELOG](CHANGELOG.md)
 - [License](LICENSE.txt)
+
+## Current limitations
+- No datalayer feedback on refunds

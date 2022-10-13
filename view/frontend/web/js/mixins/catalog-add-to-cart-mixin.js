@@ -8,26 +8,23 @@ define(['jquery'], function ($) {
             const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false; // @todo
             const categoryName = ''; // @todo
             const productData = {
-                id: formData.product,
-                sku: form.data().productSku,
-                category: categoryName,
+                item_id: formData.product,
+                item_sku: form.data().productSku,
+                item_category: categoryName,
                 price: formData.productPrice || null, // @todo
                 quantity: formData.product || 1,
             }
 
             if (debug) {
-                console.log('GTM catalog-add-to-cart-mixin', productData);
+                console.log('Yireo_GoogleTagManager2: catalog-add-to-cart-mixin', productData);
             }
 
             dataLayer.push({ecommerce: null});
             dataLayer.push({
-                'event': 'addToCart',
+                'event': 'add_to_cart',
                 'currencyCode': 'EUR', // @todo
                 'ecommerce': {
-                    'click': {
-                        'actionField': {'list': categoryName},
-                        'products': [productData]
-                    }
+                    'items': [productData]
                 }
             });
 

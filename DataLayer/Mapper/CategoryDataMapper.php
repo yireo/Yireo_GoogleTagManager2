@@ -33,12 +33,13 @@ class CategoryDataMapper
      * @param string $prefix
      * @return array
      */
-    public function mapByCategory(CategoryInterface $category, string $prefix = ''): array
+    public function mapByCategory(CategoryInterface $category): array
     {
+        $prefix = 'category_';
         $categoryData = [];
         $categoryFields = $this->getCategoryFields();
         foreach ($categoryFields as $categoryAttributeCode) {
-            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($categoryAttributeCode));
+            $dataLayerKey = $prefix . $categoryAttributeCode;
             $attributeValue = $this->getAttributeValue->getCategoryAttributeValue($category, $categoryAttributeCode);
             if (empty($attributeValue)) {
                 continue;
@@ -53,7 +54,7 @@ class CategoryDataMapper
     /**
      * @return string[]
      */
-    public function getCategoryFields(): array
+    private function getCategoryFields(): array
     {
         return array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes());
     }

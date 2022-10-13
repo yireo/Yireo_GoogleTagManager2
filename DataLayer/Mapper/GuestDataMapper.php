@@ -31,17 +31,17 @@ class GuestDataMapper
 
     /**
      * @param OrderInterface $order
-     * @param string $prefix
      * @return array
      * @throws LocalizedException
      */
-    public function mapByOrder(OrderInterface $order, string $prefix = ''): array
+    public function mapByOrder(OrderInterface $order): array
     {
+        $prefix = 'customer_';
         $guestData = [];
         $guestFields = $this->getGuestFields();
         foreach ($guestFields as $guestAttributeCode) {
-            $guestAttributeCode = 'customer_' . $guestAttributeCode;
-            $dataLayerKey = lcfirst($prefix . $this->camelCase->to($guestAttributeCode));
+            $guestAttributeCode = $prefix . $guestAttributeCode;
+            $dataLayerKey = $prefix . $guestAttributeCode;
             $attributeValue = $this->getAttributeValue->getAttributeValue($order, 'order', $guestAttributeCode);
             if (empty($attributeValue)) {
                 continue;
@@ -56,7 +56,7 @@ class GuestDataMapper
     /**
      * @return string[]
      */
-    public function getGuestFields(): array
+    private function getGuestFields(): array
     {
         return array_merge(['id'], $this->config->getCustomerEavAttributeCodes());
     }

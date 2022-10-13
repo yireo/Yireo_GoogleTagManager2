@@ -18,30 +18,18 @@
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
-                    <item name="event" xsi:type="string">productDetailImpression</item>
-                    <item name="page" xsi:type="array">
-                        <item name="type" xsi:type="string">product</item>
-                    </item>
-                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\VirtualCurrentProductWithProductPrefix</item>
-                    <item name="google_tag_params" xsi:type="array">
-                        <item name="ecomm_category" xsi:type="array">
-                            <item name="current_category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentCategoryName</item>
-                        </item>
-                    </item>
+                    <item name="event" xsi:type="string">view_item</item>
                     <item name="ecommerce" xsi:type="array">
-                        <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
-                        <item name="detail" xsi:type="array">
-                            <item name="action" xsi:type="string">detail</item>
-                            <item name="actionField" xsi:type="array">
-                                <item name="list" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentCategoryName</item>
-                            </item>
-                            <item name="products" xsi:type="array">
-                                <item name="0" xsi:type="array">
-                                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
-                                </item>
+                        <item name="items" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
                             </item>
                         </item>
+
+                        <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
                     </item>
+
+                    <item name="page_type" xsi:type="string">product</item>
                 </argument>
             </arguments>
         </referenceBlock>

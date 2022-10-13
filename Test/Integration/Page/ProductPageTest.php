@@ -2,6 +2,8 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
+use Magento\Catalog\Api\Data\CategoryInterface;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
@@ -11,6 +13,7 @@ use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLay
  */
 class ProductPageTest extends PageTestCase
 {
+    use CreateCategory;
     use CreateProduct;
     use AssertHandleInLayout;
 
@@ -23,7 +26,9 @@ class ProductPageTest extends PageTestCase
     {
         $this->assertEnabledFlagIsWorking();
 
-        $product = $this->createProducts()[0];
+        /** @var CategoryInterface $category */
+        $category = $this->createCategories()[0];
+        $product = $this->createProducts(1, ['category_ids' => [$category->getId()]])[0];
 
         $this->dispatch('catalog/product/view/id/' . $product->getId());
         $this->assertRequestActionName('view');
@@ -34,23 +39,17 @@ class ProductPageTest extends PageTestCase
         $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
         $this->assertNotEmpty($block);
 
-        $this->assertDataLayerEquals($product->getName(), 'productName');
-        $this->assertDataLayerEquals($product->getId(), 'productId');
-        $this->assertDataLayerEquals('catalog/product/view', 'pageType');
+        $this->assertDataLayerEquals('product', 'page_type');
 
         $data = $this->getDataFromDataLayer();
         $this->assertArrayHasKey('ecommerce', $data);
-        $this->assertArrayHasKey('detail', $data['ecommerce']);
-        $this->assertNotEmpty($data['ecommerce']['detail']);
-        $this->assertArrayHasKey('products', $data['ecommerce']['detail'], var_export($data['ecommerce']['detail'], true));
+        $this->assertNotEmpty($data['ecommerce']['items']);
 
-        $productData = array_shift($data['ecommerce']['detail']['products']);
-        $this->assertNotEmpty($productData['name']);
-        $this->assertNotEmpty($productData['id']);
+        $productData = array_shift($data['ecommerce']['items']);
+        $this->assertNotEmpty($productData['item_name']);
+        $this->assertNotEmpty($productData['item_id']);
         $this->assertNotEmpty($productData['price']);
-        $this->assertNotEmpty($productData['category']);
-
-        $actionFieldList = $data['ecommerce']['detail']['actionField']['list'];
-        $this->assertNotEmpty($actionFieldList);
+        $this->assertNotEmpty($productData['item_list_id']);
+        $this->assertNotEmpty($productData['item_list_name']);
     }
 }

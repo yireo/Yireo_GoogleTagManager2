@@ -16,7 +16,7 @@ class ProductDataMapperTest extends TestCase
         $product = $this->createProducts()[0];
         $productDataMapper = ObjectManager::getInstance()->get(ProductDataMapper::class);
         $productData = $productDataMapper->mapByProduct($product);
-        $this->assertEquals('Product 1', $productData['name']);
-        $this->assertEquals('1', $productData['id']);
+        $this->assertEquals('Product 1', $productData['item_name']);
+        $this->assertEquals('1', $productData['item_id']);
     }
 }

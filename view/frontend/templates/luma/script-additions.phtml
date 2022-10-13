@@ -36,19 +36,16 @@ $config = $commons->getConfiguration();
             const productId = matches[1];
 
             const gtmData = {
-                'event': 'productClick',
+                'event': 'select_item',
                 'ecommerce': {
-                    'click': {
-                        'actionField': {'list': document.title},
-                        'products': [{
-                            id: productId
-                        }]
-                    }
+                    'items': [{
+                        id: productId
+                    }]
                 }
             }
 
             if (debug) {
-                console.log('GTM event productClick', gtmData);
+                console.log('Yireo_GoogleTagManager2: GA4 event select_item', gtmData);
             }
 
             dataLayer.push({ ecommerce: null });
@@ -56,7 +53,7 @@ $config = $commons->getConfiguration();
 
             if (debugClicks) {
                 event.preventDefault();
-                console.log('GTM click here to go next page', $(this).attr('href'));
+                console.log('Yireo_GoogleTagManager2: click here to go next page', $(this).attr('href'));
             }
         });
     })

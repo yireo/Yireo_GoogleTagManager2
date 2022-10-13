@@ -18,8 +18,10 @@
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
-                    <item name="page" xsi:type="array">
-                        <item name="type" xsi:type="string">confirmation</item>
+                    <item name="event" xsi:type="string">purchase</item>
+                    <item name="ecommerce" xsi:type="array">
+                        <item name="order" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Order\Order</item>
+                        <item name="items" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems</item>
                     </item>
                 </argument>
             </arguments>

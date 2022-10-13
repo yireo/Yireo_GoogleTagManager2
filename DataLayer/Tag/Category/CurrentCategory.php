@@ -11,21 +11,17 @@ class CurrentCategory implements MergeTagInterface
 {
     private GetCurrentCategory $getCurrentCategory;
     private CategoryDataMapper $categoryDataMapper;
-    private string $prefix;
 
     /**
      * @param GetCurrentCategory $getCurrentCategory
      * @param CategoryDataMapper $categoryDataMapper
-     * @param string $prefix
      */
     public function __construct(
         GetCurrentCategory $getCurrentCategory,
         CategoryDataMapper $categoryDataMapper,
-        string $prefix = ''
     ) {
         $this->getCurrentCategory = $getCurrentCategory;
         $this->categoryDataMapper = $categoryDataMapper;
-        $this->prefix = $prefix;
     }
 
     /**
@@ -35,6 +31,6 @@ class CurrentCategory implements MergeTagInterface
     public function merge(): array
     {
         $currentCategory = $this->getCurrentCategory->get();
-        return $this->categoryDataMapper->mapByCategory($currentCategory, $this->prefix);
+        return $this->categoryDataMapper->mapByCategory($currentCategory);
     }
 }
