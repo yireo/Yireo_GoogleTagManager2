@@ -14,7 +14,7 @@ jobs:
           - 3306:3306
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping"
       es:
-        image: docker.io/wardenenv/elasticsearch:7.8
+        image: docker.io/wardenenv/elasticsearch:7.17
         ports:
           - 9200:9200
         env:
