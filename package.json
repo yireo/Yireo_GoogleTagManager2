@@ -5,11 +5,11 @@
     "url": "https://github.com/yireo/Yireo_GoogleTagManager2.git"
   },
   "devDependencies": {
-    "amd-loader": "^0.0.8",
-    "casperjs": "^1.1",
-    "jsdom": "^11.0",
+    "amd-loader": "0.0.8",
+    "casperjs": "1.1.4",
+    "jsdom": "11.12.0",
     "mocha": "10.1.0",
-    "requirejs": "^2.3"
+    "requirejs": "2.3.6"
   },
   "scripts": {
     "mocha": "./node_modules/mocha/bin/mocha view/frontend/web/js/test/mocha",
