@@ -20,25 +20,26 @@ define(['jquery'], function ($) {
 
             let productPrice = '';
             let productCurrency = '';
+            let productName= '';
             let productCategory = '';
 
             let $productSkuBox = $('[data-product-sku="' + productSku + '"]');
             let $productBox = $productSkuBox.closest('.product-info-main');
-            console.log('Product Box 1', $productBox);
             if (!$productBox.length) {
-                $productBox = $productSkuBox.closest('.product-item-inner');
-                console.log('Product Box 2', $productBox);
+                $productBox = $productSkuBox.closest('.product-item-details');
             }
 
             if ($productBox.length) {
                 productPrice = $productBox.find('[data-product-price-amount]').first().attr('data-product-price-amount');
                 productCurrency = $productBox.find('[data-product-price-currency]').first().attr('data-product-price-currency');
+                productName = $productBox.find('[data-product-name]').first().attr('data-product-name');
                 productCategory = $productBox.find('[data-product-category]').first().attr('data-product-category');
             }
 
             const productData = {
                 item_id: productId,
                 item_sku: form.data().productSku,
+                item_name: productName,
                 item_category: productCategory,
                 price: productPrice,
                 quantity: formData.qty || 1,

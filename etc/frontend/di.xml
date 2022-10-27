@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Block\Product\AbstractProduct">
+        <plugin name="Yireo_GoogleTagManager2::addProductDetails" type="Yireo\GoogleTagManager2\Plugin\AddProductDetails"/>
+    </type>
+
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="Yireo_GoogleTagManager2::addDataToCustomerSection" type="Yireo\GoogleTagManager2\Plugin\AddDataToCustomerSection"/>
     </type>

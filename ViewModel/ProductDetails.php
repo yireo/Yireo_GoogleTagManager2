@@ -10,30 +10,37 @@
 
 namespace Yireo\GoogleTagManager2\ViewModel;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentCategoryName;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice;
+use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
 
+/**
+ * @property ProductInterface $product
+ */
 class ProductDetails implements ArgumentInterface
 {
     private CurrentCategoryName $currentCategoryName;
     private CurrencyCode $currencyCode;
-    private CurrentPrice $currentPrice;
+    private GetCurrentProduct $getCurrentProduct;
+    private ?ProductInterface $product = null;
 
     /**
      * @param CurrentCategoryName $currentCategoryName
      * @param CurrencyCode $currencyCode
+     * @param GetCurrentProduct $getCurrentProduct
      */
     public function __construct(
         CurrentCategoryName $currentCategoryName,
         CurrencyCode $currencyCode,
-        CurrentPrice $currentPrice
+        GetCurrentProduct $getCurrentProduct,
     ) {
         $this->currentCategoryName = $currentCategoryName;
         $this->currencyCode = $currencyCode;
-        $this->currentPrice = $currentPrice;
+        $this->getCurrentProduct = $getCurrentProduct;
     }
 
     /**
@@ -59,6 +66,37 @@ class ProductDetails implements ArgumentInterface
      */
     public function getPrice(): string
     {
-        return $this->currentPrice->get();
+        return (string)$this->getProduct()->getFinalPrice();
+    }
+
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getProductName(): string
+    {
+        return (string)$this->getProduct()->getName();
+    }
+
+    /**
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProduct(): ProductInterface
+    {
+        if ($this->product instanceof ProductInterface) {
+            return $this->product;
+        }
+
+        return $this->getCurrentProduct->get();
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return void
+     */
+    public function setProduct(ProductInterface $product)
+    {
+        $this->product = $product;
     }
 }

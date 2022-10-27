@@ -1,13 +1,20 @@
 <?php declare(strict_types=1);
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\ViewModel\ProductDetails;
 
 /** @var Template $block */
 /** @var ProductDetails $productDetails */
 $productDetails = $block->getProductDetails();
+$product = $block->getProduct();
+if ($product instanceof ProductInterface) {
+    $productDetails->setProduct($product);
+}
 ?>
+
 <span data-product-price-amount="<?= $productDetails->getPrice() ?>"></span>
 <span data-product-price-currency="<?= $productDetails->getCurrencyCode() ?>"></span>
+<span data-product-name="<?= $productDetails->getProductName() ?>"></span>
 <span data-product-category="<?= $productDetails->getCategoryName() ?>"></span>
 <?php $block->getChildHtml() ?>

@@ -4,10 +4,12 @@ namespace Yireo\GoogleTagManager2\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\State as AppState;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Yireo\GoogleTagManager2\Exception\InvalidConfig;
 
 class Config implements ArgumentInterface
 {
@@ -25,6 +27,7 @@ class Config implements ArgumentInterface
      * @var StoreManagerInterface
      */
     private $storeManager;
+    private AppState $appState;
 
     /**
      * Config constructor.
@@ -36,11 +39,13 @@ class Config implements ArgumentInterface
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        CookieHelper $cookieHelper
+        CookieHelper $cookieHelper,
+        AppState $appState
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
+        $this->appState = $appState;
     }
 
     /**
@@ -72,11 +77,11 @@ class Config implements ArgumentInterface
      * Check whether mouse clicks are debugged as well
      *
      * @return bool
-     * @todo: Only allow for this in the Developer Mode
      */
     public function isDebugClicks(): bool
     {
-        return $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
+        $isDeveloperMode = $this->appState->getMode() === AppState::MODE_DEVELOPER;
+        return $isDeveloperMode && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
     }
 
     /**
@@ -86,8 +91,12 @@ class Config implements ArgumentInterface
      */
     public function getId(): string
     {
-        // @todo: Validate that this starts with GTM-
-        return (string)$this->getModuleConfigValue('id');
+        $id = (string)$this->getModuleConfigValue('id');
+        if (!preg_match('/^GTM-/', $id)) {
+            throw new InvalidConfig('GoogleTagManager ID should start with "GTM-"');
+        }
+
+        return $id;
     }
 
     /**

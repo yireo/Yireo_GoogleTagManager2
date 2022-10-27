@@ -3,9 +3,11 @@
     <event name="layout_load_before">
         <observer name="Yireo_GoogleTagManager2::addAdditionalLayoutHandles" instance="Yireo\GoogleTagManager2\Observer\AddAdditionalLayoutHandles" />
     </event>
+
     <event name="sales_quote_remove_item">
         <observer name="Yireo_GoogleTagManager2::triggerRemoveFromCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerRemoveFromCartDataLayerEvent" />
     </event>
+
     <event name="customer_data_object_login">
         <observer name="Yireo_GoogleTagManager2::triggerLoginDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLoginDataLayerEvent" />
     </event>
