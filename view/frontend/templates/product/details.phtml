@@ -1,0 +1,13 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\ViewModel\ProductDetails;
+
+/** @var Template $block */
+/** @var ProductDetails $productDetails */
+$productDetails = $block->getProductDetails();
+?>
+<span data-product-price-amount="<?= $productDetails->getPrice() ?>"></span>
+<span data-product-price-currency="<?= $productDetails->getCurrencyCode() ?>"></span>
+<span data-product-category="<?= $productDetails->getCategoryName() ?>"></span>
+<?php $block->getChildHtml() ?>

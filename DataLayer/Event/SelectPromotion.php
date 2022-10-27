@@ -6,7 +6,7 @@ use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Event\Promotion\PromotionItem;
 
 /**
- * @todo Actually use this
+ * @todo Implement this class
  */
 class SelectPromotion implements EventInterface
 {

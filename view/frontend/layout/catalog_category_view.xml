@@ -29,5 +29,13 @@
                 </argument>
             </arguments>
         </referenceBlock>
+
+        <referenceContainer name="category.product.addto">
+            <block name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
+                <arguments>
+                    <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\ProductDetails</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>

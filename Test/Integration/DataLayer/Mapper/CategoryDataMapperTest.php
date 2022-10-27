@@ -16,7 +16,7 @@ class CategoryDataMapperTest extends TestCase
         $category = $this->createCategories()[0];
         $categoryDataMapper = ObjectManager::getInstance()->get(CategoryDataMapper::class);
         $categoryData = $categoryDataMapper->mapByCategory($category);
-        $this->assertEquals('Category 3', $categoryData['name']);
-        $this->assertEquals('3', $categoryData['id']);
+        $this->assertEquals('Category 3', $categoryData['category_name']);
+        $this->assertEquals('3', $categoryData['category_id']);
     }
 }

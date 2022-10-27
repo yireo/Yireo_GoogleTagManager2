@@ -72,6 +72,7 @@ class Config implements ArgumentInterface
      * Check whether mouse clicks are debugged as well
      *
      * @return bool
+     * @todo: Only allow for this in the Developer Mode
      */
     public function isDebugClicks(): bool
     {
