@@ -49,7 +49,7 @@ class AddDataToCartSection
         }
 
         $gtmData = [
-            'event' => 'add_to_cart',
+            'event' => 'view_cart',
             'ecommerce' => [
                 'items' => $this->cartItems->get()
             ]
