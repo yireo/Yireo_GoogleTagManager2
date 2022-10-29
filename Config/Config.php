@@ -52,15 +52,12 @@ class Config implements ArgumentInterface
      * Check whether the module is enabled
      *
      * @return bool
+     * @todo Add integration test for all different scenarios
      */
     public function isEnabled(): bool
     {
         $enabled = (bool)$this->getModuleConfigValue('enabled', false);
-        if (!$enabled) {
-            return false;
-        }
-
-        return true;
+        return !$enabled || (!$this->isDeveloperMode() && !$this->isIdValid());
     }
 
     /**
@@ -80,8 +77,7 @@ class Config implements ArgumentInterface
      */
     public function isDebugClicks(): bool
     {
-        $isDeveloperMode = $this->appState->getMode() === AppState::MODE_DEVELOPER;
-        return $isDeveloperMode && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
+        return $this->isDeveloperMode() && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
     }
 
     /**
@@ -91,12 +87,7 @@ class Config implements ArgumentInterface
      */
     public function getId(): string
     {
-        $id = (string)$this->getModuleConfigValue('id');
-        if (!preg_match('/^GTM-/', $id)) {
-            throw new InvalidConfig('GoogleTagManager ID should start with "GTM-"');
-        }
-
-        return $id;
+        return (string)$this->getModuleConfigValue('id');
     }
 
     /**
@@ -189,5 +180,21 @@ class Config implements ArgumentInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isDeveloperMode(): bool
+    {
+        return $this->appState->getMode() === AppState::MODE_DEVELOPER;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isIdValid(): bool
+    {
+        return 0 === strpos($this->getId(), 'GTM-');
     }
 }
