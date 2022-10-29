@@ -7,6 +7,7 @@ use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\LayoutInterface;
+use Yireo\GoogleTagManager2\Exception\BlockNotFound;
 
 class AddProductDetails
 {
@@ -26,15 +27,27 @@ class AddProductDetails
      */
     public function afterGetProductDetailsHtml(AbstractProduct $abstractProduct, string $html, ProductInterface $product)
     {
-        $html .= $this->getProductDetailsBlock()->setProduct($product)->toHtml();
+        try {
+            $block = $this->getProductDetailsBlock();
+        } catch(BlockNotFound $blockNotFound) {
+            return $html;
+        }
+
+        $html .= $block->setProduct($product)->toHtml();
         return $html;
     }
 
     /**
      * @return BlockInterface
+     * @throws BlockNotFound
      */
     private function getProductDetailsBlock(): BlockInterface
     {
-        return $this->layout->getBlock('yireo_googletagmanager2.product-details');
+        $block = $this->layout->getBlock('yireo_googletagmanager2.product-details');
+        if ($block instanceof BlockInterface) {
+            return $block;
+        }
+
+        throw new BlockNotFound('Block "yireo_googletagmanager2.product-details" not found');
     }
 }

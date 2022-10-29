@@ -27,6 +27,12 @@ class ProductAttributes implements OptionSourceInterface
         $options = [['value' => '', 'label' => __('')]];
 
         $searchCriteria = $this->searchCriteriaBuilder->create();
+        // @todo: Select only attributes that are visible in frontend
+        // @todo: Select only attributes "that make sense"
+        // @todo: Remove attributes without attribute set ID
+        // @todo: Remove id, sku and name
+        // @todo: Add Willem his face
+        // @todo: Alphabetically sort
         $searchResult = $this->productAttributeRepository->getList($searchCriteria);
         foreach ($searchResult->getItems() as $productAttribute) {
             $options[] = [

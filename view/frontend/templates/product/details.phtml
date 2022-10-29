@@ -11,6 +11,11 @@ $product = $block->getProduct();
 if ($product instanceof ProductInterface) {
     $productDetails->setProduct($product);
 }
+
+// @todo: Test if a child block is able to reuse the ViewModel (with the addition of the current $product)
+// @todo: Render $block->getChildHtml() in such a way that every child block is able to use $childBlock->getProduct()
+// @todo: Add Willem as "mental contributor"
+// @todo: Dynamically insert all HTML elements with attribute `data-product-detail-key`
 ?>
 
 <span data-product-price-amount="<?= $productDetails->getPrice() ?>"></span>
@@ -18,3 +23,5 @@ if ($product instanceof ProductInterface) {
 <span data-product-name="<?= $productDetails->getProductName() ?>"></span>
 <span data-product-category="<?= $productDetails->getCategoryName() ?>"></span>
 <?php $block->getChildHtml() ?>
+
+<span data-product-detail-key="category" data-product-detail-value="<?= $productDetails->getCategoryName() ?>"></span>
