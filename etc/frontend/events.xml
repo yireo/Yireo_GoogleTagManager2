@@ -11,4 +11,8 @@
     <event name="customer_data_object_login">
         <observer name="Yireo_GoogleTagManager2::triggerLoginDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLoginDataLayerEvent" />
     </event>
+
+    <event name="customer_logout">
+        <observer name="Yireo_GoogleTagManager2::triggerLogoutDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLogoutDataLayerEvent" />
+    </event>
 </config>

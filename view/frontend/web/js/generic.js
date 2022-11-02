@@ -2,10 +2,9 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2019 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2022 Yireo (https://www.yireo.com/)
  * @license     Open Software License
  */
-
 define([
     'jquery',
     'underscore',
@@ -20,11 +19,7 @@ define([
             return true;
         }
 
-        if (isAllowedByCookieRestrictionMode() === false) {
-            return true;
-        }
-
-        return false;
+        return isAllowedByCookieRestrictionMode() === false;
     };
 
     var isDebug = function() {
@@ -45,38 +40,51 @@ define([
             return true;
         }
 
-        if (!$.cookie(moduleConfig.cookie_restriction_mode)){
-            return false;
-        }
-
-        return true;
+        return $.cookie(moduleConfig.cookie_restriction_mode);
     };
 
     var isLoggedIn = function () {
         var customer = customerData.get('customer');
         return customer() && customer().firstname;
     };
+    
+    var loadCustomerAttributesOnce = function() {
+        var customer = customerData.get('customer');
+        var gtmOnceData = customer().gtm_once;
+        if (gtmOnceData && gtmOnceData.length) {
+            console.log('GTM customer once (js)', gtmOnceData);
+            window.dataLayer.push(gtmOnceData);
+            const customerSectionData = customer();
+            customerSectionData.gtm_once = {};
+            customerData.set('customer', customerSectionData);
+            customerData.invalidate(['customer']);
+        }
+    }
 
-    var getCustomerSpecificAttributes = function () {
+    var getCustomerAttributes = function () {
         var customer = customerData.get('customer');
         var gtmData = customer().gtm;
         if (isLoggedIn() && gtmData) {
             return gtmData;
         }
 
-        return {
-            'customerLoggedIn': 0,
-            'customerId': 0,
-            'customerGroupId': 0,
-            'customerGroupCode': 'UNKNOWN'
-        };
+        return {};
     };
 
-    var getCartSpecificAttributes = function (callback) {
+    var getCartAttributes = function (callback) {
         var cart = customerData.get('cart');
+        var cartData = cart();
 
-        if (cart().gtm) {
-            return cart().gtm;
+        if (cartData.gtm_once && cartData.gtm_once.length) {
+            console.log('GTM cart once (js)', cartData.gtm_once);
+            window.dataLayer.push(cartData.gtm_once);
+            cartData.gtm_once = {};
+            customerData.set('cart', cartData);
+            customerData.invalidate(['cart']);
+        }
+
+        if (cartData.gtm) {
+            return cartData.gtm;
         }
 
         return {};
@@ -85,7 +93,7 @@ define([
     var subscribeToCartChanges = function(callback) {
         var cart = customerData.get('cart');
         cart.subscribe(function (updatedCart) {
-            const attributes = getCartSpecificAttributes();
+            const attributes = getCartAttributes();
             if (isDebug()) {
                 console.log('GTM cart change (js)', attributes);
             }
@@ -98,7 +106,7 @@ define([
     var subscribeToCustomerChanges = function(callback) {
         var customer = customerData.get('customer');
         customer.subscribe(function (updatedCustomer) {
-            const attributes = getCustomerSpecificAttributes();
+            const attributes = getCustomerAttributes();
             if (isDebug()) {
                 console.log('GTM customer change (js)', attributes);
             }
@@ -112,8 +120,8 @@ define([
         'isValid': isValidConfig,
         'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
         'isLoggedIn': isLoggedIn,
-        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
-        'getCartSpecificAttributes': getCartSpecificAttributes,
+        'getCustomerAttributes': getCustomerAttributes,
+        'getCartAttributes': getCartAttributes,
         'yireoGoogleTagManager': function (config) {
             moduleConfig = config;
 
@@ -124,8 +132,8 @@ define([
             window.dataLayer = window.dataLayer || [];
 
             let attributes = {};
-            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
-            attributes = $.extend(getCartSpecificAttributes(), attributes);
+            attributes = $.extend(getCustomerAttributes(), attributes);
+            attributes = $.extend(getCartAttributes(), attributes);
 
             if (isDebug()) {
                 console.log('GTM initial state (js)', attributes);
@@ -133,6 +141,8 @@ define([
 
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
+            
+            loadCustomerAttributesOnce();
 
             subscribeToCartChanges();
             subscribeToCustomerChanges();

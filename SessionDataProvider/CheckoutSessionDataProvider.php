@@ -15,6 +15,13 @@ class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterfac
         $this->checkoutSession = $checkoutSession;
     }
 
+    public function set(string $name, $value)
+    {
+        $gtmData = $this->get();
+        $gtmData[$name] = $value;
+        $this->checkoutSession->setYireoGtmData($gtmData);
+    }
+
     public function append(array $data)
     {
         $gtmData = $this->get();

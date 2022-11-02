@@ -55,11 +55,9 @@ class AddDataToCartSection
             ]
         ];
 
-        $gtmData = array_merge($gtmData, $this->checkoutSessionDataProvider->get());
-        $result = array_merge($result, ['gtm' => $gtmData]);
-
+        $gtmOnceData = $this->checkoutSessionDataProvider->get();
         $this->checkoutSessionDataProvider->clear();
 
-        return $result;
+        return array_merge($result, ['gtm' => $gtmData, 'gtm_once' => $gtmOnceData]);
     }
 }

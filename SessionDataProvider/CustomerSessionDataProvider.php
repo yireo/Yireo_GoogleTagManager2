@@ -17,11 +17,7 @@ class CustomerSessionDataProvider implements CustomerSessionDataProviderInterfac
 
     public function set(string $name, $value)
     {
-        $gtmData = $this->customerSession->getYireoGtmData();
-        if (empty($gtmData)) {
-            $gtmData = [];
-        }
-
+        $gtmData = $this->get();
         $gtmData[$name] = $value;
         $this->customerSession->setYireoGtmData($gtmData);
     }

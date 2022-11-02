@@ -49,24 +49,40 @@ class AddDataToCustomerSection
      */
     public function afterGetSectionData(CustomerData $subject, $result)
     {
-        if (empty($result)) {
+        if (!is_array($result)) {
             return $result;
         }
 
-        $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
 
-        $gtmData = [
+        $gtmData = $this->getGtmData();
+        $gtmOnceData = $this->customerSessionDataProvider->get();
+        $this->customerSessionDataProvider->clear();
+
+        return array_merge($result, ['gtm' => $gtmData, 'gtm_once' => $gtmOnceData]);
+    }
+
+    /**
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    private function getGtmData(): array
+    {
+        if (!$this->customerSession->isLoggedIn()) {
+            return [
+                'customerLoggedIn' => 0,
+                'customerId' => 0,
+                'customerGroupId' => 0,
+                'customerGroupCode' => 'GUEST'
+            ];
+        }
+
+        $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
+        return [
             'customerLoggedIn' => 1,
             'customerId' => $this->customerSession->getCustomerId(),
             'customerGroupId' => $customerGroup->getId(),
             'customerGroupCode' => strtoupper($customerGroup->getCode())
         ];
-
-        $gtmData = array_merge($gtmData, $this->customerSessionDataProvider->get());
-        $result = array_merge($result, ['gtm' => $gtmData]);
-
-        $this->customerSessionDataProvider->clear();
-
-        return $result;
     }
 }
