@@ -11,4 +11,8 @@
     <event name="customer_data_object_login">
         <observer name="Yireo_GoogleTagManager2::triggerLoginDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLoginDataLayerEvent" />
     </event>
+
+    <event name="wishlist_add_product">
+        <observer name="Yireo_GoogleTagManager2::triggerAddToWishlistDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToWishlistDataLayerEvent" />
+    </event>
 </config>

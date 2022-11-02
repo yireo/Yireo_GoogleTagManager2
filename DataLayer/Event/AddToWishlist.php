@@ -3,12 +3,11 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 
-/**
- * @todo Implement this class
- */
 class AddToWishlist implements EventInterface
 {
     private ProductDataMapper $productDataMapper;
@@ -23,21 +22,19 @@ class AddToWishlist implements EventInterface
     }
 
     /**
-     * @param ProductInterface[] $products
+     * @param ProductInterface $product
      * @return string[]
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function get(array $products): array
+    public function get(ProductInterface $product): array
     {
-        $itemsData = [];
-        foreach ($products as $product) {
-            $itemData = $this->productDataMapper->mapByProduct($product);
-            $itemsData[] = $itemData;
-        }
+        $itemData = $this->productDataMapper->mapByProduct($product);
 
         return [
             'event' => 'add_to_wishlist',
             'ecommerce' => [
-                'items' => $itemsData
+                'items' => [$itemData]
             ]
         ];
     }
