@@ -7,10 +7,9 @@ use Magento\Customer\CustomerData\SectionPool;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Data\Form\FormKey;
-use Magento\Framework\Message\Manager;
-use Magento\TestFramework\Fixture\DataFixture;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Wishlist\Controller\WishlistProviderInterface;
-use Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider;
+use Magento\Wishlist\Model\Wishlist;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class AddToWishlistTest extends PageTestCase
@@ -24,27 +23,18 @@ class AddToWishlistTest extends PageTestCase
      */
     public function testAddToWishlist()
     {
-        $customerId = 1;
-        $customerSession = $this->objectManager->get(CustomerSession::class);
-        $customerSession->loginById($customerId);
-        $this->assertTrue($customerSession->isLoggedIn());
+        $this->doLoginCustomer();
 
-        $formKey = $this->objectManager->get(FormKey::class);
-        $wishlistProvider = $this->objectManager->get(WishlistProviderInterface::class);
-        $wishlist = $wishlistProvider->getWishlist();
         $productRepository = $this->objectManager->get(ProductRepositoryInterface::class);
         $product = $productRepository->get('simple');
 
+        $wishlist = $this->getWishlist();
         $this->assertEquals(0, $wishlist->getItemsCount());
-        $this->assertEquals(1, $wishlist->getCustomerId());
 
-        $productId = $product->getId();
-        $data = [
-            'product' => $productId,
-            'formKey' => $formKey->getFormKey(),
-        ];
-
-        $this->getRequest()->setPostValue($data);
+        $this->getRequest()->setPostValue([
+            'product' => $product->getId(),
+            'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
+        ]);
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->dispatch('wishlist/index/add');
 
@@ -53,9 +43,20 @@ class AddToWishlistTest extends PageTestCase
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $customerSessionData = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertArrayHasKey('customer', $customerSessionData);
-        $this->assertArrayHasKey('gtm_once', $customerSessionData['customer']);
-        $this->assertEquals('event', $customerSessionData['customer']['gtm_once']);
-        $this->assertEquals('ecommerce', $customerSessionData['customer']['gtm_once']);
+        $this->assertEquals('add_to_wishlist', $customerSessionData['customer']['gtm_once']['event']);
+        $this->assertArrayHasKey('items', $customerSessionData['customer']['gtm_once']['ecommerce']);
+        $this->assertEquals(1, count($customerSessionData['customer']['gtm_once']['ecommerce']));
+    }
+
+    /**
+     * @return Wishlist
+     * @throws LocalizedException
+     */
+    private function getWishlist(): Wishlist
+    {
+        $wishlistProvider = $this->objectManager->get(WishlistProviderInterface::class);
+        $wishlist = $wishlistProvider->getWishlist();
+        $this->assertEquals(1, $wishlist->getCustomerId());
+        return $wishlist;
     }
 }

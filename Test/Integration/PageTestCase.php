@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration;
 
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\TestFramework\View\Layout;
@@ -27,6 +28,14 @@ class PageTestCase extends AbstractController
     {
         $dataLayer = $this->objectManager->get(DataLayer::class);
         return $dataLayer->getDataLayer();
+    }
+
+    protected function doLoginCustomer()
+    {
+        $customerId = 1;
+        $customerSession = $this->objectManager->get(CustomerSession::class);
+        $customerSession->loginById($customerId);
+        $this->assertTrue($customerSession->isLoggedIn());
     }
 
     protected function assertDataLayerEquals($expectedValue, string $dataLayerKey)
