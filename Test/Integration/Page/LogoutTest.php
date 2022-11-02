@@ -10,6 +10,7 @@ use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Wishlist\Controller\WishlistProviderInterface;
 use Magento\Wishlist\Model\Wishlist;
+use Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class LogoutTest extends PageTestCase
@@ -23,12 +24,14 @@ class LogoutTest extends PageTestCase
     public function testLogout()
     {
         $this->doLoginCustomer();
+        $this->objectManager->get(CustomerSessionDataProvider::class)->clear();
 
         $this->dispatch('customer/account/logout');
 
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
-        $customerSessionData = $customerSectionPool->getSectionsData(['customer']);
+        $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertEquals('logout', $customerSessionData['customer']['gtm_once']['event']);
+        $this->assertArrayHasKey('logout_event', $data['customer']['gtm_once'], var_export($data, true));
+        $this->assertEquals('logout', $data['customer']['gtm_once']['logout_event']['event']);
     }
 }

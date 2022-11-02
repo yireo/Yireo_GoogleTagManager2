@@ -11,6 +11,7 @@ use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 class AddToWishlist implements EventInterface
 {
     private ProductDataMapper $productDataMapper;
+    private ProductInterface $product;
 
     /**
      * @param ProductDataMapper $productDataMapper
@@ -22,14 +23,13 @@ class AddToWishlist implements EventInterface
     }
 
     /**
-     * @param ProductInterface $product
      * @return string[]
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function get(ProductInterface $product): array
+    public function get(): array
     {
-        $itemData = $this->productDataMapper->mapByProduct($product);
+        $itemData = $this->productDataMapper->mapByProduct($this->product);
 
         return [
             'event' => 'add_to_wishlist',
@@ -37,5 +37,15 @@ class AddToWishlist implements EventInterface
                 'items' => [$itemData]
             ]
         ];
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return AddToWishlist
+     */
+    public function setProduct(ProductInterface $product): AddToWishlist
+    {
+        $this->product = $product;
+        return $this;
     }
 }

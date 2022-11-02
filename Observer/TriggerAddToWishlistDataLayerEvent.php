@@ -25,6 +25,9 @@ class TriggerAddToWishlistDataLayerEvent implements ObserverInterface
     {
         /** @var ProductInterface $product */
         $product = $observer->getData('product');
-        $this->customerSessionDataProvider->append($this->addToWishlistEvent->get($product));
+        $this->customerSessionDataProvider->add(
+            'add_to_wishlist_event',
+            $this->addToWishlistEvent->setProduct($product)->get()
+        );
     }
 }

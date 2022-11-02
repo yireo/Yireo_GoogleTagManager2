@@ -15,25 +15,18 @@ class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterfac
         $this->checkoutSession = $checkoutSession;
     }
 
-    public function set(string $name, $value)
+    public function add(string $identifier, array $data)
     {
-        $gtmData = $this->get();
-        $gtmData[$name] = $value;
-        $this->checkoutSession->setYireoGtmData($gtmData);
-    }
-
-    public function append(array $data)
-    {
-        $gtmData = $this->get();
-        $gtmData = array_merge($gtmData, $data);
-        $this->checkoutSession->setYireoGtmData($gtmData);
+        $gtmEvents = $this->get();
+        $gtmEvents[$identifier] = $data;
+        $this->checkoutSession->setYireoGtmEvents($gtmEvents);
     }
 
     public function get(): array
     {
-        $gtmData = $this->checkoutSession->getYireoGtmData();
-        if (is_array($gtmData)) {
-            return $gtmData;
+        $gtmEvents = $this->checkoutSession->getYireoGtmEvents();
+        if (is_array($gtmEvents)) {
+            return $gtmEvents;
         }
 
         return [];
@@ -41,6 +34,6 @@ class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterfac
 
     public function clear()
     {
-        $this->checkoutSession->setYireoGtmData([]);
+        $this->checkoutSession->setYireoGtmEvents([]);
     }
 }

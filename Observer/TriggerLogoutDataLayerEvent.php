@@ -22,6 +22,6 @@ class TriggerLogoutDataLayerEvent implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $this->customerSessionDataProvider->append($this->logoutEvent->get());
+        $this->customerSessionDataProvider->add('logout_event', $this->logoutEvent->get());
     }
 }

@@ -38,9 +38,10 @@ class LoginTest extends PageTestCase
         $this->dispatch('customer/account/loginPost');
 
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
-        $customerSessionData = $customerSectionPool->getSectionsData(['customer']);
+        $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertEquals('login', $customerSessionData['customer']['gtm_once']['event']);
+        $this->assertArrayHasKey('login_event', $data['customer']['gtm_once']);
+        $this->assertEquals('login', $data['customer']['gtm_once']['login_event']['event']);
     }
 
     private function createCustomerFixture()

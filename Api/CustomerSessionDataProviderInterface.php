@@ -4,7 +4,7 @@ namespace Yireo\GoogleTagManager2\Api;
 
 interface CustomerSessionDataProviderInterface
 {
-    public function append(array $data);
+    public function add(string $identifier, array $data);
     public function get(): array;
     public function clear();
 }

@@ -18,13 +18,13 @@ class CustomerSessionDataProviderTest extends AbstractController
         $serializer = ObjectManager::getInstance()->get(SerializerInterface::class);
 
         $customerSessionDataProvider = ObjectManager::getInstance()->get(CustomerSessionDataProvider::class);
-        $customerSessionDataProvider->set('foo', 'bar');
+        $customerSessionDataProvider->add('foobar', ['foo' => 'bar']);
 
         $this->getRequest()->setParams(['sections' => 'customer']);
         $this->dispatch('customer/section/load');
         $body = $this->getResponse()->getBody();
         $data = $serializer->unserialize($body, true);
-        $this->assertEquals('bar', $data['customer']['gtm_once']['foo']);
+        $this->assertEquals('bar', $data['customer']['gtm_once']['foobar']['foo']);
 
         $this->getRequest()->setParams(['sections' => 'customer']);
         $this->dispatch('customer/section/load');
