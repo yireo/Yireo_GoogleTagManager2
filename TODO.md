@@ -1,12 +1,18 @@
 # TODO
 
 ## Other things
-- `select_item`
-- `select_promotion`
-- `item_category_2`
-- `gtm.dom`
+- Checkout
+- Events
+  - `select_item`
+  - `select_promotion`
+- Attributes
+  - `item_category_2`
 - Add logout event
-- MaxServ_DataLayer, Dmg_DataLayer
+- Check functionality
+  - MaxServ_DataLayer, Dmg_DataLayer
+  - Anowave
+  - WeltPixel
+- Config key validation with fields `backend_model` (GTM-)
 
 ## Container export and import
 See https://support.google.com/tagmanager/answer/6106997?hl=en

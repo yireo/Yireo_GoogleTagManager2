@@ -44,7 +44,7 @@ class ProductDataMapper
         foreach ($productFields as $productAttributeCode) {
             $dataLayerKey = $prefix . $productAttributeCode;
             $attributeValue = $this->getAttributeValue->getProductAttributeValue($product, $productAttributeCode);
-            if (empty($attributeValue)) {
+            if ($attributeValue === null) {
                 continue;
             }
 
