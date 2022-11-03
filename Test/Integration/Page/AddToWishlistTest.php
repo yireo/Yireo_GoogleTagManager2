@@ -10,10 +10,13 @@ use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Wishlist\Controller\WishlistProviderInterface;
 use Magento\Wishlist\Model\Wishlist;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCustomer;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class AddToWishlistTest extends PageTestCase
 {
+    use CreateCustomer;
+
     /**
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
@@ -23,6 +26,7 @@ class AddToWishlistTest extends PageTestCase
      */
     public function testAddToWishlist()
     {
+        $this->createCustomer();
         $this->loginCustomer();
 
         $productRepository = $this->objectManager->get(ProductRepositoryInterface::class);
