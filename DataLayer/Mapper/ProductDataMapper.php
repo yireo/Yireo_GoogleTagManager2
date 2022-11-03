@@ -51,8 +51,12 @@ class ProductDataMapper
             $productData[$dataLayerKey] = $attributeValue;
         }
 
-        $productData[$prefix . 'list_id'] = $this->getCategoryFromProduct->get($product)->getId();
-        $productData[$prefix . 'list_name'] = $this->getCategoryFromProduct->get($product)->getName();
+        try {
+            $productData[$prefix . 'list_id'] = $this->getCategoryFromProduct->get($product)->getId();
+            $productData[$prefix . 'list_name'] = $this->getCategoryFromProduct->get($product)->getName();
+        } catch(NoSuchEntityException) {
+        }
+
         $productData['price'] = $product->getFinalPrice();
 
         // @todo: Add "variant" reference to Configurable Product

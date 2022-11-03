@@ -14,7 +14,7 @@ define([
 
     var moduleConfig = {};
 
-    var isDisabled = function() {
+    var isDisabled = function () {
         if (isValidConfig() === false) {
             return true;
         }
@@ -22,20 +22,20 @@ define([
         return isAllowedByCookieRestrictionMode() === false;
     };
 
-    var isDebug = function() {
+    var isDebug = function () {
         return !!moduleConfig.debug;
     }
 
-    var isValidConfig = function() {
+    var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
-            console.warn('GTM identifier empty, terminating GTM initialization.');
+            console.warn('Yireo_GoogleTagManager2: identifier empty, terminating GTM initialization.');
             return false;
         }
 
         return true;
     };
 
-    var isAllowedByCookieRestrictionMode = function() {
+    var isAllowedByCookieRestrictionMode = function () {
         if (!moduleConfig.cookie_restriction_mode) {
             return true;
         }
@@ -47,81 +47,55 @@ define([
         var customer = customerData.get('customer');
         return customer() && customer().firstname;
     };
-    
-    var loadCustomerAttributesOnce = function() {
-        var customer = customerData.get('customer');
-        var gtmOnceData = customer().gtm_once;
-        if (gtmOnceData && gtmOnceData.length) {
-            console.log('GTM customer once (js)', gtmOnceData);
-            window.dataLayer.push(gtmOnceData);
-            const customerSectionData = customer();
-            customerSectionData.gtm_once = {};
-            customerData.set('customer', customerSectionData);
-            customerData.invalidate(['customer']);
+
+    var loadGtmOnceDataFromSection = function (sectionName) {
+        const sectionData = customerData.get(sectionName)();
+        const gtmData = sectionData.gtm_once;
+        if (typeof gtmData === 'undefined') {
+            return;
         }
+
+        if (Object.entries(gtmData).length < 1) {
+            return;
+        }
+
+        for (const [eventId, eventData] of Object.entries(gtmData)) {
+            if (isDebug()) {
+                console.log('Yireo_GoogleTagManager2: ' + sectionName + ' event "' + eventId + '" (js)', eventData);
+            }
+
+            window.dataLayer.push(eventData);
+        }
+
+        delete sectionData.gtm_once;
+        customerData.set(sectionName, sectionData);
+        customerData.invalidate([sectionName]);
     }
 
-    var getCustomerAttributes = function () {
-        var customer = customerData.get('customer');
-        var gtmData = customer().gtm;
-        if (isLoggedIn() && gtmData) {
+    var getGtmDataFromSection = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        var gtmData = sectionData().gtm;
+        if (gtmData) {
             return gtmData;
         }
 
         return {};
     };
 
-    var getCartAttributes = function (callback) {
-        var cart = customerData.get('cart');
-        var cartData = cart();
-
-        if (cartData.gtm_once && cartData.gtm_once.length) {
-            console.log('GTM cart once (js)', cartData.gtm_once);
-            window.dataLayer.push(cartData.gtm_once);
-            cartData.gtm_once = {};
-            customerData.set('cart', cartData);
-            customerData.invalidate(['cart']);
-        }
-
-        if (cartData.gtm) {
-            return cartData.gtm;
-        }
-
-        return {};
-    };
-
-    var subscribeToCartChanges = function(callback) {
-        var cart = customerData.get('cart');
-        cart.subscribe(function (updatedCart) {
-            const attributes = getCartAttributes();
+    var subscribeToSectionDataChanges = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        sectionData.subscribe(function (updatedCustomer) {
+            const gtmData = getGtmDataFromSection(sectionName);
             if (isDebug()) {
-                console.log('GTM cart change (js)', attributes);
+                console.log('Yireo_GoogleTagManager2: ' + sectionName + ' change (js)', gtmData);
             }
 
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
-        });
-    }
-
-    var subscribeToCustomerChanges = function(callback) {
-        var customer = customerData.get('customer');
-        customer.subscribe(function (updatedCustomer) {
-            const attributes = getCustomerAttributes();
-            if (isDebug()) {
-                console.log('GTM customer change (js)', attributes);
-            }
-
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
+            window.dataLayer.push({ecommerce: null});
+            window.dataLayer.push(gtmData);
         });
     }
 
     return {
-        'isValid': isValidConfig,
-        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
-        'isLoggedIn': isLoggedIn,
-        'getCustomerAttributes': getCustomerAttributes,
-        'getCartAttributes': getCartAttributes,
         'yireoGoogleTagManager': function (config) {
             moduleConfig = config;
 
@@ -129,23 +103,25 @@ define([
                 return;
             }
 
-            window.dataLayer = window.dataLayer || [];
-
             let attributes = {};
-            attributes = $.extend(getCustomerAttributes(), attributes);
-            attributes = $.extend(getCartAttributes(), attributes);
+            // @todo: Make this dynamically work for ALL sections
+            const sectionNames = ['customer', 'cart'];
+            sectionNames.forEach(function (sectionName) {
+                attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
+            });
 
             if (isDebug()) {
-                console.log('GTM initial state (js)', attributes);
+                console.log('Yireo_GoogleTagManager2: initial state (js)', attributes);
             }
 
-            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ecommerce: null});
             window.dataLayer.push(attributes);
-            
-            loadCustomerAttributesOnce();
 
-            subscribeToCartChanges();
-            subscribeToCustomerChanges();
+            sectionNames.forEach(function (sectionName) {
+                loadGtmOnceDataFromSection(sectionName);
+                subscribeToSectionDataChanges(sectionName);
+            });
         }
     };
 });

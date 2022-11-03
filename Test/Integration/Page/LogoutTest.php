@@ -2,19 +2,15 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\CustomerData\SectionPool;
-use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Framework\Data\Form\FormKey;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Wishlist\Controller\WishlistProviderInterface;
-use Magento\Wishlist\Model\Wishlist;
 use Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCustomer;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class LogoutTest extends PageTestCase
 {
+    use CreateCustomer;
+
     /**
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
@@ -23,7 +19,9 @@ class LogoutTest extends PageTestCase
      */
     public function testLogout()
     {
-        $this->doLoginCustomer();
+        $this->createCustomer();
+        $this->loginCustomer();
+
         $this->objectManager->get(CustomerSessionDataProvider::class)->clear();
 
         $this->dispatch('customer/account/logout');
@@ -31,7 +29,7 @@ class LogoutTest extends PageTestCase
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertArrayHasKey('logout_event', $data['customer']['gtm_once'], var_export($data, true));
+        $this->assertArrayHasKey('logout_event', $data['customer']['gtm_once']);
         $this->assertEquals('logout', $data['customer']['gtm_once']['logout_event']['event']);
     }
 }

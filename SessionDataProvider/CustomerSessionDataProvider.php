@@ -17,16 +17,16 @@ class CustomerSessionDataProvider implements CustomerSessionDataProviderInterfac
 
     public function add(string $identifier, array $data)
     {
-        $gtmEvents = $this->get();
-        $gtmEvents[$identifier] = $data;
-        $this->customerSession->setYireoGtmEvents($gtmEvents);
+        $gtmData = $this->get();
+        $gtmData[$identifier] = $data;
+        $this->customerSession->setYireoGtmData($gtmData);
     }
 
     public function get(): array
     {
-        $gtmEvents = $this->customerSession->getYireoGtmEvents();
-        if (is_array($gtmEvents)) {
-            return $gtmEvents;
+        $gtmData = $this->customerSession->getYireoGtmData();
+        if (is_array($gtmData)) {
+            return $gtmData;
         }
 
         return [];
@@ -34,6 +34,6 @@ class CustomerSessionDataProvider implements CustomerSessionDataProviderInterfac
 
     public function clear()
     {
-        $this->customerSession->setYireoGtmEvents([]);
+        $this->customerSession->setYireoGtmData([]);
     }
 }

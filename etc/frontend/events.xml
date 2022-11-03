@@ -19,4 +19,8 @@
     <event name="wishlist_add_product">
         <observer name="Yireo_GoogleTagManager2::triggerAddToWishlistDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToWishlistDataLayerEvent" />
     </event>
+
+    <event name="sales_order_place_after">
+        <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
+    </event>
 </config>

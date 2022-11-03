@@ -30,7 +30,7 @@ class PageTestCase extends AbstractController
         return $dataLayer->getDataLayer();
     }
 
-    protected function doLoginCustomer()
+    protected function loginCustomer()
     {
         $customerId = 1;
         $customerSession = $this->objectManager->get(CustomerSession::class);

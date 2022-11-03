@@ -18,7 +18,7 @@ $events = (array)$block->getEvents();
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ecommerce: null});
     <?php if ($config->isDebug()): ?>
-    console.log('GTM initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    console.log('Yireo_GoogleTagManager2: initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
     <?php endif; ?>
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
 </script>

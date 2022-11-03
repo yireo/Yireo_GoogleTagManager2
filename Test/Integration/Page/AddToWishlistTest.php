@@ -23,7 +23,7 @@ class AddToWishlistTest extends PageTestCase
      */
     public function testAddToWishlist()
     {
-        $this->doLoginCustomer();
+        $this->loginCustomer();
 
         $productRepository = $this->objectManager->get(ProductRepositoryInterface::class);
         $product = $productRepository->get('simple');
