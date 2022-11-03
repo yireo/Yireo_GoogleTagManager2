@@ -14,13 +14,7 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 /** @var Template $block */
 /** @var Commons $commons */
 $commons = $block->getCommonsViewModel();
-$config = $commons->getConfiguration();
 ?>
-<noscript>
-    <iframe src="//www.googletagmanager.com/ns.html?id=<?= /* @noEscape */
-    $config['id']; ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-
 <script type="text/x-magento-init">
     {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
 </script>
@@ -28,7 +22,6 @@ $config = $commons->getConfiguration();
 <script>
     require(['jquery'], function($) {
         $('.product-items a.product').click(function(event) {
-            const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
             const debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS || false;
             const $parent = $(this).parent();
             const regex = /_(\d+)$/;
@@ -44,10 +37,7 @@ $config = $commons->getConfiguration();
                 }
             }
 
-            if (debug) {
-                console.log('Yireo_GoogleTagManager2: GA4 event select_item', gtmData);
-            }
-
+            yireoGtmNotice('page event "select_item" (js)', gtmData);
             dataLayer.push({ ecommerce: null });
             dataLayer.push(gtmData);
 
@@ -55,5 +45,5 @@ $config = $commons->getConfiguration();
                 event.preventDefault();
             }
         });
-    })
+    });
 </script>

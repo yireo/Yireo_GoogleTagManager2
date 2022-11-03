@@ -7,13 +7,28 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
-<!-- Google Tag Manager -->
+<noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=<?= /* @noEscape */
+    $config->getId() ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','<?= $config->getId() ?>');</script>
-<!-- End Google Tag Manager -->
+
+<script>
+    const yireoGtmNotice = function(...args) {
+        const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
+        if (false === debug) {
+            return;
+        }
+
+        var css = 'color:white; background-color:green; padding:1px;'
+        console.log('%cYireo_GoogleTagManager2', css, ...args);
+    };
+</script>
 
 <?php if($config->isDebug()): ?>
 <script>

@@ -8,8 +8,9 @@
 define([
     'jquery',
     'underscore',
+    'uiComponent',
     'Magento_Customer/js/customer-data',
-], function ($, _, customerData) {
+], function ($, _, Component, customerData) {
     'use strict';
 
     var moduleConfig = {};
@@ -48,33 +49,33 @@ define([
         return customer() && customer().firstname;
     };
 
+    var notice = yireoGtmNotice;
+
     var loadGtmEventsFromSection = function (sectionName) {
         const sectionData = customerData.get(sectionName)();
         const gtmEvents = sectionData.gtm_events;
-        if (typeof gtmEvents === 'undefined') {
+
+        if (isEmpty(gtmEvents)) {
             return;
         }
 
-        if (Object.entries(gtmEvents).length < 1) {
-            return;
-        }
-
+        let changeGtmData = false;
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-            if (isDebug()) {
-                console.log('Yireo_GoogleTagManager2: ' + sectionName + ' event "' + eventId + '" (js)', eventData);
-            }
+            notice(sectionName + ' event "' + eventId + '" (js)', eventData);
 
             window.dataLayer.push(eventData);
 
             if (eventData.cacheable !== true) {
                 delete sectionData.gtm_events.eventId;
+                changeGtmData = true;
             }
         }
 
-        if (isDebug()) {
-            console.log('Yireo_GoogleTagManager2: invalidating sections "' + sectionName + '"')
+        if (false === changeGtmData) {
+            return;
         }
 
+        notice('invalidating sections "' + sectionName + '"')
         customerData.set(sectionName, sectionData);
     }
 
@@ -90,12 +91,13 @@ define([
 
     var subscribeToSectionDataChanges = function (sectionName) {
         var sectionData = customerData.get(sectionName);
-        sectionData.subscribe(function (updatedCustomer) {
+        sectionData.subscribe(function (updatedData) {
             const gtmData = getGtmDataFromSection(sectionName);
-            if (isDebug()) {
-                console.log('Yireo_GoogleTagManager2: ' + sectionName + ' change (js)', gtmData);
+            if (isEmpty(gtmData)) {
+                return;
             }
 
+            notice(sectionName + ' change (js)', gtmData);
             window.dataLayer.push({ecommerce: null});
             window.dataLayer.push(gtmData);
 
@@ -107,8 +109,24 @@ define([
         return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
     }
 
-    return {
-        'yireoGoogleTagManager': function (config) {
+    var isEmpty = function(variable) {
+        if (typeof variable === 'undefined') {
+            return true;
+        }
+
+        if (Array.isArray(variable) && variable.length === 0) {
+            return true;
+        }
+
+        if (typeof variable === 'object' && Object.keys(variable).length === 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    return Component.extend({
+        initialize: function (config) {
             moduleConfig = config;
 
             if (isDisabled()) {
@@ -121,18 +139,18 @@ define([
                 attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
             });
 
-            if (isDebug()) {
-                console.log('Yireo_GoogleTagManager2: initial state (js)', attributes);
-            }
-
+            notice('initial state (js)', attributes);
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ecommerce: null});
-            window.dataLayer.push(attributes);
+
+            if (false === isEmpty(attributes)) {
+                window.dataLayer.push(attributes);
+            }
 
             sectionNames.forEach(function (sectionName) {
                 loadGtmEventsFromSection(sectionName);
                 subscribeToSectionDataChanges(sectionName);
             });
         }
-    };
+    });
 });

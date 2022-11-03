@@ -53,10 +53,8 @@ define(['jquery'], function ($) {
                 }
             };
 
-            if (debug) {
-                console.log('Yireo_GoogleTagManager2: catalog-add-to-cart-mixin event', eventData);
-                console.log('Yireo_GoogleTagManager2: catalog-add-to-cart-mixin productData', productData);
-            }
+            yireoGtmNotice('catalog-add-to-cart-mixin event', eventData);
+            yireoGtmNotice('catalog-add-to-cart-mixin productData', productData);
 
             if (debugClicks && confirm("Press to continue with add-to-cart") === false) {
                 return;

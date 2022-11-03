@@ -54,10 +54,24 @@ class DataLayer implements ArgumentInterface
     }
 
     /**
+     * @return array
+     */
+    public function getDataLayerEvents(): array
+    {
+        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        if (empty($block)) {
+            return [];
+        }
+
+        $data = (array)$block->getData('data_layer_events');
+        return $data;
+    }
+
+    /**
      * @return string
      */
-    public function getDataLayerAsJson(): string
+    public function toJson(array $data): string
     {
-        return $this->serializer->serialize($this->getDataLayer());
+        return $this->serializer->serialize($data);
     }
 }

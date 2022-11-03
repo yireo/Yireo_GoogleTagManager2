@@ -17,18 +17,21 @@
                     <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Product</item>
                 </argument>
 
-                <argument name="data_layer" xsi:type="array">
-                    <item name="event" xsi:type="string">view_item</item>
-                    <item name="ecommerce" xsi:type="array">
-                        <item name="items" xsi:type="array">
-                            <item name="0" xsi:type="array">
-                                <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
+                <argument name="data_layer_events" xsi:type="array">
+                    <item name="view_item" xsi:type="array">
+                        <item name="event" xsi:type="string">view_item</item>
+                        <item name="ecommerce" xsi:type="array">
+                            <item name="items" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
+                                </item>
                             </item>
+                            <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
                         </item>
-
-                        <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
                     </item>
+                </argument>
 
+                <argument name="data_layer" xsi:type="array">
                     <item name="page_type" xsi:type="string">product</item>
                 </argument>
             </arguments>

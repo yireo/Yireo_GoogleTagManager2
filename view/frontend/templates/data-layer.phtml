@@ -7,19 +7,23 @@ use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
 /** @var Template $block */
-$dataLayerViewModel = $block->getDataLayerViewModel();
-$dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $config = $block->getConfig();
-$events = (array)$block->getEvents();
-
-// see https://developers.google.com/analytics/devguides/collection/ua/gtm/enhanced-ecommerce#add
+$dataLayerViewModel = $block->getDataLayerViewModel();
+$dataLayerJson = $dataLayerViewModel->toJson($dataLayerViewModel->getDataLayer());
+$dataLayerEvents = $dataLayerViewModel->getDataLayerEvents();
 ?>
 <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ecommerce: null});
     <?php if ($config->isDebug()): ?>
-    console.log('Yireo_GoogleTagManager2: initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    yireoGtmNotice('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
     <?php endif; ?>
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
+    <?php foreach ($dataLayerEvents as $dataLayerEvent): ?>
+    <?php $dataLayerEventJson = $dataLayerViewModel->toJson($dataLayerEvent); ?>
+    <?php if ($config->isDebug()): ?>
+    yireoGtmNotice('event (page)', <?= /* @noEscape */ $dataLayerEventJson ?>);
+    <?php endif; ?>
+    window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventJson ?>);
+    <?php endforeach; ?>
 </script>
-
