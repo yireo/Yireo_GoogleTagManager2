@@ -1,10 +1,12 @@
-define(['jquery'], function ($) {
+define([
+    'jquery',
+    'yireoGoogleTagManagerLogger'
+], function ($, logger) {
     'use strict';
 
     var mixin = {
         submitForm: function (form) {
             const formData = Object.fromEntries(new FormData(form[0]).entries());
-            console.log('formdata', formData, form);
             const productId = formData.product;
             const productSku = form.data().productSku;
 
@@ -53,8 +55,8 @@ define(['jquery'], function ($) {
                 }
             };
 
-            yireoGtmNotice('catalog-add-to-cart-mixin event', eventData);
-            yireoGtmNotice('catalog-add-to-cart-mixin productData', productData);
+            logger('catalog-add-to-cart-mixin event', eventData);
+            logger('catalog-add-to-cart-mixin productData', productData);
 
             if (debugClicks && confirm("Press to continue with add-to-cart") === false) {
                 return;

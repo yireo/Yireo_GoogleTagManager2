@@ -54,6 +54,14 @@ class DataLayer implements ArgumentInterface
     }
 
     /**
+     * @return string
+     */
+    public function getDataLayerAsJson(): string
+    {
+        return $this->toJson($this->getDataLayer());
+    }
+
+    /**
      * @return array
      */
     public function getDataLayerEvents(): array
@@ -64,13 +72,28 @@ class DataLayer implements ArgumentInterface
         }
 
         $data = (array)$block->getData('data_layer_events');
-        return $data;
+        $processors = (array)$block->getData('data_layer_processors');
+
+        return $this->variableParser->parse($data, $processors);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDataLayerEventsAsJsonChunks(): array
+    {
+        $jsonChunks = [];
+        foreach ($this->getDataLayerEvents() as $dataLayerEvent) {
+            $jsonChunks[] = $this->toJson($dataLayerEvent);
+        }
+
+        return $jsonChunks;
     }
 
     /**
      * @return string
      */
-    public function toJson(array $data): string
+    private function toJson(array $data): string
     {
         return $this->serializer->serialize($data);
     }

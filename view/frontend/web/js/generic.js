@@ -10,7 +10,8 @@ define([
     'underscore',
     'uiComponent',
     'Magento_Customer/js/customer-data',
-], function ($, _, Component, customerData) {
+    'yireoGoogleTagManagerLogger'
+], function ($, _, Component, customerData, logger) {
     'use strict';
 
     var moduleConfig = {};
@@ -22,10 +23,6 @@ define([
 
         return isAllowedByCookieRestrictionMode() === false;
     };
-
-    var isDebug = function () {
-        return !!moduleConfig.debug;
-    }
 
     var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
@@ -49,34 +46,36 @@ define([
         return customer() && customer().firstname;
     };
 
-    var notice = yireoGtmNotice;
-
-    var loadGtmEventsFromSection = function (sectionName) {
-        const sectionData = customerData.get(sectionName)();
-        const gtmEvents = sectionData.gtm_events;
-
-        if (isEmpty(gtmEvents)) {
+    var processGtmDataFromSection = function (sectionName) {
+        const gtmData = getGtmDataFromSection(sectionName);
+        if (true === isEmpty(gtmData)) {
             return;
         }
 
-        let changeGtmData = false;
+        logger('section "' + sectionName + '" changed (customerData)', gtmData);
+        window.dataLayer.push({ecommerce: null});
+        window.dataLayer.push(gtmData);
+    }
+
+    var processGtmEventsFromSection = function (sectionName) {
+        const sectionData = customerData.get(sectionName)();
+        const gtmEvents = sectionData.gtm_events;
+
+        if (true === isEmpty(gtmEvents)) {
+            return;
+        }
+
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-            notice(sectionName + ' event "' + eventId + '" (js)', eventData);
+            logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
             window.dataLayer.push(eventData);
 
             if (eventData.cacheable !== true) {
-                delete sectionData.gtm_events.eventId;
-                changeGtmData = true;
+                delete sectionData['gtm_events'][eventId];
+                logger('invalidating sections "' + sectionName + '"', sectionData)
+                customerData.set(sectionName, sectionData);
             }
         }
-
-        if (false === changeGtmData) {
-            return;
-        }
-
-        notice('invalidating sections "' + sectionName + '"')
-        customerData.set(sectionName, sectionData);
     }
 
     var getGtmDataFromSection = function (sectionName) {
@@ -91,17 +90,9 @@ define([
 
     var subscribeToSectionDataChanges = function (sectionName) {
         var sectionData = customerData.get(sectionName);
-        sectionData.subscribe(function (updatedData) {
-            const gtmData = getGtmDataFromSection(sectionName);
-            if (isEmpty(gtmData)) {
-                return;
-            }
-
-            notice(sectionName + ' change (js)', gtmData);
-            window.dataLayer.push({ecommerce: null});
-            window.dataLayer.push(gtmData);
-
-            loadGtmEventsFromSection(sectionName);
+        sectionData.subscribe(function () {
+            processGtmDataFromSection(sectionName);
+            processGtmEventsFromSection(sectionName);
         });
     }
 
@@ -109,7 +100,7 @@ define([
         return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
     }
 
-    var isEmpty = function(variable) {
+    var isEmpty = function (variable) {
         if (typeof variable === 'undefined') {
             return true;
         }
@@ -139,7 +130,7 @@ define([
                 attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
             });
 
-            notice('initial state (js)', attributes);
+            logger('initial state (js)', attributes);
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ecommerce: null});
 
@@ -148,7 +139,7 @@ define([
             }
 
             sectionNames.forEach(function (sectionName) {
-                loadGtmEventsFromSection(sectionName);
+                processGtmEventsFromSection(sectionName);
                 subscribeToSectionDataChanges(sectionName);
             });
         }

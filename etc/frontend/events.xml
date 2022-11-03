@@ -20,6 +20,10 @@
         <observer name="Yireo_GoogleTagManager2::triggerAddToWishlistDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToWishlistDataLayerEvent" />
     </event>
 
+    <event name="checkout_cart_add_product_complete">
+        <observer name="Yireo_GoogleTagManager2::triggerAddToCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToCartDataLayerEvent" />
+    </event>
+
     <event name="sales_order_place_after">
         <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
     </event>

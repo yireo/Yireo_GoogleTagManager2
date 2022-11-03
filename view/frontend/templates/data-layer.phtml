@@ -9,21 +9,25 @@ use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 /** @var Template $block */
 $config = $block->getConfig();
 $dataLayerViewModel = $block->getDataLayerViewModel();
-$dataLayerJson = $dataLayerViewModel->toJson($dataLayerViewModel->getDataLayer());
-$dataLayerEvents = $dataLayerViewModel->getDataLayerEvents();
+$dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
+$dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ecommerce: null});
-    <?php if ($config->isDebug()): ?>
-    yireoGtmNotice('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
-    <?php endif; ?>
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
-    <?php foreach ($dataLayerEvents as $dataLayerEvent): ?>
-    <?php $dataLayerEventJson = $dataLayerViewModel->toJson($dataLayerEvent); ?>
     <?php if ($config->isDebug()): ?>
-    yireoGtmNotice('event (page)', <?= /* @noEscape */ $dataLayerEventJson ?>);
+    require(['yireoGoogleTagManagerLogger'], function (logger) {
+        logger('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    });
     <?php endif; ?>
-    window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventJson ?>);
+
+    <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
+    <?php if ($config->isDebug()): ?>
+    require(['yireoGoogleTagManagerLogger'], function (logger) {
+        logger('event (page)', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+    });
+    <?php endif; ?>
+    window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
     <?php endforeach; ?>
 </script>

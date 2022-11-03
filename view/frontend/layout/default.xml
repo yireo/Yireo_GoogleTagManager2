@@ -76,10 +76,11 @@
                 name="yireo_googletagmanager2.script-additions"
                 template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
                 ifconfig="googletagmanager2/settings/enabled"
+                after="yireo_googletagmanager2.data-layer"
             >
                 <arguments>
                     <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
-                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons                   </argument>
+                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons</argument>
                 </arguments>
             </block>
         </referenceContainer>
