@@ -58,7 +58,7 @@ class AddDataToCustomerSection
         $gtmOnce = $this->customerSessionDataProvider->get();
         $this->customerSessionDataProvider->clear();
 
-        return array_merge($result, ['gtm' => $gtmData, 'gtm_once' => $gtmOnce]);
+        return array_merge($result, ['gtm' => $gtmData, 'gtm_events' => $gtmOnce]);
     }
 
     /**

@@ -24,12 +24,12 @@ class CustomerSessionDataProviderTest extends AbstractController
         $this->dispatch('customer/section/load');
         $body = $this->getResponse()->getBody();
         $data = $serializer->unserialize($body, true);
-        $this->assertEquals('bar', $data['customer']['gtm_once']['foobar']['foo']);
+        $this->assertEquals('bar', $data['customer']['gtm_events']['foobar']['foo']);
 
         $this->getRequest()->setParams(['sections' => 'customer']);
         $this->dispatch('customer/section/load');
         $body = $this->getResponse()->getBody();
         $data = $serializer->unserialize($body, true);
-        $this->assertEmpty($data['customer']['gtm_once']);
+        $this->assertEmpty($data['customer']['gtm_events']);
     }
 }

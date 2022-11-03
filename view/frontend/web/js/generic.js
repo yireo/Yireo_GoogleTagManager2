@@ -48,28 +48,34 @@ define([
         return customer() && customer().firstname;
     };
 
-    var loadGtmOnceDataFromSection = function (sectionName) {
+    var loadGtmEventsFromSection = function (sectionName) {
         const sectionData = customerData.get(sectionName)();
-        const gtmData = sectionData.gtm_once;
-        if (typeof gtmData === 'undefined') {
+        const gtmEvents = sectionData.gtm_events;
+        if (typeof gtmEvents === 'undefined') {
             return;
         }
 
-        if (Object.entries(gtmData).length < 1) {
+        if (Object.entries(gtmEvents).length < 1) {
             return;
         }
 
-        for (const [eventId, eventData] of Object.entries(gtmData)) {
+        for (const [eventId, eventData] of Object.entries(gtmEvents)) {
             if (isDebug()) {
                 console.log('Yireo_GoogleTagManager2: ' + sectionName + ' event "' + eventId + '" (js)', eventData);
             }
 
             window.dataLayer.push(eventData);
+
+            if (eventData.cacheable !== true) {
+                delete sectionData.gtm_events.eventId;
+            }
         }
 
-        delete sectionData.gtm_once;
+        if (isDebug()) {
+            console.log('Yireo_GoogleTagManager2: invalidating sections "' + sectionName + '"')
+        }
+
         customerData.set(sectionName, sectionData);
-        customerData.invalidate([sectionName]);
     }
 
     var getGtmDataFromSection = function (sectionName) {
@@ -92,7 +98,13 @@ define([
 
             window.dataLayer.push({ecommerce: null});
             window.dataLayer.push(gtmData);
+
+            loadGtmEventsFromSection(sectionName);
         });
+    }
+
+    var getSectionNames = function () {
+        return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
     }
 
     return {
@@ -104,8 +116,7 @@ define([
             }
 
             let attributes = {};
-            // @todo: Make this dynamically work for ALL sections
-            const sectionNames = ['customer', 'cart'];
+            const sectionNames = getSectionNames();
             sectionNames.forEach(function (sectionName) {
                 attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
             });
@@ -119,7 +130,7 @@ define([
             window.dataLayer.push(attributes);
 
             sectionNames.forEach(function (sectionName) {
-                loadGtmOnceDataFromSection(sectionName);
+                loadGtmEventsFromSection(sectionName);
                 subscribeToSectionDataChanges(sectionName);
             });
         }

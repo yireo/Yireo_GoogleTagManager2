@@ -29,7 +29,7 @@ class LogoutTest extends PageTestCase
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertArrayHasKey('logout_event', $data['customer']['gtm_once']);
-        $this->assertEquals('logout', $data['customer']['gtm_once']['logout_event']['event']);
+        $this->assertArrayHasKey('logout_event', $data['customer']['gtm_events']);
+        $this->assertEquals('logout', $data['customer']['gtm_events']['logout_event']['event']);
     }
 }

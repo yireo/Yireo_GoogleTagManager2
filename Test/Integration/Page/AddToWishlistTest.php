@@ -43,10 +43,10 @@ class AddToWishlistTest extends PageTestCase
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertArrayHasKey('add_to_wishlist_event', $data['customer']['gtm_once']);
-        $this->assertEquals('add_to_wishlist', $data['customer']['gtm_once']['add_to_wishlist_event']['event']);
-        $this->assertArrayHasKey('items', $data['customer']['gtm_once']['add_to_wishlist_event']['ecommerce']);
-        $this->assertEquals(1, count($data['customer']['gtm_once']['add_to_wishlist_event']['ecommerce']['items']));
+        $this->assertArrayHasKey('add_to_wishlist_event', $data['customer']['gtm_events']);
+        $this->assertEquals('add_to_wishlist', $data['customer']['gtm_events']['add_to_wishlist_event']['event']);
+        $this->assertArrayHasKey('items', $data['customer']['gtm_events']['add_to_wishlist_event']['ecommerce']);
+        $this->assertEquals(1, count($data['customer']['gtm_events']['add_to_wishlist_event']['ecommerce']['items']));
     }
 
     /**

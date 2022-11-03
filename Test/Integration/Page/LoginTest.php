@@ -35,7 +35,7 @@ class LoginTest extends PageTestCase
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $data = $customerSectionPool->getSectionsData(['customer']);
 
-        $this->assertArrayHasKey('login_event', $data['customer']['gtm_once']);
-        $this->assertEquals('login', $data['customer']['gtm_once']['login_event']['event']);
+        $this->assertArrayHasKey('login_event', $data['customer']['gtm_events']);
+        $this->assertEquals('login', $data['customer']['gtm_events']['login_event']['event']);
     }
 }
