@@ -13,20 +13,9 @@ use Yireo\GoogleTagManager2\Exception\InvalidConfig;
 
 class Config implements ArgumentInterface
 {
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var CookieHelper
-     */
-    private $cookieHelper;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
+    private ScopeConfigInterface $scopeConfig;
+    private CookieHelper $cookieHelper;
+    private StoreManagerInterface $storeManager;
     private AppState $appState;
 
     /**
@@ -52,12 +41,19 @@ class Config implements ArgumentInterface
      * Check whether the module is enabled
      *
      * @return bool
-     * @todo Add integration test for all different scenarios
      */
     public function isEnabled(): bool
     {
         $enabled = (bool)$this->getModuleConfigValue('enabled', false);
-        return !$enabled || (!$this->isDeveloperMode() && !$this->isIdValid());
+        if (false === $enabled) {
+            return false;
+        }
+
+        if (false === $this->isDeveloperMode() && false === $this->isIdValid()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
