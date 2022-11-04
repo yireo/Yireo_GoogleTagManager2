@@ -24,7 +24,7 @@ $config = $block->getConfig();
 
 <?php if($config->isDebug()): ?>
 <script>
-    const YIREO_GOOGLETAGMANAGER2_DEBUG = true;
-    const YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
 </script>
 <?php endif; ?>

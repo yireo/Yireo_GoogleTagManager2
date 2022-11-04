@@ -38,7 +38,7 @@ class PageTestCase extends AbstractController
 
     protected function getEventFromDataLayerEvents(string $eventId, string $eventName): array
     {
-        $this->assertDataLayerEventExists('view_item_list_event', 'view_item_list');
+        $this->assertDataLayerEventExists($eventId, $eventName);
         $events = $this->getEventsFromDataLayer();
         return $events[$eventId];
     }

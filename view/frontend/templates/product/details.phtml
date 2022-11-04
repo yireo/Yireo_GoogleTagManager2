@@ -2,26 +2,22 @@
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\ViewModel\ProductDetails;
+use Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct;
+use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 
 /** @var Template $block */
-/** @var ProductDetails $productDetails */
+/** @var CurrentProduct $productDetails */
+/** @var DataLayer $dataLayer */
+$dataLayer = $block->getDataLayer();
 $productDetails = $block->getProductDetails();
 $product = $block->getProduct();
 if ($product instanceof ProductInterface) {
     $productDetails->setProduct($product);
 }
 
-// @todo: Test if a child block is able to reuse the ViewModel (with the addition of the current $product)
-// @todo: Render $block->getChildHtml() in such a way that every child block is able to use $childBlock->getProduct()
-// @todo: Add Willem as "mental contributor"
-// @todo: Dynamically insert all HTML elements with attribute `data-product-detail-key`
+$product = $productDetails->getProduct();
+$productData = $dataLayer->toJson($productDetails->merge());
 ?>
-
-<span data-product-price-amount="<?= $productDetails->getPrice() ?>"></span>
-<span data-product-price-currency="<?= $productDetails->getCurrencyCode() ?>"></span>
-<span data-product-name="<?= $productDetails->getProductName() ?>"></span>
-<span data-product-category="<?= $productDetails->getCategoryName() ?>"></span>
-<?php $block->getChildHtml() ?>
-
-<span data-product-detail-key="category" data-product-detail-value="<?= $productDetails->getCategoryName() ?>"></span>
+<script>
+    window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_<?= $product->getId() ?>'] = <?= $productData ?>;
+</script>

@@ -1,13 +1,12 @@
 # TODO
 
 ## Other things
+- Add `$dataLayer` variable to all templates?
 - Checkout
 - Events
-  - `select_item`
   - `select_promotion`
 - Attributes
   - `item_category_2`
-- Add logout event
 - Check functionality
   - MaxServ_DataLayer, Dmg_DataLayer
   - Anowave

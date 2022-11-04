@@ -41,10 +41,7 @@ class ProductPageTest extends PageTestCase
 
         $this->assertDataLayerEquals('product', 'page_type');
 
-        $events = $this->getEventsFromDataLayer();
-        $this->assertArrayHasKey('view_item_event', $events);
-        $event = $events['view_item_event'];
-        $this->assertArrayHasKey('view_item', $event['event']);
+        $event = $this->getEventFromDataLayerEvents('view_item_event', 'view_item');
         $this->assertArrayHasKey('ecommerce', $event);
         $this->assertNotEmpty($event['ecommerce']['items']);
 

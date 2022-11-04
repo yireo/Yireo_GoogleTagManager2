@@ -93,7 +93,7 @@ class DataLayer implements ArgumentInterface
     /**
      * @return string
      */
-    private function toJson(array $data): string
+    public function toJson(array $data): string
     {
         return $this->serializer->serialize($data);
     }
