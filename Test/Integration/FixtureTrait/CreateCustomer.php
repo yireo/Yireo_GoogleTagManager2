@@ -30,8 +30,8 @@ trait CreateCustomer
             ->setDefaultBilling(1)
             ->setDefaultShipping(1)
             ->setTaxvat('12')
-            ->setGender(0);
-        //$customer->setData($data);
+            ->setGender(0)
+            ->addData($data);
 
         $customer->isObjectNew(true);
         $customer->save();

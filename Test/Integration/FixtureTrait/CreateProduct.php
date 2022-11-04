@@ -2,13 +2,15 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\FixtureTrait;
 
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product as ProductModel;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
-use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
 use Magento\Framework\App\ObjectManager;
 
 trait CreateProduct
@@ -21,22 +23,32 @@ trait CreateProduct
 
         /** @var $product ProductModel */
         $product = $productFactory->create();
-        $product->isObjectNew(true);
         $product->setId($id)
             ->setName('Product ' . $id)
             ->setSku('product' . $id)
             ->setWeight(10)
-            ->setTypeId('simple')
+            ->setTypeId(Type::TYPE_SIMPLE)
             ->setPrice(10)
-            ->setStatus(1)
+            ->setStatus(Status::STATUS_ENABLED)
             ->setStoreId(1)
             ->setWebsiteIds([1])
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
+            ->setStockData(['use_config_manage_stock' => 0])
             ->addData($data);
+
+        $product->isObjectNew(true);
 
         $productRepository = ObjectManager::getInstance()->get(ProductRepositoryInterface::class);
         $productRepository->save($product);
+
+        if (!empty($product->getCategoryIds())) {
+            $categoryLinkManagement = ObjectManager::getInstance()->get(CategoryLinkManagementInterface::class);
+            $categoryLinkManagement->assignProductToCategories(
+                $product->getSku(),
+                $product->getCategoryIds()
+            );
+        }
 
         return $product;
     }

@@ -30,6 +30,19 @@ class PageTestCase extends AbstractController
         return $dataLayer->getDataLayer();
     }
 
+    protected function getEventsFromDataLayer(): array
+    {
+        $dataLayer = $this->objectManager->get(DataLayer::class);
+        return $dataLayer->getDataLayerEvents();
+    }
+
+    protected function getEventFromDataLayerEvents(string $eventId, string $eventName): array
+    {
+        $this->assertDataLayerEventExists('view_item_list_event', 'view_item_list');
+        $events = $this->getEventsFromDataLayer();
+        return $events[$eventId];
+    }
+
     protected function loginCustomer()
     {
         $customerId = 1;
@@ -44,6 +57,14 @@ class PageTestCase extends AbstractController
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey($dataLayerKey, $data, json_encode($data, JSON_PRETTY_PRINT));
         $this->assertEquals($expectedValue, $data[$dataLayerKey]);
+    }
+
+    protected function assertDataLayerEventExists(string $eventId, string $eventName)
+    {
+        $events = $this->getEventsFromDataLayer();
+        $this->assertArrayHasKey($eventId, $events, var_export($events, true));
+        $event = $events[$eventId];
+        $this->assertEquals($eventName, $event['event']);
     }
 
     protected function assertEnabledFlagIsWorking()
