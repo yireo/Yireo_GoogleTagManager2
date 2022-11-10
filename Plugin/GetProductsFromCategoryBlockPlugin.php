@@ -4,7 +4,6 @@ namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
-use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
 
@@ -36,8 +35,6 @@ class GetProductsFromCategoryBlockPlugin
     ): AbstractCollection {
         $i = 0;
         foreach ($collection as $product) {
-            // @todo: Add a setting for this?
-
             $this->getCurrentCategoryProducts->addProduct($product);
             $i++;
         }

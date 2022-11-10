@@ -29,8 +29,6 @@ class GetCurrentProduct
      */
     public function get(): ProductInterface
     {
-        // @todo: Check for URL
-
         $productId = (int)$this->request->getParam('id');
         return $this->productRepository->getById($productId, false, $this->storeManager->getStore()->getId());
     }

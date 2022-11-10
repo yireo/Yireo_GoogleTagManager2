@@ -15,21 +15,10 @@ class CustomerSessionDataProvider implements CustomerSessionDataProviderInterfac
         $this->customerSession = $customerSession;
     }
 
-    public function set(string $name, $value)
-    {
-        $gtmData = $this->customerSession->getYireoGtmData();
-        if (empty($gtmData)) {
-            $gtmData = [];
-        }
-
-        $gtmData[$name] = $value;
-        $this->customerSession->setYireoGtmData($gtmData);
-    }
-
-    public function append(array $data)
+    public function add(string $identifier, array $data)
     {
         $gtmData = $this->get();
-        $gtmData = array_merge($gtmData, $data);
+        $gtmData[$identifier] = $data;
         $this->customerSession->setYireoGtmData($gtmData);
     }
 

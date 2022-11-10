@@ -15,10 +15,10 @@ class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterfac
         $this->checkoutSession = $checkoutSession;
     }
 
-    public function append(array $data)
+    public function add(string $identifier, array $data)
     {
         $gtmData = $this->get();
-        $gtmData = array_merge($gtmData, $data);
+        $gtmData[$identifier] = $data;
         $this->checkoutSession->setYireoGtmData($gtmData);
     }
 

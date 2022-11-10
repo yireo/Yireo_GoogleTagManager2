@@ -2,54 +2,43 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2019 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2022 Yireo (https://www.yireo.com/)
  * @license     Open Software License
  */
-
 define([
     'jquery',
     'underscore',
+    'uiComponent',
     'Magento_Customer/js/customer-data',
-], function ($, _, customerData) {
+    'yireoGoogleTagManagerLogger'
+], function ($, _, Component, customerData, logger) {
     'use strict';
 
     var moduleConfig = {};
 
-    var isDisabled = function() {
+    var isDisabled = function () {
         if (isValidConfig() === false) {
             return true;
         }
 
-        if (isAllowedByCookieRestrictionMode() === false) {
-            return true;
-        }
-
-        return false;
+        return isAllowedByCookieRestrictionMode() === false;
     };
 
-    var isDebug = function() {
-        return !!moduleConfig.debug;
-    }
-
-    var isValidConfig = function() {
+    var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
-            console.warn('GTM identifier empty, terminating GTM initialization.');
+            console.warn('Yireo_GoogleTagManager2: identifier empty, terminating GTM initialization.');
             return false;
         }
 
         return true;
     };
 
-    var isAllowedByCookieRestrictionMode = function() {
+    var isAllowedByCookieRestrictionMode = function () {
         if (!moduleConfig.cookie_restriction_mode) {
             return true;
         }
 
-        if (!$.cookie(moduleConfig.cookie_restriction_mode)){
-            return false;
-        }
-
-        return true;
+        return $.cookie(moduleConfig.cookie_restriction_mode);
     };
 
     var isLoggedIn = function () {
@@ -57,85 +46,102 @@ define([
         return customer() && customer().firstname;
     };
 
-    var getCustomerSpecificAttributes = function () {
-        var customer = customerData.get('customer');
-        var gtmData = customer().gtm;
-        if (isLoggedIn() && gtmData) {
-            return gtmData;
+    var processGtmDataFromSection = function (sectionName) {
+        const gtmData = getGtmDataFromSection(sectionName);
+        if (true === isEmpty(gtmData)) {
+            return;
         }
 
-        return {
-            'customerLoggedIn': 0,
-            'customerId': 0,
-            'customerGroupId': 0,
-            'customerGroupCode': 'UNKNOWN'
-        };
-    };
+        logger('section "' + sectionName + '" changed (customerData)', gtmData);
+        window.dataLayer.push({ecommerce: null});
+        window.dataLayer.push(gtmData);
+    }
 
-    var getCartSpecificAttributes = function (callback) {
-        var cart = customerData.get('cart');
+    var processGtmEventsFromSection = function (sectionName) {
+        const sectionData = customerData.get(sectionName)();
+        const gtmEvents = sectionData.gtm_events;
 
-        if (cart().gtm) {
-            return cart().gtm;
+        if (true === isEmpty(gtmEvents)) {
+            return;
+        }
+
+        for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+            logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+
+            window.dataLayer.push(eventData);
+
+            if (eventData.cacheable !== true) {
+                delete sectionData['gtm_events'][eventId];
+                logger('invalidating sections "' + sectionName + '"', sectionData)
+                customerData.set(sectionName, sectionData);
+            }
+        }
+    }
+
+    var getGtmDataFromSection = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        var gtmData = sectionData().gtm;
+        if (gtmData) {
+            return gtmData;
         }
 
         return {};
     };
 
-    var subscribeToCartChanges = function(callback) {
-        var cart = customerData.get('cart');
-        cart.subscribe(function (updatedCart) {
-            const attributes = getCartSpecificAttributes();
-            if (isDebug()) {
-                console.log('GTM cart change (js)', attributes);
-            }
-
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
+    var subscribeToSectionDataChanges = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        sectionData.subscribe(function () {
+            processGtmDataFromSection(sectionName);
+            processGtmEventsFromSection(sectionName);
         });
     }
 
-    var subscribeToCustomerChanges = function(callback) {
-        var customer = customerData.get('customer');
-        customer.subscribe(function (updatedCustomer) {
-            const attributes = getCustomerSpecificAttributes();
-            if (isDebug()) {
-                console.log('GTM customer change (js)', attributes);
-            }
-
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
-        });
+    var getSectionNames = function () {
+        return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
     }
 
-    return {
-        'isValid': isValidConfig,
-        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
-        'isLoggedIn': isLoggedIn,
-        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
-        'getCartSpecificAttributes': getCartSpecificAttributes,
-        'yireoGoogleTagManager': function (config) {
+    var isEmpty = function (variable) {
+        if (typeof variable === 'undefined') {
+            return true;
+        }
+
+        if (Array.isArray(variable) && variable.length === 0) {
+            return true;
+        }
+
+        if (typeof variable === 'object' && Object.keys(variable).length === 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    return Component.extend({
+        initialize: function (config) {
             moduleConfig = config;
 
             if (isDisabled()) {
                 return;
             }
 
-            window.dataLayer = window.dataLayer || [];
-
             let attributes = {};
-            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
-            attributes = $.extend(getCartSpecificAttributes(), attributes);
+            const sectionNames = getSectionNames();
+            sectionNames.forEach(function (sectionName) {
+                attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
+            });
 
-            if (isDebug()) {
-                console.log('GTM initial state (js)', attributes);
+            logger('initial state (js)', attributes);
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ecommerce: null});
+
+            if (false === isEmpty(attributes)) {
+                window.dataLayer.push(attributes);
             }
 
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
-
-            subscribeToCartChanges();
-            subscribeToCustomerChanges();
+            sectionNames.forEach(function (sectionName) {
+                processGtmEventsFromSection(sectionName);
+                subscribeToSectionDataChanges(sectionName);
+            });
         }
-    };
+    });
 });

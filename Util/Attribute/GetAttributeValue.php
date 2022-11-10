@@ -86,7 +86,7 @@ class GetAttributeValue
             return $this->filterAttributeValue($attribute, $entityAttribute->getValue());
         }
 
-        $method = 'get'.$this->camelCase->to($attributeCode);
+        $method = 'get'.$this->camelCase->to($attributeCode); // @todo: getData($attributeCode)
         $attributeValue = call_user_func([$entity, $method]);
         return $this->filterAttributeValue($attribute, $attributeValue);
     }

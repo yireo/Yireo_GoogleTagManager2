@@ -4,27 +4,19 @@ namespace Yireo\GoogleTagManager2\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\State as AppState;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Yireo\GoogleTagManager2\Exception\InvalidConfig;
 
 class Config implements ArgumentInterface
 {
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var CookieHelper
-     */
-    private $cookieHelper;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
+    private ScopeConfigInterface $scopeConfig;
+    private CookieHelper $cookieHelper;
+    private StoreManagerInterface $storeManager;
+    private AppState $appState;
 
     /**
      * Config constructor.
@@ -36,11 +28,13 @@ class Config implements ArgumentInterface
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        CookieHelper $cookieHelper
+        CookieHelper $cookieHelper,
+        AppState $appState
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
+        $this->appState = $appState;
     }
 
     /**
@@ -51,7 +45,11 @@ class Config implements ArgumentInterface
     public function isEnabled(): bool
     {
         $enabled = (bool)$this->getModuleConfigValue('enabled', false);
-        if (!$enabled) {
+        if (false === $enabled) {
+            return false;
+        }
+
+        if (false === $this->isDeveloperMode() && false === $this->isIdValid()) {
             return false;
         }
 
@@ -72,11 +70,10 @@ class Config implements ArgumentInterface
      * Check whether mouse clicks are debugged as well
      *
      * @return bool
-     * @todo: Only allow for this in the Developer Mode
      */
     public function isDebugClicks(): bool
     {
-        return $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
+        return $this->isDeveloperMode() && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
     }
 
     /**
@@ -86,7 +83,6 @@ class Config implements ArgumentInterface
      */
     public function getId(): string
     {
-        // @todo: Validate that this starts with GTM-
         return (string)$this->getModuleConfigValue('id');
     }
 
@@ -180,5 +176,21 @@ class Config implements ArgumentInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isDeveloperMode(): bool
+    {
+        return $this->appState->getMode() === AppState::MODE_DEVELOPER;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isIdValid(): bool
+    {
+        return 0 === strpos($this->getId(), 'GTM-');
     }
 }

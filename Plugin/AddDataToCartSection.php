@@ -48,18 +48,19 @@ class AddDataToCartSection
             return $result;
         }
 
-        $gtmData = [
-            'event' => 'add_to_cart',
+        $gtmData = [];
+
+        $gtmEvents = $this->checkoutSessionDataProvider->get();
+        $gtmEvents['view_cart_event'] = [
+            'cacheable' => true,
+            'event' => 'view_cart',
             'ecommerce' => [
                 'items' => $this->cartItems->get()
             ]
         ];
 
-        $gtmData = array_merge($gtmData, $this->checkoutSessionDataProvider->get());
-        $result = array_merge($result, ['gtm' => $gtmData]);
-
         $this->checkoutSessionDataProvider->clear();
 
-        return $result;
+        return array_merge($result, ['gtm' => $gtmData, 'gtm_events' => $gtmEvents]);
     }
 }

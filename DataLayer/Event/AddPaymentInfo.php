@@ -33,10 +33,13 @@ class AddPaymentInfo implements EventInterface
     public function get(): array
     {
         $paymentMethod = $this->cart->getPayment()->getMethod();
-
+        $currencyCode = $this->cart->getQuoteCurrencyCode();
         return [
             'event' => 'add_payment_info',
             'ecommerce' => [
+                'currency' => $currencyCode,
+                'value' => $this->cart->getGrandTotal(),
+                'coupon' => $this->cart->getCouponCode(),
                 'payment_type' => $paymentMethod,
                 'items' => $this->cartItems->get()
             ]

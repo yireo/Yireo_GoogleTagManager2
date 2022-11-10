@@ -47,6 +47,6 @@ class CartItemDataMapper
             return $cartItemData;
         }
 
-        return array_merge_recursive($cartItemData, $this->productDataMapper->mapByProduct($product));
+        return array_merge($this->productDataMapper->mapByProduct($product), $cartItemData);
     }
 }

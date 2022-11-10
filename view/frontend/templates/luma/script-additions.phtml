@@ -14,47 +14,11 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 /** @var Template $block */
 /** @var Commons $commons */
 $commons = $block->getCommonsViewModel();
-$config = $commons->getConfiguration();
 ?>
-<noscript>
-    <iframe src="//www.googletagmanager.com/ns.html?id=<?= /* @noEscape */
-    $config['id']; ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-
 <script type="text/x-magento-init">
     {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
 </script>
 
 <script>
-    require(['jquery'], function($) {
-        $('.product-items a.product').click(function(event) {
-            const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
-            const debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS || false;
-            const $parent = $(this).parent();
-            const regex = /_(\d+)$/;
-            const matches = $parent.attr('id').match(regex);
-            const productId = matches[1];
-
-            const gtmData = {
-                'event': 'select_item',
-                'ecommerce': {
-                    'items': [{
-                        id: productId
-                    }]
-                }
-            }
-
-            if (debug) {
-                console.log('Yireo_GoogleTagManager2: GA4 event select_item', gtmData);
-            }
-
-            dataLayer.push({ ecommerce: null });
-            dataLayer.push(gtmData);
-
-            if (debugClicks) {
-                event.preventDefault();
-                console.log('Yireo_GoogleTagManager2: click here to go next page', $(this).attr('href'));
-            }
-        });
-    })
+    require(['yireoGoogleTagManagerProductClicks'], function() {});
 </script>

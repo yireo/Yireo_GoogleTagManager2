@@ -25,6 +25,9 @@ class TriggerRemoveFromCartDataLayerEvent implements ObserverInterface
     {
         /** @var CartItemInterface $quoteItem */
         $quoteItem = $observer->getData('quote_item');
-        $this->checkoutSessionDataProvider->append($this->removeFromCartEvent->get($quoteItem));
+        $this->checkoutSessionDataProvider->add(
+            'remove_from_cart_event',
+            $this->removeFromCartEvent->setCartItem($quoteItem)->get()
+        );
     }
 }

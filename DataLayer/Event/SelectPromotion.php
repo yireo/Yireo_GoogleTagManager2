@@ -10,14 +10,16 @@ use Yireo\GoogleTagManager2\DataLayer\Event\Promotion\PromotionItem;
  */
 class SelectPromotion implements EventInterface
 {
+    /** @var PromotionItem[] */
+    private array $promotionItems = [];
+
     /**
-     * @param PromotionItem $promotionItems
      * @return array
      */
-    public function get(array $promotionItems): array
+    public function get(): array
     {
         $promotionsItemsData = [];
-        foreach ($promotionItems as $promotionItem) {
+        foreach ($this->promotionItems as $promotionItem) {
             $promotionsItemsData[] = $promotionItem->get();
         }
 
@@ -27,5 +29,15 @@ class SelectPromotion implements EventInterface
                 'items' => $promotionsItemsData
             ]
         ];
+    }
+
+    /**
+     * @param PromotionItem[] $promotionItems
+     * @return SelectPromotion
+     */
+    public function setPromotionItems(array $promotionItems): SelectPromotion
+    {
+        $this->promotionItems = $promotionItems;
+        return $this;
     }
 }

@@ -7,19 +7,27 @@ use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
 /** @var Template $block */
+$config = $block->getConfig();
 $dataLayerViewModel = $block->getDataLayerViewModel();
 $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
-$config = $block->getConfig();
-$events = (array)$block->getEvents();
-
-// see https://developers.google.com/analytics/devguides/collection/ua/gtm/enhanced-ecommerce#add
+$dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ecommerce: null});
-    <?php if ($config->isDebug()): ?>
-    console.log('GTM initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
-    <?php endif; ?>
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
-</script>
+    <?php if ($config->isDebug()): ?>
+    require(['yireoGoogleTagManagerLogger'], function (logger) {
+        logger('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    });
+    <?php endif; ?>
 
+    <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
+    <?php if ($config->isDebug()): ?>
+    require(['yireoGoogleTagManagerLogger'], function (logger) {
+        logger('event (page)', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+    });
+    <?php endif; ?>
+    window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+    <?php endforeach; ?>
+</script>

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Unit\Config;
 
+use Magento\Framework\App\State as AppState;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -25,16 +26,33 @@ class ConfigTest extends TestCase
     private $settings = [];
 
     /**
+     * @var string
+     */
+    private $deployMode = AppState::MODE_DEVELOPER;
+
+    /**
      * @test
      * @covers Config::isEnabled
      */
     public function testIsEnabled()
     {
-        $this->setScopeConfigValue('enabled', 1);
-        $this->assertEquals(true, $this->getTarget()->isEnabled());
-
         $this->setScopeConfigValue('enabled', 0);
-        $this->assertEquals(false, $this->getTarget()->isEnabled());
+        $this->assertFalse($this->getTarget()->isEnabled());
+
+        $this->deployMode = AppState::MODE_DEVELOPER;
+        $this->setScopeConfigValue('id', 'dummy');
+        $this->setScopeConfigValue('enabled', 1);
+        $this->assertTrue($this->getTarget()->isEnabled());
+
+        $this->deployMode = AppState::MODE_PRODUCTION;
+        $this->setScopeConfigValue('id', 'dummy');
+        $this->setScopeConfigValue('enabled', 1);
+        $this->assertFalse($this->getTarget()->isEnabled());
+
+        $this->deployMode = AppState::MODE_PRODUCTION;
+        $this->setScopeConfigValue('id', 'GTM-1234');
+        $this->setScopeConfigValue('enabled', 1);
+        $this->assertTrue($this->getTarget()->isEnabled());
     }
 
     /**
@@ -71,7 +89,8 @@ class ConfigTest extends TestCase
         $scopeConfig = $this->getScopeConfigMock();
         $storeManager = $this->createMock(StoreManagerInterface::class);
         $cookieHelper = $this->getCookieHelperMock();
-        return new Config($scopeConfig, $storeManager, $cookieHelper);
+        $appState = $this->getAppState();
+        return new Config($scopeConfig, $storeManager, $cookieHelper, $appState);
     }
 
     /**
@@ -80,10 +99,18 @@ class ConfigTest extends TestCase
     private function getScopeConfigMock(): ScopeConfigInterface
     {
         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig->method('getValue')->will($this->returnCallback(function($path) {
+            return $this->settings[$path];
+        }));
+
+        /*
+        $valueMap = [];
         foreach ($this->settings as $path => $value) {
-            $scopeConfig->method('getValue')->with($path)->willReturn($value);
+            $valueMap[] = [$path, 'dfgdf', 'fsdfs', $value];
         }
 
+        $scopeConfig->expects($this->any())->method('getValue')->will($this->returnValueMap($valueMap));
+        */
         return $scopeConfig;
     }
 
@@ -96,6 +123,16 @@ class ConfigTest extends TestCase
         $cookieHelper->method('isCookieRestrictionModeEnabled')->willReturn(true);
         $cookieHelper->method('isUserNotAllowSaveCookie')->willReturn(false);
         return $cookieHelper;
+    }
+
+    /**
+     * @return AppState
+     */
+    private function getAppState(): AppState
+    {
+        $appState = $this->createMock(AppState::class);
+        $appState->method('getMode')->willReturn($this->deployMode);
+        return $appState;
     }
 
     /**
