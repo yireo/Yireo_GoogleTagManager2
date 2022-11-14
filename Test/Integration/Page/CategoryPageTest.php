@@ -27,6 +27,7 @@ class CategoryPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      */
@@ -53,7 +54,7 @@ class CategoryPageTest extends PageTestCase
 
         $this->assertDataLayerEquals($category->getName(), 'category_name');
         $this->assertDataLayerEquals($category->getId(), 'category_id');
-        $this->assertDataLayerEquals(3, 'category_size');
+        $this->assertDataLayerEquals(count($productListBlock->getLoadedProductCollection()), 'category_size');
         $this->assertDataLayerEquals('category', 'page_type');
 
         $event = $this->getEventFromDataLayerEvents('view_item_list_event', 'view_item_list');

@@ -7,9 +7,6 @@ use Magento\Quote\Model\Quote;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 
-/**
- * @todo Implement this class
- */
 class AddShippingInfo implements EventInterface
 {
     private CartInterface $cart;
