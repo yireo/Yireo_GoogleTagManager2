@@ -114,6 +114,14 @@ class ProductDataMapper
      */
     private function getDataLayerBlock(): BlockInterface
     {
-        return $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        if ($block instanceof BlockInterface) {
+            return $block;
+        }
+
+        $update = $this->layout->getUpdate();
+        $update->load(['default']);
+        $this->layout->generateElements();
+        return  $this->layout->getBlock('yireo_googletagmanager2.data-layer');
     }
 }

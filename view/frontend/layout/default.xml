@@ -35,7 +35,7 @@
             </block>
         </referenceContainer>
 
-        <referenceContainer name="before.body.end">
+        <container name="yireo_googletagmanager2.data-layer.container" after="before.body.end">
             <block
                 name="yireo_googletagmanager2.data-layer"
                 template="Yireo_GoogleTagManager2::data-layer.phtml"
@@ -83,6 +83,6 @@
                     <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons</argument>
                 </arguments>
             </block>
-        </referenceContainer>
+        </container>
     </body>
 </page>
