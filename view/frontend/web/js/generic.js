@@ -142,10 +142,6 @@ define([
                 processGtmEventsFromSection(sectionName);
                 subscribeToSectionDataChanges(sectionName);
             });
-
-            window.addEventListener('storage', function(event) {
-                console.log('storage change', event)
-            });
         }
     });
 });
