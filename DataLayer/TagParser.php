@@ -24,7 +24,7 @@ class TagParser
      * @param ProcessorInterface[] $processors
      * @return array
      */
-    public function parse(array $data, array $processors): array
+    public function parse(array $data, array $processors = []): array
     {
         foreach ($data as $tagName => $tagValue) {
             $data = $this->convertTag($tagName, $tagValue, $data);

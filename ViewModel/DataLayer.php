@@ -3,7 +3,9 @@
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Framework\Serialize\SerializerInterface;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
 use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
@@ -42,7 +44,7 @@ class DataLayer implements ArgumentInterface
      */
     public function getDataLayer(): array
     {
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $this->getDataLayerBlock();
         if (empty($block)) {
             return [];
         }
@@ -66,7 +68,7 @@ class DataLayer implements ArgumentInterface
      */
     public function getDataLayerEvents(): array
     {
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $this->getDataLayerBlock();
         if (empty($block)) {
             return [];
         }
@@ -96,5 +98,13 @@ class DataLayer implements ArgumentInterface
     public function toJson(array $data): string
     {
         return $this->serializer->serialize($data);
+    }
+
+    /**
+     * @return BlockInterface
+     */
+    private function getDataLayerBlock(): BlockInterface
+    {
+        return $this->layout->getBlock('yireo_googletagmanager2.data-layer');
     }
 }

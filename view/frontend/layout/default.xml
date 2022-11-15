@@ -54,7 +54,7 @@
 
                     <argument name="data_layer_mapping" xsi:type="array">
                         <item name="product" xsi:type="array">
-                            <item name="manufacturer" xsi:type="string">brand</item>
+                            <item name="item_brand" xsi:type="string">item_manufacturer</item>
                         </item>
                     </argument>
 
