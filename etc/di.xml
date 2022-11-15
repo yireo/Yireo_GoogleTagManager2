@@ -2,4 +2,24 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider"/>
     <preference for="Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider"/>
+
+    <type name="Yireo\GoogleTagManager2\Logger\Debugger">
+        <arguments>
+            <argument name="logger" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\CustomLogger">
+        <arguments>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\GoogleTagManager2\Logger\CustomLogHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">var/log/yireo_googletagmanager2.log</argument>
+        </arguments>
+    </virtualType>
 </config>
