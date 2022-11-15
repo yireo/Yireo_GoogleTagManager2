@@ -51,6 +51,7 @@ class DataLayer implements ArgumentInterface
 
         $data = (array)$block->getData('data_layer');
         $processors = (array)$block->getData('data_layer_processors');
+        $processors = array_merge($this->processors, $processors);
 
         return $this->variableParser->parse($data, $processors);
     }
