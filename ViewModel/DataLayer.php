@@ -50,9 +50,7 @@ class DataLayer implements ArgumentInterface
         }
 
         $data = (array)$block->getData('data_layer');
-        $processors = (array)$block->getData('data_layer_processors');
-        $processors = array_merge($this->processors, $processors);
-
+        $processors = $this->getProcessors();
         return $this->variableParser->parse($data, $processors);
     }
 
@@ -75,8 +73,7 @@ class DataLayer implements ArgumentInterface
         }
 
         $data = (array)$block->getData('data_layer_events');
-        $processors = (array)$block->getData('data_layer_processors');
-
+        $processors = $this->getProcessors();
         return $this->variableParser->parse($data, $processors);
     }
 
@@ -99,6 +96,20 @@ class DataLayer implements ArgumentInterface
     public function toJson(array $data): string
     {
         return $this->serializer->serialize($data);
+    }
+
+    /**
+     * @return ProcessorInterface[]
+     */
+    private function getProcessors(): array
+    {
+        $block = $this->getDataLayerBlock();
+        if (empty($block)) {
+            return [];
+        }
+
+        $processors = (array)$block->getData('data_layer_processors');
+        return array_merge($this->processors, $processors);
     }
 
     /**
