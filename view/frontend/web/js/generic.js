@@ -10,8 +10,9 @@ define([
     'underscore',
     'uiComponent',
     'Magento_Customer/js/customer-data',
-    'yireoGoogleTagManagerLogger'
-], function ($, _, Component, customerData, logger) {
+    'yireoGoogleTagManagerLogger',
+    'knockout'
+], function ($, _, Component, customerData, logger, ko) {
     'use strict';
 
     var moduleConfig = {};
@@ -66,6 +67,10 @@ define([
         }
 
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+            if (eventData.triggered === true) {
+                continue;
+            }
+
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
             window.dataLayer.push(eventData);
@@ -75,6 +80,8 @@ define([
                 logger('invalidating sections "' + sectionName + '"', sectionData)
                 customerData.set(sectionName, sectionData);
             }
+
+            eventData.triggered = true;
         }
     }
 
