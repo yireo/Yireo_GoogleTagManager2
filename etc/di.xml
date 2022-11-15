@@ -9,6 +9,14 @@
         </arguments>
     </type>
 
+    <type name="Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper">
+        <arguments>
+            <argument name="dataLayerMapping" xsi:type="array">
+                <item name="item_brand" xsi:type="string">item_manufacturer</item>
+            </argument>
+        </arguments>
+    </type>
+
     <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\CustomLogger">
         <arguments>
             <argument name="handlers"  xsi:type="array">

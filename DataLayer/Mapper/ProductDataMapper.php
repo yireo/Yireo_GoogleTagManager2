@@ -5,8 +5,6 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\View\Element\BlockInterface;
-use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
@@ -18,24 +16,24 @@ class ProductDataMapper
     private Config $config;
     private GetAttributeValue $getAttributeValue;
     private GetCategoryFromProduct $getCategoryFromProduct;
-    private LayoutInterface $layout;
+    private array $dataLayerMapping;
 
     /**
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
      * @param GetCategoryFromProduct $getCategoryFromProduct
-     * @param LayoutInterface $layout
+     * @param array $dataLayerMapping
      */
     public function __construct(
         Config $config,
         GetAttributeValue $getAttributeValue,
         GetCategoryFromProduct $getCategoryFromProduct,
-        LayoutInterface $layout
+        array $dataLayerMapping = []
     ) {
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
         $this->getCategoryFromProduct = $getCategoryFromProduct;
-        $this->layout = $layout;
+        $this->dataLayerMapping = $dataLayerMapping;
     }
 
     /**
@@ -66,7 +64,7 @@ class ProductDataMapper
         }
 
         $productData['price'] = $product->getFinalPrice();
-        $productData = $this->parseDataLayerMappingFromLayout($product, $productData);
+        $productData = $this->parseDataLayerMapping($product, $productData);
 
         // @todo: Add "variant" reference to Configurable Product
 
@@ -81,15 +79,18 @@ class ProductDataMapper
         return array_merge(['id', 'sku', 'name'], $this->config->getProductEavAttributeCodes());
     }
 
-    private function parseDataLayerMappingFromLayout(ProductInterface $product, array $data): array
+    /**
+     * @param ProductInterface $product
+     * @param array $data
+     * @return array
+     */
+    private function parseDataLayerMapping(ProductInterface $product, array $data): array
     {
-        $block = $this->getDataLayerBlock();
-        $dataLayerMapping = $block->getData('data_layer_mapping');
-        if (!isset($dataLayerMapping['product'])) {
+        if (empty($this->dataLayerMapping)) {
             return [];
         }
 
-        foreach ($dataLayerMapping['product'] as $tagName => $tagValue) {
+        foreach ($this->dataLayerMapping as $tagName => $tagValue) {
             if (is_string($tagValue) && array_key_exists($tagValue, $data)) {
                 $data[$tagName] = $data[$tagValue];
                 continue;
@@ -107,21 +108,5 @@ class ProductDataMapper
         }
 
         return $data;
-    }
-
-    /**
-     * @return BlockInterface
-     */
-    private function getDataLayerBlock(): BlockInterface
-    {
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
-        if ($block instanceof BlockInterface) {
-            return $block;
-        }
-
-        $update = $this->layout->getUpdate();
-        $update->load(['default']);
-        $this->layout->generateElements();
-        return  $this->layout->getBlock('yireo_googletagmanager2.data-layer');
     }
 }
