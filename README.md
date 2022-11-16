@@ -11,7 +11,7 @@ Version 3.0 and up include only support for GA4.
 [![ExtDN Integration Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml)
 
 ## Requirements
-Supported versions: Magento 2.4.3 or higher
+Supported versions: Magento 2.3.7 or higher and 2.4.1 or higher (partially because of the requirement for PHP 7.4 or PHP 8.1).
 
 See `composer.json` for other requirements.
 
