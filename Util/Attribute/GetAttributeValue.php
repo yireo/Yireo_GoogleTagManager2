@@ -19,23 +19,18 @@ use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 use Magento\Framework\Api\AttributeInterface;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Yireo\GoogleTagManager2\Util\CamelCase;
 
 class GetAttributeValue
 {
     private EavConfig $eavConfig;
-    private CamelCase $camelCase;
 
     /**
      * @param EavConfig $eavConfig
-     * @param CamelCase $camelCase
      */
     public function __construct(
-        EavConfig $eavConfig,
-        CamelCase $camelCase
+        EavConfig $eavConfig
     ) {
         $this->eavConfig = $eavConfig;
-        $this->camelCase = $camelCase;
     }
 
     /**
@@ -86,8 +81,7 @@ class GetAttributeValue
             return $this->filterAttributeValue($attribute, $entityAttribute->getValue());
         }
 
-        $method = 'get'.$this->camelCase->to($attributeCode); // @todo: getData($attributeCode)
-        $attributeValue = call_user_func([$entity, $method]);
+        $attributeValue = $entity->getData($attributeCode);
         return $this->filterAttributeValue($attribute, $attributeValue);
     }
 

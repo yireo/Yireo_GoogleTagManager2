@@ -22,7 +22,6 @@ class AddAdditionalLayoutHandles implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        // @todo: Make this configurable
         $handles = [];
         $handles[] = 'yireo_googletagmanager2';
         $handles[] = 'yireo_googletagmanager2_'.$this->getSystemPath();

@@ -7,6 +7,7 @@ use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 /**
  * @see https://developers.google.com/tag-platform/tag-manager/api/v1/reference/accounts/containers/tags
+ * @todo Is this deprecated?
  */
 class LiveOnly implements TagInterface
 {
