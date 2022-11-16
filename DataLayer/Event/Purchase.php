@@ -4,17 +4,21 @@ namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
 
 class Purchase implements EventInterface
 {
     private ?OrderInterface $order;
     private OrderItems $orderItems;
+    private Config $config;
 
     public function __construct(
-        OrderItems $orderItems
+        OrderItems $orderItems,
+        Config $config
     ) {
         $this->orderItems = $orderItems;
+        $this->config = $config;
     }
 
     /**
@@ -23,12 +27,11 @@ class Purchase implements EventInterface
     public function get(): array
     {
         $order = $this->order;
-        $affiliation = ''; // @todo
         return [
             'event' => 'purchase',
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
-                'affiliation' => $affiliation,
+                'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
                 'value' => $order->getGrandTotal(),
                 'tax' => $order->getTaxAmount(),
