@@ -9,7 +9,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Exception\InvalidConfig;
 
 class Config implements ArgumentInterface
 {

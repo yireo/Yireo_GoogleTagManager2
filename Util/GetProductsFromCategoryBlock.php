@@ -7,20 +7,20 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\LayoutInterface;
-use Yireo\GoogleTagManager2\Helper\Product as ProductHelper;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 
 class GetProductsFromCategoryBlock
 {
     private LayoutInterface $layout;
-    private ProductHelper $productHelper;
     private $productCollection = null;
+    private ProductDataMapper $productDataMapper;
 
     public function __construct(
         LayoutInterface $layout,
-        ProductHelper $productHelper
+        ProductDataMapper $productDataMapper
     ) {
         $this->layout = $layout;
-        $this->productHelper = $productHelper;
+        $this->productDataMapper = $productDataMapper;
     }
 
     /**
@@ -46,7 +46,7 @@ class GetProductsFromCategoryBlock
 
         /** @var Product $product */
         foreach ($productCollection as $product) {
-            $productData = $this->productHelper->getProductData($product);
+            $productData = $this->productDataMapper->mapByProduct($product);
             $productData['position'] = $position++;
             $products[] = $productData;
         }
