@@ -123,7 +123,12 @@ class Config implements ArgumentInterface
      */
     public function getStoreName(): string
     {
-        return (string)$this->getConfigValue('general/store_information/name');
+        $storeName = (string)$this->getConfigValue('general/store_information/name');
+        if (!empty($storeName)) {
+            return $storeName;
+        }
+
+        return (string) $this->storeManager->getDefaultStoreView()->getName();
     }
 
     /**
