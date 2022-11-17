@@ -11,7 +11,7 @@ class OrderItems implements TagInterface
 {
     private CheckoutSession $checkoutSession;
     private OrderItemDataMapper $orderItemDataMapper;
-    private ?OrderInterface $order;
+    private ?OrderInterface $order = null;
 
     /**
      * @param CheckoutSession $checkoutSession
