@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\Plugin;
 
-use Magento\Checkout\Api\Data\PaymentDetailsInterface;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\PaymentInterface;

@@ -9,7 +9,7 @@ use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
 
 class Purchase implements EventInterface
 {
-    private ?OrderInterface $order;
+    private ?OrderInterface $order = null;
     private OrderItems $orderItems;
     private Config $config;
 

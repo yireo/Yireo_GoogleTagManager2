@@ -1,4 +1,6 @@
 # TODO
+- Check for Yireo CheckoutTester
+- Fix Integration Tests & unit tests in GitHub Actions
 - Product attribute `item_category_2`
 - Config key validation with fields `backend_model` (GTM-)
 - Option to use RectorPHP to downgrade releases for PHP 7.3 compat
