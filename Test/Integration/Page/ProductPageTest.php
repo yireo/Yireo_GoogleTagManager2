@@ -27,7 +27,7 @@ class ProductPageTest extends PageTestCase
         $this->assertEnabledFlagIsWorking();
 
         /** @var CategoryInterface $category */
-        $category = $this->createCategories()[0];
+        $category = $this->createCategory(3);
         $product = $this->createProducts(1, ['category_ids' => [$category->getId()]])[0];
 
         $this->dispatch('catalog/product/view/id/' . $product->getId());
