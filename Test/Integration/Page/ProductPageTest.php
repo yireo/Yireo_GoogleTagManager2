@@ -46,10 +46,10 @@ class ProductPageTest extends PageTestCase
         $this->assertNotEmpty($event['ecommerce']['items']);
 
         $productData = array_shift($event['ecommerce']['items']);
-        $this->assertNotEmpty($productData['item_name']);
-        $this->assertNotEmpty($productData['item_id']);
-        $this->assertNotEmpty($productData['price']);
-        $this->assertNotEmpty($productData['item_list_id']);
-        $this->assertNotEmpty($productData['item_list_name']);
+        $this->assertNonEmptyValueInArray('item_name', $productData);
+        $this->assertNonEmptyValueInArray('item_id', $productData);
+        $this->assertNonEmptyValueInArray('price', $productData);
+        $this->assertNonEmptyValueInArray('item_list_id', $productData);
+        $this->assertNonEmptyValueInArray('item_list_name', $productData);
     }
 }

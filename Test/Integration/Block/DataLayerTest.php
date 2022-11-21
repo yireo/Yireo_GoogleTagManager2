@@ -30,6 +30,7 @@ class DataLayerTest extends PageTestCase
         $layout->getUpdate()->addHandle('datalayer_default');
 
         $block = $layout->createBlock(Template::class);
+        $block->setNameInLayout('yireo_googletagmanager2.data-layer');
         $block->setTemplate('Yireo_GoogleTagManager2::data-layer.phtml');
         $block->setData('data_layer_view_model', ObjectManager::getInstance()->get(DataLayer::class));
         $block->setData('config', ObjectManager::getInstance()->get(Config::class));
