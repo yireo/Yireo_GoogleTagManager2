@@ -30,10 +30,9 @@ trait CreateCategory
             ->setPosition(1)
             ->addData($data);
         $category->isObjectNew(true);
+        $category->save();
 
-        $categoryRepository->save($category);
-
-        return $category;
+        return $categoryRepository->save($category);
     }
 
     public function createCategories($numberOfCategories = 1): array
