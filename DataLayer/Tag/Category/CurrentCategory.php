@@ -18,7 +18,7 @@ class CurrentCategory implements MergeTagInterface
      */
     public function __construct(
         GetCurrentCategory $getCurrentCategory,
-        CategoryDataMapper $categoryDataMapper,
+        CategoryDataMapper $categoryDataMapper
     ) {
         $this->getCurrentCategory = $getCurrentCategory;
         $this->categoryDataMapper = $categoryDataMapper;
