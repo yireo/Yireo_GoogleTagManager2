@@ -97,6 +97,7 @@ define([
 
     var subscribeToSectionDataChanges = function (sectionName) {
         var sectionData = customerData.get(sectionName);
+        console.log('subscribing ' + sectionName);
         sectionData.subscribe(function () {
             processGtmDataFromSection(sectionName);
             processGtmEventsFromSection(sectionName);
@@ -104,7 +105,7 @@ define([
     }
 
     var getSectionNames = function () {
-        return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
+        return ['cart', 'customer'];
     }
 
     var isEmpty = function (variable) {
