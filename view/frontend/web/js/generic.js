@@ -97,7 +97,6 @@ define([
 
     var subscribeToSectionDataChanges = function (sectionName) {
         var sectionData = customerData.get(sectionName);
-        console.log('subscribing ' + sectionName);
         sectionData.subscribe(function () {
             processGtmDataFromSection(sectionName);
             processGtmEventsFromSection(sectionName);
