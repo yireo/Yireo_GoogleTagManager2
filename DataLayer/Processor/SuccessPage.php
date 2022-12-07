@@ -2,6 +2,8 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Processor;
 
+use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
+
 class SuccessPage implements ProcessorInterface
 {
     /**

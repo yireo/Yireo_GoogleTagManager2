@@ -4,13 +4,15 @@ Note that this document only applies to version 3.0 and higher.
 
 ## Extensibility in general
 - XML layout arguments
-- Injectable interfaces in namespace `Yireo\GoogleTagManager2\Api\`
-- Interfaces to enforce certain behaviour (like `TagInterface`)
+- Injectable interfaces (with a preference) in `Yireo\GoogleTagManager2\Api\`
+- Non-injectable interfaces to enforce certain behaviour in `Yireo\GoogleTagManager2\Api\Data\`
 
-Don't touch anything else. If you want to add something in a way that is not supported, open a GitHub Issue and let's discuss how to support it anyway.
+Don't touch anything else directly in the code of this extension - don't make core hacks. If you want to add something in a way that is not supported, open a GitHub Issue and let's discuss how to support it anyway.
 
 ## DataLayer definition
-The datalayer that is sent to Google Tag Manager is in general built up in two ways: Via inline scripts that are inserted into the HTML of pages and via external JavaScript files. The inline scripts are based on a ViewModel `Yireo\GoogleTagManager2\ViewModel\DataLayer` that is added (under the argument `data_layer_view_model`) to a block named `yireo_googletagmanager2.data-layer`. The block also adds two other arguments: `data_layer` and `data_layer_processors`. Both arguments are used by the ViewModel to build up the datalayer. The argument `data_layer` contains a static definition, derived from XML layout. The argument `data_layer_processors` contains a listing of PHP processors that could modify the static `data_layer` afterwards.
+The datalayer that is sent to Google Tag Manager is in general built up in two ways: Via inline scripts that are inserted into the HTML of pages and via external JavaScript files. 
+
+The inline scripts are based on a ViewModel `Yireo\GoogleTagManager2\ViewModel\DataLayer` that is added (under the argument `data_layer_view_model`) to a block named `yireo_googletagmanager2.data-layer`. The block also adds two other arguments: `data_layer` and `data_layer_processors`. Both arguments are used by the ViewModel to build up the datalayer. The argument `data_layer` contains a static definition, derived from XML layout. The argument `data_layer_processors` contains a listing of PHP processors that could modify the static `data_layer` afterwards.
 
 ## XML layout argument `data_layer`
 The XML layout argument `data_layer` is used to generate the initial datalayer (as part of the HTML document) and it should contain therefore only values (or tags) that are cacheable. In other words, values related to customer sessions or checkout sessions should be picked up in JavaScript instead.
@@ -27,7 +29,7 @@ A tag `version` could be added to the datalayer with an XML layout statement lik
 </argument>
 ```
 
-If the `xsi:type` is `object`, then the value could refer to a class. A restriction within the Yireo GoogleTagManager2 is that this class implements `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface`:
+If the `xsi:type` is `object`, then the value could refer to a class. A restriction within the Yireo GoogleTagManager2 is that this class implements `Yireo\GoogleTagManager2\Api\Data\TagInterface` (which again implements the generic `Magento\Framework\View\Element\Block\ArgumentInterface` interface):
 
 ```xml
 <argument name="data_layer" xsi:type="array">
@@ -35,19 +37,11 @@ If the `xsi:type` is `object`, then the value could refer to a class. A restrict
 </argument>
 ```
 
-In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\DataLayer\Tag\TagInterface` and it returns a simple string (so, the version) via the implemented `get()` method. This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property.
+In the example above, the tag class `Yireo\GoogleTagManager2\DataLayer\Tag\Version` implements the interface `Yireo\GoogleTagManager2\Api\Data\TagInterface` and it returns a simple string (so, the version) via the implemented `get()` method. This string is then added as `version` into the datalayer. In other words, the item name in the XML layout determines the name of the datalayer property.
 
-Instead of using a class (with `xsi:type="object"`), you could also set the value to a callable (class plus method):
+If you have a tag class that returns an `array` and you want the keys and the values of that array to be merged directly into the current datalayer, implement the interface the `Yireo\GoogleTagManager2\Api\Data\MergeTagInterface` interface instead.
 
-```xml
-<argument name="data_layer" xsi:type="array">
-    <item name="version" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\Version::getVersion</item>
-</argument>
-```
-
-In this case, the class still needs to implement `Magento\Framework\View\Element\Block\ArgumentInterface`. And obviously the method specified needs to return something usable for the data layer.
-
-The namespace `Yireo\GoogleTagManager2\DataLayer\Tag` contains all tag classes, offered out-of-the-box. If you want to add more values, you can add them through the XML layout. You can do this through a theme. If you also want to add your own custom tag class, create a module instead, make it dependent on the `Yireo_GoogleTagManager2` module (both in your `composer.json` file and your `etc/module.xml` file) and use the tag interfaces as mentioned.
+The namespace `Yireo\GoogleTagManager2\DataLayer\Tag` contains all tag classes, offered out-of-the-box. If you want to add more values, you can add them through the XML layout. You can do this through a theme. If you also want to add your own custom tag class, we recommend you to create a module instead, making it dependent on the `Yireo_GoogleTagManager2` module (both in your `composer.json` file and your `etc/module.xml` file) and use the tag interfaces as mentioned.
 
 ## Data layer processors
 On top of the layout-based datalayer approach, which is already quite flexible, you can also parse entries via data layer processors as well: Classes that are defined through the XML layout argument `data_layer_processors` of the main block and are implementing `\Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface`: 

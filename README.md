@@ -17,13 +17,9 @@ Supported versions: Magento 2.3.7 or higher and 2.4.1 or higher (partially becau
 
 See `composer.json` for other requirements.
 
-
 ## See also
 - [Installation](INSTALL.md)
 - [Usage](USAGE.md)
 - [Testing](TESTING.md)
 - [CHANGELOG](CHANGELOG.md)
 - [License](LICENSE.txt)
-
-## Current limitations
-- No datalayer feedback on refunds
