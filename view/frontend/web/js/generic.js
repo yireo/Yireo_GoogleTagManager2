@@ -27,7 +27,7 @@ define([
 
     var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
-            console.warn('Yireo_GoogleTagManager2: identifier empty, terminating GTM initialization.');
+            logger('Identifier empty, terminating GTM initialization.');
             return false;
         }
 
