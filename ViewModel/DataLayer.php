@@ -3,12 +3,11 @@
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Framework\Serialize\SerializerInterface;
-use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
+use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
-use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
 
 class DataLayer implements ArgumentInterface
 {
@@ -24,8 +23,8 @@ class DataLayer implements ArgumentInterface
     /**
      * @param TagParser $variableParser
      * @param LayoutInterface $layout
-     * @param array $processors
      * @param SerializerInterface $serializer
+     * @param array $processors
      */
     public function __construct(
         TagParser $variableParser,
