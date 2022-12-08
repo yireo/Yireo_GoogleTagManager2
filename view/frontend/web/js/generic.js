@@ -72,7 +72,7 @@ define([
             }
 
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
-
+            window.dataLayer.push({ecommerce: null});
             window.dataLayer.push(eventData);
 
             if (eventData.cacheable !== true) {
@@ -116,11 +116,7 @@ define([
             return true;
         }
 
-        if (typeof variable === 'object' && Object.keys(variable).length === 0) {
-            return true;
-        }
-
-        return false;
+        return typeof variable === 'object' && Object.keys(variable).length === 0;
     }
 
     return Component.extend({
