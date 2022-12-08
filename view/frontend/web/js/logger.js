@@ -1,6 +1,6 @@
 define([], function () {
     return function (...args) {
-        const debug = YIREO_GOOGLETAGMANAGER2_DEBUG || false;
+        const debug = window.YIREO_GOOGLETAGMANAGER2_DEBUG || false;
         if (false === debug) {
             return;
         }
