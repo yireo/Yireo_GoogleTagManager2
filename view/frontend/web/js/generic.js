@@ -104,7 +104,7 @@ define([
     }
 
     var getSectionNames = function () {
-        return Object.keys(JSON.parse(localStorage.getItem('mage-cache-storage')));
+        return ['cart', 'customer'];
     }
 
     var isEmpty = function (variable) {

@@ -8,11 +8,13 @@ use Magento\Framework\App\RequestInterface;
 use Magento\TestFramework\View\Layout;
 use Magento\TestFramework\TestCase\AbstractController;
 use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertStoreConfigValueEquals;
 
 class PageTestCase extends AbstractController
 {
     use AssertStoreConfigValueEquals;
+    use AssertNonEmptyValueInArray;
 
     protected ?ObjectManager $objectManager = null;
     protected ?Layout $layout = null;

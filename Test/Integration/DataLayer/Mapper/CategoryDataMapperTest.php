@@ -13,10 +13,10 @@ class CategoryDataMapperTest extends TestCase
 
     public function testMapByCategory()
     {
-        $category = $this->createCategories()[0];
+        $category = $this->createCategory(3);
         $categoryDataMapper = ObjectManager::getInstance()->get(CategoryDataMapper::class);
         $categoryData = $categoryDataMapper->mapByCategory($category);
-        $this->assertEquals('Category 3', $categoryData['category_name']);
-        $this->assertEquals('3', $categoryData['category_id']);
+        $this->assertEquals('Category ' . $category->getId(), $categoryData['category_name']);
+        $this->assertEquals($category->getId(), $categoryData['category_id']);
     }
 }

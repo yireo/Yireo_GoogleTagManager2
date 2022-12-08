@@ -20,7 +20,7 @@ class CurrentProduct implements MergeTagInterface
      */
     public function __construct(
         GetCurrentProduct $getCurrentProduct,
-        ProductDataMapper $productDataMapper,
+        ProductDataMapper $productDataMapper
     ) {
         $this->getCurrentProduct = $getCurrentProduct;
         $this->productDataMapper = $productDataMapper;

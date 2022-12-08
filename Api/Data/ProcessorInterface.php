@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Processor;
+namespace Yireo\GoogleTagManager2\Api\Data;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 

@@ -75,6 +75,10 @@ class GetAttributeValue
      */
     public function getAttributeValue(ExtensibleDataInterface $entity, string $entityType, string $attributeCode)
     {
+        if ($attributeCode === 'id') {
+            return $entity->getId();
+        }
+
         $attribute = $this->eavConfig->getAttribute($entityType, $attributeCode);
         $entityAttribute = $entity->getCustomAttribute($attributeCode);
         if ($entityAttribute instanceof AttributeInterface) {

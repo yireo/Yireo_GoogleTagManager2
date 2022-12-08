@@ -7,9 +7,12 @@ use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
 
 class ProductDataMapperTest extends TestCase
 {
+    use AssertNonEmptyValueInArray;
+
     public function testMapByProduct()
     {
         $product = $this->createProduct(
@@ -21,6 +24,8 @@ class ProductDataMapperTest extends TestCase
 
         $productDataMapper = ObjectManager::getInstance()->get(ProductDataMapper::class);
         $productData = $productDataMapper->mapByProduct($product);
+
+        $this->assertNonEmptyValueInArray('item_id', $productData);
         $this->assertSame(1, $productData['item_id'], var_export($productData, true));
         $this->assertSame('Product 1', $productData['item_name']);
         $this->assertSame('product1', $productData['item_sku']);
