@@ -25,7 +25,9 @@
                 </field>
                 <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container Public ID</label>
-                    <comment>ID of your Google Tag container</comment>
+                    <comment>ID of your Google Tag container, starting with "GTM-"</comment>
+                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
+                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
