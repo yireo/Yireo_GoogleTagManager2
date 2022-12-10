@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Cart;
 
-use Magento\Checkout\Model\Session;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
@@ -19,10 +18,9 @@ class CartItems implements TagInterface
      */
     public function __construct(
         CartInterface $cart,
-        CartItemDataMapper $cartItemDataMapper,
-        Session $checkoutSession
+        CartItemDataMapper $cartItemDataMapper
     ) {
-        $this->cart = $checkoutSession->getQuote();
+        $this->cart = $cart;
         $this->cartItemDataMapper = $cartItemDataMapper;
     }
 

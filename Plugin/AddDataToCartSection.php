@@ -12,6 +12,7 @@ namespace Yireo\GoogleTagManager2\Plugin;
 use Magento\Checkout\CustomerData\Cart as CustomerData;
 use Magento\Checkout\Model\Cart as CheckoutCart;
 use Magento\Quote\Model\Quote as QuoteModel;
+use Yireo\GoogleTagManager2\DataLayer\Event\ViewCart as ViewCartEvent;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
 
@@ -19,7 +20,7 @@ class AddDataToCartSection
 {
     private QuoteModel $quote;
     private CheckoutSessionDataProvider $checkoutSessionDataProvider;
-    private CartItems $cartItems;
+    private ViewCartEvent $viewCartEvent;
 
     /**
      * @param CheckoutCart $checkoutCart
@@ -29,11 +30,11 @@ class AddDataToCartSection
     public function __construct(
         CheckoutCart $checkoutCart,
         CheckoutSessionDataProvider $checkoutSessionDataProvider,
-        CartItems $cartItems
+        ViewCartEvent $viewCartEvent
     ) {
         $this->quote = $checkoutCart->getQuote();
         $this->checkoutSessionDataProvider = $checkoutSessionDataProvider;
-        $this->cartItems = $cartItems;
+        $this->viewCartEvent = $viewCartEvent;
     }
 
     /**
@@ -51,14 +52,7 @@ class AddDataToCartSection
         $gtmData = [];
 
         $gtmEvents = $this->checkoutSessionDataProvider->get();
-        $gtmEvents['view_cart_event'] = [
-            'cacheable' => true,
-            'event' => 'view_cart',
-            'ecommerce' => [
-                'items' => $this->cartItems->get()
-            ]
-        ];
-
+        $gtmEvents['view_cart_event'] = $this->viewCartEvent->get();
         $this->checkoutSessionDataProvider->clear();
 
         return array_merge($result, ['gtm' => $gtmData, 'gtm_events' => $gtmEvents]);

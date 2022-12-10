@@ -35,6 +35,8 @@ trait CreateProduct
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
             ->setStockData(['use_config_manage_stock' => 0])
+            ->setCanSaveCustomOptions(true)
+            ->setHasOptions(true)
             ->addData($data);
 
         $product->isObjectNew(true);
