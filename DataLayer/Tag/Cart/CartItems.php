@@ -2,6 +2,8 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Cart;
 
+use Magento\Checkout\Model\Session;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
@@ -11,10 +13,12 @@ class CartItems implements TagInterface
 {
     private CartInterface $cart;
     private CartItemDataMapper $cartItemDataMapper;
-
+    
     /**
-     * @param CartInterface $cart
      * @param CartItemDataMapper $cartItemDataMapper
+     * @param Session $checkoutSession
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function __construct(
         CartInterface $cart,

@@ -49,11 +49,11 @@ class Debug
      */
     public function debug(string $string, $variable = null)
     {
-        if ($this->config->isDebug() == false) {
+        if ($this->config->isDebug() === false) {
             return false;
         }
 
-        if (!empty($variable)) {
+        if ($variable !== null) {
             $string .= ': ' . var_export($variable, true);
         }
 

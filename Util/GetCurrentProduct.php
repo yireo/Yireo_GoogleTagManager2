@@ -12,7 +12,8 @@ class GetCurrentProduct
 {
     private RequestInterface $request;
     private ProductRepositoryInterface $productRepository;
-
+    private StoreManagerInterface $storeManager;
+    
     public function __construct(
         RequestInterface $request,
         ProductRepositoryInterface $productRepository,
