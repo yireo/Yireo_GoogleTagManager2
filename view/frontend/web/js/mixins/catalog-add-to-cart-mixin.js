@@ -31,7 +31,6 @@ define([
                 return;
             }
 
-            dataLayer.push({ecommerce: null});
             dataLayer.push(eventData);
             return this._super(form);
         }

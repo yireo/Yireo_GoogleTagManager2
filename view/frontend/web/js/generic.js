@@ -54,7 +54,6 @@ define([
         }
 
         logger('section "' + sectionName + '" changed (customerData)', gtmData);
-        window.dataLayer.push({ecommerce: null});
         window.dataLayer.push(gtmData);
     }
 
@@ -72,7 +71,6 @@ define([
             }
 
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
-            window.dataLayer.push({ecommerce: null});
             window.dataLayer.push(eventData);
 
             if (eventData.cacheable !== true) {
@@ -135,7 +133,6 @@ define([
 
             logger('initial state (js)', attributes);
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({ecommerce: null});
 
             if (false === isEmpty(attributes)) {
                 window.dataLayer.push(attributes);
