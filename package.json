@@ -8,7 +8,7 @@
     "amd-loader": "^0.0.8",
     "casperjs": "^1.1",
     "jsdom": "^11.0",
-    "mocha": "10.1.0",
+    "mocha": "10.2.0",
     "requirejs": "^2.3"
   },
   "scripts": {
