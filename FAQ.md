@@ -1,6 +1,3 @@
-# Is this extension supporting Enhanced E-commerce?
-Yes, it is. However, if features are lacking, feel free to collaborate on this by creating a Pull Request, if you feel like it.
-
 # Does this extension work together with OneStepCheckout?
 Yes, this extension works nicely together with [onestepcheckout.com](https://www.onestepcheckout.com/)
 

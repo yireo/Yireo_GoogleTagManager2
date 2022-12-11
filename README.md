@@ -20,6 +20,10 @@ See `composer.json` for other requirements.
 ## See also
 - [Installation](INSTALL.md)
 - [Usage](USAGE.md)
+- [Tutorial](TUTORIAL.md)
+- [FAQ](FAQ.md)
+- [Architecture](ARCHITECTURE.md)
 - [Testing](TESTING.md)
 - [CHANGELOG](CHANGELOG.md)
+- [TODO](TODO.md)
 - [License](LICENSE.txt)
