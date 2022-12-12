@@ -43,17 +43,17 @@ class Debug
      * Debugging method
      *
      * @param string $string String to debug
-     * @param null $variable Variable to dump to debug message
+     * @param null $variable Tag to dump to debug message
      *
      * @return bool
      */
     public function debug(string $string, $variable = null)
     {
-        if ($this->config->isDebug() == false) {
+        if ($this->config->isDebug() === false) {
             return false;
         }
 
-        if (!empty($variable)) {
+        if ($variable !== null) {
             $string .= ': ' . var_export($variable, true);
         }
 

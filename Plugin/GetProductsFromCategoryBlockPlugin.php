@@ -4,32 +4,24 @@ namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Api\CategoryViewModelInterface;
+use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
+use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
 
 class GetProductsFromCategoryBlockPlugin
 {
-    /**
-     * @var CategoryViewModelInterface
-     */
-    private $categoryViewModel;
-
-    /**
-     * @var Config
-     */
-    private $config;
+    private CategorySize $categorySize;
+    private GetCurrentCategoryProducts $getCurrentCategoryProducts;
 
     /**
      * GetProductsFromCategoryBlockPlugin constructor.
-     * @param CategoryViewModelInterface $categoryViewModel
-     * @param Config $config
+     * @param CategorySize $categorySize
      */
     public function __construct(
-        CategoryViewModelInterface $categoryViewModel,
-        Config $config
+        CategorySize $categorySize,
+        GetCurrentCategoryProducts $getCurrentCategoryProducts
     ) {
-        $this->categoryViewModel = $categoryViewModel;
-        $this->config = $config;
+        $this->categorySize = $categorySize;
+        $this->getCurrentCategoryProducts = $getCurrentCategoryProducts;
     }
 
     /**
@@ -41,18 +33,13 @@ class GetProductsFromCategoryBlockPlugin
         ListProduct $listProductBlock,
         AbstractCollection $collection
     ): AbstractCollection {
-        $this->categoryViewModel->setCategorySize($collection->count());
-
         $i = 0;
         foreach ($collection as $product) {
-            if ($i >= $this->config->getCategoryProducts()) {
-                break;
-            }
-
-            $this->categoryViewModel->addCategoryProduct($product);
+            $this->getCurrentCategoryProducts->addProduct($product);
             $i++;
         }
 
+        $this->categorySize->setSize($collection->count());
         return $collection;
     }
 }

@@ -1,0 +1,24 @@
+<?php declare(strict_types=1);
+
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2019 Yireo (http://www.yireo.com/)
+ * @license     Open Software License
+ */
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\ViewModel\Commons;
+
+/** @var Template $block */
+/** @var Commons $commons */
+$commons = $block->getCommonsViewModel();
+?>
+<script type="text/x-magento-init">
+    {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
+</script>
+
+<script>
+    require(['yireoGoogleTagManagerProductClicks'], function() {});
+</script>

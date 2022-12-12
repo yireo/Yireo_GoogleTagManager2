@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="layout_load_before">
+        <observer name="Yireo_GoogleTagManager2::addAdditionalLayoutHandles" instance="Yireo\GoogleTagManager2\Observer\AddAdditionalLayoutHandles" />
+    </event>
+
+    <event name="sales_quote_remove_item">
+        <observer name="Yireo_GoogleTagManager2::triggerRemoveFromCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerRemoveFromCartDataLayerEvent" />
+    </event>
+
+    <event name="customer_data_object_login">
+        <observer name="Yireo_GoogleTagManager2::triggerLoginDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLoginDataLayerEvent" />
+    </event>
+
+    <event name="customer_logout">
+        <observer name="Yireo_GoogleTagManager2::triggerLogoutDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLogoutDataLayerEvent" />
+    </event>
+
+    <event name="wishlist_add_product">
+        <observer name="Yireo_GoogleTagManager2::triggerAddToWishlistDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToWishlistDataLayerEvent" />
+    </event>
+
+    <event name="checkout_cart_add_product_complete">
+        <observer name="Yireo_GoogleTagManager2::triggerAddToCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToCartDataLayerEvent" />
+    </event>
+
+    <event name="sales_order_place_after">
+        <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
+    </event>
+</config>

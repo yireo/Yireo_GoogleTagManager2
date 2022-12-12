@@ -4,6 +4,7 @@ namespace Yireo\GoogleTagManager2\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\State as AppState;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -11,20 +12,10 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Config implements ArgumentInterface
 {
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var CookieHelper
-     */
-    private $cookieHelper;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
+    private ScopeConfigInterface $scopeConfig;
+    private CookieHelper $cookieHelper;
+    private StoreManagerInterface $storeManager;
+    private AppState $appState;
 
     /**
      * Config constructor.
@@ -36,11 +27,13 @@ class Config implements ArgumentInterface
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        CookieHelper $cookieHelper
+        CookieHelper $cookieHelper,
+        AppState $appState
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
+        $this->appState = $appState;
     }
 
     /**
@@ -51,7 +44,11 @@ class Config implements ArgumentInterface
     public function isEnabled(): bool
     {
         $enabled = (bool)$this->getModuleConfigValue('enabled', false);
-        if (!$enabled) {
+        if (false === $enabled) {
+            return false;
+        }
+
+        if (false === $this->isDeveloperMode() && false === $this->isIdValid()) {
             return false;
         }
 
@@ -69,6 +66,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether mouse clicks are debugged as well
+     *
+     * @return bool
+     */
+    public function isDebugClicks(): bool
+    {
+        return $this->isDeveloperMode() && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
+    }
+
+    /**
      * Return the GA ID
      *
      * @return string
@@ -81,9 +88,33 @@ class Config implements ArgumentInterface
     /**
      * @return int
      */
-    public function getCategoryProducts(): int
+    public function getMaximumCategoryProducts(): int
     {
         return (int)$this->getModuleConfigValue('category_products');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProductEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('product_eav_attributes'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategoryEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('category_eav_attributes'));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCustomerEavAttributeCodes(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('customer_eav_attributes'));
     }
 
     /**
@@ -91,7 +122,12 @@ class Config implements ArgumentInterface
      */
     public function getStoreName(): string
     {
-        return (string)$this->getConfigValue('general/store_information/name');
+        $storeName = (string)$this->getConfigValue('general/store_information/name');
+        if (!empty($storeName)) {
+            return $storeName;
+        }
+
+        return (string) $this->storeManager->getDefaultStoreView()->getName();
     }
 
     /**
@@ -144,5 +180,21 @@ class Config implements ArgumentInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isDeveloperMode(): bool
+    {
+        return $this->appState->getMode() === AppState::MODE_DEVELOPER;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isIdValid(): bool
+    {
+        return 0 === strpos($this->getId(), 'GTM-');
     }
 }

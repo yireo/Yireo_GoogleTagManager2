@@ -10,9 +10,12 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
+        <tab id="yireo" sortOrder="999" translate="label">
+            <label>Yireo</label>
+        </tab>
         <section id="googletagmanager2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Yireo GoogleTagManager</label>
-            <tab>sales</tab>
+            <tab>yireo</tab>
             <resource>Yireo_GoogleTagManager2::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
@@ -22,7 +25,9 @@
                 </field>
                 <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container Public ID</label>
-                    <comment>ID of your Google Tag container</comment>
+                    <comment>ID of your Google Tag container, starting with "GTM-"</comment>
+                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
+                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
@@ -34,9 +39,40 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="debug_clicks" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Clicks</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="debug">1</field>
+                    </depends>
+                </field>
                 <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Load Products in Category</label>
-                    <comment>Number of products to load in a specific category overview. 0 to disable</comment>
+                    <label>Maximum Products in Category</label>
+                    <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
+                    <comment>Product EAV attributes to show in datalayer</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Category EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
+                    <comment>Category EAV attributes to show in datalayer</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer EAV Attributes</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
+                    <comment>Customer EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

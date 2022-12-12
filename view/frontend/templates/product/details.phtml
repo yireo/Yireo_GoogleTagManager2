@@ -1,0 +1,23 @@
+<?php declare(strict_types=1);
+
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct;
+use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+
+/** @var Template $block */
+/** @var CurrentProduct $productDetails */
+/** @var DataLayer $dataLayer */
+$dataLayer = $block->getDataLayer();
+$productDetails = $block->getProductDetails();
+$product = $block->getProduct();
+if ($product instanceof ProductInterface) {
+    $productDetails->setProduct($product);
+}
+
+$product = $productDetails->getProduct();
+$productData = $dataLayer->toJson($productDetails->merge());
+?>
+<script>
+    window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_<?= $product->getId() ?>'] = <?= $productData ?>;
+</script>

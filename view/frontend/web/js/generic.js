@@ -2,138 +2,146 @@
  * GoogleTagManager2 plugin for Magento
  *
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright (c) 2019 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2022 Yireo (https://www.yireo.com/)
  * @license     Open Software License
  */
-
 define([
     'jquery',
     'underscore',
+    'uiComponent',
     'Magento_Customer/js/customer-data',
-], function ($, _, customerData) {
+    'yireoGoogleTagManagerLogger',
+    'knockout'
+], function ($, _, Component, customerData, logger, ko) {
     'use strict';
 
-    var isDisabled = function(config) {
-        if (isValidConfig(config) === false) {
+    var moduleConfig = {};
+
+    var isDisabled = function () {
+        if (isValidConfig() === false) {
             return true;
         }
 
-        if (isAllowedByCookieRestrictionMode(config) === false) {
-            return true;
-        }
-
-        return false;
+        return isAllowedByCookieRestrictionMode() === false;
     };
 
-    var isDebug = function(config) {
-        return !!config.debug;
-    }
-
-    var isValidConfig = function(config) {
-        if (typeof config.id === 'undefined' || !config.id) {
-            console.warn('GTM identifier empty, terminating GTM initialization.');
+    var isValidConfig = function () {
+        if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
+            logger('Identifier empty, terminating GTM initialization.');
             return false;
         }
 
         return true;
     };
 
-    var isAllowedByCookieRestrictionMode = function(config) {
-        if (!config.cookie_restriction_mode) {
+    var isAllowedByCookieRestrictionMode = function () {
+        if (!moduleConfig.cookie_restriction_mode) {
             return true;
         }
 
-        if (!$.cookie(config.cookie_restriction_mode)){
-            return false;
-        }
-
-        return true;
-    };
-
-    var initDataLayer = function (window) {
-        window.dataLayer = window.dataLayer || [];
-        return window;
-    };
-
-    var getCustomer = function () {
-        var customer = customerData.get('customer');
-        return customer();
+        return $.cookie(moduleConfig.cookie_restriction_mode);
     };
 
     var isLoggedIn = function () {
-        var customer = getCustomer();
-        return customer && customer.firstname;
+        var customer = customerData.get('customer');
+        return customer() && customer().firstname;
     };
 
-    var getCustomerSpecificAttributes = function () {
-        var customer = getCustomer();
-        var customerGroup = customer.group_code;
-        var customerGroupCode = (customerGroup) ? customerGroup.toUpperCase() : 'UNKNOWN';
+    var processGtmDataFromSection = function (sectionName) {
+        const gtmData = getGtmDataFromSection(sectionName);
+        if (true === isEmpty(gtmData)) {
+            return;
+        }
 
-        return isLoggedIn() ? {
-            'customerLoggedIn': 1,
-            'customerId': customer.id,
-            'customerGroupId': customer.group_id,
-            'customerGroupCode': customerGroupCode
-        } : {
-            'customerLoggedIn': 0,
-            'customerGroupId': 0,
-            'customerGroupCode': 'UNKNOWN'
-        };
-    };
+        logger('section "' + sectionName + '" changed (customerData)', gtmData);
+        window.dataLayer.push(gtmData);
+    }
 
-    var getCartSpecificAttributes = function (callback) {
-        var cart = customerData.get('cart');
+    var processGtmEventsFromSection = function (sectionName) {
+        const sectionData = customerData.get(sectionName)();
+        const gtmEvents = sectionData.gtm_events;
 
-        if (cart().gtm) {
-            return cart().gtm;
+        if (true === isEmpty(gtmEvents)) {
+            return;
+        }
+
+        for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+            if (eventData.triggered === true) {
+                continue;
+            }
+
+            logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+            window.dataLayer.push(eventData);
+
+            if (eventData.cacheable !== true) {
+                delete sectionData['gtm_events'][eventId];
+                logger('invalidating sections "' + sectionName + '"', sectionData)
+                customerData.set(sectionName, sectionData);
+            }
+
+            eventData.triggered = true;
+        }
+    }
+
+    var getGtmDataFromSection = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        var gtmData = sectionData().gtm;
+        if (gtmData) {
+            return gtmData;
         }
 
         return {};
     };
 
-    var existingNodes = [];
+    var subscribeToSectionDataChanges = function (sectionName) {
+        var sectionData = customerData.get(sectionName);
+        sectionData.subscribe(function () {
+            processGtmDataFromSection(sectionName);
+            processGtmEventsFromSection(sectionName);
+        });
+    }
 
-    var addScriptElement = function (attributes, window, document, scriptTag, dataLayer, configId) {
-        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        var firstScript = document.getElementsByTagName(scriptTag)[0];
-        var newScript = document.createElement(scriptTag);
-        var dataLayerArg = (dataLayer != 'dataLayer') ? '&l=' + dataLayer : '';
-        newScript.async = true;
-        newScript.src = '//www.googletagmanager.com/gtm.js?id=' + configId + dataLayerArg;
+    var getSectionNames = function () {
+        return ['cart', 'customer'];
+    }
 
-        if (existingNodes.indexOf(newScript.src) === -1) {
-            firstScript.parentNode.insertBefore(newScript, firstScript);
-            existingNodes.push(newScript.src);
+    var isEmpty = function (variable) {
+        if (typeof variable === 'undefined') {
+            return true;
         }
-    };
 
-    return {
-        'isValid': isValidConfig,
-        'isAllowedByCookieRestrictionMode': isAllowedByCookieRestrictionMode,
-        'initDataLayer': initDataLayer,
-        'getCustomer': getCustomer,
-        'isLoggedIn': isLoggedIn,
-        'getCustomerSpecificAttributes': getCustomerSpecificAttributes,
-        'getCartSpecificAttributes': getCartSpecificAttributes,
-        'addScriptElement': addScriptElement,
-        'yireoGoogleTagManager': function (config) {
-            if (isDisabled(config)) {
+        if (Array.isArray(variable) && variable.length === 0) {
+            return true;
+        }
+
+        return typeof variable === 'object' && Object.keys(variable).length === 0;
+    }
+
+    return Component.extend({
+        initialize: function (config) {
+            moduleConfig = config;
+
+            if (isDisabled()) {
                 return;
             }
 
-            initDataLayer(window);
+            let attributes = {};
+            const sectionNames = getSectionNames();
+            sectionNames.forEach(function (sectionName) {
+                attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
+            });
 
-            let attributes = config.attributes;
-            attributes = $.extend(getCustomerSpecificAttributes(), attributes);
-            attributes = $.extend(getCartSpecificAttributes(), attributes);
+            logger('initial state (js)', attributes);
+            window.dataLayer = window.dataLayer || [];
 
-            if (isDebug(config)) {
-                console.log('GTM debugging', attributes, config);
+            if (false === isEmpty(attributes)) {
+                window.dataLayer.push(attributes);
             }
 
-            window.dataLayer.push(attributes);
-            addScriptElement(attributes, window, document, 'script', 'dataLayer', config.id);
+            sectionNames.forEach(function (sectionName) {
+                processGtmEventsFromSection(sectionName);
+                subscribeToSectionDataChanges(sectionName);
+            });
         }
-    };
+    });
 });

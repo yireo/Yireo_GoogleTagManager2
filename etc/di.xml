@@ -1,7 +1,34 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Yireo\GoogleTagManager2\Api\CategoryViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Category"/>
-    <preference for="Yireo\GoogleTagManager2\Api\ProductViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Product"/>
-    <preference for="Yireo\GoogleTagManager2\Api\AttributesViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Attributes"/>
-    <preference for="Yireo\GoogleTagManager2\Api\CommonsViewModelInterface" type="Yireo\GoogleTagManager2\ViewModel\Commons"/>
+    <preference for="Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider"/>
+
+    <preference for="Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider"/>
+
+    <type name="Yireo\GoogleTagManager2\Logger\Debugger">
+        <arguments>
+            <argument name="logger" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper">
+        <arguments>
+            <argument name="dataLayerMapping" xsi:type="array">
+                <item name="item_brand" xsi:type="string">item_manufacturer</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\CustomLogger">
+        <arguments>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\GoogleTagManager2\Logger\CustomLogHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">var/log/yireo_googletagmanager2.log</argument>
+        </arguments>
+    </virtualType>
 </config>
