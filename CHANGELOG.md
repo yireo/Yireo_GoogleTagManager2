@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1] - 13 December 2022
+### Fixed
+- Backend model prevents saving container ID
+
+## [3.0.0] - 12 December 2022
+### Added
+- GA4 support
+- Removed GA4/UA/EE support
+- Extensibility via XML layout
+- Support for EAV attributes of products and categories
+- Click events
+- Cart & checkout events 
+- Integration Tests
+
 ## [2.1.8] - 1 July 2022
 ### Fixed
 - Update ecommerce attributes #95 (@BorisovskiP)
