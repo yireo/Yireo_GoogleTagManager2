@@ -8,7 +8,44 @@ First of all, make sure you have existing accounts for both [Google Analytics](h
 Login into Google Analytics. Create a new **App** for your site. Within that **App**, under **Admin**, navigate to **Data Streams**. Create a new **Web** stream. Under the **Web** stream details, write down the **Measurement ID** (starting with `G-`) for later use.
 
 ## Google Tag Manager
-Login into Google Tag Manager. Create a new **Container** for your site. Write down the **Container ID** (starting with `GTM-`) to configure later in the Magento extension. In the **Container Workspace**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Make sure to trigger this tag on all pages.
+Login into Google Tag Manager. 
+
+Create a new **Container** for your site. Write down the **Container ID** (starting with `GTM-`) to configure later in the Magento extension. 
+
+In the **Container Workspace**, under **Variables** and then **Built-In Variables**, **Configure** the variables to enable the following variables:
+
+- **Page URL**
+- **Page Hostname**
+- **Page Path**
+- **Referrer**
+- **Event**
+- And possibly others
+
+In the **Container Workspace**, under **Variables** and then **User-Defined Variables**, create the following variables of type **Data Layer Variable** and
+Data Layer Version 2:
+
+- Variable with label `Ecommerce` and name `ecommerce`
+- Variable with name `Ecommerce Affiliation` and name `ecommerce.affiliation`
+- Variable with name `Ecommerce Coupon` and name `ecommerce.coupon`
+- Variable with name `Ecommerce Currency` and name `ecommerce.currency`
+- Variable with name `Ecommerce Shipping` and name `ecommerce.shipping`
+- Variable with name `Ecommerce Value` and name `ecommerce.value`
+- Variable with name `Ecommerce Tax` and name `ecommerce.tax`
+- Variable with name `Ecommerce Transaction ID` and name `ecommerce.transaction_id`
+
+Also create a variable of type **Custom JavaScript** with name `Ecommerce Items` and the following custom JavaScript:
+```js
+function() {
+  var ecom = {{Ecommerce}};
+  if ( ecom && ecom.items ) {
+    return ecom.items;
+  } else {
+    return undefined;
+  }
+}
+```
+
+In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Make sure to trigger this tag on all pages.
 
 Next, create a second **Tag** in the same **Container Workspace**, this time of type **Google Analytics > GA4 Events**. Set `{{Event}}` to be the **Event Name**. Next, enter the following **Event Parameters**:
 
@@ -21,7 +58,16 @@ Next, create a second **Tag** in the same **Container Workspace**, this time of 
 - Parameter name `currency` with value `{{Ecommerce Currency}}`
 - Parameter name `coupon` with value `{{Ecommerce Coupon}}`
 
-Alternatively, import [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-example.json) with all relevant settings. Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**.
+Alternatively, instead of creating all **Variables** and **Tags** manually, download [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-example.json). Edit it manually and replace the following strings with your own:  
+
+- `ACCOUNT_ID` should be replaced with your own numeric account ID (visible in GTM URL)
+- `CONTAINER_ID` should be replaced with your own numeric container ID (visible in GTM URL)
+- `CONTAINER_NAME` should be replaced with your own container name 
+- `GTM_PUBLIC_ID` should be replaced with your own container public ID (starting with `GTM-`)
+
+Make sure to reset the **Measurement ID** to be your own.
+
+Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**.
 
 Once the two tags are configured in Google Tag Manager, use **Publish** to publish your new configuration as a new version.
 
