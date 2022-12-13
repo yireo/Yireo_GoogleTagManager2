@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.3] - 13 December 2022
+### Fixed
+- Hyva event handling
+
 ## [3.0.2] - 13 December 2022
 ### Fixed
 - Basic compatibility with Hyva
