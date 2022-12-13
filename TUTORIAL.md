@@ -21,7 +21,7 @@ Next, create a second **Tag** in the same **Container Workspace**, this time of 
 - Parameter name `currency` with value `{{Ecommerce Currency}}`
 - Parameter name `coupon` with value `{{Ecommerce Coupon}}`
 
-Alternatively, import [this JSON file](docs/gtm-example.json) with all relevant settings. Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**.
+Alternatively, import [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-example.json) with all relevant settings. Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**.
 
 Once the two tags are configured in Google Tag Manager, use **Publish** to publish your new configuration as a new version.
 
