@@ -41,11 +41,5 @@
                 <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
             </arguments>
         </block>
-
-        <!--
-        <referenceBlock name="yireo_googletagmanager2.product-details">
-            <block template="Yireo_Example::additional-product-details.phtml"/>
-        </referenceBlock>
-        -->
     </body>
 </page>

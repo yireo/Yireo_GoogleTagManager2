@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2022 Yireo (https://www.yireo.com/)
+ * @license     Open Source License (OSL v3)
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="after.body.start">
+            <block name="yireo_googletagmanager2.logger-script"
+                            template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="yireo_googletagmanager2.data-layer-debugging"
+                        template="Yireo_GoogleTagManager2::hyva/data-layer-debugging.phtml"/>
+        <referenceBlock name="yireo_googletagmanager2.script-additions"
+                        template="Yireo_GoogleTagManager2::hyva/script-additions.phtml"/>
+    </body>
+</page>
