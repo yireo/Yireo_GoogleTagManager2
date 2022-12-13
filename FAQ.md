@@ -1,6 +1,9 @@
 # Does this extension work together with OneStepCheckout?
 Yes, this extension works nicely together with [onestepcheckout.com](https://www.onestepcheckout.com/)
 
+# I've installed the module but nothing happens
+Make sure that both Google Analytics and Google Tag Manager are properly configured. See our [tutorial](/blob/master/TUTORIAL.md) for additional guidance. Make sure the module settings in Magento are properly configured: The flag **Enabled** sets to be set to **Yes**. The **Container Public ID** needs to start with `GTM-` (unless you are testing in the Developer Mode). Optionally debugging can be enabled, which should print various messages in the **Console** of your browser. Refresh all Magento caches. Within the **Network** tab of your browsers Developer Tools, you should be able to see an outgoing request to `https://www.googletagmanager.com/`.
+
 # How to extend upon the Data Layer created by this module?
 The main methodology for this module to generate its Data Layer by using the XML layout. The block with name `yireo_googletagmanager2.data-layer` contains a `data-layer` argument that could be modified and extended with other XML layout files.
 
@@ -15,3 +18,4 @@ public function afterMapByProduct(ProductDataMapper $productDataMapper, array $p
     return $productData;
 }
 ```
+
