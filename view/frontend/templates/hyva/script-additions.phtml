@@ -15,31 +15,98 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 /** @var Commons $commons */
 $commons = $block->getCommonsViewModel();
 
-// @todo: rewrite Yireo_GoogleTagManager2/js/product/clicks
+// @todo: fix Yireo_GoogleTagManager2/js/product/clicks
 // @todo: rewrite Yireo_GoogleTagManager2/js/generic
 ?>
 <script>
-    document.querySelector('.product-items a.product').addEventListener('click', function(event) {
-        const debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS || false;
-        const $parent = document.querySelector(this).parent();
-        const regex = /_(\d+)$/;
-        const matches = $parent.attr('id').match(regex);
-        const productId = matches[1];
-        const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
-        productData.item_id = productId;
+    const product = document.querySelector('.products a.product');
 
-        const gtmData = {
-            'event': 'select_item',
-            'ecommerce': {
-                'items': [productData]
+    if (product) {
+        product.addEventListener('click', function(event, s) {
+            const debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS || false;
+            const parentElement = event.target.parentElement;
+            if (!parentElement.dataset.id) {
+                logger('no product ID found in product element (js)', parentElement);
+                return;
             }
+
+            const regex = /_(\d+)$/;
+            const matches = parentElement.dataset.id.match(regex);
+            if (!matches) {
+                logger('no product ID found for product click (js)');
+                return;
+            }
+
+            const productId = matches[1];
+            const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
+            productData.item_id = productId;
+
+            const gtmData = {
+                'event': 'select_item',
+                'ecommerce': {
+                    'items': [productData]
+                }
+            }
+
+            logger('page event "select_item" (js)', gtmData);
+            dataLayer.push(gtmData);
+
+            if (debugClicks && confirm("Press to continue with redirect") === false) {
+                event.preventDefault();
+            }
+        });
+    }
+</script>
+
+<script>
+    window.addEventListener('private-content-loaded', function(event) {
+        var isEmpty = function (variable) {
+            if (typeof variable === 'undefined') {
+                return true;
+            }
+
+            if (Array.isArray(variable) && variable.length === 0) {
+                return true;
+            }
+
+            return typeof variable === 'object' && Object.keys(variable).length === 0;
         }
 
-        logger('page event "select_item" (js)', gtmData);
-        dataLayer.push(gtmData);
+        var getSectionNames = function () {
+            return ['cart', 'customer'];
+        }
 
-        if (debugClicks && confirm("Press to continue with redirect") === false) {
-            event.preventDefault();
+        let attributes = {};
+        getSectionNames().forEach(function (sectionName) {
+            if (!event.detail.data[sectionName].gtm_events) {
+                return;
+            }
+
+            const gtmEvents = event.detail.data[sectionName].gtm_events;
+            for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+                if (eventData.triggered === true) {
+                    continue;
+                }
+
+                logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+                window.dataLayer.push(eventData);
+
+                if (eventData.cacheable !== true) {
+                    //delete sectionData['gtm_events'][eventId]; // @todo: Is this still needed?
+                    logger('invalidating sections "' + sectionName + '"', eventData)
+                }
+
+                eventData.triggered = true;
+            }
+        });
+
+        //console.log(event.detail.data);
+
+        logger('initial state (js)', attributes);
+        window.dataLayer = window.dataLayer || [];
+
+        if (false === isEmpty(attributes)) {
+            window.dataLayer.push(attributes);
         }
     });
 </script>
