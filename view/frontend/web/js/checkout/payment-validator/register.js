@@ -7,7 +7,7 @@ define(
     ],
     function (Component, additionalValidators, reloadCustomerDataValidator, logger) {
         'use strict';
-        logg('Registering additional payment validator');
+        logger('Registering additional payment validator');
         additionalValidators.registerValidator(reloadCustomerDataValidator);
         return Component.extend({});
     }
