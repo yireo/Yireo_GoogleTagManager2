@@ -1,3 +1,6 @@
+# Does this extension work together with Hyvä?
+Yes, this extension ships with native JavaScript code that works with Hyvä. Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
+
 # Does this extension work together with OneStepCheckout?
 Yes, this extension works nicely together with [onestepcheckout.com](https://www.onestepcheckout.com/)
 
