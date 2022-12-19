@@ -10,4 +10,5 @@
 - Double-check product clicks on search page
 - Double-check product clicks on Related, Up-Sell, Cross-Sell
 - IP anonymization (tutorial)
-
+- Investigate options for Google Ads dynamic remarketing
+- Investigate options for Google Optimize
