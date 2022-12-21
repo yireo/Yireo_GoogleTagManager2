@@ -1,5 +1,7 @@
 # Does this extension work together with Hyvä?
-Yes, this extension ships with native JavaScript code that works with Hyvä. Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
+Yes, this extension ships with native JavaScript code that works with Hyvä. Additionally, the module ships with Hyvä-specific XML layout handles. Note that this applies to the Yireo GoogleTagManager2 version 3. With version 2, you will still need the [compatibility module](https://gitlab.hyva.io/hyva-themes/hyva-compat/magento2-yireo-googletagmanager2/). 
+
+Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
 
 # Does this extension work together with OneStepCheckout?
 Yes, this extension works nicely together with [onestepcheckout.com](https://www.onestepcheckout.com/)
