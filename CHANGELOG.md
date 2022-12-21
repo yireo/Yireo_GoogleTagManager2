@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.5] - 21 December 2022
+### Fixed
+- Render debugging block only if available
+
 ## [3.0.4] - 17 December 2022
 ### Fixed
 - Finalize product clicks for Hyva
