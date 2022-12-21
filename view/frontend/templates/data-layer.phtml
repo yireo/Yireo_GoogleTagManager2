@@ -19,4 +19,6 @@ $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
     <?php endforeach; ?>
 </script>
-<?= $block->getChildBlock('debugging')->setData(['data_layer_view_model' => $dataLayerViewModel])->toHtml() ?>
+<?php if($config->isDebug()): ?>
+    <?= $block->getChildBlock('debugging')->setData(['data_layer_view_model' => $dataLayerViewModel])->toHtml() ?>
+<?php endif; ?>
