@@ -6,6 +6,7 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartItemInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
@@ -24,11 +25,12 @@ class OrderItemDataMapper
      * @param PriceFormatter $priceFormatter
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        ProductDataMapper $productDataMapper,
+        OrderRepositoryInterface   $orderRepository,
+        ProductDataMapper          $productDataMapper,
         ProductRepositoryInterface $productRepository,
-        PriceFormatter $priceFormatter
-    ) {
+        PriceFormatter             $priceFormatter
+    )
+    {
         $this->orderRepository = $orderRepository;
         $this->productDataMapper = $productDataMapper;
         $this->productRepository = $productRepository;
@@ -39,9 +41,11 @@ class OrderItemDataMapper
      * @param OrderItemInterface $orderItem
      * @return array
      */
-    public function mapByOrderItem(OrderItemInterface $orderItem): array
+    public function mapByOrderItem(OrderItemInterface $orderItem, ?OrderInterface $order = null): array
     {
-        $order = $this->orderRepository->get($orderItem->getOrderId());
+        if (!$order instanceof OrderInterface) {
+            $order = $this->orderRepository->get($orderItem->getOrderId());
+        }
 
         $orderItemData = [
             'item_id' => $orderItem->getId(),

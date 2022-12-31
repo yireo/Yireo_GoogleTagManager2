@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.6] - 31 December 2022
+### Fixed
+- Prevent reloading order per order-item
+
 ## [3.0.5] - 21 December 2022
 ### Fixed
 - Render debugging block only if available
