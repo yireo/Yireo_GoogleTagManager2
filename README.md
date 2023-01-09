@@ -2,12 +2,11 @@
 
 **Also see: https://www.yireo.com/software/magento-extensions/googletagmanager2**
 
-Currently, the `Yireo_GoogleTagManager2` module has been refactored heavily: The architecture is redesigned, GA4
+**Currently, the `Yireo_GoogleTagManager2` module has been refactored heavily: The architecture is redesigned, GA4
 support is being added, GA3 support (aka UA/EE) is being removed, click-events are added and overall there is a huge
 extensibility being added. The refactoring has come available under a new major version 3. If you were not using this
 extension yet, you can just proceed with the composer installation which will pick this new version. If you were
-using major version 2 in the past, change your `composer.json` to use the new version `^3.0` and then use `composer
-update` to upgrade.**
+using major version 2 in the past, edit your `composer.json` file manually to use the new version `^3.0`. Alternatively, update your `composer.json` by using the command `composer require yireo/magento2-googletagmanager2:^3.0 --no-update`. Next, upgrade with `composer update`.**
 
 [![Latest Stable Version](https://poser.pugx.org/yireo/magento2-googletagmanager2/v)](//packagist.org/packages/yireo/magento2-googletagmanager2) [![Total Downloads](https://poser.pugx.org/yireo/magento2-googletagmanager2/downloads)](//packagist.org/packages/yireo/magento2-googletagmanager2)  [![License](https://poser.pugx.org/yireo/magento2-googletagmanager2/license)](//packagist.org/packages/yireo/magento2-googletagmanager2)
 
