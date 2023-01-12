@@ -46,7 +46,9 @@ class ProductDataMapper
     {
         $prefix = 'item_';
         $productData = [];
-        $productFields = $this->getProductFields();
+        $productData['item_id'] = $this->getAttributeValue->getProductAttributeValue($product, 'sku');
+
+            $productFields = $this->getProductFields();
         foreach ($productFields as $productAttributeCode) {
             $dataLayerKey = $prefix . $productAttributeCode;
             $attributeValue = $this->getAttributeValue->getProductAttributeValue($product, $productAttributeCode);
@@ -76,7 +78,7 @@ class ProductDataMapper
      */
     private function getProductFields(): array
     {
-        return array_merge(['id', 'sku', 'name'], $this->config->getProductEavAttributeCodes());
+        return array_merge(['name'], $this->config->getProductEavAttributeCodes());
     }
 
     /**

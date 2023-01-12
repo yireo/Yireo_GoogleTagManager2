@@ -48,7 +48,7 @@ class Products implements TagInterface
             }
 
             $product->setCategory($this->getCurrentCategory->get());
-            $productData = $this->productDataMapper->mapByProduct($product, 'item_');
+            $productData = $this->productDataMapper->mapByProduct($product);
             $productData['quantity'] = 1;
             $productData['index'] = $i;
             $productsData[] = $productData;
