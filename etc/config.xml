@@ -7,7 +7,7 @@
                 <id/>
                 <debug>0</debug>
                 <category_products>3</category_products>
-                <product_eav_attributes>price</product_eav_attributes>
+                <product_eav_attributes></product_eav_attributes>
                 <category_eav_attributes>id,name</category_eav_attributes>
                 <customer_eav_attributes>id</customer_eav_attributes>
             </settings>
