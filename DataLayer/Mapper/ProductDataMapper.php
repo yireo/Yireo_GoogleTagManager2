@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -10,12 +11,14 @@ use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\GetCategoryFromProduct;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class ProductDataMapper
 {
     private Config $config;
     private GetAttributeValue $getAttributeValue;
     private GetCategoryFromProduct $getCategoryFromProduct;
+    private PriceFormatter $priceFormatter;
     private array $dataLayerMapping;
 
     /**
@@ -28,11 +31,13 @@ class ProductDataMapper
         Config $config,
         GetAttributeValue $getAttributeValue,
         GetCategoryFromProduct $getCategoryFromProduct,
+        PriceFormatter $priceFormatter,
         array $dataLayerMapping = []
     ) {
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
         $this->getCategoryFromProduct = $getCategoryFromProduct;
+        $this->priceFormatter = $priceFormatter;
         $this->dataLayerMapping = $dataLayerMapping;
     }
 
@@ -65,7 +70,8 @@ class ProductDataMapper
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
-        $productData['price'] = $product->getFinalPrice();
+        $productData['price'] = $this->priceFormatter->format($product->getFinalPrice());
+        $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
 
         // @todo: Add "variant" reference to Configurable Product
@@ -79,6 +85,32 @@ class ProductDataMapper
     private function getProductFields(): array
     {
         return array_merge(['name'], $this->config->getProductEavAttributeCodes());
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array $data
+     * @return array
+     */
+    private function attachCategoriesData(ProductInterface $product, array $data): array
+    {
+        $maxCategoriesCount = 5;
+        $currentCategoriesCount = 1;
+
+        foreach ($this->getCategoryFromProduct->getAll($product) as $category) {
+            if ($category->getParentId() == 1) {
+                continue;
+            }
+
+            $key = 'item_category' . ($currentCategoriesCount == 1 ? '' : $currentCategoriesCount++);
+            $data[$key] = $category->getName();
+
+            if ($currentCategoriesCount > $maxCategoriesCount) {
+                break;
+            }
+        }
+
+        return $data;
     }
 
     /**
