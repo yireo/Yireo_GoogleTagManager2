@@ -25,9 +25,10 @@ class TriggerAddToCartDataLayerEvent implements ObserverInterface
     {
         /** @var ProductInterface $product */
         $product = $observer->getData('product');
+        $qty = $observer->getData('request')->getParam('qty') ?? 1;
         $this->checkoutSessionDataProvider->add(
             'add_to_cart_event',
-            $this->addToCartEvent->setProduct($product)->get()
+            $this->addToCartEvent->setProduct($product)->setQty($qty)->get()
         );
     }
 }

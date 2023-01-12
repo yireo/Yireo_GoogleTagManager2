@@ -13,6 +13,7 @@ class AddToCart implements EventInterface
 {
     private ProductDataMapper $productDataMapper;
     private ProductInterface $product;
+    private int $qty = 1;
     private CurrencyCode $currencyCode;
 
     /**
@@ -38,7 +39,8 @@ class AddToCart implements EventInterface
 
         return [
             'event' => 'add_to_cart',
-            'currencyCode' => $this->currencyCode->get(),
+            'currency' => $this->currencyCode->get(),
+            'value' => $this->product->getFinalPrice() * $this->qty,
             'ecommerce' => [
                 'items' => [$itemData]
             ]
@@ -52,6 +54,12 @@ class AddToCart implements EventInterface
     public function setProduct(ProductInterface $product): AddToCart
     {
         $this->product = $product;
+        return $this;
+    }
+
+    public function setQty(int $qty): AddToCart
+    {
+        $this->qty = $qty;
         return $this;
     }
 }
