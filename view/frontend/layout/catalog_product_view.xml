@@ -27,6 +27,7 @@
                                 </item>
                             </item>
                             <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
+                            <item name="currency" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
                         </item>
                     </item>
                 </argument>
