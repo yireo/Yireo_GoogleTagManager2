@@ -4,6 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -48,7 +49,7 @@ class OrderItemDataMapper
         }
 
         $orderItemData = [
-            'item_id' => $orderItem->getId(),
+            'item_id' => $orderItem->getSku(),
             'item_name' => $orderItem->getName(),
             'currency' => $order->getOrderCurrencyCode(),
             'discount' => $orderItem->getDiscountAmount(),
@@ -56,13 +57,18 @@ class OrderItemDataMapper
             'price' => $this->priceFormatter->format((float)$orderItem->getPriceInclTax())
         ];
 
+        if ($orderItem->getProductType() == Configurable::TYPE_CODE) {
+            $orderItemData['item_id'] = $orderItem->getProduct()->getSku();
+            $orderItemData['item_variant'] = $orderItem->getSku();
+        }
+
         try {
             $product = $this->productRepository->get($orderItem->getSku());
         } catch (NoSuchEntityException $e) {
             return $orderItemData;
         }
 
-        $orderItemData = array_merge_recursive($orderItemData, $this->productDataMapper->mapByProduct($product));
+        $orderItemData = array_replace_recursive($this->productDataMapper->mapByProduct($product), $orderItemData);
 
         unset($orderItemData['details']['availability']);
         if (empty($orderItemData['details'])) {
