@@ -1,6 +1,6 @@
 # TODO
+- Make the category addition to products optional
 - Check for Yireo CheckoutTester
-- Product attribute `item_category_2`
 - Option to use RectorPHP to downgrade releases for PHP 7.3 compat
 - No datalayer feedback on refunds
 - Try to reuse the XML layout again where possible

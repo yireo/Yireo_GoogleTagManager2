@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.7] - 13 January 2023
 ### Fixed
+- Use `sku` instead of `id` as `item_id` #114 (@samicoman)
+- Properly format product price #114 (@samicoman)
+- Add categories per product #114 (@samicoman)
 - Handle configurable products in purchase event #116 (@samicoman)
 
 ## [3.0.6] - 31 December 2022
