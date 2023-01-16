@@ -58,6 +58,6 @@ class GuestDataMapper
      */
     private function getGuestFields(): array
     {
-        return array_merge(['id'], $this->config->getCustomerEavAttributeCodes());
+        return array_filter(array_merge(['id'], $this->config->getCustomerEavAttributeCodes()));
     }
 }
