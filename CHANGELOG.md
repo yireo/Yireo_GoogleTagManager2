@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.8] - 16 January 2023
+### Fixed
+- Prevent failure when no eav attribute set in the config #117 (@samicoman)
+
 ## [3.0.7] - 13 January 2023
 ### Fixed
 - Use `sku` instead of `id` as `item_id` #114 (@samicoman)
