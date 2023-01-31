@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.9] - 31 January 2023
+## [3.0.10] - 31 January 2023
 ### Fixed
 - Prevent TypeError with final price #120
+
+## [3.0.9] - 20 January 2023
+### Fixed
+- Fix purchase event
+- Prevent duplication of items in the purchase event when configurable product were ordered (@samicoman)
 
 ## [3.0.8] - 16 January 2023
 ### Fixed

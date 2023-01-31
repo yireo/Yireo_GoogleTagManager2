@@ -37,6 +37,10 @@ class OrderItems implements TagInterface
 
         $orderItemsData = [];
         foreach ($order->getAllItems() as $item) {
+            if ($item->getParentItem()) {
+                continue;
+            }
+
             $orderItemsData[] = $this->orderItemDataMapper->mapByOrderItem($item, $order);
         }
 
