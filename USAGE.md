@@ -14,8 +14,13 @@ The extension has the following configuration options:
 - **Product EAV Attributes**: Product attributes to include when listing products in a specific event.
 - **Category EAV Attributes**: Category attributes to include when listing categories in a specific event.
 - **Customer EAV Attributes**: Customer attributes to include when listing customers in a specific event. Currently this is not implemented fully because of privacy regulations.
+
+# Tip: Browser extension
+Use the [DataLayer
+Checker](https://chrome.google.com/webstore/detail/datalayer-checker/ffljdddodmkedhkcjhpmdajhjdbkogke) for Chrome to
+easily see what kind of data is sent from Magento to Google Tag Manager.
  
-# Tip
+# Tip: CheckoutTester2
 When you want to track conversions in your Magento checkout, our extension helps out as well: It adds the relevant information to all your checkout and cart pages. Do you want to know which variables are on the success page? Use the [Yireo CheckoutTester](https://github.com/yireo/Yireo_CheckoutTester2) extension to preview that page and view its HTML source.
 
 Bring your towel.

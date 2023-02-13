@@ -70,7 +70,7 @@ class ProductDataMapper
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
-        $productData['price'] = $this->priceFormatter->format($product->getFinalPrice());
+        $productData['price'] = $this->priceFormatter->format((float) $product->getFinalPrice());
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
 
