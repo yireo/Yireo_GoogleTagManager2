@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.11] - 14 February 2023
+### Fixed
+- Use core method instead of custom filter #123 (@sprankhub)
+- Prevent duplication of items in the `view_item_list` event #119 (@samicoman)
+
 ## [3.0.10] - 31 January 2023
 ### Fixed
 - Prevent TypeError with final price #120
