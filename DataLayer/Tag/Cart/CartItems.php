@@ -13,18 +13,18 @@ class CartItems implements TagInterface
 {
     private CartInterface $cart;
     private CartItemDataMapper $cartItemDataMapper;
-    
+
     /**
      * @param CartItemDataMapper $cartItemDataMapper
-     * @param Session $checkoutSession
+     * @param Session $session
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
     public function __construct(
-        CartInterface $cart,
+        Session $session,
         CartItemDataMapper $cartItemDataMapper
     ) {
-        $this->cart = $cart;
+        $this->cart = $session->getQuote();
         $this->cartItemDataMapper = $cartItemDataMapper;
     }
 
