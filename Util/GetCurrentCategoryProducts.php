@@ -10,7 +10,7 @@ class GetCurrentCategoryProducts
 
     public function addProduct(ProductInterface $product)
     {
-        $this->products[] = $product;
+        $this->products[$product->getId()] = $product;
     }
 
     /**

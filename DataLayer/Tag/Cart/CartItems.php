@@ -12,7 +12,7 @@ class CartItems implements TagInterface
 {
     private CartModel $cartModel;
     private CartItemDataMapper $cartItemDataMapper;
-    
+
     /**
      * @param CartModel $cartModel
      * @param CartItemDataMapper $cartItemDataMapper
