@@ -7,10 +7,6 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
-<noscript>
-    <iframe src="//www.googletagmanager.com/ns.html?id=<?= /* @noEscape */
-    $config->getId() ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
