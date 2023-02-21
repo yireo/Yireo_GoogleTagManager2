@@ -37,3 +37,4 @@ If you have installed this extension via `composer`, simply follow the `composer
 If you have copied files to `app/code/Yireo/GoogleTagManager2/`, remove them.
 
 Next, follow your deployment procedure to copy changes to your live site. Theoretically, you can modify the `core_config_data` configuration table to remove configuration values from there. Note that Magento does not offer a solid uninstall procedure for this anyway. Double-check that the module has been removed from the `app/etc/config.php` file as well.
+

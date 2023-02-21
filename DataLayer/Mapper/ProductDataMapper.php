@@ -72,7 +72,7 @@ class ProductDataMapper
         }
 
         $productData['price'] = $this->priceFormatter->format(
-            $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
+            (float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
         );
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);

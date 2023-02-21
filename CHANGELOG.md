@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.13] - 21 February 2023
+### Fixed
+- Make sure array does not get converted to string #125
+- Removed duplicate IFRAME #126 @elioermini
+
+## [3.0.12] - 14 February 2023
+### Fixed
+- Use `Magento\Checkout\Model\Cart` instead of `CartInterface` #122
+
+## [3.0.11] - 14 February 2023
+### Fixed
+- Use core method instead of custom filter #123 (@sprankhub)
+- Prevent duplication of items in the `view_item_list` event #119 (@samicoman)
+
+## [3.0.10] - 31 January 2023
+### Fixed
+- Prevent TypeError with final price #120
+
+## [3.0.9] - 20 January 2023
+### Fixed
+- Fix purchase event
+- Prevent duplication of items in the purchase event when configurable product were ordered (@samicoman)
+
+## [3.0.8] - 16 January 2023
+### Fixed
+- Prevent failure when no eav attribute set in the config #117 (@samicoman)
+
 ## [3.0.7] - 13 January 2023
 ### Fixed
 - Use `sku` instead of `id` as `item_id` #114 (@samicoman)
