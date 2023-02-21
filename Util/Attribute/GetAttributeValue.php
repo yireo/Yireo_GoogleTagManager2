@@ -96,7 +96,7 @@ class GetAttributeValue
      */
     private function filterAttributeValue(AbstractAttribute $attribute, $attributeValue)
     {
-        if (in_array($attribute->getFrontendInput(), ['textarea', 'text'])) {
+        if (in_array($attribute->getFrontendInput(), ['textarea', 'text']) && !is_array($attributeValue)) {
             return strip_tags((string)$attributeValue);
         }
 
