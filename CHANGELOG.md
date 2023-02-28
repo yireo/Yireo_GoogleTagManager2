@@ -6,10 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.14] - 28 February 2023
+### Fixed
+- Use tax config for prices in cart/order events #129 (@samicoman)
+- Return prices as numbers instead of strings #128 (@samicoman)
+
 ## [3.0.13] - 21 February 2023
 ### Fixed
 - Make sure array does not get converted to string #125
-- Removed duplicate IFRAME #126 @elioermini
+- Removed duplicate IFRAME #126 (@elioermini)
 
 ## [3.0.12] - 14 February 2023
 ### Fixed
