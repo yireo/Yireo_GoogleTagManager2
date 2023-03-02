@@ -21,11 +21,11 @@ class AddProductDetails
 
     /**
      * @param AbstractProduct $abstractProduct
-     * @param string $html
+     * @param mixed $html
      * @param ProductInterface $product
      * @return string
      */
-    public function afterGetProductDetailsHtml(AbstractProduct $abstractProduct, string $html, ProductInterface $product)
+    public function afterGetProductDetailsHtml(AbstractProduct $abstractProduct, $html, ProductInterface $product)
     {
         try {
             $block = $this->getProductDetailsBlock();
