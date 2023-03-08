@@ -33,9 +33,9 @@ class Purchase implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => $order->getGrandTotal(),
-                'tax' => $order->getTaxAmount(),
-                'shipping' => $order->getShippingAmount(),
+                'value' => (float)$order->getGrandTotal(),
+                'tax' => (float)$order->getTaxAmount(),
+                'shipping' => (float)$order->getShippingAmount(),
                 'coupon' => $order->getCouponCode(),
                 'items' => $this->orderItems->setOrder($order)->get()
             ]
