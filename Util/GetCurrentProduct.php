@@ -31,6 +31,10 @@ class GetCurrentProduct
     public function get(): ProductInterface
     {
         $productId = (int)$this->request->getParam('id');
+        if (empty($productId)) {
+            $productId = (int)$this->request->getParam('product_id');
+        }
+    
         return $this->productRepository->getById($productId, false, $this->storeManager->getStore()->getId());
     }
 }

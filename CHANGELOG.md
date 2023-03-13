@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Cast prices to float in orders and order items #133 (@lfolco)
+- Also support product edit pages
 
 ## [3.0.15] - 7 March 2023
 ### Fixed
