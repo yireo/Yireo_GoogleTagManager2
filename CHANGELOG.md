@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.17] - 14 March 2023
+### Fixed
+- Better fix for product edit pages
+
 ## [3.0.16] - 13 March 2023
 ### Fixed
 - Cast prices to float in orders and order items #133 (@lfolco)
