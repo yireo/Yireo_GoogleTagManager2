@@ -39,10 +39,16 @@ class Product implements ArgumentInterface, ProductViewModelInterface
     private $productRepository;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * Product constructor.
      * @param RequestInterface $request
      * @param AttributesViewModelInterface $attributesViewModel
      * @param ProductRepositoryInterface $productRepository
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         RequestInterface $request,
