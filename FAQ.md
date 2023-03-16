@@ -3,6 +3,22 @@ Yes, this extension ships with native JavaScript code that works with Hyvä. Add
 
 Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
 
+# Does this extension work under PHP 8.2?
+Yes, version 3 does. Version 2 is no longer maintained, but you could use the following composer patch with `vaimo/composer-patches`:
+```bash
+{
+  "patches": {
+     "yireo/magento2-googletagmanager2": {
+        "Fix PHP 8.2 error": {
+          "source": "https://patch-diff.githubusercontent.com/raw/yireo/Yireo_GoogleTagManager2/pull/136.diff",
+          "link": "https://github.com/yireo/Yireo_GoogleTagManager2/pull/136",
+          "level": 1
+        }
+      }
+  }
+}
+```
+
 # Does this extension work together with OneStepCheckout?
 Yes, this extension works nicely together with [onestepcheckout.com](https://www.onestepcheckout.com/)
 
