@@ -15,7 +15,6 @@ class AddPaymentInfo implements EventInterface
     private string $paymentMethod;
 
     /**
-     * @param Quote $cart
      * @param CartRepositoryInterface $cartRepository
      * @param CartItems $cartItems
      */
