@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.18] - 17 March 2023
+### Fixed
+- Fix Invisible Cart Items #131 (@stijntrinos)
+
 ## [3.0.17] - 14 March 2023
 ### Fixed
 - Better fix for product edit pages
