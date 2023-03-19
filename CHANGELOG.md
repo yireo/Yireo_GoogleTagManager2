@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 19 March 2023
+### Added
+- Add additional `magento_sku` and `magento_id` to products
+
 ## [3.0.18] - 17 March 2023
 ### Fixed
 - Fix Invisible Cart Items #131 (@stijntrinos)

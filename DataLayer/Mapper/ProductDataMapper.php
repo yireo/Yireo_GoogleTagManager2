@@ -52,6 +52,7 @@ class ProductDataMapper
         $prefix = 'item_';
         $productData = [];
         $productData['item_id'] = $product->getSku();
+        $productData['item_sku'] = $product->getSku();
         $productData['magento_sku'] = $product->getSku();
         $productData['magento_id'] = $product->getId();
 
