@@ -76,7 +76,7 @@ class CategoryPageTest extends PageTestCase
             $this->assertNotEmpty($productData['item_name']);
             $this->assertNotEmpty($productData['item_id']);
             $this->assertNotEmpty($productData['item_sku']);
-            $this->assertNotEmpty($productData['item_price']);
+            $this->assertNotEmpty($productData['price']);
             $this->assertNotEmpty($productData['item_list_name']);
         }
     }

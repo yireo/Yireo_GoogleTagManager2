@@ -3,21 +3,21 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Quote\Api\Data\CartInterface;
-use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote as Cart;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 
 class AddShippingInfo implements EventInterface
 {
-    private CartInterface $cart;
+    private Cart $cart;
     private CartItems $cartItems;
 
     /**
-     * @param Quote $cart
+     * @param Cart $cart
      * @param CartItems $cartItems
      */
     public function __construct(
-        Quote $cart,
+        Cart $cart,
         CartItems $cartItems
     ) {
         $this->cart = $cart;

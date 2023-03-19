@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -19,6 +18,7 @@ class OrderItemDataMapper
     private ProductDataMapper $productDataMapper;
     private ProductRepositoryInterface $productRepository;
     private PriceFormatter $priceFormatter;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
      * @param OrderRepositoryInterface $orderRepository
