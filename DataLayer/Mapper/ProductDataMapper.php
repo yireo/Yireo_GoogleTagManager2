@@ -51,7 +51,9 @@ class ProductDataMapper
     {
         $prefix = 'item_';
         $productData = [];
-        $productData['item_id'] = $this->getAttributeValue->getProductAttributeValue($product, 'sku');
+        $productData['item_id'] = $product->getSku();
+        $productData['magento_sku'] = $product->getSku();
+        $productData['magento_id'] = $product->getId();
 
         $productFields = $this->getProductFields();
         foreach ($productFields as $productAttributeCode) {
