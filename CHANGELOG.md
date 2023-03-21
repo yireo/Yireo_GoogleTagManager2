@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reset ecommerce `dataLayer` everywhere
 - Use `window.dataLayer` instead of `dataLayer`
 
+### Added
+- Add currency and value to `view_cart` event
+
 ## [3.1.0] - 19 March 2023
 ### Fixed
 - Fix undeclared `$scopeConfig` in PHP 8.2
