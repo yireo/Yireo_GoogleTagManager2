@@ -31,7 +31,7 @@ define([
                 return;
             }
 
-            dataLayer.push(eventData);
+            window.dataLayer.push(eventData);
             return this._super(form);
         }
     };

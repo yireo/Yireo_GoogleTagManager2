@@ -20,7 +20,8 @@ define([
         }
 
         logger('page event "select_item" (js)', gtmData);
-        dataLayer.push(gtmData);
+        window.dataLayer.push({ ecommerce: null });
+        window.dataLayer.push(gtmData);
 
         if (debugClicks && confirm("Press to continue with redirect") === false) {
             event.preventDefault();

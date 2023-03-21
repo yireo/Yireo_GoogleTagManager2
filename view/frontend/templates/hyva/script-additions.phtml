@@ -46,7 +46,8 @@ $commons = $block->getCommonsViewModel();
                 }
 
                 logger('page event "select_item" (js)', gtmData);
-                dataLayer.push(gtmData);
+                window.dataLayer.push({ ecommerce: null });
+                window.dataLayer.push(gtmData);
 
                 if (YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS && confirm("Press to continue with redirect") === false) {
                     event.preventDefault();
@@ -87,6 +88,7 @@ $commons = $block->getCommonsViewModel();
                 }
 
                 logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+                window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(eventData);
 
                 if (eventData.cacheable !== true) {
@@ -102,6 +104,7 @@ $commons = $block->getCommonsViewModel();
         window.dataLayer = window.dataLayer || [];
 
         if (false === isEmpty(attributes)) {
+            window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
         }
     });
