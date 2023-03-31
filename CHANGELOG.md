@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Return price in the current currency for multi-currency stores #127 @samicoman
 - Reset ecommerce `dataLayer` everywhere
 - Use `window.dataLayer` instead of `dataLayer`
 
