@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Product category information in data layer is incomplete #138 @DuckThom
 - Return price in the current currency for multi-currency stores #127 @samicoman
 - Reset ecommerce `dataLayer` everywhere
 - Use `window.dataLayer` instead of `dataLayer`
