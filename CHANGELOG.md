@@ -5,11 +5,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Reset ecommerce `dataLayer` everywhere
+- Use `window.dataLayer` instead of `dataLayer`
+
+### Added
+- Add currency and value to `view_cart` event
+
+## [3.1.0] - 19 March 2023
+### Fixed
+- Fix undeclared `$scopeConfig` in PHP 8.2
+
+### Added
+- Add additional `magento_sku` and `magento_id` to products
+
+## [3.0.18] - 17 March 2023
+### Fixed
+- Fix Invisible Cart Items #131 (@stijntrinos)
+
+## [3.0.17] - 14 March 2023
+### Fixed
+- Better fix for product edit pages
+
+## [3.0.16] - 13 March 2023
+### Fixed
+- Cast prices to float in orders and order items #133 (@lfolco)
+- Also support product edit pages
+- Optimise GetProductsFromCategoryBlockPlugin #135
+
+## [3.0.15] - 7 March 2023
+### Fixed
+- Prevent unknown `$html` argument in plugin to cause Fatal Error, not reported here, not duplicated 
+
+## [3.0.14] - 28 February 2023
+### Fixed
+- Use tax config for prices in cart/order events #129 (@samicoman)
+- Return prices as numbers instead of strings #128 (@samicoman)
 
 ## [3.0.13] - 21 February 2023
 ### Fixed
 - Make sure array does not get converted to string #125
-- Removed duplicate IFRAME #126 @elioermini
+- Removed duplicate IFRAME #126 (@elioermini)
 
 ## [3.0.12] - 14 February 2023
 ### Fixed

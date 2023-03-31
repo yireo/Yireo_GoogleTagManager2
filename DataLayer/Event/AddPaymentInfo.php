@@ -3,7 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote as Cart;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 
@@ -15,7 +15,6 @@ class AddPaymentInfo implements EventInterface
     private string $paymentMethod;
 
     /**
-     * @param Quote $cart
      * @param CartRepositoryInterface $cartRepository
      * @param CartItems $cartItems
      */
@@ -32,6 +31,7 @@ class AddPaymentInfo implements EventInterface
      */
     public function get(): array
     {
+        /** @var Cart $cart */
         $cart = $this->cartRepository->get($this->cartId);
         return [
             'event' => 'add_payment_info',

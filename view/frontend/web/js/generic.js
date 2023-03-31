@@ -54,6 +54,7 @@ define([
         }
 
         logger('section "' + sectionName + '" changed (customerData)', gtmData);
+        window.dataLayer.push({ ecommerce: null });
         window.dataLayer.push(gtmData);
     }
 
@@ -71,6 +72,7 @@ define([
             }
 
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+            window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 
             if (eventData.cacheable !== true) {
@@ -135,6 +137,7 @@ define([
             window.dataLayer = window.dataLayer || [];
 
             if (false === isEmpty(attributes)) {
+                window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(attributes);
             }
 

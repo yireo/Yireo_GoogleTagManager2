@@ -5,25 +5,20 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\CamelCase;
 
 class CategoryDataMapper
 {
-    private CamelCase $camelCase;
     private Config $config;
     private GetAttributeValue $getAttributeValue;
 
     /**
-     * @param CamelCase $camelCase
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
      */
     public function __construct(
-        CamelCase $camelCase,
         Config $config,
         GetAttributeValue $getAttributeValue
     ) {
-        $this->camelCase = $camelCase;
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
     }

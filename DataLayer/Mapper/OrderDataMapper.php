@@ -7,7 +7,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\GetStoreName;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class OrderDataMapper
@@ -52,7 +51,7 @@ class OrderDataMapper
             'value' => $this->getValueFromOrder($order),
             'id' => $order->getIncrementId(),
             'affiliation' => $this->config->getStoreName(),
-            'revenue' => $this->priceFormatter->format((float)$order->getGrandTotal()),
+            'revenue' => $this->priceFormatter->format($order->getGrandTotal()),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
             'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),

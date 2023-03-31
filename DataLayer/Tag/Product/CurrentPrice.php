@@ -26,10 +26,10 @@ class CurrentPrice implements TagInterface
     }
 
     /**
-     * @return string
+     * @return float
      * @throws NoSuchEntityException
      */
-    public function get(): string
+    public function get(): float
     {
         $product = $this->getCurrentProduct->get();
         return $this->priceFormatter->format(

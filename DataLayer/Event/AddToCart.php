@@ -37,11 +37,12 @@ class AddToCart implements EventInterface
     public function get(): array
     {
         $itemData = $this->productDataMapper->mapByProduct($this->product);
+        $value = $this->product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue() * $this->qty;
 
         return [
             'event' => 'add_to_cart',
             'currency' => $this->currencyCode->get(),
-            'value' => $this->product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue() * $this->qty,
+            'value' => $value,
             'ecommerce' => [
                 'items' => [$itemData]
             ]

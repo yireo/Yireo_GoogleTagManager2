@@ -14,12 +14,12 @@ class RemoveFromCart implements EventInterface
     /**
      * @param CartItemDataMapper $cartItemDataMapper
      */
-    public function __construct(CartItemDataMapper $cartItemDataMapper) {
+    public function __construct(CartItemDataMapper $cartItemDataMapper)
+    {
         $this->cartItemDataMapper = $cartItemDataMapper;
     }
 
     /**
-     * @param CartItemInterface $cartItem
      * @return array
      */
     public function get(): array

@@ -33,7 +33,7 @@ class CartItems implements TagInterface
      */
     public function get(): array
     {
-        $cartItems = $this->cartModel->getQuote()->getItems();
+        $cartItems = $this->cartModel->getQuote()->getAllVisibleItems();
         if (!$cartItems) {
             return [];
         }

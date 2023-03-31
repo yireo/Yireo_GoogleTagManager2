@@ -11,10 +11,10 @@ class PriceFormatter
 {
     /**
      * @param float $price
-     * @return string
+     * @return float
      */
-    public function format(float $price): string
+    public function format(float $price): float
     {
-        return number_format($price, 2, ".", "");
+        return (float)number_format($price, 2, ".", "");
     }
 }

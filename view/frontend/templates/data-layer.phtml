@@ -14,8 +14,10 @@ $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks
 ?>
 <script>
     window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
     <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
+    window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
     <?php endforeach; ?>
 </script>

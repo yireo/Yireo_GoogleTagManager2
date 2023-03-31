@@ -2,14 +2,14 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class OrderItemDataMapper
@@ -18,24 +18,28 @@ class OrderItemDataMapper
     private ProductDataMapper $productDataMapper;
     private ProductRepositoryInterface $productRepository;
     private PriceFormatter $priceFormatter;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
      * @param OrderRepositoryInterface $orderRepository
      * @param ProductDataMapper $productDataMapper
      * @param ProductRepositoryInterface $productRepository
      * @param PriceFormatter $priceFormatter
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         OrderRepositoryInterface   $orderRepository,
         ProductDataMapper          $productDataMapper,
         ProductRepositoryInterface $productRepository,
-        PriceFormatter             $priceFormatter
+        PriceFormatter             $priceFormatter,
+        ScopeConfigInterface       $scopeConfig
     )
     {
         $this->orderRepository = $orderRepository;
         $this->productDataMapper = $productDataMapper;
         $this->productRepository = $productRepository;
         $this->priceFormatter = $priceFormatter;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -52,9 +56,9 @@ class OrderItemDataMapper
             'item_id' => $orderItem->getSku(),
             'item_name' => $orderItem->getName(),
             'currency' => $order->getOrderCurrencyCode(),
-            'discount' => $orderItem->getDiscountAmount(),
+            'discount' => (float)$orderItem->getDiscountAmount(),
             'quantity' => $orderItem->getQtyOrdered(),
-            'price' => $this->priceFormatter->format((float)$orderItem->getPriceInclTax())
+            'price' => $this->getPrice($orderItem)
         ];
 
         if ($orderItem->getProductType() == Configurable::TYPE_CODE) {
@@ -76,5 +80,27 @@ class OrderItemDataMapper
         }
 
         return $orderItemData;
+    }
+
+    private function getPrice(OrderItemInterface $orderItem): float
+    {
+        $displayType = (int)$this->scopeConfig->getValue(
+            Config::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $orderItem->getStoreId()
+        );
+
+        switch ($displayType) {
+            case Config::DISPLAY_TYPE_EXCLUDING_TAX:
+            case Config::DISPLAY_TYPE_BOTH:
+                $price = $orderItem->getPrice();
+                break;
+            case Config::DISPLAY_TYPE_INCLUDING_TAX:
+            default:
+                $price = $orderItem->getPriceInclTax();
+                break;
+        }
+
+        return $this->priceFormatter->format((float)$price);
     }
 }

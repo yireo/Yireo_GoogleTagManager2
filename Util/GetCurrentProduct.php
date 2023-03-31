@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Util;
 
@@ -23,7 +24,7 @@ class GetCurrentProduct
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
     }
-
+    
     /**
      * @return ProductInterface
      * @throws NoSuchEntityException
@@ -31,6 +32,10 @@ class GetCurrentProduct
     public function get(): ProductInterface
     {
         $productId = (int)$this->request->getParam('id');
+        if ($this->request->getActionName() === 'configure' || empty($productId)) {
+            $productId = (int)$this->request->getParam('product_id');
+        }
+        
         return $this->productRepository->getById($productId, false, $this->storeManager->getStore()->getId());
     }
 }

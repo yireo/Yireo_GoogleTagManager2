@@ -6,11 +6,13 @@ use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
+use Yireo\GoogleTagManager2\Config\Config;
 
 class GetProductsFromCategoryBlockPlugin
 {
     private CategorySize $categorySize;
     private GetCurrentCategoryProducts $getCurrentCategoryProducts;
+    private Config $config;
 
     /**
      * GetProductsFromCategoryBlockPlugin constructor.
@@ -18,10 +20,12 @@ class GetProductsFromCategoryBlockPlugin
      */
     public function __construct(
         CategorySize $categorySize,
-        GetCurrentCategoryProducts $getCurrentCategoryProducts
+        GetCurrentCategoryProducts $getCurrentCategoryProducts,
+        Config $config
     ) {
         $this->categorySize = $categorySize;
         $this->getCurrentCategoryProducts = $getCurrentCategoryProducts;
+        $this->config = $config;
     }
 
     /**
@@ -35,6 +39,10 @@ class GetProductsFromCategoryBlockPlugin
     ): AbstractCollection {
         $i = 0;
         foreach ($collection as $product) {
+            if ($this->config->getMaximumCategoryProducts() > 0 && $i > $this->config->getMaximumCategoryProducts()) {
+                break;
+            }
+    
             $this->getCurrentCategoryProducts->addProduct($product);
             $i++;
         }
