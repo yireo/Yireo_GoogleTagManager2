@@ -108,9 +108,10 @@ class ProductDataMapper
                 continue;
             }
 
-            $key = 'item_category' . ($currentCategoriesCount == 1 ? '' : $currentCategoriesCount++);
+            $key = 'item_category' . ($currentCategoriesCount === 1 ? '' : $currentCategoriesCount);
             $data[$key] = $category->getName();
 
+            $currentCategoriesCount++;
             if ($currentCategoriesCount > $maxCategoriesCount) {
                 break;
             }
