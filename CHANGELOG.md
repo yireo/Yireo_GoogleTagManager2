@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.1.1] - 31 March 2023
 ### Fixed
 - Product category information in data layer is incomplete #138 @DuckThom
 - Return price in the current currency for multi-currency stores #127 @samicoman
