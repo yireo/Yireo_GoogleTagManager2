@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
@@ -36,7 +37,7 @@ class AddToCart implements EventInterface
     public function get(): array
     {
         $itemData = $this->productDataMapper->mapByProduct($this->product);
-        $value = $this->product->getFinalPrice() * $this->qty;
+        $value = $this->product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue() * $this->qty;
 
         return [
             'event' => 'add_to_cart',

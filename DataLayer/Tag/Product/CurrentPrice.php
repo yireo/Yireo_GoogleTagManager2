@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
@@ -31,6 +32,8 @@ class CurrentPrice implements TagInterface
     public function get(): float
     {
         $product = $this->getCurrentProduct->get();
-        return $this->priceFormatter->format((float)$product->getPrice());
+        return $this->priceFormatter->format(
+            (float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
+        );
     }
 }
