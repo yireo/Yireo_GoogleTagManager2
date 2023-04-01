@@ -49,7 +49,7 @@ $commons = $block->getCommonsViewModel();
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(eventData);
 
-                if (eventData.cacheable !== true) {
+                if (eventData.meta && eventData.meta.cacheable !== true) {
                     //delete sectionData['gtm_events'][eventId]; // @todo: Is this still needed?
                     logger('invalidating sections "' + sectionName + '"', eventData)
                 }

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Option to only generate `view_cart` on the cart page
 - Move product clicks to separate template and make `productPath` configurable through layout
 
 ## [3.1.1] - 31 March 2023

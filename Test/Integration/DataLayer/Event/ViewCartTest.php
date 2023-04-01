@@ -41,7 +41,7 @@ class ViewCartTest extends TestCase
         $viewCartEvent = $om->create(ViewCart::class, ['cartItems' => $cartItems]);
 
         $data = $viewCartEvent->get();
-        $this->assertTrue($data['cacheable']);
+        $this->assertTrue($data['meta']['cacheable']);
         $this->assertEquals('view_cart', $data['event']);
         $this->assertNotEmpty($data['ecommerce']['items']);
         $this->assertEquals(2, (int)$data['ecommerce']['items'][0]['quantity']);

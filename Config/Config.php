@@ -9,6 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions;
 
 class Config implements ArgumentInterface
 {
@@ -140,6 +141,22 @@ class Config implements ArgumentInterface
         }
 
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewCartOccurances(): string
+    {
+        return $this->getModuleConfigValue('view_cart_occurances');
+    }
+
+    /**
+     * @return bool
+     */
+    public function showViewCartEventEverywhere(): bool
+    {
+        return $this->getViewCartOccurances() === ViewCartOccurancesOptions::EVERYWHERE;
     }
 
     /**

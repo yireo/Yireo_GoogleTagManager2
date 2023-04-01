@@ -77,6 +77,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>view_cart occurances</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    <comment>Where to generate the view_cart event</comment>
+                </field>
             </group>
         </section>
     </system>

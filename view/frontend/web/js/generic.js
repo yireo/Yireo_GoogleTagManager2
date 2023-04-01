@@ -72,10 +72,17 @@ define([
             }
 
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+
+            if (eventData.meta && eventData.meta.allowed_pages
+                && !eventData.meta.allowed_pages.includes(window.location.pathname)) {
+                logger('Skipping event "' + eventId + '" because it is not in allowed pages', window.location.pathname, eventData.meta.allowed_pages);
+                continue;
+            }
+
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 
-            if (eventData.cacheable !== true) {
+            if (eventData.meta && eventData.meta.cacheable !== true) {
                 delete sectionData['gtm_events'][eventId];
                 logger('invalidating sections "' + sectionName + '"', sectionData)
                 customerData.set(sectionName, sectionData);
