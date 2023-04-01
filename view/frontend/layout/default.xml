@@ -90,6 +90,17 @@
                     </argument>
                 </arguments>
             </block>
+
+            <block
+                    name="yireo_googletagmanager2.script-product-clicks"
+                    template="Yireo_GoogleTagManager2::luma/script-product-clicks.phtml"
+                    ifconfig="googletagmanager2/settings/enabled"
+                    after="yireo_googletagmanager2.data-layer"
+            >
+                <arguments>
+                    <argument name="product-path" xsi:type="string">.product-items a.product</argument>
+                </arguments>
+            </block>
         </container>
     </body>
 </page>

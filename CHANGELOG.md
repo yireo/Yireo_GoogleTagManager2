@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Move product clicks to separate template and make `productPath` configurable through layout
+
 ## [3.1.1] - 31 March 2023
 ### Fixed
 - Product category information in data layer is incomplete #138 @DuckThom

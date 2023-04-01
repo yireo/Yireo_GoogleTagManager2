@@ -17,6 +17,7 @@
                     template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
             />
         </referenceContainer>
+
         <referenceBlock
                 name="yireo_googletagmanager2.data-layer-debugging"
                 template="Yireo_GoogleTagManager2::hyva/data-layer-debugging.phtml"
@@ -28,6 +29,10 @@
         <referenceBlock
                 name="yireo_googletagmanager2.script-product-clicks"
                 template="Yireo_GoogleTagManager2::hyva/script-product-clicks.phtml"
-        />
+        >
+            <arguments>
+                <argument name="productPath" xsi:type="string">.products a.product</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
