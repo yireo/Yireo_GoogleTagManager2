@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
@@ -20,12 +19,14 @@ class ProductDataMapper
     private GetAttributeValue $getAttributeValue;
     private GetCategoryFromProduct $getCategoryFromProduct;
     private PriceFormatter $priceFormatter;
+
     private array $dataLayerMapping;
 
     /**
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
      * @param GetCategoryFromProduct $getCategoryFromProduct
+     * @param PriceFormatter $priceFormatter
      * @param array $dataLayerMapping
      */
     public function __construct(
@@ -75,7 +76,7 @@ class ProductDataMapper
         }
 
         $productData['price'] = $this->priceFormatter->format(
-            (float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
+            (float)$product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
         );
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
