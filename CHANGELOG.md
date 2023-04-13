@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.1.2] - 8 April 2023
+## [3.1.3] - 8 April 2023
 ### Fixed
 - Fixed default 'product_path' config for product clicks
 
