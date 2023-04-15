@@ -40,6 +40,7 @@ class CustomerDataMapper
         foreach ($customerFields as $customerAttributeCode) {
             $dataLayerKey = lcfirst($prefix . $this->camelCase->to($customerAttributeCode));
             $attributeValue = $this->getAttributeValue->getCustomerAttributeValue($customer, $customerAttributeCode);
+
             if (empty($attributeValue)) {
                 continue;
             }
