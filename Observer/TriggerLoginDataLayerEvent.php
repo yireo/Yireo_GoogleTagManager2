@@ -22,6 +22,8 @@ class TriggerLoginDataLayerEvent implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $this->customerSessionDataProvider->add('login_event', $this->loginEvent->get());
+        $customer = $observer->getEvent()->getCustomer();
+        $eventData = $this->loginEvent->setCustomer($customer)->get();
+        $this->customerSessionDataProvider->add('login_event', $eventData);
     }
 }

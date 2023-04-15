@@ -10,33 +10,43 @@
 
 namespace Yireo\GoogleTagManager2\Plugin;
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\CustomerData\Customer as CustomerData;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
+use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
 
 class AddDataToCustomerSection
 {
     private CustomerSession $customerSession;
     private GroupRepositoryInterface $groupRepository;
     private CustomerSessionDataProviderInterface $customerSessionDataProvider;
+    private CustomerDataMapper $customerDataMapper;
+    private CustomerRepositoryInterface $customerRepository;
 
     /**
      * Customer constructor.
      * @param CustomerSession $customerSession
      * @param GroupRepositoryInterface $groupRepository
      * @param CustomerSessionDataProviderInterface $customerSessionDataProvider
+     * @param CustomerDataMapper $customerDataMapper
+     * @param CustomerRepositoryInterface $customerRepository
      */
     public function __construct(
         CustomerSession $customerSession,
         GroupRepositoryInterface $groupRepository,
-        CustomerSessionDataProviderInterface $customerSessionDataProvider
+        CustomerSessionDataProviderInterface $customerSessionDataProvider,
+        CustomerDataMapper $customerDataMapper,
+        CustomerRepositoryInterface $customerRepository
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
         $this->customerSessionDataProvider = $customerSessionDataProvider;
+        $this->customerDataMapper = $customerDataMapper;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -77,12 +87,16 @@ class AddDataToCustomerSection
             ];
         }
 
+        $customerId = $this->customerSession->getCustomerId();
+        $customer = $this->customerRepository->getById($customerId);
+        $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
         return [
             'customerLoggedIn' => 1,
-            'customerId' => $this->customerSession->getCustomerId(),
+            'customerId' => $customerId,
             'customerGroupId' => $customerGroup->getId(),
-            'customerGroupCode' => strtoupper($customerGroup->getCode())
+            'customerGroupCode' => strtoupper($customerGroup->getCode()),
+            ...$customerGtmData
         ];
     }
 }
