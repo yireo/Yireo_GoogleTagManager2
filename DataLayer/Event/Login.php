@@ -13,7 +13,7 @@ class Login implements EventInterface
     private CustomerDataMapper $customerDataMapper;
 
     public function __construct(
-        CustomerDataMapper $customerDataMapper,
+        CustomerDataMapper $customerDataMapper
     ) {
         $this->customerDataMapper = $customerDataMapper;
     }
