@@ -28,6 +28,7 @@
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
                     <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
                     <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
