@@ -11,6 +11,7 @@
                 <category_eav_attributes>id,name</category_eav_attributes>
                 <customer_eav_attributes>id</customer_eav_attributes>
                 <view_cart_occurances>everywhere</view_cart_occurances>
+                <view_cart_on_mini_cart_expand_only>0</view_cart_on_mini_cart_expand_only>
             </settings>
         </googletagmanager2>
     </default>

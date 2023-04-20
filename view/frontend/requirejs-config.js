@@ -22,6 +22,9 @@ var config = {
             /*'Magento_Catalog/js/catalog-add-to-cart': {
                 'Yireo_GoogleTagManager2/js/mixins/catalog-add-to-cart-mixin': false
             },*/
+            'mage/dropdown': {
+                'Yireo_GoogleTagManager2/js/mixins/minicart-mixin': true
+            },
         }
     }
 };

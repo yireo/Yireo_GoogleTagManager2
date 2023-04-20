@@ -51,6 +51,7 @@ class ViewCart implements EventInterface
             'meta' => [
                 'cacheable' => true,
                 'allowed_pages' => $this->getAllowedPages(),
+                'allowed_events' => $this->getAllowedEvents(),
             ],
             'event' => 'view_cart',
             'ecommerce' => [
@@ -71,5 +72,17 @@ class ViewCart implements EventInterface
         }
 
         return ['/checkout/cart/'];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllowedEvents(): array
+    {
+        if ($this->config->showViewMiniCartOnExpandOnly()) {
+            return ['minicart_collapse'];
+        }
+
+        return [];
     }
 }

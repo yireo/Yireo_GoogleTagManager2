@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.2.0] - 20 April 2023
+### Added
+- Option to trigger `view_cart` event only when expanding minicart
+
 ### Fixed
 - Support any method in any entity with `GetAttributeValue`
 - GA4 container ID client-side validation #142 @koentjeh

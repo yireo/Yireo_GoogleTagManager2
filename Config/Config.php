@@ -160,6 +160,14 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * @return bool
+     */
+    public function showViewMiniCartOnExpandOnly(): bool
+    {
+        return (bool) $this->getModuleConfigValue('view_cart_on_mini_cart_expand_only');
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
