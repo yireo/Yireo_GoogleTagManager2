@@ -73,12 +73,25 @@ define([
 
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
-            if (eventData.meta && eventData.meta.allowed_pages
+            if (eventData.meta && eventData.meta.allowed_pages && eventData.meta.allowed_pages.length > 0
                 && !eventData.meta.allowed_pages.includes(window.location.pathname)) {
-                logger('Skipping event "' + eventId + '" because it is not in allowed pages', window.location.pathname, eventData.meta.allowed_pages);
+                logger('Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, eventData.meta.allowed_pages);
                 continue;
             }
 
+            if (eventData.meta && eventData.meta.allowed_events && eventData.meta.allowed_events.length > 0) {
+                for (const [allowedEventKey, allowedEvent] of Object.entries(eventData.meta.allowed_events)) {
+                    $(window).on(allowedEvent, function() {
+                        logger('dataLayer push', eventData);
+                        window.dataLayer.push({ ecommerce: null });
+                        window.dataLayer.push(eventData);
+                    });
+                }
+
+                continue;
+            }
+
+            logger('dataLayer push', eventData);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 

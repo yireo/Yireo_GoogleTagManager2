@@ -28,6 +28,7 @@
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
                     <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
                     <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
@@ -84,6 +85,14 @@
                         <field id="enabled">1</field>
                     </depends>
                     <comment>Where to generate the view_cart event</comment>
+                </field>
+                <field id="view_cart_on_mini_cart_expand_only" type="select" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>view_cart only with expanded minicart</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="view_cart_occurances">everywhere</field>
+                    </depends>
+                    <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
             </group>
         </section>
