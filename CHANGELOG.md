@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.1] - 10 May 2023
+### Added
+- Option for custom URL for `gtm.js` icw server-side analytics (@WouterSteen)
+
 ## [3.2.0] - 20 April 2023
 ### Added
 - Option to trigger `view_cart` event only when expanding minicart
