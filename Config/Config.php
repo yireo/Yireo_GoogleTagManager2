@@ -56,6 +56,12 @@ class Config implements ArgumentInterface
         return true;
     }
 
+    /**
+     *
+     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
+     *
+     * @return string
+     */
     public function getGoogleTagmanagerUrl(): string
     {
         return $this->getModuleConfigValue(
