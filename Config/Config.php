@@ -56,6 +56,20 @@ class Config implements ArgumentInterface
         return true;
     }
 
+    public function getGoogleTagmanagerUrl(): string
+    {
+        $googleTagmanagerUrl = 'www.googletagmanager.com';
+
+        if ($this->getModuleConfigValue('serverside_gtm_url')) {
+            $googleTagmanagerUrl = $this->getModuleConfigValue(
+                'serverside_gtm_url',
+                ScopeInterface::SCOPE_STORE
+            );
+        }
+
+        return $googleTagmanagerUrl;
+    }
+
     /**
      * Check whether the module is in debugging mode
      *

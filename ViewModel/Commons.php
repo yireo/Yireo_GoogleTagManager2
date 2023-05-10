@@ -52,6 +52,7 @@ class Commons implements ArgumentInterface
         $configuration['data_layer'] = $this->dataLayer->getDataLayer();
         $configuration['id'] = $this->config->getId();
         $configuration['debug'] = $this->config->isDebug();
+        $configuration['gtm_url'] = $this->config->getGoogleTagmanagerUrl();
         return $configuration;
     }
 
