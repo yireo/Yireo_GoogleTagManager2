@@ -35,9 +35,9 @@
                 </field>
                 <field id="serverside_gtm_url" type="text" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container URL</label>
-                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of www.googletagmanager.com.
-                    Default output: gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
-                    <b>Keep in mind</b>; use an url without https://. ]]></comment>
+                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
+                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
+                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
                 </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
