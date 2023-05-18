@@ -8,8 +8,11 @@ define([
     return function (shippingSaveProcessor) {
         shippingSaveProcessor.saveShippingInformation = wrapper.wrapSuper(shippingSaveProcessor.saveShippingInformation, function (type) {
             const rt = this._super(type);
-            logger('shipping-save-processor-mixin', type);
-            customerData.reload(['cart'], true);
+            rt.done(function() {
+                logger('shipping-save-processor-mixin', type);
+                customerData.reload(['gtm-checkout'], true);
+            });
+
             return rt;
         })
 

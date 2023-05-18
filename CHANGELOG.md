@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.2] - 18 May 2023
+### Fixed
+- Triggering shipping and payment events on the spot, instead of delayed
+- Adding customData section `gtm-checkout` for reloading things in checkout
+
 ## [3.2.1] - 10 May 2023
 ### Added
 - Option for custom URL for `gtm.js` icw server-side analytics (@WouterSteen)
