@@ -16,7 +16,7 @@ var config = {
     },
     config: {
         mixins: {
-            'Magento_Checkout/js/model/shipping-save-processor': {
+            'Magento_Checkout/js/model/shipping-save-processor/default': {
                 'Yireo_GoogleTagManager2/js/mixins/shipping-save-processor-mixin': true
             },
             /*'Magento_Catalog/js/catalog-add-to-cart': {

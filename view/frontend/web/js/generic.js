@@ -95,7 +95,7 @@ define([
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 
-            if (eventData.meta && eventData.meta.cacheable !== true) {
+            if (!eventData.meta || eventData.meta.cacheable !== true) {
                 delete sectionData['gtm_events'][eventId];
                 logger('invalidating sections "' + sectionName + '"', sectionData)
                 customerData.set(sectionName, sectionData);
@@ -124,7 +124,7 @@ define([
     }
 
     var getSectionNames = function () {
-        return ['cart', 'customer'];
+        return ['cart', 'customer', 'gtm-checkout'];
     }
 
     var isEmpty = function (variable) {
