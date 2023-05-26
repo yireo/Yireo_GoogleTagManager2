@@ -5,7 +5,7 @@ namespace Yireo\GoogleTagManager2\DataLayer;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
+use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use RuntimeException;
 

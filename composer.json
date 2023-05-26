@@ -30,6 +30,7 @@
     "psr/log": "^1.0",
     "php": "^7.4|^8.1",
     "ext-json": "*",
+    "ext-dom": "*",
     "ext-pcre": "*"
   },
   "require-dev": {
