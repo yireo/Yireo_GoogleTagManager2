@@ -8,6 +8,7 @@ use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
+use Yireo\GoogleTagManager2\Exception\BlockNotFound;
 
 class DataLayer implements ArgumentInterface
 {
@@ -86,7 +87,7 @@ class DataLayer implements ArgumentInterface
      */
     public function toJson(array $data): string
     {
-        return (string) $this->serializer->serialize($data);
+        return (string)$this->serializer->serialize($data);
     }
 
     /**
@@ -100,10 +101,17 @@ class DataLayer implements ArgumentInterface
     }
 
     /**
-     * @return bool|BlockInterface
+     * @return BlockInterface
+     * @throws BlockNotFound
      */
     private function getDataLayerBlock(): BlockInterface
     {
-        return $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $blockName = 'yireo_googletagmanager2.data-layer';
+        $block = $this->layout->getBlock($blockName);
+        if ($block instanceof BlockInterface) {
+            return $block;
+        }
+
+        throw new BlockNotFound('Block "' . $blockName . '" not found');
     }
 }
