@@ -142,7 +142,7 @@ class Config implements ArgumentInterface
             return $storeName;
         }
 
-        return (string) $this->storeManager->getDefaultStoreView()->getName();
+        return (string)$this->storeManager->getDefaultStoreView()->getName();
     }
 
     /**
@@ -178,7 +178,7 @@ class Config implements ArgumentInterface
      */
     public function showViewMiniCartOnExpandOnly(): bool
     {
-        return (bool) $this->getModuleConfigValue('view_cart_on_mini_cart_expand_only');
+        return (bool)$this->getModuleConfigValue('view_cart_on_mini_cart_expand_only');
     }
 
     /**
