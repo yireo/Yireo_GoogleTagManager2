@@ -10,6 +10,7 @@ define([
 
                 if (gtmData === null || gtmData === undefined) {
                     logger('skipped "begin_checkout" event because data is empty')
+                    return;
                 }
 
                 logger('page event "begin_checkout" (js)', gtmData);
