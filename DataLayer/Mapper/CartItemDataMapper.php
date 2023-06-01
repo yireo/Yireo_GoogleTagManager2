@@ -42,7 +42,7 @@ class CartItemDataMapper
         $cartItemData = [
             'item_id' => $cartItem->getId(),
             'item_name' => $cartItem->getName(),
-            'quantity' => $cartItem->getQty(),
+            'quantity' => (int) $cartItem->getQty(),
             'price' => $this->getPrice($cartItem)
         ];
 
