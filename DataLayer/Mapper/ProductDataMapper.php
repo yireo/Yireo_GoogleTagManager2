@@ -105,7 +105,11 @@ class ProductDataMapper
         $currentCategoriesCount = 1;
 
         foreach ($this->getCategoryFromProduct->getAll($product) as $category) {
-            if ($category->getParentId() == 1) {
+            if ((int)$category->getParentId() === 1) {
+                continue;
+            }
+
+            if (false === (bool)$category->getIsActive()) {
                 continue;
             }
 

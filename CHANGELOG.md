@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.2.5] - 6 June 2023
 ### Fixed
 - Make sure `quantity` is a `float` not an `int`
+- Alt approach for bypassing non-active categories
 
 ## [3.2.4] - 6 June 2023
 ### Added

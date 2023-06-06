@@ -64,12 +64,6 @@ class GetCategoryFromProduct
             ->setValue($categoryIds)
             ->create();
 
-        $filters[] = $this->filterBuilder
-            ->setField('is_active')
-            ->setConditionType('eq')
-            ->setValue(1)
-            ->create();
-
         $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
