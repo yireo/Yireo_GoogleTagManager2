@@ -57,7 +57,7 @@ class OrderItemDataMapper
             'item_name' => $orderItem->getName(),
             'currency' => $order->getOrderCurrencyCode(),
             'discount' => (float) $orderItem->getDiscountAmount(),
-            'quantity' => (int) $orderItem->getQtyOrdered(),
+            'quantity' => (float) $orderItem->getQtyOrdered(),
             'price' => $this->getPrice($orderItem)
         ];
 

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.5] - 6 June 2023
+### Fixed
+- Make sure `quantity` is a `float` not an `int`
+
 ## [3.2.4] - 6 June 2023
 ### Added
 - New `etc/data_layer.xml` to extend on global level (instead of using XML layout)
