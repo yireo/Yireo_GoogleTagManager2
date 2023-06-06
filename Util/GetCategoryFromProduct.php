@@ -57,13 +57,19 @@ class GetCategoryFromProduct
 
         $this->searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
 
-        $filters = [
-            $this->filterBuilder
-                ->setField('entity_id')
-                ->setConditionType('in')
-                ->setValue($categoryIds)
-                ->create()
-        ];
+        $filters = [];
+        $filters[] = $this->filterBuilder
+            ->setField('entity_id')
+            ->setConditionType('in')
+            ->setValue($categoryIds)
+            ->create();
+
+        $filters[] = $this->filterBuilder
+            ->setField('is_active')
+            ->setConditionType('eq')
+            ->setValue(1)
+            ->create();
+
         $this->searchCriteriaBuilder->addFilters($filters);
         $searchCriteria = $this->searchCriteriaBuilder->create();
 

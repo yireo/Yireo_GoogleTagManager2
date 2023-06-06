@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New `etc/data_layer.xml` to extend on global level (instead of using XML layout)
 
+### Fixed
+- Categories of product should be enabled to be displayed
+
 ## [3.2.3] - 26 May 2023
 ### Fixed
 - Rewrite splat into `array_merge` because of PHP 7.4 (#152)
