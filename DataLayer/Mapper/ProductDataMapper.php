@@ -101,15 +101,16 @@ class ProductDataMapper
      */
     private function attachCategoriesData(ProductInterface $product, array $data): array
     {
+        try {
+            $categories = $this->getCategoryFromProduct->getAll($product);
+        } catch (NoSuchEntityException $e) {
+            return [];
+        }
+
         $maxCategoriesCount = 5;
         $currentCategoriesCount = 1;
-
-        foreach ($this->getCategoryFromProduct->getAll($product) as $category) {
+        foreach ($categories as $category) {
             if ((int)$category->getParentId() === 1) {
-                continue;
-            }
-
-            if (false === (bool)$category->getIsActive()) {
                 continue;
             }
 

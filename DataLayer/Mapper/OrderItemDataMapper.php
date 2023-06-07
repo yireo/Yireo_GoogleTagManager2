@@ -9,6 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -28,13 +29,12 @@ class OrderItemDataMapper
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        OrderRepositoryInterface   $orderRepository,
-        ProductDataMapper          $productDataMapper,
+        OrderRepositoryInterface $orderRepository,
+        ProductDataMapper $productDataMapper,
         ProductRepositoryInterface $productRepository,
-        PriceFormatter             $priceFormatter,
-        ScopeConfigInterface       $scopeConfig
-    )
-    {
+        PriceFormatter $priceFormatter,
+        ScopeConfigInterface $scopeConfig
+    ) {
         $this->orderRepository = $orderRepository;
         $this->productDataMapper = $productDataMapper;
         $this->productRepository = $productRepository;
@@ -86,7 +86,7 @@ class OrderItemDataMapper
     {
         $displayType = (int)$this->scopeConfig->getValue(
             Config::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            ScopeInterface::SCOPE_STORE,
             $orderItem->getStoreId()
         );
 
