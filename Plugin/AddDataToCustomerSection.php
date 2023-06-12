@@ -91,12 +91,11 @@ class AddDataToCustomerSection
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
-        return [
+        return array_merge([
             'customerLoggedIn' => 1,
             'customerId' => $customerId,
             'customerGroupId' => $customerGroup->getId(),
-            'customerGroupCode' => strtoupper($customerGroup->getCode()),
-            ...$customerGtmData
-        ];
+            'customerGroupCode' => strtoupper($customerGroup->getCode())
+        ], $customerGtmData);
     }
 }

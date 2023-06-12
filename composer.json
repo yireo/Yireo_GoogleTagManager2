@@ -1,6 +1,6 @@
 {
   "name": "yireo/magento2-googletagmanager2",
-  "version": "3.2.2",
+  "version": "3.2.6",
   "license": "OSL-3.0",
   "type": "magento2-module",
   "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager2",
@@ -30,6 +30,7 @@
     "psr/log": "^1.0",
     "php": "^7.4|^8.1",
     "ext-json": "*",
+    "ext-dom": "*",
     "ext-pcre": "*"
   },
   "require-dev": {

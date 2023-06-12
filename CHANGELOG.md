@@ -3,8 +3,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
+
+## [3.2.6] - 7 June 2023
+### Fixed
+- Make sure no-such-entity-exception doesnt break production
+- Make sure to filter categories by `entity_id` AND `is_active`
+
+## [3.2.5] - 6 June 2023
+### Fixed
+- Make sure `quantity` is a `float` not an `int`
+- Alt approach for bypassing non-active categories
+
+## [3.2.4] - 6 June 2023
+### Added
+- New `etc/data_layer.xml` to extend on global level (instead of using XML layout)
+
+### Fixed
+- Categories of product should be enabled to be displayed
+
+## [3.2.3] - 26 May 2023
+### Fixed
+- Rewrite splat into `array_merge` because of PHP 7.4 (#152)
+- Add log to `CustomerSessionDataProvider` (@gaeldelmer)
+- Execute `begin_checkout` event using checkout step navigator (@koentjeh #148)
 
 ## [3.2.2] - 18 May 2023
 ### Fixed

@@ -31,4 +31,25 @@
             <argument name="fileName" xsi:type="string">var/log/yireo_googletagmanager2.log</argument>
         </arguments>
     </virtualType>
+
+    <type name="Yireo\GoogleTagManager2\Config\XmlConfig">
+        <arguments>
+            <argument name="dataStorage" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\VirtualData</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Yireo\GoogleTagManager2\Config\XmlConfig\VirtualData" type="Magento\Framework\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\Reader</argument>
+            <argument name="cacheId" xsi:type="string">data_layer</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Yireo\GoogleTagManager2\Config\XmlConfig\Reader">
+        <arguments>
+            <argument name="fileName" xsi:type="string">data_layer.xml</argument>
+            <argument name="converter" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\SchemaLocator</argument>
+        </arguments>
+    </type>
 </config>
