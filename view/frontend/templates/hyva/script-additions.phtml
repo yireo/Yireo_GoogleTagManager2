@@ -50,8 +50,7 @@ $commons = $block->getCommonsViewModel();
                     delete eventData.meta;
                 }
 
-                logger('customerData section "' + sectionName + '" contains event "' + eventId + '"');
-                logger('dataLayer push', eventData);
+                logger('push (customerData "' + sectionName + '"  event "' + eventId + '")', eventData);
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(eventData);
 
@@ -59,11 +58,10 @@ $commons = $block->getCommonsViewModel();
             }
         });
 
-        logger('initial state (js)', attributes);
         window.dataLayer = window.dataLayer || [];
 
         if (false === isEmpty(attributes)) {
-            logger('dataLayer push', attributes);
+            logger('dataLayer (initial js) [script-additions.phtml]', attributes);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
         }

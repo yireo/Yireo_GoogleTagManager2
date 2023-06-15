@@ -20,8 +20,7 @@ define([
                 }
             }
 
-            logger('page event "select_item" (js)');
-            logger('dataLayer push', eventData);
+            logger('push (page event "select_item") [clicks.js]', eventData);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 

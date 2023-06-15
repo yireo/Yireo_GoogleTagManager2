@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `parent()` might cause issues with nesting HTML #157 @koentjeh
 - Only point `item_id` towards product ID and add a new `order_item_id`
 - Make logging with colors more consistant
+- Rename `purchase` event to `purchase_event` to comply to module standard
 
 ## [3.3.0] - 12 June 2023
 ### Added

@@ -13,8 +13,7 @@ define([
                     return;
                 }
 
-                logger('page event "begin_checkout" (js)');
-                logger('dataLayer push', eventData);
+                logger('push (page event "begin_checkout") [step-navigator-mixin.js]', eventData);
                 window.dataLayer.push({ecommerce: null});
                 window.dataLayer.push(eventData);
             }

@@ -53,8 +53,7 @@ define([
             return;
         }
 
-        logger('section "' + sectionName + '" changed (customerData)');
-        logger('dataLayer push', eventData);
+        logger('push (customerData "' + sectionName + '" changed) [generic.js]', eventData);
         window.dataLayer.push({ ecommerce: null });
         window.dataLayer.push(eventData);
     }
@@ -81,14 +80,14 @@ define([
 
             if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
                 && !metaData.allowed_pages.includes(window.location.pathname)) {
-                logger('Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, metaData.allowed_pages);
+                logger('Warning: Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, metaData.allowed_pages);
                 continue;
             }
 
             if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
                 for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
                     $(window).on(allowedEvent, function() {
-                        logger('dataLayer push', eventData);
+                        logger('push (allowed event "' + allowedEventKey + '") [generic.js]', eventData);
                         window.dataLayer.push({ ecommerce: null });
                         window.dataLayer.push(eventData);
                     });
@@ -97,7 +96,7 @@ define([
                 continue;
             }
 
-            logger('dataLayer push', eventData);
+            logger('push (event from customerData "' + sectionName + '") [generic.js]', eventData);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 
@@ -163,7 +162,7 @@ define([
             window.dataLayer = window.dataLayer || [];
 
             if (false === isEmpty(attributes)) {
-                logger('dataLayer push', attributes);
+                logger('push (attributes) [generic.js]', attributes);
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(attributes);
             }

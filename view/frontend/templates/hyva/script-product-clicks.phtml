@@ -44,8 +44,7 @@ $productPath = $block->getProductPath();
                     }
                 }
 
-                logger('page event "select_item" (js)');
-                logger('dataLayer push', eventData);
+                logger('push (page event "select_item") [script-product-clicks.phtml]', eventData);
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(eventData);
 

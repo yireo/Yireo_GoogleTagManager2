@@ -28,7 +28,7 @@ define([
                 return;
             }
 
-            logger('dataLayer push', eventData);
+            logger('push [catalog-add-to-cart-mixin.js]', eventData);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
             return this._super(form);

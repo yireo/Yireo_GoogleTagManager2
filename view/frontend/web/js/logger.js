@@ -6,7 +6,7 @@ define([], function () {
         }
 
         var color = 'gray';
-        if (args[0].toLowerCase().startsWith('datalayer')) {
+        if (args[0].toLowerCase().startsWith('push')) {
             color = 'green';
         }
 
