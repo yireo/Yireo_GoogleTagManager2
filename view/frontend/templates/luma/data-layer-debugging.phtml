@@ -11,12 +11,12 @@ $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks
 ?>
 <script>
     require(['yireoGoogleTagManagerLogger'], function (logger) {
-        logger('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+        logger('push (initial) [data-layer.phtml]', <?= /* @noEscape */ $dataLayerJson ?>);
     });
 
     <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
     require(['yireoGoogleTagManagerLogger'], function (logger) {
-        logger('event (page)', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+        logger('push (event) [data-layer.phtml]', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
     });
     <?php endforeach; ?>
 </script>

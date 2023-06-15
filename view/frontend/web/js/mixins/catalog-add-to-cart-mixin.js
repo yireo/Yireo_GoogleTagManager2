@@ -24,13 +24,12 @@ define([
                 }
             };
 
-            logger('catalog-add-to-cart-mixin event', eventData);
-            logger('catalog-add-to-cart-mixin productData', productData);
-
             if (debugClicks && confirm("Press to continue with add-to-cart") === false) {
                 return;
             }
 
+            logger('push [catalog-add-to-cart-mixin.js]', eventData);
+            window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
             return this._super(form);
         }

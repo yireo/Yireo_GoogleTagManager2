@@ -6,16 +6,16 @@ define([
     return function (stepNavigator) {
         stepNavigator.steps.subscribe(function (steps) {
             if (steps[0].isVisible()) {
-                const gtmData = window['YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT'];
+                const eventData = window['YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT'];
 
-                if (gtmData === null || gtmData === undefined) {
+                if (eventData === null || eventData === undefined) {
                     logger('skipped "begin_checkout" event because data is empty')
                     return;
                 }
 
-                logger('page event "begin_checkout" (js)', gtmData);
+                logger('push (page event "begin_checkout") [step-navigator-mixin.js]', eventData);
                 window.dataLayer.push({ecommerce: null});
-                window.dataLayer.push(gtmData);
+                window.dataLayer.push(eventData);
             }
         });
         return stepNavigator;

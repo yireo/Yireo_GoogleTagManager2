@@ -9,7 +9,7 @@ define([
         shippingSaveProcessor.saveShippingInformation = wrapper.wrapSuper(shippingSaveProcessor.saveShippingInformation, function (type) {
             const rt = this._super(type);
             rt.done(function() {
-                logger('shipping-save-processor-mixin', type);
+                logger('customerData reload (shipping-save-processor-mixin.js)', type);
                 customerData.reload(['gtm-checkout'], true);
             });
 

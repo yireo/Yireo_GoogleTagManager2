@@ -45,23 +45,23 @@ $commons = $block->getCommonsViewModel();
                     continue;
                 }
 
-                logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+                const metaData = eventData.meta;
+                if (metaData) {
+                    delete eventData.meta;
+                }
+
+                logger('push (customerData "' + sectionName + '"  event "' + eventId + '")', eventData);
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(eventData);
-
-                if (eventData.meta && eventData.meta.cacheable !== true) {
-                    //delete sectionData['gtm_events'][eventId]; // @todo: Is this still needed?
-                    logger('invalidating sections "' + sectionName + '"', eventData)
-                }
 
                 eventData.triggered = true;
             }
         });
 
-        logger('initial state (js)', attributes);
         window.dataLayer = window.dataLayer || [];
 
         if (false === isEmpty(attributes)) {
+            logger('dataLayer (initial js) [script-additions.phtml]', attributes);
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(attributes);
         }

@@ -13,8 +13,8 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
-    logger('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
+    logger('push (initial page) [data-layer.phtml]', <?= /* @noEscape */ $dataLayerJson ?>);
     <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
-        logger('event (page)', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+        logger('push (page-based event) [data-layer.phtml]', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
     <?php endforeach; ?>
 </script>
