@@ -13,14 +13,8 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ ecommerce: null });
-    window.dataLayer.push(<?= /* @noEscape */ $dataLayerJson ?>);
+    yireoGoogleTagManager2Pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
     <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
-    window.dataLayer.push({ ecommerce: null });
-    window.dataLayer.push(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
+    yireoGoogleTagManager2Pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (page-based event) [data-layer.phtml]');
     <?php endforeach; ?>
 </script>
-<?php if($config->isDebug()): ?>
-    <?= $block->getChildBlock('debugging')->setData(['data_layer_view_model' => $dataLayerViewModel])->toHtml() ?>
-<?php endif; ?>

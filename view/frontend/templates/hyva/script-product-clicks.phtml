@@ -44,9 +44,7 @@ $productPath = $block->getProductPath();
                     }
                 }
 
-                logger('push (page event "select_item") [script-product-clicks.phtml]', eventData);
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(eventData);
+                yireoGoogleTagManager2Pusher(eventData, 'push (page event "select_item") [script-product-clicks.phtml]');
 
                 if (YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS && confirm("Press to continue with redirect") === false) {
                     event.preventDefault();

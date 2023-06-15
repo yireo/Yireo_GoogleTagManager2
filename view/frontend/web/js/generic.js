@@ -11,8 +11,9 @@ define([
     'uiComponent',
     'Magento_Customer/js/customer-data',
     'yireoGoogleTagManagerLogger',
+    'yireoGoogleTagManagerPush',
     'knockout'
-], function ($, _, Component, customerData, logger, ko) {
+], function ($, _, Component, customerData, logger, pusher, ko) {
     'use strict';
 
     var moduleConfig = {};
@@ -53,9 +54,7 @@ define([
             return;
         }
 
-        logger('push (customerData "' + sectionName + '" changed) [generic.js]', eventData);
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push(eventData);
+        pusher(eventData, 'push (customerData "' + sectionName + '" changed) [generic.js]');
     }
 
     var processGtmEventsFromSection = function (sectionName) {
@@ -67,10 +66,6 @@ define([
         }
 
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-            if (eventData.triggered === true) {
-                continue;
-            }
-
             const metaData = eventData.meta;
             if (metaData) {
                 delete eventData.meta;
@@ -86,27 +81,21 @@ define([
 
             if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
                 for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
-                    $(window).on(allowedEvent, function() {
-                        logger('push (allowed event "' + allowedEventKey + '") [generic.js]', eventData);
-                        window.dataLayer.push({ ecommerce: null });
-                        window.dataLayer.push(eventData);
+                    $(window).on(allowedEvent, function () {
+                        pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
                     });
                 }
 
                 continue;
             }
 
-            logger('push (event from customerData "' + sectionName + '") [generic.js]', eventData);
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(eventData);
+            pusher(eventData, 'push (event from customerData "' + sectionName + '") [generic.js]');
 
             if (!metaData || metaData.cacheable !== true) {
                 delete sectionData['gtm_events'][eventId];
                 logger('invalidating sections "' + sectionName + '"', sectionData)
                 customerData.set(sectionName, sectionData);
             }
-
-            eventData.triggered = true;
         }
     }
 
@@ -162,9 +151,7 @@ define([
             window.dataLayer = window.dataLayer || [];
 
             if (false === isEmpty(attributes)) {
-                logger('push (attributes) [generic.js]', attributes);
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(attributes);
+                pusher(attributes, 'push (attributes) [generic.js]');
             }
 
             sectionNames.forEach(function (sectionName) {

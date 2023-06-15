@@ -1,7 +1,7 @@
 define([
     'jquery',
-    'yireoGoogleTagManagerLogger'
-], function($, logger) {
+    'yireoGoogleTagManagerPush'
+], function($, pusher) {
     return function(config, element) {
         const productPath = config.productPath || '.product-items a.product';
         $(productPath).click(function(event) {
@@ -20,9 +20,7 @@ define([
                 }
             }
 
-            logger('push (page event "select_item") [clicks.js]', eventData);
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(eventData);
+            pusher(eventData, 'push (page event "select_item") [clicks.js]');
 
             if (debugClicks && confirm("Press to continue with redirect") === false) {
                 event.preventDefault();

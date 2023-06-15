@@ -38,7 +38,7 @@
         <container name="yireo_googletagmanager2.data-layer.container" after="before.body.end">
             <block
                     name="yireo_googletagmanager2.data-layer"
-                    template="Yireo_GoogleTagManager2::data-layer.phtml"
+                    template="Yireo_GoogleTagManager2::luma/data-layer.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
@@ -68,12 +68,6 @@
                         </item>
                     </argument>
                 </arguments>
-                <block
-                        name="yireo_googletagmanager2.data-layer-debugging"
-                        as="debugging"
-                        template="Yireo_GoogleTagManager2::luma/data-layer-debugging.phtml"
-                        ifconfig="googletagmanager2/settings/debug"
-                />
             </block>
 
             <block

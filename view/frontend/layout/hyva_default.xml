@@ -14,14 +14,14 @@
         <referenceContainer name="after.body.start">
             <block
                     name="yireo_googletagmanager2.logger-script"
-                    template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
+                    template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
+            />
+            <block
+                name="yireo_googletagmanager2.logger-script"
+                template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
             />
         </referenceContainer>
 
-        <referenceBlock
-                name="yireo_googletagmanager2.data-layer-debugging"
-                template="Yireo_GoogleTagManager2::hyva/data-layer-debugging.phtml"
-        />
         <referenceBlock
                 name="yireo_googletagmanager2.script-additions"
                 template="Yireo_GoogleTagManager2::hyva/script-additions.phtml"

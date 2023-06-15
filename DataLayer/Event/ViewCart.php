@@ -16,27 +16,23 @@ class ViewCart implements EventInterface
     private CartItems $cartItems;
     private CartValue $cartValue;
     private CurrencyCode $currencyCode;
-    private RequestInterface $request;
     private Config $config;
 
     /**
      * @param CartItems $cartItems
      * @param CartValue $cartValue
      * @param CurrencyCode $currencyCode
-     * @param RequestInterface $request
      * @param Config $config
      */
     public function __construct(
         CartItems $cartItems,
         CartValue $cartValue,
         CurrencyCode $currencyCode,
-        RequestInterface $request,
         Config $config
     ) {
         $this->cartItems = $cartItems;
         $this->cartValue = $cartValue;
         $this->currencyCode = $currencyCode;
-        $this->request = $request;
         $this->config = $config;
     }
 

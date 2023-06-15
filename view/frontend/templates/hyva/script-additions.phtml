@@ -17,6 +17,8 @@ $commons = $block->getCommonsViewModel();
 ?>
 <script>
     window.addEventListener('private-content-loaded', function(event) {
+        window.dataLayer = window.dataLayer || [];
+
         var isEmpty = function (variable) {
             if (typeof variable === 'undefined') {
                 return true;
@@ -41,29 +43,17 @@ $commons = $block->getCommonsViewModel();
 
             const gtmEvents = event.detail.data[sectionName].gtm_events;
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-                if (eventData.triggered === true) {
-                    continue;
-                }
-
                 const metaData = eventData.meta;
                 if (metaData) {
                     delete eventData.meta;
                 }
 
-                logger('push (customerData "' + sectionName + '"  event "' + eventId + '")', eventData);
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(eventData);
-
-                eventData.triggered = true;
+                yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
             }
         });
 
-        window.dataLayer = window.dataLayer || [];
-
         if (false === isEmpty(attributes)) {
-            logger('dataLayer (initial js) [script-additions.phtml]', attributes);
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
+            yireoGoogleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
         }
     });
 </script>

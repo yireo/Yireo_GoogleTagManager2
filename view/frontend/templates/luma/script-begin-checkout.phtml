@@ -8,5 +8,5 @@ use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 ?>
 <script>
-    window['YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT'] = <?= json_encode($beginCheckoutEvent->get()) ?>
+    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= json_encode($beginCheckoutEvent->get()) ?>
 </script>

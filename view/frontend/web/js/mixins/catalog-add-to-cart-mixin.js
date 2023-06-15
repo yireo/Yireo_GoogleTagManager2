@@ -1,7 +1,8 @@
 define([
     'jquery',
-    'yireoGoogleTagManagerLogger'
-], function ($, logger) {
+    'yireoGoogleTagManagerPush',
+    'yireoGoogleTagManagerLogger',
+], function ($, pusher, logger) {
     'use strict';
 
     var mixin = {
@@ -28,9 +29,7 @@ define([
                 return;
             }
 
-            logger('push [catalog-add-to-cart-mixin.js]', eventData);
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(eventData);
+            pusher(eventData, 'push [catalog-add-to-cart-mixin.js]');
             return this._super(form);
         }
     };
