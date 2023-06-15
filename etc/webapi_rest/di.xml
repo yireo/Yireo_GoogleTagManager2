@@ -7,4 +7,14 @@
     <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
         <plugin name="Yireo_GoogleTagManager2::triggerAddPaymentInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddPaymentInfoDataLayerEvent"/>
     </type>
+
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="Yireo_GoogleTagManager2::triggerAddGuestPaymentInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddGuestPaymentInfoDataLayerEvent"/>
+    </type>
+
+    <!--
+    <type name="Magento\Checkout\Api\TotalsInformationManagementInterface">
+        <plugin name="Yireo_GoogleTagManager2::triggerAddShippingInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddShippingInfoDataLayerEvent"/>
+    </type>
+    -->
 </config>
