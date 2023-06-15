@@ -23,11 +23,10 @@ class CartValue implements TagInterface
     }
 
     /**
-     * @return array
-     * @throws NoSuchEntityException
+     * @return string
      */
     public function get(): string
     {
-        return number_format($this->cartModel->getQuote()->getBaseGrandTotal(), 4, '.');
+        return number_format((float)$this->cartModel->getQuote()->getBaseGrandTotal(), 4, '.');
     }
 }
