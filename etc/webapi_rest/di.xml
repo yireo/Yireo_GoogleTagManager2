@@ -9,7 +9,7 @@
     </type>
 
     <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
-        <plugin name="Yireo_GoogleTagManager2::triggerAddGuestPaymentInfoDataLayerEvent" type="\Yireo\GoogleTagManager2\Plugin\TriggerAddGuestPaymentInfoDataLayerEvent"/>
+        <plugin name="Yireo_GoogleTagManager2::triggerAddGuestPaymentInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddGuestPaymentInfoDataLayerEvent"/>
     </type>
 
     <!--
