@@ -37,16 +37,17 @@ $productPath = $block->getProductPath();
                 const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
                 productData.item_id = productId;
 
-                const gtmData = {
+                const eventData = {
                     'event': 'select_item',
                     'ecommerce': {
                         'items': [productData]
                     }
                 }
 
-                logger('page event "select_item" (js)', gtmData);
+                logger('page event "select_item" (js)');
+                logger('dataLayer push', eventData);
                 window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(gtmData);
+                window.dataLayer.push(eventData);
 
                 if (YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS && confirm("Press to continue with redirect") === false) {
                     event.preventDefault();

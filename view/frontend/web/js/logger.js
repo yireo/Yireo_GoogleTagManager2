@@ -5,7 +5,16 @@ define([], function () {
             return;
         }
 
-        var css = 'color:white; background-color:green; padding:1px;'
+        var color = 'gray';
+        if (args[0].toLowerCase().startsWith('datalayer')) {
+            color = 'green';
+        }
+
+        if (args[0].toLowerCase().startsWith('warning')) {
+            color = 'orange';
+        }
+
+        var css = 'color:white; background-color:' + color + '; padding:1px;'
         console.log('%cYireo_GoogleTagManager2', css, ...args);
     };
 });

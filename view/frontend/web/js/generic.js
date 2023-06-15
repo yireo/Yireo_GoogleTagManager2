@@ -27,7 +27,7 @@ define([
 
     var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
-            logger('Identifier empty, terminating GTM initialization.');
+            logger('Warning: Identifier empty, terminating GTM initialization.');
             return false;
         }
 
@@ -48,14 +48,15 @@ define([
     };
 
     var processGtmDataFromSection = function (sectionName) {
-        const gtmData = getGtmDataFromSection(sectionName);
-        if (true === isEmpty(gtmData)) {
+        const eventData = getGtmDataFromSection(sectionName);
+        if (true === isEmpty(eventData)) {
             return;
         }
 
-        logger('section "' + sectionName + '" changed (customerData)', gtmData);
+        logger('section "' + sectionName + '" changed (customerData)');
+        logger('dataLayer push', eventData);
         window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push(gtmData);
+        window.dataLayer.push(eventData);
     }
 
     var processGtmEventsFromSection = function (sectionName) {
@@ -71,16 +72,21 @@ define([
                 continue;
             }
 
+            const metaData = eventData.meta;
+            if (metaData) {
+                delete eventData.meta;
+            }
+
             logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
-            if (eventData.meta && eventData.meta.allowed_pages && eventData.meta.allowed_pages.length > 0
-                && !eventData.meta.allowed_pages.includes(window.location.pathname)) {
-                logger('Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, eventData.meta.allowed_pages);
+            if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
+                && !metaData.allowed_pages.includes(window.location.pathname)) {
+                logger('Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, metaData.allowed_pages);
                 continue;
             }
 
-            if (eventData.meta && eventData.meta.allowed_events && eventData.meta.allowed_events.length > 0) {
-                for (const [allowedEventKey, allowedEvent] of Object.entries(eventData.meta.allowed_events)) {
+            if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
+                for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
                     $(window).on(allowedEvent, function() {
                         logger('dataLayer push', eventData);
                         window.dataLayer.push({ ecommerce: null });
@@ -95,7 +101,7 @@ define([
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push(eventData);
 
-            if (!eventData.meta || eventData.meta.cacheable !== true) {
+            if (!metaData || metaData.cacheable !== true) {
                 delete sectionData['gtm_events'][eventId];
                 logger('invalidating sections "' + sectionName + '"', sectionData)
                 customerData.set(sectionName, sectionData);
@@ -153,10 +159,11 @@ define([
                 attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
             });
 
-            logger('initial state (js)', attributes);
+            logger('initial state (js)');
             window.dataLayer = window.dataLayer || [];
 
             if (false === isEmpty(attributes)) {
+                logger('dataLayer push', attributes);
                 window.dataLayer.push({ ecommerce: null });
                 window.dataLayer.push(attributes);
             }
