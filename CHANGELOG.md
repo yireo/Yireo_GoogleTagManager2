@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<<<<<<< HEAD
-## [3.3.0] - 13 June 2023
-=======
 ## [3.3.1] - 15 June 2023
 ### Fixed
 - `parent()` might cause issues with nesting HTML #157 @koentjeh
@@ -17,9 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename `purchase` event to `purchase_event` to comply to module standard
 - Combine notice log with push log
 - Add filename for better debugging
+- #158 fix payment trigger for guest user #159 @koentjeh
 
 ## [3.3.0] - 12 June 2023
->>>>>>> 9457655f772023c069a35d5fd72e13ad8951d4d8
 ### Added
 - Add `view_search_result` event #156 @gaeldelmer
 
