@@ -4,8 +4,10 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartItemInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -32,34 +34,34 @@ class CartItemDataMapper
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
     }
-
+    
     /**
      * @param CartItemInterface $cartItem
      * @return array
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function mapByCartItem(CartItemInterface $cartItem): array
     {
-        $cartItemData = [
-            'item_id' => $cartItem->getId(),
+        $product = $this->productRepository->get($cartItem->getSku());
+        $cartItemData = $this->productDataMapper->mapByProduct($product);
+        return array_merge($cartItemData, [
             'item_name' => $cartItem->getName(),
-            'quantity' => $cartItem->getQty(),
+            'order_item_id' => $cartItem->getItemId(),
+            'quantity' => (float) $cartItem->getQty(),
             'price' => $this->getPrice($cartItem)
-        ];
-
-        try {
-            $product = $this->productRepository->get($cartItem->getSku());
-        } catch (NoSuchEntityException $e) {
-            return $cartItemData;
-        }
-
-        return array_merge($this->productDataMapper->mapByProduct($product), $cartItemData);
+        ]);
     }
-
+    
+    /**
+     * @param CartItemInterface $cartItem
+     * @return float
+     */
     private function getPrice(CartItemInterface $cartItem): float
     {
         $displayType = (int)$this->scopeConfig->getValue(
             Config::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            ScopeInterface::SCOPE_STORE,
             $cartItem->getStoreId()
         );
 

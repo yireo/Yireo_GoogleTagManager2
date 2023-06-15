@@ -5,12 +5,63 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.3.1] - 15 June 2023
+### Fixed
+- `parent()` might cause issues with nesting HTML #157 @koentjeh
+- Only point `item_id` towards product ID and add a new `order_item_id`
+- Make logging with colors more consistant
+- Rename `purchase` event to `purchase_event` to comply to module standard
+- Combine notice log with push log
+- Add filename for better debugging
+
+## [3.3.0] - 12 June 2023
+### Added
+- Add `view_search_result` event #156 @gaeldelmer
+
+## [3.2.6] - 7 June 2023
+### Fixed
+- Make sure no-such-entity-exception doesnt break production
+- Make sure to filter categories by `entity_id` AND `is_active`
+
+## [3.2.5] - 6 June 2023
+### Fixed
+- Make sure `quantity` is a `float` not an `int`
+- Alt approach for bypassing non-active categories
+
+## [3.2.4] - 6 June 2023
+### Added
+- New `etc/data_layer.xml` to extend on global level (instead of using XML layout)
+
+### Fixed
+- Categories of product should be enabled to be displayed
+
+## [3.2.3] - 26 May 2023
+### Fixed
+- Rewrite splat into `array_merge` because of PHP 7.4 (#152)
+- Add log to `CustomerSessionDataProvider` (@gaeldelmer)
+- Execute `begin_checkout` event using checkout step navigator (@koentjeh #148)
+
+## [3.2.2] - 18 May 2023
+### Fixed
+- Triggering shipping and payment events on the spot, instead of delayed
+- Adding customData section `gtm-checkout` for reloading things in checkout
+
+## [3.2.1] - 10 May 2023
+### Added
+- Option for custom URL for `gtm.js` icw server-side analytics (@WouterSteen)
+
+## [3.2.0] - 20 April 2023
+### Added
+- Option to trigger `view_cart` event only when expanding minicart
+
 ### Fixed
 - Support any method in any entity with `GetAttributeValue`
+- GA4 container ID client-side validation #142 @koentjeh
 
 ## [3.1.3] - 8 April 2023
 ### Fixed
-- Fixed default 'product_path' config for product clicks
+- Fixed default `product_path` config for product clicks
 
 ## [3.1.2] - 8 April 2023
 ### Added

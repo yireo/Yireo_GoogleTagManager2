@@ -7,7 +7,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
+use Yireo\GoogleTagManager2\Config\XmlConfig;
 use Yireo\GoogleTagManager2\DataLayer\TagParser;
+use Yireo\GoogleTagManager2\Exception\BlockNotFound;
 
 class DataLayer implements ArgumentInterface
 {
@@ -19,23 +21,27 @@ class DataLayer implements ArgumentInterface
      * @var ProcessorInterface[]
      */
     protected array $processors;
+    private XmlConfig $xmlConfig;
 
     /**
      * @param TagParser $variableParser
      * @param LayoutInterface $layout
      * @param SerializerInterface $serializer
+     * @param XmlConfig $xmlConfig
      * @param array $processors
      */
     public function __construct(
         TagParser $variableParser,
         LayoutInterface $layout,
         SerializerInterface $serializer,
+        XmlConfig $xmlConfig,
         array $processors = []
     ) {
         $this->variableParser = $variableParser;
         $this->layout = $layout;
         $this->serializer = $serializer;
         $this->processors = $processors;
+        $this->xmlConfig = $xmlConfig;
     }
 
     /**
@@ -43,7 +49,12 @@ class DataLayer implements ArgumentInterface
      */
     public function getDataLayer(): array
     {
-        $block = $this->getDataLayerBlock();
+        try {
+            $block = $this->getDataLayerBlock();
+        } catch(BlockNotFound $blockNotFound) {
+            return [];
+        }
+
         $data = (array)$block->getData('data_layer');
         $processors = $this->getProcessors();
         return $this->variableParser->parse($data, $processors);
@@ -62,10 +73,22 @@ class DataLayer implements ArgumentInterface
      */
     public function getDataLayerEvents(): array
     {
-        $block = $this->getDataLayerBlock();
+        try {
+            $block = $this->getDataLayerBlock();
+        } catch(BlockNotFound $blockNotFound) {
+            return [];
+        }
+
         $data = (array)$block->getData('data_layer_events');
         $processors = $this->getProcessors();
-        return $this->variableParser->parse($data, $processors);
+
+        $data = $this->variableParser->parse($data, $processors);
+
+        foreach ($data as $eventId => $eventData) {
+            $data[$eventId] = array_merge($eventData, $this->xmlConfig->getEvent($eventId));
+        }
+
+        return $data;
     }
 
     /**
@@ -86,7 +109,7 @@ class DataLayer implements ArgumentInterface
      */
     public function toJson(array $data): string
     {
-        return (string) $this->serializer->serialize($data);
+        return (string)$this->serializer->serialize($data);
     }
 
     /**
@@ -94,16 +117,28 @@ class DataLayer implements ArgumentInterface
      */
     private function getProcessors(): array
     {
-        $block = $this->getDataLayerBlock();
+        try {
+            $block = $this->getDataLayerBlock();
+        } catch(BlockNotFound $blockNotFound) {
+            return [];
+        }
+
         $processors = (array)$block->getData('data_layer_processors');
         return array_merge($this->processors, $processors);
     }
 
     /**
-     * @return bool|BlockInterface
+     * @return BlockInterface
+     * @throws BlockNotFound
      */
     private function getDataLayerBlock(): BlockInterface
     {
-        return $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $blockName = 'yireo_googletagmanager2.data-layer';
+        $block = $this->layout->getBlock($blockName);
+        if ($block instanceof BlockInterface) {
+            return $block;
+        }
+
+        throw new BlockNotFound('Block "' . $blockName . '" not found');
     }
 }

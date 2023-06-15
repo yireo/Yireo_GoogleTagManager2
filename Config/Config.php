@@ -57,6 +57,20 @@ class Config implements ArgumentInterface
     }
 
     /**
+     *
+     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
+     *
+     * @return string
+     */
+    public function getGoogleTagmanagerUrl(): string
+    {
+        return $this->getModuleConfigValue(
+            'serverside_gtm_url',
+            'https://www.googletagmanager.com'
+        );
+    }
+
+    /**
      * Check whether the module is in debugging mode
      *
      * @return bool
@@ -128,7 +142,7 @@ class Config implements ArgumentInterface
             return $storeName;
         }
 
-        return (string) $this->storeManager->getDefaultStoreView()->getName();
+        return (string)$this->storeManager->getDefaultStoreView()->getName();
     }
 
     /**
@@ -157,6 +171,14 @@ class Config implements ArgumentInterface
     public function showViewCartEventEverywhere(): bool
     {
         return $this->getViewCartOccurances() === ViewCartOccurancesOptions::EVERYWHERE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showViewMiniCartOnExpandOnly(): bool
+    {
+        return (bool)$this->getModuleConfigValue('view_cart_on_mini_cart_expand_only');
     }
 
     /**

@@ -11,14 +11,13 @@ namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Checkout\CustomerData\Cart as CustomerData;
 use Magento\Checkout\Model\Cart as CheckoutCart;
-use Magento\Quote\Model\Quote as QuoteModel;
 use Yireo\GoogleTagManager2\DataLayer\Event\ViewCart as ViewCartEvent;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
 
 class AddDataToCartSection
 {
-    private QuoteModel $quote;
+    private CheckoutCart $checkoutCart;
     private CheckoutSessionDataProvider $checkoutSessionDataProvider;
     private ViewCartEvent $viewCartEvent;
 
@@ -32,7 +31,7 @@ class AddDataToCartSection
         CheckoutSessionDataProvider $checkoutSessionDataProvider,
         ViewCartEvent $viewCartEvent
     ) {
-        $this->quote = $checkoutCart->getQuote();
+        $this->checkoutCart = $checkoutCart;
         $this->checkoutSessionDataProvider = $checkoutSessionDataProvider;
         $this->viewCartEvent = $viewCartEvent;
     }
@@ -44,7 +43,7 @@ class AddDataToCartSection
      */
     public function afterGetSectionData(CustomerData $subject, $result)
     {
-        $quoteId = $this->quote->getId();
+        $quoteId = $this->checkoutCart->getQuote()->getId();
         if (empty($result) || !is_array($result) || empty($quoteId)) {
             return $result;
         }
