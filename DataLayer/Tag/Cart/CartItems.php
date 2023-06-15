@@ -40,6 +40,7 @@ class CartItems implements TagInterface
 
         $cartItemsData = [];
         foreach ($cartItems as $cartItem) {
+            $cartItem->getProduct();
             $cartItemData = $this->cartItemDataMapper->mapByCartItem($cartItem);
             $cartItemsData[] = $cartItemData;
         }

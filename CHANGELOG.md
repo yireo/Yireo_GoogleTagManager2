@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `parent()` might cause issues with nesting HTML #157 @koentjeh
+- Only point `item_id` towards product ID and add a new `order_item_id`
 
 ## [3.3.0] - 12 June 2023
 ### Added
