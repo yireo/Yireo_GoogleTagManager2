@@ -104,7 +104,7 @@ class ProductDataMapper
         try {
             $categories = $this->getCategoryFromProduct->getAll($product);
         } catch (NoSuchEntityException $e) {
-            return [];
+            return $data;
         }
 
         $maxCategoriesCount = 5;
