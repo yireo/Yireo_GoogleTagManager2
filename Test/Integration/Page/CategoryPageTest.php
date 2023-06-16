@@ -30,6 +30,7 @@ class CategoryPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     public function testValidDataLayerWithOneCategory()
     {
