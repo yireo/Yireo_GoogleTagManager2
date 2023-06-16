@@ -27,6 +27,6 @@ class CartValue implements TagInterface
      */
     public function get(): string
     {
-        return number_format((float)$this->cartModel->getQuote()->getBaseGrandTotal(), 4, '.');
+        return number_format((float)$this->cartModel->getQuote()->getBaseGrandTotal(), 4);
     }
 }
