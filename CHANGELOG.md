@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Delay loading GTM until user interaction is triggered
+
 ## [3.3.4] - 16 June 2023
 ### Fixed
 - Fix issue with JS `btoa` and non-Latin1 characters #162 @amjadm61 
