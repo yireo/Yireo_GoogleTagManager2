@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Guarantee that cart value is always returned with 4 decimals
 - Prevent duplicate events with same data
+- Make sure to return data if categories cause exception #160
 
 ## [3.3.1] - 15 June 2023
 ### Fixed
