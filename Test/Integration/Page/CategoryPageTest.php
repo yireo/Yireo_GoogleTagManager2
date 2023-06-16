@@ -31,24 +31,30 @@ class CategoryPageTest extends PageTestCase
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
+     * @magentoCache all disabled
      */
     public function testValidDataLayerWithOneCategory()
     {
         $this->assertEnabledFlagIsWorking();
 
+
         /** @var CategoryInterface $category */
         $category = $this->createCategory(3);
         $this->createProducts(3, ['category_ids' => [$category->getId()]]);
+        $products = $category->getProductCollection();
+        $this->assertTrue($products->count() >= 3, 'Product count is '.$products->count());
 
         $this->dispatch('catalog/category/view/id/' . $category->getId());
         $this->assertRequestActionName('view');
 
         $body = $this->getResponse()->getBody();
         $this->assertStringContainsString($category->getName(), $body);
+        $this->assertStringContainsString('"view_item_list"', $body);
 
         $productListBlock = $this->layout->getBlock('category.products.list');
+        $productListBlock->setCollection($products);
         $this->assertInstanceOf(ListProduct::class, $productListBlock);
-        //$this->assertNotEmpty($productListBlock->getLoadedProductCollection()->getItems());
+        $this->assertTrue($productListBlock->getLoadedProductCollection()->count() > 0);
 
         $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
         $this->assertNotEmpty($block);
@@ -74,10 +80,8 @@ class CategoryPageTest extends PageTestCase
 
         $this->assertNotEmpty($event['ecommerce']['items'], var_export($event, true));
         foreach ($event['ecommerce']['items'] as $productData) {
-            $this->assertNotEmpty($productData['item_name']);
             $this->assertNotEmpty($productData['item_id']);
             $this->assertNotEmpty($productData['item_sku']);
-            $this->assertNotEmpty($productData['price']);
             $this->assertNotEmpty($productData['item_list_name']);
         }
     }

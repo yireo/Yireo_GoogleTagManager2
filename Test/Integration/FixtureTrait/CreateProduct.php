@@ -12,6 +12,8 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\WebsiteRepositoryInterface;
 
 trait CreateProduct
 {
@@ -19,7 +21,9 @@ trait CreateProduct
         int $id,
         array $data = []
     ): ProductInterface {
-        $productFactory = ObjectManager::getInstance()->get(ProductInterfaceFactory::class);
+        //$objectManager = ObjectManager::getInstance();
+        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+        $productFactory = $objectManager->get(ProductInterfaceFactory::class);
 
         /** @var $product ProductModel */
         $product = $productFactory->create();
@@ -31,7 +35,7 @@ trait CreateProduct
             ->setPrice(10)
             ->setStatus(Status::STATUS_ENABLED)
             ->setStoreId(1)
-            ->setWebsiteIds([1])
+            ->setWebsiteIds([$this->getDefaultWebsiteId()])
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
             ->setStockData(['use_config_manage_stock' => 0])
@@ -41,11 +45,11 @@ trait CreateProduct
 
         $product->isObjectNew(true);
 
-        $productRepository = ObjectManager::getInstance()->get(ProductRepositoryInterface::class);
+        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
         $productRepository->save($product);
 
         if (!empty($product->getCategoryIds())) {
-            $categoryLinkManagement = ObjectManager::getInstance()->get(CategoryLinkManagementInterface::class);
+            $categoryLinkManagement = $objectManager->get(CategoryLinkManagementInterface::class);
             $categoryLinkManagement->assignProductToCategories(
                 $product->getSku(),
                 $product->getCategoryIds()
@@ -72,5 +76,16 @@ trait CreateProduct
     {
         $productFactory = ObjectManager::getInstance()->get(Product::class);
         return (int)$productFactory->getDefaultAttributeSetId();
+    }
+
+    /**
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    private function getDefaultWebsiteId(): int
+    {
+        $objectManager = ObjectManager::getInstance();
+        $websiteRepository = $objectManager->get(WebsiteRepositoryInterface::class);
+        return (int) $websiteRepository->get('base')->getId();
     }
 }
