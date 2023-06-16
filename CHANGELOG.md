@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Guarantee that cart value is always returned with 4 decimals
 - Prevent duplicate events with same data
 - Make sure to return data if categories cause exception #160
+- Make sure non-cacheable events are wiped from Hyva localstorage
+- Don't add categories that are added to another Root Category
 
 ## [3.3.1] - 15 June 2023
 ### Fixed

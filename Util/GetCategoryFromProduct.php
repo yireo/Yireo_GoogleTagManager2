@@ -12,6 +12,7 @@ use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\StoreManagerInterface;
 
 class GetCategoryFromProduct
 {
@@ -21,6 +22,7 @@ class GetCategoryFromProduct
     private SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
     private FilterGroupBuilder $filterGroupBuilder;
+    private StoreManagerInterface $storeManager;
 
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -28,7 +30,8 @@ class GetCategoryFromProduct
         FilterBuilder $filterBuilder,
         SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterGroupBuilder $filterGroupBuilder
+        FilterGroupBuilder $filterGroupBuilder,
+        StoreManagerInterface $storeManager,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->categoryListRepository = $categoryListRepository;
@@ -36,6 +39,7 @@ class GetCategoryFromProduct
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->searchCriteriaBuilderFactory = $searchCriteriaBuilderFactory;
         $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -62,20 +66,38 @@ class GetCategoryFromProduct
         $this->searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
 
         $entityIdFilterGroup = $this->filterGroupBuilder->create();
-        $entityIdFilterGroup->setFilters([$this->filterBuilder
-            ->setField('entity_id')
-            ->setConditionType('in')
-            ->setValue($categoryIds)
-            ->create()]);
+        $entityIdFilterGroup->setFilters([
+            $this->filterBuilder
+                ->setField('entity_id')
+                ->setConditionType('in')
+                ->setValue($categoryIds)
+                ->create()
+        ]);
 
-        $filterGroup = $this->filterGroupBuilder->create();
-        $filterGroup->setFilters([$this->filterBuilder
-            ->setField('is_active')
-            ->setConditionType('eq')
-            ->setValue(1)
-            ->create()]);
+        $isActiveFilterGroup = $this->filterGroupBuilder->create();
+        $isActiveFilterGroup->setFilters([
+            $this->filterBuilder
+                ->setField('is_active')
+                ->setConditionType('eq')
+                ->setValue(1)
+                ->create()
+        ]);
 
-        $this->searchCriteriaBuilder->setFilterGroups([$entityIdFilterGroup, $filterGroup]);
+        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+        $rootCategoryFilterGroup = $this->filterGroupBuilder->create();
+        $rootCategoryFilterGroup->setFilters([
+            $this->filterBuilder
+                ->setField('path')
+                ->setConditionType('like')
+                ->setValue('1/' . $rootCategoryId . '/%')
+                ->create()
+        ]);
+
+        $this->searchCriteriaBuilder->setFilterGroups([
+            $entityIdFilterGroup,
+            $isActiveFilterGroup,
+            $rootCategoryFilterGroup
+        ]);
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
         return $this->categoryListRepository->getList($searchCriteria)->getItems();
