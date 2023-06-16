@@ -13,10 +13,11 @@
     <body>
         <referenceContainer name="after.body.start">
             <block
-                    name="yireo_googletagmanager2.pusher-script"
-                    template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
+                name="yireo_googletagmanager2.pusher-script"
+                template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
             />
+
             <block
                 name="yireo_googletagmanager2.logger-script"
                 template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
@@ -25,13 +26,16 @@
         </referenceContainer>
 
         <referenceBlock
-                name="yireo_googletagmanager2.script-additions"
-                template="Yireo_GoogleTagManager2::hyva/script-additions.phtml"
-        />
+            name="yireo_googletagmanager2.data-layer"
+            template="Yireo_GoogleTagManager2::hyva/data-layer.phtml"/>
+
         <referenceBlock
-                name="yireo_googletagmanager2.script-product-clicks"
-                template="Yireo_GoogleTagManager2::hyva/script-product-clicks.phtml"
-        >
+            name="yireo_googletagmanager2.script-additions"
+            template="Yireo_GoogleTagManager2::hyva/script-additions.phtml"/>
+
+        <referenceBlock
+            name="yireo_googletagmanager2.script-product-clicks"
+            template="Yireo_GoogleTagManager2::hyva/script-product-clicks.phtml">
             <arguments>
                 <argument name="productPath" xsi:type="string">.products a.product</argument>
             </arguments>

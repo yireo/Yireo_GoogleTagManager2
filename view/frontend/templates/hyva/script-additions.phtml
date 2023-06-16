@@ -44,11 +44,25 @@ $commons = $block->getCommonsViewModel();
             const gtmEvents = event.detail.data[sectionName].gtm_events;
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
                 const metaData = eventData.meta;
+                const copyEventData = Object.assign({}, eventData);
+
                 if (metaData) {
-                    delete eventData.meta;
+                    delete copyEventData.meta;
                 }
 
-                yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
+                yireoGoogleTagManager2Pusher(copyEventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
+
+                if (!metaData || metaData.cacheable !== true) {
+                    yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
+
+                    let mageCacheStorage = window.localStorage.getItem('mage-cache-storage');
+                    if (mageCacheStorage) {
+                        mageCacheStorage = JSON.parse(mageCacheStorage);
+                    }
+
+                    delete mageCacheStorage.cart.gtm_events[eventId];
+                    window.localStorage.setItem('mage-cache-storage', JSON.stringify(mageCacheStorage));
+                }
             }
         });
 
