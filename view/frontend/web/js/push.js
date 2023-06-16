@@ -7,7 +7,7 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
             delete copyEventData.meta;
         }
 
-        const eventHash = btoa(JSON.stringify(copyEventData));
+        const eventHash = btoa(encodeURIComponent(JSON.stringify(copyEventData)));
         if (window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.includes(eventHash)) {
             logger('Warning: Event already triggered', eventData);
             return;
