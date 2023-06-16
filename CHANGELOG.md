@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.1] - 15 June 2023
+## [3.3.2] - 16 June 2023
 ### Fixed
 - Guarantee that cart value is always returned with 4 decimals
 - Prevent duplicate events with same data
