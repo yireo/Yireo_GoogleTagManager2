@@ -31,7 +31,7 @@ class GetCategoryFromProduct
         SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterGroupBuilder $filterGroupBuilder,
-        StoreManagerInterface $storeManager,
+        StoreManagerInterface $storeManager
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->categoryListRepository = $categoryListRepository;

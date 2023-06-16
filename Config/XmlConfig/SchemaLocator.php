@@ -9,7 +9,7 @@ use Magento\Framework\Module\Dir\Reader;
 class SchemaLocator implements SchemaLocatorInterface
 {
     /**
-     * @var string
+     * @var Reader
      */
     private Reader $moduleReader;
 

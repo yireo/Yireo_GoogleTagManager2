@@ -24,7 +24,7 @@ class AddDataToCartSection
     /**
      * @param CheckoutCart $checkoutCart
      * @param CheckoutSessionDataProvider $checkoutSessionDataProvider
-     * @param CartItems $cartItems
+     * @param ViewCartEvent $viewCartEvent
      */
     public function __construct(
         CheckoutCart $checkoutCart,

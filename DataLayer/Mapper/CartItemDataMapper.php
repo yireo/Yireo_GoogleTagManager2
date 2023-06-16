@@ -34,7 +34,7 @@ class CartItemDataMapper
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
     }
-    
+
     /**
      * @param CartItemInterface $cartItem
      * @return array
@@ -52,7 +52,7 @@ class CartItemDataMapper
             'price' => $this->getPrice($cartItem)
         ]);
     }
-    
+
     /**
      * @param CartItemInterface $cartItem
      * @return float
@@ -62,17 +62,17 @@ class CartItemDataMapper
         $displayType = (int)$this->scopeConfig->getValue(
             Config::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE,
             ScopeInterface::SCOPE_STORE,
-            $cartItem->getStoreId()
+            $cartItem->getStoreId() // @phpstan-ignore-line
         );
 
         switch ($displayType) {
             case Config::DISPLAY_TYPE_EXCLUDING_TAX:
             case Config::DISPLAY_TYPE_BOTH:
-                $price = $cartItem->getConvertedPrice();
+                $price = $cartItem->getConvertedPrice(); // @phpstan-ignore-line
                 break;
             case Config::DISPLAY_TYPE_INCLUDING_TAX:
             default:
-                $price = $cartItem->getPriceInclTax();
+                $price = $cartItem->getPriceInclTax(); // @phpstan-ignore-line
                 break;
         }
 

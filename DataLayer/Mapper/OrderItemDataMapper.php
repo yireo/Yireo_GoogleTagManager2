@@ -62,7 +62,7 @@ class OrderItemDataMapper
         ];
 
         if ($orderItem->getProductType() == Configurable::TYPE_CODE) {
-            $orderItemData['item_id'] = $orderItem->getProduct()->getSku();
+            $orderItemData['item_id'] = $orderItem->getProduct()->getSku(); // @phpstan-ignore-line
             $orderItemData['item_variant'] = $orderItem->getSku();
         }
 

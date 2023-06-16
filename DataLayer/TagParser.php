@@ -39,10 +39,12 @@ class TagParser
     }
 
     /**
-     * @param mixed|TagInterface $variable
-     * @return mixed|TagInterface
+     * @param string $tagName
+     * @param $tagValue
+     * @param array $data
+     * @return array
      */
-    private function convertTag($tagName, $tagValue, $data)
+    private function convertTag(string $tagName, $tagValue, array $data): array
     {
         if ($tagValue instanceof MergeTagInterface) {
             unset($data[$tagName]);

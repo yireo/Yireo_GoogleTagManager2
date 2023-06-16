@@ -52,7 +52,6 @@ class AddDataToCustomerSection
     /**
      * @param CustomerData $subject
      * @param $result
-     *
      * @return mixed
      * @throws LocalizedException
      * @throws NoSuchEntityException

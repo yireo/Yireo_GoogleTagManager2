@@ -29,11 +29,11 @@ class AddProductDetails
     {
         try {
             $block = $this->getProductDetailsBlock();
-        } catch(BlockNotFound $blockNotFound) {
+        } catch (BlockNotFound $blockNotFound) {
             return $html;
         }
 
-        $html .= $block->setProduct($product)->toHtml();
+        $html .= $block->setProduct($product)->toHtml(); // @phpstan-ignore-line
         return $html;
     }
 

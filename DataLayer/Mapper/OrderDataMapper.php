@@ -94,10 +94,12 @@ class OrderDataMapper
      */
     protected function getPaymentType(OrderInterface $order): string
     {
+        // @phpstan-ignore-next-line
         if (!$order || !$order->getPayment() || !$order->getPayment()->getMethodInstance()) {
             return '';
         }
 
+        // @phpstan-ignore-next-line
         return $order->getPayment()->getMethodInstance()->getTitle();
     }
 }

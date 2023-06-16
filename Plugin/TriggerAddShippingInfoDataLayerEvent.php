@@ -24,7 +24,7 @@ class TriggerAddShippingInfoDataLayerEvent
     /**
      * @param ShippingInformationManagementInterface $subject
      * @param PaymentDetailsInterface $paymentDetails
-     * @param $cartId
+     * @param mixed $cartId
      * @param ShippingInformationInterface $addressInformation
      * @return PaymentDetailsInterface
      */

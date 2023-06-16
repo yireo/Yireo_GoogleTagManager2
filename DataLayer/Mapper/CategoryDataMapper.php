@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 
@@ -25,8 +26,8 @@ class CategoryDataMapper
 
     /**
      * @param CategoryInterface $category
-     * @param string $prefix
      * @return array
+     * @throws LocalizedException
      */
     public function mapByCategory(CategoryInterface $category): array
     {

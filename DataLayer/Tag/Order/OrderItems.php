@@ -36,6 +36,7 @@ class OrderItems implements TagInterface
         }
 
         $orderItemsData = [];
+        // @phpstan-ignore-next-line
         foreach ($order->getAllVisibleItems() as $item) {
             $orderItemsData[] = $this->orderItemDataMapper->mapByOrderItem($item, $order);
         }

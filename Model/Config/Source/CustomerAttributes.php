@@ -57,7 +57,7 @@ class CustomerAttributes implements OptionSourceInterface
      */
     private function isAttributeDisplayedInFrontend(AttributeInterface $attribute): bool
     {
-        $forms = $attribute->getUsedInForms();
+        $forms = $attribute->getUsedInForms(); // @phpstan-ignore-line
         foreach ($forms as $form) {
             if (preg_match('/^customer_/', $form)) {
                 return true;

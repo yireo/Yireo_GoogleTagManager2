@@ -33,7 +33,7 @@ class AddAdditionalLayoutHandles implements ObserverInterface
 
     private function getSystemPath(): string
     {
-        $parts = explode('/', $this->request->getFullActionName());
+        $parts = explode('/', $this->request->getFullActionName()); // @phpstan-ignore-line
         return implode('_', array_slice($parts, 0, 3));
     }
 }
