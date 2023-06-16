@@ -39,12 +39,12 @@ class TagParser
     }
 
     /**
-     * @param string $tagName
+     * @param $tagName
      * @param $tagValue
      * @param array $data
      * @return array
      */
-    private function convertTag(string $tagName, $tagValue, array $data): array
+    private function convertTag($tagName, $tagValue, array $data): array
     {
         if ($tagValue instanceof MergeTagInterface) {
             unset($data[$tagName]);
