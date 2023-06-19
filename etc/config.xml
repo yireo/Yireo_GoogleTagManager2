@@ -6,6 +6,7 @@
                 <enabled>0</enabled>
                 <id/>
                 <debug>0</debug>
+                <wait_for_ui>0</wait_for_ui>
                 <category_products>3</category_products>
                 <product_eav_attributes>material</product_eav_attributes>
                 <category_eav_attributes>id,name</category_eav_attributes>

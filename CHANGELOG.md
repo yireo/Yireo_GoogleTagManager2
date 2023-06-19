@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 19 June 2023
 ### Added
-- Delay loading GTM until user interaction is triggered
+- Option to delay loading GTM until user interaction is triggered
 
 ## [3.3.4] - 16 June 2023
 ### Fixed

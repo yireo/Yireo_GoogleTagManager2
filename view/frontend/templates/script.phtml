@@ -29,7 +29,7 @@ $config = $block->getConfig();
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
         })
-    })(['keydown', 'mouseover', 'scroll', 'touchstart', 'wheel']);
+    })([<?php if ($config->waitForUserInteraction() === false) : ?>'load', <?php endif; ?>'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel']);
 </script>
 
 <?php if ($config->isDebug()): ?>

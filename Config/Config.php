@@ -81,6 +81,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Wait for user interaction to start
+     *
+     * @return bool
+     */
+    public function waitForUserInteraction(): bool
+    {
+        return (bool)$this->getModuleConfigValue('wait_for_ui');
+    }
+
+    /**
      * Check whether mouse clicks are debugged as well
      *
      * @return bool

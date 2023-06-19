@@ -53,6 +53,13 @@
                         <field id="debug">1</field>
                     </depends>
                 </field>
+                <field id="wait_for_ui" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Wait for user interaction</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Maximum Products in Category</label>
                     <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
