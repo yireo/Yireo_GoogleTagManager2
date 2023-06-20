@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.1] - 20 June 2023
+### Fixed
+- Non-visible child products in bundle cause Fatal Exception
+
 ## [3.4.0] - 19 June 2023
 ### Added
 - Option to delay loading GTM until user interaction is triggered

@@ -38,14 +38,19 @@ class CartItemDataMapper
     /**
      * @param CartItemInterface $cartItem
      * @return array
-     * @throws NoSuchEntityException
      * @throws LocalizedException
      */
     public function mapByCartItem(CartItemInterface $cartItem): array
     {
-        $product = $this->productRepository->get($cartItem->getSku());
-        $cartItemData = $this->productDataMapper->mapByProduct($product);
+        try {
+            $product = $this->productRepository->get($cartItem->getSku());
+            $cartItemData = $this->productDataMapper->mapByProduct($product);
+        } catch (NoSuchEntityException $e) {
+            $cartItemData = [];
+        }
+
         return array_merge($cartItemData, [
+            'item_sku' => $cartItem->getSku(),
             'item_name' => $cartItem->getName(),
             'order_item_id' => $cartItem->getItemId(),
             'quantity' => (float) $cartItem->getQty(),
