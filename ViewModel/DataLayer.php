@@ -3,8 +3,8 @@
 namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Framework\Serialize\SerializerInterface;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
 use Yireo\GoogleTagManager2\Config\XmlConfig;
@@ -128,14 +128,14 @@ class DataLayer implements ArgumentInterface
     }
 
     /**
-     * @return BlockInterface
+     * @return AbstractBlock
      * @throws BlockNotFound
      */
-    private function getDataLayerBlock(): BlockInterface
+    private function getDataLayerBlock(): AbstractBlock
     {
         $blockName = 'yireo_googletagmanager2.data-layer';
         $block = $this->layout->getBlock($blockName);
-        if ($block instanceof BlockInterface) {
+        if ($block instanceof AbstractBlock) {
             return $block;
         }
 

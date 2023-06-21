@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer;
 
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
@@ -12,14 +11,6 @@ use RuntimeException;
 
 class TagParser
 {
-    private ObjectManagerInterface $objectManager;
-
-    public function __construct(
-        ObjectManagerInterface $objectManager
-    ) {
-        $this->objectManager = $objectManager;
-    }
-
     /**
      * @param array $data
      * @param ProcessorInterface[] $processors
@@ -84,28 +75,5 @@ class TagParser
         }
 
         throw new RuntimeException('Unknown object in data layer: ' . get_class($tagValueObject));
-    }
-
-    /**
-     * @param string $className
-     * @param string $classMethod
-     * @return false|mixed
-     */
-    private function getValueFromCallable(string $className, string $classMethod)
-    {
-        if (!class_exists($className)) {
-            return false;
-        }
-
-        if (!method_exists($className, $classMethod)) {
-            return false;
-        }
-
-        $object = $this->objectManager->get($className);
-        if (!$object instanceof ArgumentInterface) {
-            return false;
-        }
-
-        return call_user_func([$object, $classMethod]);
     }
 }

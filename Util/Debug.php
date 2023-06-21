@@ -43,7 +43,7 @@ class Debug
      * Debugging method
      *
      * @param string $string String to debug
-     * @param null $variable Tag to dump to debug message
+     * @param mixed|null $variable Tag to dump to debug message
      *
      * @return bool
      */

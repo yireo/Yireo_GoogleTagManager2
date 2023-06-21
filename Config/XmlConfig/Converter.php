@@ -31,7 +31,7 @@ class Converter implements ConverterInterface
         ];
 
         $defaults = $source->getElementsByTagName('default');
-        if (!empty($defaults) && $defaults[0] instanceof DOMNode) {
+        if (count($defaults) > 0 && $defaults[0] instanceof DOMNode) {
             $result['default'][] = $this->toArray($defaults[0]);
         }
 
@@ -49,16 +49,21 @@ class Converter implements ConverterInterface
         return $result;
     }
 
+    /**
+     * @param DOMNode $node
+     * @return array
+     */
     private function toArray(DOMNode $node): array
     {
         $result = [];
         foreach ($node->childNodes as $childNode) {
-            if (!$childNode) {
+            /** @phpstan-ignore-next-line  */
+            if (empty($childNode)) {
                 continue;
             }
 
             /** @var DOMNode $childNode */
-            if ($childNode->nodeType != XML_ELEMENT_NODE) {
+            if ($childNode->nodeType !== XML_ELEMENT_NODE) {
                 continue;
             }
 
@@ -95,6 +100,10 @@ class Converter implements ConverterInterface
         return $result;
     }
 
+    /**
+     * @param string $tagClassName
+     * @return array|mixed
+     */
     private function getDataFromTagClass(string $tagClassName)
     {
         $tagObject = $this->objectManager->get($tagClassName);

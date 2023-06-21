@@ -5,13 +5,14 @@ namespace Yireo\GoogleTagManager2\Util;
 use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Api\Data\CategorySearchResultsInterface;
-use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Api\Search\FilterGroup;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 
 class GetCategoryFromProduct
@@ -43,11 +44,11 @@ class GetCategoryFromProduct
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return CategoryInterface
      * @throws NoSuchEntityException
      */
-    public function get(ProductInterface $product): CategoryInterface
+    public function get(Product $product): CategoryInterface
     {
         $categoryIds = $product->getCategoryIds();
         $categoryId = array_shift($categoryIds);
@@ -55,16 +56,17 @@ class GetCategoryFromProduct
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return CategoryInterface[]
      * @throws NoSuchEntityException
      */
-    public function getAll(ProductInterface $product): array
+    public function getAll(Product $product): array
     {
         $categoryIds = $product->getCategoryIds();
 
         $this->searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
 
+        /** @var FilterGroup $entityIdFilterGroup */
         $entityIdFilterGroup = $this->filterGroupBuilder->create();
         $entityIdFilterGroup->setFilters([
             $this->filterBuilder
@@ -74,6 +76,7 @@ class GetCategoryFromProduct
                 ->create()
         ]);
 
+        /** @var FilterGroup $isActiveFilterGroup */
         $isActiveFilterGroup = $this->filterGroupBuilder->create();
         $isActiveFilterGroup->setFilters([
             $this->filterBuilder
@@ -83,7 +86,11 @@ class GetCategoryFromProduct
                 ->create()
         ]);
 
-        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+        /** @var Store $store */
+        $store = $this->storeManager->getStore();
+        $rootCategoryId = $store->getRootCategoryId();
+
+        /** @var FilterGroup $rootCategoryFilterGroup */
         $rootCategoryFilterGroup = $this->filterGroupBuilder->create();
         $rootCategoryFilterGroup->setFilters([
             $this->filterBuilder

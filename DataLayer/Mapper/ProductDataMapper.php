@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -44,12 +45,12 @@ class ProductDataMapper
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function mapByProduct(ProductInterface $product): array
+    public function mapByProduct(Product $product): array
     {
         $prefix = 'item_';
         $productData = [];

@@ -2,8 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
-use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
@@ -13,7 +12,7 @@ use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
 class AddToCart implements EventInterface
 {
     private ProductDataMapper $productDataMapper;
-    private ProductInterface $product;
+    private Product $product;
     private int $qty = 1;
     private CurrencyCode $currencyCode;
 
@@ -40,8 +39,6 @@ class AddToCart implements EventInterface
 
         $itemData = $this->productDataMapper->mapByProduct($this->product);
         $itemData['quantity'] = $qty;
-
-        /** @phpstan-ignore-next-line */
         $value = $itemData['price'] * $qty;
 
         return [
@@ -55,10 +52,10 @@ class AddToCart implements EventInterface
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return AddToCart
      */
-    public function setProduct(ProductInterface $product): AddToCart
+    public function setProduct(Product $product): AddToCart
     {
         $this->product = $product;
         return $this;

@@ -29,12 +29,12 @@ class GetCategoryPath
     }
 
     /**
-     * @param CategoryModel $category
+     * @param ?CategoryModel $category
      * @return string
      */
-    public function getCategoryPath($category): string
+    public function getCategoryPath(?CategoryModel $category = null): string
     {
-        if (!$category) {
+        if (!$category instanceof CategoryModel) {
             return "direct";
         }
 

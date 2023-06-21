@@ -6,6 +6,7 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 
 class GetCurrentCategory
@@ -34,7 +35,9 @@ class GetCurrentCategory
         try {
             $category = $this->categoryRepository->get($categoryId);
         } catch (NoSuchEntityException $e) {
-            $category = $this->categoryRepository->get($this->storeManager->getStore()->getRootCategoryId());
+            /** @var Store $store */
+            $store = $this->storeManager->getStore();
+            $category = $this->categoryRepository->get($store->getRootCategoryId());
         }
 
         return $category;

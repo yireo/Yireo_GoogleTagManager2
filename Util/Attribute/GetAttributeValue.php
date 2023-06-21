@@ -73,7 +73,7 @@ class GetAttributeValue
     }
 
     /**
-     * @param ExtensibleDataInterface $entity
+     * @param CustomAttributesDataInterface $entity
      * @param string $entityType
      * @param string $attributeCode
      * @return array|mixed|string
@@ -82,6 +82,7 @@ class GetAttributeValue
     public function getAttributeValue(CustomAttributesDataInterface $entity, string $entityType, string $attributeCode)
     {
         if ($attributeCode === 'id') {
+            /** @phpstan-ignore-next-line  */
             return $entity->getId();
         }
 

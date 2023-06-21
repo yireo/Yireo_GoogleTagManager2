@@ -3,38 +3,33 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\CamelCase;
 
 class GuestDataMapper
 {
-    private CamelCase $camelCase;
     private Config $config;
     private GetAttributeValue $getAttributeValue;
 
     /**
-     * @param CamelCase $camelCase
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
      */
     public function __construct(
-        CamelCase $camelCase,
         Config $config,
         GetAttributeValue $getAttributeValue
     ) {
-        $this->camelCase = $camelCase;
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
     }
 
     /**
-     * @param OrderInterface $order
+     * @param Order $order
      * @return array
      * @throws LocalizedException
      */
-    public function mapByOrder(OrderInterface $order): array
+    public function mapByOrder(Order $order): array
     {
         $prefix = 'customer_';
         $guestData = [];
