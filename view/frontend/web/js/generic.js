@@ -66,36 +66,31 @@ define([
         }
 
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-            const metaData = eventData.meta;
-            if (metaData) {
-                delete eventData.meta;
+            processGtmEvent(eventId, eventData, sectionName, sectionData);
+        }
+    }
+
+    var processGtmEvent = function(eventId, eventData, sectionName, sectionData) {
+        logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+
+        const metaData = Object.assign({}, eventData.meta);
+        if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
+            for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
+                $(window).on(allowedEvent, function () {
+                    pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
+                });
             }
 
-            logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+            return;
+        }
 
-            if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
-                && !metaData.allowed_pages.includes(window.location.pathname)) {
-                logger('Warning: Skipping event "' + eventId + '", not in allowed pages', window.location.pathname, metaData.allowed_pages);
-                continue;
-            }
+        pusher(eventData, 'push (event from customerData "' + sectionName + '") [generic.js]');
 
-            if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
-                for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
-                    $(window).on(allowedEvent, function () {
-                        pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
-                    });
-                }
-
-                continue;
-            }
-
-            pusher(eventData, 'push (event from customerData "' + sectionName + '") [generic.js]');
-
-            if (!metaData || metaData.cacheable !== true) {
-                delete sectionData['gtm_events'][eventId];
-                logger('invalidating sections "' + sectionName + '"', sectionData)
-                customerData.set(sectionName, sectionData);
-            }
+        // Make sure that a non-cacheable GTM event is not stored in customerData
+        if (!metaData || metaData.cacheable !== true) {
+            delete sectionData['gtm_events'][eventId];
+            logger('invalidating sections "' + sectionName + '"', sectionData)
+            customerData.set(sectionName, sectionData);
         }
     }
 
