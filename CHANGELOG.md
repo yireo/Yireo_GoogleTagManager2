@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Prevent add-to-cart to trigger view-cart, when view-cart is on cart-page only
+
 ## [3.4.1] - 20 June 2023
 ### Fixed
 - Non-visible child products in bundle cause Fatal Exception
