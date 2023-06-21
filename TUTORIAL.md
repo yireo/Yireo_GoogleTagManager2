@@ -21,8 +21,7 @@ In the **Container Workspace**, under **Variables** and then **Built-In Variable
 - **Event**
 - And possibly others
 
-In the **Container Workspace**, under **Variables** and then **User-Defined Variables**, create the following variables of type **Data Layer Variable** and
-Data Layer Version 2:
+In the **Container Workspace**, under **Variables** and then **User-Defined Variables**, create the following variables of type **Data Layer Variable** and Data Layer Version 2:
 
 - Variable with label `Ecommerce` and name `ecommerce`
 - Variable with name `Ecommerce Affiliation` and name `ecommerce.affiliation`
@@ -47,7 +46,7 @@ function() {
 
 In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`).
 
-Make sure to create a new trigger tag "Custom Event", which fires on **All Custom Events**. Select the checkbox "Use regex matching" and input `view_item|view_item_list|select_item|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_payment_info|add_shipping_info|purchase` in the **Event** name.
+Make sure to create a new trigger tag "Custom Event", which fires on **All Custom Events**. Select the checkbox "Use regex matching" and input `view_item|view_item_list|select_item|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_payment_info|add_shipping_info|purchase` in the **Event** name. Make sure to trigger this tag on all pages.
 
 Next, create a second **Tag** in the same **Container Workspace**, this time of type **Google Analytics > GA4 Events**. Set `{{Event}}` to be the **Event Name**. Next, enter the following **Event Parameters**:
 
