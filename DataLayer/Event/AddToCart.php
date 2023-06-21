@@ -36,9 +36,13 @@ class AddToCart implements EventInterface
      */
     public function get(): array
     {
+        $qty = ($this->qty > 0) ? $this->qty : 1;
+
         $itemData = $this->productDataMapper->mapByProduct($this->product);
+        $itemData['quantity'] = $qty;
+
         /** @phpstan-ignore-next-line */
-        $value = $this->product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue() * $this->qty;
+        $value = $itemData['price'] * $qty;
 
         return [
             'event' => 'add_to_cart',
