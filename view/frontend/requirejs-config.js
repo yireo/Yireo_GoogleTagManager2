@@ -20,9 +20,9 @@ var config = {
             'Magento_Checkout/js/model/shipping-save-processor/default': {
                 'Yireo_GoogleTagManager2/js/mixins/shipping-save-processor-mixin': true
             },
-            /*'Magento_Catalog/js/catalog-add-to-cart': {
+            'Magento_Catalog/js/catalog-add-to-cart': {
                 'Yireo_GoogleTagManager2/js/mixins/catalog-add-to-cart-mixin': false
-            },*/
+            },
             'Magento_Checkout/js/model/step-navigator': {
                 'Yireo_GoogleTagManager2/js/mixins/step-navigator-mixin': true
             },

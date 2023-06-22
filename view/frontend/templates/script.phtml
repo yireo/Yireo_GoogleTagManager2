@@ -8,6 +8,8 @@ use Yireo\GoogleTagManager2\Config\Config;
 $config = $block->getConfig();
 ?>
 <script>
+    window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
+
     (function (events) {
         const initYireoGoogleTagManager2 = function () {
             events.forEach(function (eventType) {

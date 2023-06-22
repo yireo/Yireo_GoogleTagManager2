@@ -1,9 +1,15 @@
 define([
     'jquery',
-    'yireoGoogleTagManagerPush',
-    'yireoGoogleTagManagerLogger',
-], function ($, pusher, logger) {
+    'yireoGoogleTagManagerPush'
+], function ($, pusher) {
     'use strict';
+
+    const enabled = window.YIREO_GOOGLETAGMANAGER2_ENABLED;
+    if (enabled === null || enabled === undefined) {
+        return function (targetWidget) {
+            return $.mage.catalogAddToCart;
+        };
+    }
 
     var mixin = {
         submitForm: function (form) {

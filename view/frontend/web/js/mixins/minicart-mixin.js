@@ -3,6 +3,13 @@ define([
 ], function ($) {
     'use strict';
 
+    const enabled = window.YIREO_GOOGLETAGMANAGER2_ENABLED;
+    if (enabled === null || enabled === undefined) {
+        return function (targetWidget) {
+            return $.mage.dropdownDialog;
+        };
+    }
+
     var mixin = {
         open: function () {
             const rt = this._super();
