@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.3] - 22 June 2023
+### Fixed
+- Mixins are still active even when enabled = false
+
 ## [3.4.2] - 21 June 2023
 ### Fixed
 - Prevent add-to-cart to trigger view-cart, when view-cart is on cart-page only
