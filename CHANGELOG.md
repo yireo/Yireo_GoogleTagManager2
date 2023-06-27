@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.5] - 27 June 2023
+### Fixed
+- Fix issue with uninitialized `eventData` caused by 3.4.4
+
 ## [3.4.4] - 26 June 2023
 ### Fixed
 - Fixed stepNavigator issue in non-default checkout
