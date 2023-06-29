@@ -22,6 +22,8 @@ class ProductDataMapper
     private PriceFormatter $priceFormatter;
 
     private array $dataLayerMapping;
+    
+    private int $counter = 0;
 
     /**
      * @param Config $config
@@ -81,7 +83,8 @@ class ProductDataMapper
         );
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
-
+        $productData['index'] = $this->counter++;
+        
         // @todo: Add "variant" reference to Configurable Product
 
         return $productData;

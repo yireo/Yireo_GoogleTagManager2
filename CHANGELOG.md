@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Automagically add an index to every product being mapped #169
+
 ## [3.4.5] - 27 June 2023
 ### Fixed
 - Fix issue with uninitialized `eventData` caused by 3.4.4
