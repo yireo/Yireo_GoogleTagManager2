@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Util;
 
@@ -19,7 +20,7 @@ class GetCategoryFromProductTest extends TestCase
     use CreateProduct;
     use CreateCategory;
     use GetProduct;
-
+    
     /**
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
@@ -27,29 +28,29 @@ class GetCategoryFromProductTest extends TestCase
      */
     public function testGetAllWithProductInMultipleCategories()
     {
-        $this->createCategory(3, 2, ['name' => 'Category 1']);
-        $this->createCategory(4, 3, ['name' => 'Category 2']);
-        $this->createCategory(5, 4, ['name' => 'Category 3']);
-
+        $this->createCategory(3, 2, ['name' => 'Category 1', 'path' => '1/2/3']);
+        $this->createCategory(4, 3, ['name' => 'Category 2', 'path' => '1/2/3/4']);
+        $this->createCategory(5, 4, ['name' => 'Category 3', 'path' => '1/2/3/4/5']);
+        
         $this->createProduct(
             1,
             [
                 'name' => 'Product 1',
                 'sku' => 'product1',
-                'category_ids' => [3,4,5]
+                'category_ids' => [3, 4, 5]
             ]
         );
-
+        
         $product = $this->getProduct(1);
         $this->assertContains('3', $product->getCategoryIds());
         $this->assertContains('4', $product->getCategoryIds());
         $this->assertContains('5', $product->getCategoryIds());
-
+        
         $getCategoryFromProduct = ObjectManager::getInstance()->get(GetCategoryFromProduct::class);
         $categories = $getCategoryFromProduct->getAll($product);
-        $this->assertTrue(count($categories) === 3, 'Actual count '.count($categories));
+        $this->assertTrue(count($categories) === 3, 'Actual count ' . count($categories));
     }
-
+    
     /**
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
@@ -57,26 +58,26 @@ class GetCategoryFromProductTest extends TestCase
      */
     public function testGetAllWithProductInMultipleCategoriesAndOneDisabled()
     {
-        $this->createCategory(3, 2, ['name' => 'Category A']);
-        $this->createCategory(4, 3, ['name' => 'Category B']);
-        $this->createCategory(5, 4, ['name' => 'Category C', 'is_active' => 0]);
-
+        $this->createCategory(3, 2, ['name' => 'Category A', 'path' => '1/2/3']);
+        $this->createCategory(4, 3, ['name' => 'Category B', 'path' => '1/2/3/4']);
+        $this->createCategory(5, 4, ['name' => 'Category C', 'path' => '1/2/3/4/5', 'is_active' => 0]);
+        
         $this->createProduct(
             1,
             [
                 'name' => 'Product 1',
                 'sku' => 'product1',
-                'category_ids' => [3,4,5]
+                'category_ids' => [3, 4, 5]
             ]
         );
-
+        
         $product = $this->getProduct(1);
         $this->assertContains('3', $product->getCategoryIds());
         $this->assertContains('4', $product->getCategoryIds());
         $this->assertContains('5', $product->getCategoryIds());
-
+        
         $getCategoryFromProduct = ObjectManager::getInstance()->get(GetCategoryFromProduct::class);
         $categories = $getCategoryFromProduct->getAll($product);
-        $this->assertEquals(2, count($categories), 'Actual count '.count($categories));
+        $this->assertEquals(2, count($categories), 'Actual count ' . count($categories));
     }
 }
