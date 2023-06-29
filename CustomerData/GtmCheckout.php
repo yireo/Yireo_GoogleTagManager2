@@ -24,6 +24,7 @@ class GtmCheckout implements SectionSourceInterface
     public function getSectionData(): array
     {
         $gtmEvents = $this->checkoutSessionDataProvider->get();
+        $this->checkoutSessionDataProvider->clear();
         return ['gtm_events' => $gtmEvents];
     }
 }

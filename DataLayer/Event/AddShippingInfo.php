@@ -30,6 +30,10 @@ class AddShippingInfo implements EventInterface
     public function get(): array
     {
         $shippingMethod = $this->cart->getShippingAddress()->getShippingMethod();
+        if (!$shippingMethod) {
+            return [];
+        }
+        
         return [
             'event' => 'add_shipping_info',
             'ecommerce' => [
