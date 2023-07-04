@@ -46,7 +46,7 @@ $productPath = $block->getProductPath();
 
                 yireoGoogleTagManager2Pusher(eventData, 'push (page event "select_item") [script-product-clicks.phtml]');
 
-                if (YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS && confirm("Press to continue with redirect") === false) {
+                if (window['YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS'] && confirm("Press to continue with redirect") === false) {
                     event.preventDefault();
                 }
             });

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.1] - 4 July 2023
+### Fixed
+- Make sure undefined `YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS` does not cause issues
+
 ## [3.5.0] - 4 July 2023
 ### Fixed
 - Automagically add an index to every product being mapped #169

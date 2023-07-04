@@ -16,11 +16,7 @@ define([
             const formData = Object.fromEntries(new FormData(form[0]).entries());
             const productId = formData.product;
 
-            let debugClicks = false;
-            if (typeof YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS !== 'undefined') {
-                debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS;
-            }
-
+            const debugClicks = window['YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS'] || false;
             const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
             productData.quantity = formData.qty || 1;
 
