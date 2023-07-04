@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.0] - 4 July 2023
 ### Fixed
 - Automagically add an index to every product being mapped #169
+
+### Added
+- Support For Enhanced Conversions (@sprankhub)
 
 ## [3.4.5] - 27 June 2023
 ### Fixed
