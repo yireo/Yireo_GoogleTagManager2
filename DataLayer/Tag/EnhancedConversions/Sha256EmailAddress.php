@@ -19,7 +19,7 @@ class Sha256EmailAddress implements TagInterface
      */
     public function __construct(
         CheckoutSession $checkoutSession,
-        OrderRepositoryInterface $orderRepository,
+        OrderRepositoryInterface $orderRepository
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
