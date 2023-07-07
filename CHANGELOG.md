@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.3] - 4 July 2023
+### Fixed
+- JS error flooding error console (#178 @WouterSteen)
+
 ## [3.5.2] - 4 July 2023
 ### Fixed
 - `DataLayer/Tag/EnhancedConversions/Sha256EmailAddress.php` breaks in PHP 7.4 @koentjeh
