@@ -60,7 +60,10 @@ $commons = $block->getCommonsViewModel();
                         mageCacheStorage = JSON.parse(mageCacheStorage);
                     }
 
-                    delete mageCacheStorage.cart.gtm_events[eventId];
+                    if (typeof mageCacheStorage.cart.gtm_events[eventId] !== undefined) {
+                        delete mageCacheStorage.cart.gtm_events[eventId];
+                    }
+                    
                     window.localStorage.setItem('mage-cache-storage', JSON.stringify(mageCacheStorage));
                 }
             }
