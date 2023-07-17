@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.4] - 17 July 2023
+### Fixed
+- Argument name `productPath` should be `product_path` #179 @meminuygur
+
 ## [3.5.3] - 4 July 2023
 ### Fixed
 - JS error flooding error console (#178 @WouterSteen)
