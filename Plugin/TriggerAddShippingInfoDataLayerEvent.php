@@ -34,7 +34,11 @@ class TriggerAddShippingInfoDataLayerEvent
         $cartId,
         ShippingInformationInterface $addressInformation
     ) {
-        $this->checkoutSessionDataProvider->add('add_shipping_info_event', $this->addShippingInfo->get());
+
+        $event = $this->addShippingInfo->get();
+        if (array_key_exists('event', $event)) {
+            $this->checkoutSessionDataProvider->add('add_shipping_info_event', $event);
+        }
 
         return $paymentDetails;
     }
