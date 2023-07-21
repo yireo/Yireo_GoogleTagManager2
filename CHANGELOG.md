@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.5] - 21 July 2023
+### Fixed
+- Make sure that shipment code is added, if missing in address
+- Doublecheck for empty events
+- Dont bother adding an event if it is empty
+
 ## [3.5.4] - 17 July 2023
 ### Fixed
 - Argument name `productPath` should be `product_path` #179 @meminuygur
