@@ -9,6 +9,10 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
             delete cleanEventData.meta;
         }
 
+        if (cleanEventData.length === 0) {
+            return;
+        }
+
         if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
             && false === metaData.allowed_pages.includes(window.location.pathname)) {
             logger('Warning: Skipping event, not in allowed pages', window.location.pathname, eventData);
