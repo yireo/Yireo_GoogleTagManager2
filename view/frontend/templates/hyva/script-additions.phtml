@@ -60,9 +60,10 @@ $commons = $block->getCommonsViewModel();
                         mageCacheStorage = JSON.parse(mageCacheStorage);
                     }
 
-                    if (mageCacheStorage !== null &&
-                        typeof mageCacheStorage.cart !== undefined &&
-                        typeof mageCacheStorage.cart.gtm_events[eventId] !== undefined) {
+                    if (mageCacheStorage !== null
+                        && typeof mageCacheStorage.cart !== 'undefined'
+                        && typeof mageCacheStorage.cart.gtm_events !== 'undefined'
+                        && eventId in mageCacheStorage.cart.gtm_events) {
                         delete mageCacheStorage.cart.gtm_events[eventId];
                     }
 

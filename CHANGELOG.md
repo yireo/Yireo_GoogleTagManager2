@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.7] - 22 July 2023
+### Fixed
+- Again prevent JS error `Cannot read properties of undefined` under Hyva #181
+
 ## [3.5.6] - 21 July 2023
 ### Fixed
 - Prevent JS error `Cannot read properties of undefined` under Hyva #181
