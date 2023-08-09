@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.8] - 9 August 2023
+### Fixed
+- Use correct ID reference with product clicks on PLP pages
+
 ## [3.5.7] - 22 July 2023
 ### Fixed
 - Again prevent JS error `Cannot read properties of undefined` under Hyva #181
