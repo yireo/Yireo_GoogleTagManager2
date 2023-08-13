@@ -162,7 +162,9 @@ class GetAttributeValue
             return [];
         }
 
-        $attributeValues = explode(',', $attributeValue);
+        $attributeValues = is_array($attributeValue)
+            ? $attributeValue
+            : explode(',', $attributeValue);
 
         $options = $attribute->getSource()->getAllOptions();
         $attributeLabels = [];
