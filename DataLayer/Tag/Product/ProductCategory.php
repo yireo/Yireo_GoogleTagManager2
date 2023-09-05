@@ -4,12 +4,14 @@ namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Util\GetCategoryFromProduct;
 
 class ProductCategory implements ProductTagInterface
 {
-    private ProductInterface $product;
+    private Product $product;
     private GetCategoryFromProduct $getCategoryFromProduct;
 
     /**
@@ -22,10 +24,10 @@ class ProductCategory implements ProductTagInterface
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return $this
      */
-    public function setProduct(ProductInterface $product): ProductCategory
+    public function setProduct(Product $product): ProductCategory
     {
         $this->product = $product;
         return $this;
@@ -36,6 +38,7 @@ class ProductCategory implements ProductTagInterface
      */
     public function get(): string
     {
+        /** @var Category|null $category */
         $category = $this->product->getCategory();
         if (is_object($category) && $category instanceof CategoryInterface) {
             return $category->getName();

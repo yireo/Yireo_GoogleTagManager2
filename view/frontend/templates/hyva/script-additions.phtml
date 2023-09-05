@@ -16,49 +16,9 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 $commons = $block->getCommonsViewModel();
 ?>
 <script>
-    function yireoGoogleTagManager2FindParentElementWithName(element, parentTagName) {
-        if (!element.parentElement) {
-            return null;
-        }
-
-        if (element.parentElement.tagName.toLowerCase() === parentTagName) {
-            return element.parentElement;
-        }
-
-        return yireoGoogleTagManager2FindParentElementWithName(element.parentElement, parentTagName);
-    }
-
-    const products = document.querySelectorAll('.products a.product');
-    if (products) {
-        products.forEach(function(product) {
-            product.addEventListener('click', function(event, s) {
-                let parentElement = yireoGoogleTagManager2FindParentElementWithName(event.target, 'form');
-                const inputElement = parentElement.querySelector('input[name="product"]');
-                const productId = inputElement.value;
-                const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
-                productData.item_id = productId;
-
-                const gtmData = {
-                    'event': 'select_item',
-                    'ecommerce': {
-                        'items': [productData]
-                    }
-                }
-
-                logger('page event "select_item" (js)', gtmData);
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(gtmData);
-
-                if (YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS && confirm("Press to continue with redirect") === false) {
-                    event.preventDefault();
-                }
-            });
-        })
-    }
-</script>
-
-<script>
     window.addEventListener('private-content-loaded', function(event) {
+        window.dataLayer = window.dataLayer || [];
+
         var isEmpty = function (variable) {
             if (typeof variable === 'undefined') {
                 return true;
@@ -83,29 +43,37 @@ $commons = $block->getCommonsViewModel();
 
             const gtmEvents = event.detail.data[sectionName].gtm_events;
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-                if (eventData.triggered === true) {
-                    continue;
+                const metaData = eventData.meta;
+                const copyEventData = Object.assign({}, eventData);
+
+                if (metaData) {
+                    delete copyEventData.meta;
                 }
 
-                logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(eventData);
+                yireoGoogleTagManager2Pusher(copyEventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
 
-                if (eventData.cacheable !== true) {
-                    //delete sectionData['gtm_events'][eventId]; // @todo: Is this still needed?
-                    logger('invalidating sections "' + sectionName + '"', eventData)
+                if (!metaData || metaData.cacheable !== true) {
+                    yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
+
+                    let mageCacheStorage = window.localStorage.getItem('mage-cache-storage');
+                    if (mageCacheStorage) {
+                        mageCacheStorage = JSON.parse(mageCacheStorage);
+                    }
+
+                    if (mageCacheStorage !== null
+                        && typeof mageCacheStorage.cart !== 'undefined'
+                        && typeof mageCacheStorage.cart.gtm_events !== 'undefined'
+                        && eventId in mageCacheStorage.cart.gtm_events) {
+                        delete mageCacheStorage.cart.gtm_events[eventId];
+                    }
+
+                    window.localStorage.setItem('mage-cache-storage', JSON.stringify(mageCacheStorage));
                 }
-
-                eventData.triggered = true;
             }
         });
 
-        logger('initial state (js)', attributes);
-        window.dataLayer = window.dataLayer || [];
-
         if (false === isEmpty(attributes)) {
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(attributes);
+            yireoGoogleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
         }
     });
 </script>

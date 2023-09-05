@@ -11,8 +11,9 @@ define([
     'uiComponent',
     'Magento_Customer/js/customer-data',
     'yireoGoogleTagManagerLogger',
+    'yireoGoogleTagManagerPush',
     'knockout'
-], function ($, _, Component, customerData, logger, ko) {
+], function ($, _, Component, customerData, logger, pusher, ko) {
     'use strict';
 
     var moduleConfig = {};
@@ -27,7 +28,7 @@ define([
 
     var isValidConfig = function () {
         if (typeof moduleConfig.id === 'undefined' || !moduleConfig.id) {
-            logger('Identifier empty, terminating GTM initialization.');
+            logger('Warning: Identifier empty, terminating GTM initialization.');
             return false;
         }
 
@@ -48,14 +49,12 @@ define([
     };
 
     var processGtmDataFromSection = function (sectionName) {
-        const gtmData = getGtmDataFromSection(sectionName);
-        if (true === isEmpty(gtmData)) {
+        const eventData = getGtmDataFromSection(sectionName);
+        if (true === isEmpty(eventData)) {
             return;
         }
 
-        logger('section "' + sectionName + '" changed (customerData)', gtmData);
-        window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push(gtmData);
+        pusher(eventData, 'push (customerData "' + sectionName + '" changed) [generic.js]');
     }
 
     var processGtmEventsFromSection = function (sectionName) {
@@ -67,21 +66,31 @@ define([
         }
 
         for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-            if (eventData.triggered === true) {
-                continue;
+            processGtmEvent(eventId, eventData, sectionName, sectionData);
+        }
+    }
+
+    var processGtmEvent = function(eventId, eventData, sectionName, sectionData) {
+        logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
+
+        const metaData = Object.assign({}, eventData.meta);
+        if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
+            for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
+                $(window).on(allowedEvent, function () {
+                    pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
+                });
             }
 
-            logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push(eventData);
+            return;
+        }
 
-            if (eventData.cacheable !== true) {
-                delete sectionData['gtm_events'][eventId];
-                logger('invalidating sections "' + sectionName + '"', sectionData)
-                customerData.set(sectionName, sectionData);
-            }
+        pusher(eventData, 'push (event from customerData "' + sectionName + '") [generic.js]');
 
-            eventData.triggered = true;
+        // Make sure that a non-cacheable GTM event is not stored in customerData
+        if (!metaData || metaData.cacheable !== true) {
+            delete sectionData['gtm_events'][eventId];
+            logger('invalidating sections "' + sectionName + '"', sectionData)
+            customerData.set(sectionName, sectionData);
         }
     }
 
@@ -104,7 +113,7 @@ define([
     }
 
     var getSectionNames = function () {
-        return ['cart', 'customer'];
+        return ['cart', 'customer', 'gtm-checkout'];
     }
 
     var isEmpty = function (variable) {
@@ -133,12 +142,11 @@ define([
                 attributes = $.extend(getGtmDataFromSection(sectionName), attributes);
             });
 
-            logger('initial state (js)', attributes);
+            logger('initial state (js)');
             window.dataLayer = window.dataLayer || [];
 
             if (false === isEmpty(attributes)) {
-                window.dataLayer.push({ ecommerce: null });
-                window.dataLayer.push(attributes);
+                pusher(attributes, 'push (attributes) [generic.js]');
             }
 
             sectionNames.forEach(function (sectionName) {

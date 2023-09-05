@@ -22,12 +22,12 @@ class TriggerAddPaymentInfoDataLayerEvent
     }
 
     /**
-     * @param $orderId
      * @param PaymentInformationManagementInterface $subject
-     * @param $cartId
+     * @param mixed $orderId
+     * @param mixed $cartId
      * @param PaymentInterface $paymentMethod
      * @param AddressInterface|null $billingAddress
-     * @return int
+     * @return mixed
      */
     public function afterSavePaymentInformationAndPlaceOrder(
         PaymentInformationManagementInterface $subject,

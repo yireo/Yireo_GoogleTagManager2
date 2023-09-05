@@ -42,7 +42,7 @@ class GetProductsFromCategoryBlockPlugin
             if ($this->config->getMaximumCategoryProducts() > 0 && $i > $this->config->getMaximumCategoryProducts()) {
                 break;
             }
-    
+
             $this->getCurrentCategoryProducts->addProduct($product);
             $i++;
         }

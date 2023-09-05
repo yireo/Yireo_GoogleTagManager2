@@ -1,0 +1,36 @@
+<?php declare(strict_types=1);
+
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2023 Yireo (http://www.yireo.com/)
+ * @license     Open Software License
+ */
+?>
+<script>
+    function yireoGoogleTagManager2Pusher(eventData, message) {
+        window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
+
+        const copyEventData = Object.assign({}, eventData);
+        if (copyEventData.meta) {
+            delete copyEventData.meta;
+        }
+
+        const eventHash = btoa(encodeURIComponent(JSON.stringify(copyEventData)));
+        if (window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.includes(eventHash)) {
+            yireoGoogleTagManager2Logger('Warning: Event already triggered', eventData);
+            return;
+        }
+
+        if (!message) {
+            message = 'push (unknown) [unknown]';
+        }
+
+        yireoGoogleTagManager2Logger(message, eventData);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ecommerce: null});
+        window.dataLayer.push(eventData);
+        window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
+    }
+</script>

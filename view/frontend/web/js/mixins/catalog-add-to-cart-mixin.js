@@ -1,19 +1,22 @@
 define([
     'jquery',
-    'yireoGoogleTagManagerLogger'
-], function ($, logger) {
+    'yireoGoogleTagManagerPush'
+], function ($, pusher) {
     'use strict';
+
+    const enabled = window.YIREO_GOOGLETAGMANAGER2_ENABLED;
+    if (enabled === null || enabled === undefined) {
+        return function (targetWidget) {
+            return $.mage.catalogAddToCart;
+        };
+    }
 
     var mixin = {
         submitForm: function (form) {
             const formData = Object.fromEntries(new FormData(form[0]).entries());
             const productId = formData.product;
 
-            let debugClicks = false;
-            if (typeof YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS !== 'undefined') {
-                debugClicks = YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS;
-            }
-
+            const debugClicks = window['YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS'] || false;
             const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
             productData.quantity = formData.qty || 1;
 
@@ -24,14 +27,11 @@ define([
                 }
             };
 
-            logger('catalog-add-to-cart-mixin event', eventData);
-            logger('catalog-add-to-cart-mixin productData', productData);
-
             if (debugClicks && confirm("Press to continue with add-to-cart") === false) {
                 return;
             }
 
-            window.dataLayer.push(eventData);
+            pusher(eventData, 'push [catalog-add-to-cart-mixin.js]');
             return this._super(form);
         }
     };

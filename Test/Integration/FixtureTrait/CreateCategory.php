@@ -7,6 +7,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
 use Magento\Catalog\Model\Category;
 use Magento\Framework\App\ObjectManager;
+use RuntimeException;
 
 trait CreateCategory
 {
@@ -15,13 +16,17 @@ trait CreateCategory
         int $parentId = 2,
         array $data = []
     ): CategoryInterface {
+        if ($id < 3) {
+            throw new RuntimeException('Category ID should not be lower than 3');
+        }
+
         $categoryFactory = ObjectManager::getInstance()->get(CategoryInterfaceFactory::class);
         $categoryRepository = ObjectManager::getInstance()->get(CategoryRepositoryInterface::class);
 
         /** @var $category Category */
         $category = $categoryFactory->create();
         $category->setId($id)
-            ->setName('Category ' . $id)
+            ->setName(isset($data['name']) ? $data['name'] : 'Category ' . $id)
             ->setParentId($parentId)
             ->setPath('1/' . $parentId . '/' . $id)
             ->setUrlKey('category' . $id)

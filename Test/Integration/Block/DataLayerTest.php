@@ -31,13 +31,12 @@ class DataLayerTest extends PageTestCase
 
         $block = $layout->createBlock(Template::class);
         $block->setNameInLayout('yireo_googletagmanager2.data-layer');
-        $block->setTemplate('Yireo_GoogleTagManager2::data-layer.phtml');
+        $block->setTemplate('Yireo_GoogleTagManager2::luma/data-layer.phtml');
         $block->setData('data_layer_view_model', ObjectManager::getInstance()->get(DataLayer::class));
         $block->setData('config', ObjectManager::getInstance()->get(Config::class));
         $html = $block->toHtml();
 
-        $this->assertTrue((bool)strpos($html, 'window.dataLayer = window.dataLayer || []'),
-            'Data layer not found in block output');
+        $this->assertTrue((bool)strpos($html, 'yireoGoogleTagManagerPush'), 'Data layer not found in block output');
     }
 
     /**
@@ -61,6 +60,6 @@ class DataLayerTest extends PageTestCase
         $this->assertNotFalse($block, 'Block "yireo_googletagmanager2.data-layer" is empty');
 
         $array = $this->layout->getUpdate()->asArray();
-        $this->assertTrue((bool)strpos($body, 'window.dataLayer = window.dataLayer || []'), 'Data layer not found in HTML body: '. var_export($array, true));
+        $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManagerPush'), 'Data layer not found in HTML body: '. var_export($array, true));
     }
 }

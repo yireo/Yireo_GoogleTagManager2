@@ -28,9 +28,16 @@
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
                     <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
                     <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
+                </field>
+                <field id="serverside_gtm_url" type="text" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container URL</label>
+                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
+                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
+                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
                 </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
@@ -44,6 +51,13 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="debug">1</field>
+                    </depends>
+                </field>
+                <field id="wait_for_ui" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Wait for user interaction</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -76,6 +90,22 @@
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
+                </field>
+                <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>view_cart occurances</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    <comment>Where to generate the view_cart event</comment>
+                </field>
+                <field id="view_cart_on_mini_cart_expand_only" type="select" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>view_cart only with expanded minicart</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="view_cart_occurances">everywhere</field>
+                    </depends>
+                    <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
             </group>
         </section>

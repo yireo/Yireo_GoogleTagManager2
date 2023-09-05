@@ -16,16 +16,6 @@
                 <argument name="data_layer_processors" xsi:type="array">
                     <item name="checkout" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Checkout</item>
                 </argument>
-
-                <argument name="data_layer_events" xsi:type="array">
-                    <item name="begin_checkout" xsi:type="array">
-                        <item name="event" xsi:type="string">begin_checkout</item>
-                        <item name="ecommerce" xsi:type="array">
-                            <item name="items" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems
-                            </item>
-                        </item>
-                    </item>
-                </argument>
             </arguments>
         </referenceBlock>
 
@@ -44,7 +34,9 @@
                                                         <item name="additional-payment-validators" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <item name="yireo-googletagmanager2" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Yireo_GoogleTagManager2/js/checkout/payment-validator/register</item>
+                                                                    <item name="component" xsi:type="string">
+                                                                        Yireo_GoogleTagManager2/js/checkout/payment-validator/register
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>
@@ -60,5 +52,18 @@
                 </argument>
             </arguments>
         </referenceBlock>
+
+        <referenceContainer name="yireo_googletagmanager2.data-layer.container">
+            <block
+                name="yireo_googletagmanager2.script-begin-checkout"
+                template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+                after="yireo_googletagmanager2.data-layer"
+            >
+                <arguments>
+                    <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>

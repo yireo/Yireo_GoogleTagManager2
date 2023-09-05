@@ -5,7 +5,7 @@ namespace Yireo\GoogleTagManager2\Test\Integration;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
-use Magento\TestFramework\View\Layout;
+use Magento\Framework\View\LayoutInterface;
 use Magento\TestFramework\TestCase\AbstractController;
 use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
@@ -17,13 +17,13 @@ class PageTestCase extends AbstractController
     use AssertNonEmptyValueInArray;
 
     protected ?ObjectManager $objectManager = null;
-    protected ?Layout $layout = null;
+    protected ?LayoutInterface $layout = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->objectManager = ObjectManager::getInstance();
-        $this->layout = $this->objectManager->get(Layout::class);
+        $this->layout = $this->objectManager->get(LayoutInterface::class);
     }
 
     protected function getDataFromDataLayer(): array

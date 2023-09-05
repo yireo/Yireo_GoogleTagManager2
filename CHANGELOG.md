@@ -5,7 +5,156 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.5.8] - 9 August 2023
 ### Fixed
+- Use correct ID reference with product clicks on PLP pages
+
+## [3.5.7] - 22 July 2023
+### Fixed
+- Again prevent JS error `Cannot read properties of undefined` under Hyva #181
+
+## [3.5.6] - 21 July 2023
+### Fixed
+- Prevent JS error `Cannot read properties of undefined` under Hyva #181
+
+## [3.5.5] - 21 July 2023
+### Fixed
+- Make sure that shipment code is added, if missing in address
+- Doublecheck for empty events
+- Dont bother adding an event if it is empty
+
+## [3.5.4] - 17 July 2023
+### Fixed
+- Argument name `productPath` should be `product_path` #179 @meminuygur
+
+## [3.5.3] - 4 July 2023
+### Fixed
+- JS error flooding error console (#178 @WouterSteen)
+
+## [3.5.2] - 4 July 2023
+### Fixed
+- `DataLayer/Tag/EnhancedConversions/Sha256EmailAddress.php` breaks in PHP 7.4 @koentjeh
+
+## [3.5.1] - 4 July 2023
+### Fixed
+- Make sure undefined `YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS` does not cause issues
+
+## [3.5.0] - 4 July 2023
+### Fixed
+- Automagically add an index to every product being mapped #169
+
+### Added
+- Support For Enhanced Conversions (@sprankhub)
+
+## [3.4.5] - 27 June 2023
+### Fixed
+- Fix issue with uninitialized `eventData` caused by 3.4.4
+
+## [3.4.4] - 26 June 2023
+### Fixed
+- Fixed stepNavigator issue in non-default checkout
+
+## [3.4.3] - 22 June 2023
+### Fixed
+- Mixins are still active even when enabled = false
+
+## [3.4.2] - 21 June 2023
+### Fixed
+- Prevent add-to-cart to trigger view-cart, when view-cart is on cart-page only
+- Missing Quantity Parameter in `add_to_cart` Event
+
+## [3.4.1] - 20 June 2023
+### Fixed
+- Non-visible child products in bundle cause Fatal Exception
+
+## [3.4.0] - 19 June 2023
+### Added
+- Option to delay loading GTM until user interaction is triggered
+
+## [3.3.4] - 16 June 2023
+### Fixed
+- Fix issue with JS `btoa` and non-Latin1 characters #162 @amjadm61 
+
+## [3.3.3] - 16 June 2023
+### Fixed
+- Emergency fix for `number_format` (3 args instead of 4) under PHP 7.4
+
+## [3.3.2] - 16 June 2023
+### Fixed
+- Guarantee that cart value is always returned with 4 decimals
+- Prevent duplicate events with same data
+- Make sure to return data if categories cause exception #160
+- Make sure non-cacheable events are wiped from Hyva localstorage
+- Don't add categories that are added to another Root Category
+
+## [3.3.1] - 15 June 2023
+### Fixed
+- `parent()` might cause issues with nesting HTML #157 @koentjeh
+- Only point `item_id` towards product ID and add a new `order_item_id`
+- Make logging with colors more consistant
+- Rename `purchase` event to `purchase_event` to comply to module standard
+- Combine notice log with push log
+- Add filename for better debugging
+- #158 fix payment trigger for guest user #159 @koentjeh
+
+## [3.3.0] - 12 June 2023
+### Added
+- Add `view_search_result` event #156 @gaeldelmer
+
+## [3.2.6] - 7 June 2023
+### Fixed
+- Make sure no-such-entity-exception doesnt break production
+- Make sure to filter categories by `entity_id` AND `is_active`
+
+## [3.2.5] - 6 June 2023
+### Fixed
+- Make sure `quantity` is a `float` not an `int`
+- Alt approach for bypassing non-active categories
+
+## [3.2.4] - 6 June 2023
+### Added
+- New `etc/data_layer.xml` to extend on global level (instead of using XML layout)
+
+### Fixed
+- Categories of product should be enabled to be displayed
+
+## [3.2.3] - 26 May 2023
+### Fixed
+- Rewrite splat into `array_merge` because of PHP 7.4 (#152)
+- Add log to `CustomerSessionDataProvider` (@gaeldelmer)
+- Execute `begin_checkout` event using checkout step navigator (@koentjeh #148)
+
+## [3.2.2] - 18 May 2023
+### Fixed
+- Triggering shipping and payment events on the spot, instead of delayed
+- Adding customData section `gtm-checkout` for reloading things in checkout
+
+## [3.2.1] - 10 May 2023
+### Added
+- Option for custom URL for `gtm.js` icw server-side analytics (@WouterSteen)
+
+## [3.2.0] - 20 April 2023
+### Added
+- Option to trigger `view_cart` event only when expanding minicart
+
+### Fixed
+- Support any method in any entity with `GetAttributeValue`
+- GA4 container ID client-side validation #142 @koentjeh
+
+## [3.1.3] - 8 April 2023
+### Fixed
+- Fixed default `product_path` config for product clicks
+
+## [3.1.2] - 8 April 2023
+### Added
+- Option to only generate `view_cart` on the cart page
+- Move product clicks to separate template and make `productPath` configurable through layout
+
+## [3.1.1] - 31 March 2023
+### Fixed
+- Product category information in data layer is incomplete #138 @DuckThom
+- Return price in the current currency for multi-currency stores #127 @samicoman
 - Reset ecommerce `dataLayer` everywhere
 - Use `window.dataLayer` instead of `dataLayer`
 

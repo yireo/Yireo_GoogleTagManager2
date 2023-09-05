@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
-use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 interface ProductTagInterface extends TagInterface
 {
-    public function setProduct(ProductInterface $product);
+    public function setProduct(Product $product);
 }

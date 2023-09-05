@@ -13,8 +13,10 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
-    logger('initial state (page)', <?= /* @noEscape */ $dataLayerJson ?>);
-    <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
-        logger('event (page)', <?= /* @noEscape */ $dataLayerEventsJsonChunk ?>);
-    <?php endforeach; ?>
+    require(['yireoGoogleTagManagerPush'], function (pusher) {
+        pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
+        <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
+        pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (initial event) [data-layer.phtml]');
+        <?php endforeach; ?>
+    });
 </script>

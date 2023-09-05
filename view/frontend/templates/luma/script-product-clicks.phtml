@@ -1,0 +1,20 @@
+<?php declare(strict_types=1);
+
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2023 Yireo (https://www.yireo.com/)
+ * @license     Open Software License
+ */
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+$productPath = $block->getProductPath();
+?>
+<script>
+    require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
+        clicks({productPath: '<?= $productPath ?>'});
+    });
+</script>

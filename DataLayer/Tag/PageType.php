@@ -18,7 +18,7 @@ class PageType implements TagInterface
     public function get(): string
     {
         $moduleName = $this->request->getModuleName();
-        $controllerName = $this->request->getControllerName();
+        $controllerName = $this->request->getControllerName(); // @phpstan-ignore-line
         $actionName = $this->request->getActionName();
         return $moduleName . '/' . $controllerName . '/' . $actionName;
     }

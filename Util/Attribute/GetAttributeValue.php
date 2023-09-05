@@ -17,20 +17,26 @@ use Magento\Eav\Model\Config as EavConfig;
 use Magento\Eav\Model\Entity\Attribute;
 use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 use Magento\Framework\Api\AttributeInterface;
+use Magento\Framework\Api\CustomAttributesDataInterface;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Yireo\GoogleTagManager2\Util\CamelCase;
 
 class GetAttributeValue
 {
     private EavConfig $eavConfig;
+    private CamelCase $camelCase;
 
     /**
      * @param EavConfig $eavConfig
+     * @param CamelCase $camelCase
      */
     public function __construct(
-        EavConfig $eavConfig
+        EavConfig $eavConfig,
+        CamelCase $camelCase
     ) {
         $this->eavConfig = $eavConfig;
+        $this->camelCase = $camelCase;
     }
 
     /**
@@ -67,15 +73,16 @@ class GetAttributeValue
     }
 
     /**
-     * @param ExtensibleDataInterface $entity
+     * @param CustomAttributesDataInterface $entity
      * @param string $entityType
      * @param string $attributeCode
      * @return array|mixed|string
      * @throws LocalizedException
      */
-    public function getAttributeValue(ExtensibleDataInterface $entity, string $entityType, string $attributeCode)
+    public function getAttributeValue(CustomAttributesDataInterface $entity, string $entityType, string $attributeCode)
     {
         if ($attributeCode === 'id') {
+            /** @phpstan-ignore-next-line  */
             return $entity->getId();
         }
 
@@ -85,8 +92,18 @@ class GetAttributeValue
             return $this->filterAttributeValue($attribute, $entityAttribute->getValue());
         }
 
-        $attributeValue = $entity->getData($attributeCode);
-        return $this->filterAttributeValue($attribute, $attributeValue);
+        $attributeMethod = 'get' . ucfirst($this->camelCase->from($attributeCode));
+        if (method_exists($entity, $attributeMethod)) {
+            $attributeValue = call_user_func([$entity, $attributeMethod]);
+            return $this->filterAttributeValue($attribute, $attributeValue);
+        }
+
+        if (method_exists($entity, 'getData')) {
+            $attributeValue = $entity->getData($attributeCode);
+            return $this->filterAttributeValue($attribute, $attributeValue);
+        }
+
+        return null;
     }
 
     /**
@@ -145,7 +162,9 @@ class GetAttributeValue
             return [];
         }
 
-        $attributeValues = explode(',', $attributeValue);
+        $attributeValues = is_array($attributeValue)
+            ? $attributeValue
+            : explode(',', $attributeValue);
 
         $options = $attribute->getSource()->getAllOptions();
         $attributeLabels = [];

@@ -2,8 +2,9 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
@@ -19,12 +20,16 @@ class ProductDataMapper
     private GetAttributeValue $getAttributeValue;
     private GetCategoryFromProduct $getCategoryFromProduct;
     private PriceFormatter $priceFormatter;
+
     private array $dataLayerMapping;
+    
+    private int $counter = 0;
 
     /**
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
      * @param GetCategoryFromProduct $getCategoryFromProduct
+     * @param PriceFormatter $priceFormatter
      * @param array $dataLayerMapping
      */
     public function __construct(
@@ -42,12 +47,12 @@ class ProductDataMapper
     }
 
     /**
-     * @param ProductInterface $product
+     * @param Product $product
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function mapByProduct(ProductInterface $product): array
+    public function mapByProduct(Product $product): array
     {
         $prefix = 'item_';
         $productData = [];
@@ -73,10 +78,13 @@ class ProductDataMapper
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
-        $productData['price'] = $this->priceFormatter->format((float) $product->getFinalPrice());
+        $productData['price'] = $this->priceFormatter->format(
+            (float)$product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
+        );
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
-
+        $productData['index'] = $this->counter++;
+        
         // @todo: Add "variant" reference to Configurable Product
 
         return $productData;
@@ -97,17 +105,23 @@ class ProductDataMapper
      */
     private function attachCategoriesData(ProductInterface $product, array $data): array
     {
+        try {
+            $categories = $this->getCategoryFromProduct->getAll($product);
+        } catch (NoSuchEntityException $e) {
+            return $data;
+        }
+
         $maxCategoriesCount = 5;
         $currentCategoriesCount = 1;
-
-        foreach ($this->getCategoryFromProduct->getAll($product) as $category) {
-            if ($category->getParentId() == 1) {
+        foreach ($categories as $category) {
+            if ((int)$category->getParentId() === 1) {
                 continue;
             }
 
-            $key = 'item_category' . ($currentCategoriesCount == 1 ? '' : $currentCategoriesCount++);
+            $key = 'item_category' . ($currentCategoriesCount === 1 ? '' : $currentCategoriesCount);
             $data[$key] = $category->getName();
 
+            $currentCategoriesCount++;
             if ($currentCategoriesCount > $maxCategoriesCount) {
                 break;
             }

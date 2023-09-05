@@ -8,11 +8,13 @@ First of all, make sure you have existing accounts for both [Google Analytics](h
 Login into Google Analytics. Create a new **App** for your site. Within that **App**, under **Admin**, navigate to **Data Streams**. Create a new **Web** stream. Under the **Web** stream details, write down the **Measurement ID** (starting with `G-`) for later use.
 
 ## Google Tag Manager
-Login into Google Tag Manager. 
+Login into Google Tag Manager.
 
-Create a new **Container** for your site. Write down the **Container ID** (starting with `GTM-`) to configure later in the Magento extension. 
+Create a new **Container** for your site. Write down the **Container ID** (starting with `GTM-`) to configure later in the Magento extension.
 
-In the **Container Workspace**, under **Variables** and then **Built-In Variables**, **Configure** the variables to enable the following variables:
+In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Keep the **Send a page view event when this configuration loads** option checked. Make sure to trigger this tag on all pages with the **All pages** trigger.
+
+In the **Container Workspace**, under **Variables** and then **Built-In Variables**, make sure the following variables are enabled:
 
 - **Page URL**
 - **Page Hostname**
@@ -21,19 +23,18 @@ In the **Container Workspace**, under **Variables** and then **Built-In Variable
 - **Event**
 - And possibly others
 
-In the **Container Workspace**, under **Variables** and then **User-Defined Variables**, create the following variables of type **Data Layer Variable** and
-Data Layer Version 2:
+In the **Container Workspace**, under **Variables** and then **User-Defined Variables**, create the following variables of type **Data Layer Variable** and Data Layer Version 2:
 
 - Variable with label `Ecommerce` and name `ecommerce`
-- Variable with name `Ecommerce Affiliation` and name `ecommerce.affiliation`
-- Variable with name `Ecommerce Coupon` and name `ecommerce.coupon`
-- Variable with name `Ecommerce Currency` and name `ecommerce.currency`
-- Variable with name `Ecommerce Shipping` and name `ecommerce.shipping`
-- Variable with name `Ecommerce Value` and name `ecommerce.value`
-- Variable with name `Ecommerce Tax` and name `ecommerce.tax`
-- Variable with name `Ecommerce Transaction ID` and name `ecommerce.transaction_id`
+- Variable with label `Ecommerce Affiliation` and name `ecommerce.affiliation`
+- Variable with label `Ecommerce Coupon` and name `ecommerce.coupon`
+- Variable with label `Ecommerce Currency` and name `ecommerce.currency`
+- Variable with label `Ecommerce Shipping` and name `ecommerce.shipping`
+- Variable with label `Ecommerce Value` and name `ecommerce.value`
+- Variable with label `Ecommerce Tax` and name `ecommerce.tax`
+- Variable with label `Ecommerce Transaction ID` and name `ecommerce.transaction_id`
 
-Also create a variable of type **Custom JavaScript** with name `Ecommerce Items` and the following custom JavaScript:
+Also create a variable of type **Custom JavaScript** with label `Ecommerce Items` and the following custom JavaScript:
 ```js
 function() {
   var ecom = {{Ecommerce}};
@@ -45,9 +46,9 @@ function() {
 }
 ```
 
-In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Make sure to trigger this tag on all pages.
+In the **Container Workspace**, under **Triggers**, create a trigger "Ecommerce Custom Event", which fires on **All Custom Events**. Select the checkbox "Use regex matching" and input `view_item|view_item_list|select_item|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_payment_info|add_shipping_info|purchase` in the **Event** name.
 
-Next, create a second **Tag** in the same **Container Workspace**, this time of type **Google Analytics > GA4 Events**. Set `{{Event}}` to be the **Event Name**. Next, enter the following **Event Parameters**:
+In the **Container Workspace**, under **Tags**, create a second **Tag**, this time of type **Google Analytics > GA4 Events**. Set **Event Name** to `{{Event}}`. Next, enter the following **Event Parameters**:
 
 - Parameter name `items` with value `{{Ecommerce Items}}`
 - Parameter name `transaction_id` with value `{{Ecommerce Transaction ID}}`
@@ -58,18 +59,20 @@ Next, create a second **Tag** in the same **Container Workspace**, this time of 
 - Parameter name `currency` with value `{{Ecommerce Currency}}`
 - Parameter name `coupon` with value `{{Ecommerce Coupon}}`
 
-Alternatively, instead of creating all **Variables** and **Tags** manually, download [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-example.json). Edit it manually and replace the following strings with your own:  
+Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**. Make sure to trigger this second tag with custom trigger **Ecommerce Custom Event**.
+
+Once the two tags are configured in Google Tag Manager, use **Publish** to publish your new configuration as a new version.
+
+**Alternatively:**
+
+Create the **GA4 Configuration** tag manually like described above. Next, instead of manually creating the **Variables**, **Ecommerce Custom Event** trigger and **GA4 Events** tag, download [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-example.json). Edit it manually and replace the following strings with your own:
 
 - `ACCOUNT_ID` should be replaced with your own numeric account ID (visible in GTM URL)
 - `CONTAINER_ID` should be replaced with your own numeric container ID (visible in GTM URL)
-- `CONTAINER_NAME` should be replaced with your own container name 
+- `CONTAINER_NAME` should be replaced with your own container name
 - `GTM_PUBLIC_ID` should be replaced with your own container public ID (starting with `GTM-`)
 
-Make sure to reset the **Measurement ID** to be your own.
-
-Under **More Settings**, enable the flag **Send Ecommerce data** and use as the **Data Source** the option **Data Layer**.
-
-Once the two tags are configured in Google Tag Manager, use **Publish** to publish your new configuration as a new version.
+After importing the adjusted JSON file make sure to change the **Measurement ID** of the second **Tag** into yours. Publish the new configuration.
 
 ## Magento
 The following steps assume that the Yireo module was already installed and enabled properly. Within the Magento Admin Panel, navigate to the **Store Configuration** and open up the **Yireo GoogleTagManager** options (under the section **Yireo**). Make sure the option **Enabled** is set to **Yes**. Configure the Google Tag Manager key starting with `GTM-` under **Container Public ID**. Enable **Debug** to make sure everything is working fine.

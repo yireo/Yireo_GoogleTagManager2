@@ -14,7 +14,7 @@ jobs:
           path: /tmp/composer-cache
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-      - uses: docker://extdn/magento-phpstan-action:8.1-latest
+      - uses: docker://extdn/magento-phpstan-action:7.4-latest
         with:
           composer_name: ${{ secrets.COMPOSER_NAME }}
           composer_version: 2

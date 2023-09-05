@@ -2,6 +2,9 @@
 
 namespace Yireo\GoogleTagManager2\Logger;
 
+use Magento\Framework\Filesystem\DirectoryList;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 

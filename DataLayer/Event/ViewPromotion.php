@@ -33,7 +33,7 @@ class ViewPromotion implements EventInterface
 
     /**
      * @param PromotionItem[] $promotionItems
-     * @return SelectPromotion
+     * @return ViewPromotion
      */
     public function setPromotionItems(array $promotionItems): ViewPromotion
     {

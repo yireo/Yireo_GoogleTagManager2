@@ -2,23 +2,15 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer;
 
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\DataLayer\Processor\ProcessorInterface;
+use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use RuntimeException;
 
 class TagParser
 {
-    private ObjectManagerInterface $objectManager;
-
-    public function __construct(
-        ObjectManagerInterface $objectManager
-    ) {
-        $this->objectManager = $objectManager;
-    }
-
     /**
      * @param array $data
      * @param ProcessorInterface[] $processors
@@ -38,22 +30,21 @@ class TagParser
     }
 
     /**
-     * @param mixed|TagInterface $variable
-     * @return mixed|TagInterface
+     * @param $tagName
+     * @param $tagValue
+     * @param array $data
+     * @return array
      */
-    private function convertTag($tagName, $tagValue, $data)
+    private function convertTag($tagName, $tagValue, array $data): array
     {
         if ($tagValue instanceof MergeTagInterface) {
             unset($data[$tagName]);
-            $data = array_merge($data, $tagValue->merge());
+            return array_merge($data, $tagValue->merge());
         }
 
-        if ($tagValue instanceof TagInterface) {
-            $data[$tagName] = $tagValue->get();
-        }
-
-        if (is_object($tagValue) && !$tagValue instanceof TagInterface && !$tagValue instanceof MergeTagInterface) {
-            throw new RuntimeException('Unknown variable in data layer: ' . get_class($tagValue));
+        if (is_object($tagValue)) {
+            $data[$tagName] = $this->getValueFromFromTagValueObject($tagValue);
+            return $data;
         }
 
         if (is_array($tagValue)) {
@@ -62,6 +53,7 @@ class TagParser
             }
 
             $data[$tagName] = $tagValue;
+            return $data;
         }
 
         if (is_null($tagValue)) {
@@ -72,25 +64,16 @@ class TagParser
     }
 
     /**
-     * @param string $className
-     * @param string $classMethod
-     * @return false|mixed
+     * @param ArgumentInterface $tagValueObject
+     * @return mixed
+     * @throws RuntimeException
      */
-    private function getValueFromCallable(string $className, string $classMethod)
+    private function getValueFromFromTagValueObject(ArgumentInterface $tagValueObject)
     {
-        if (!class_exists($className)) {
-            return false;
+        if ($tagValueObject instanceof TagInterface || $tagValueObject instanceof EventInterface) {
+            return $tagValueObject->get();
         }
 
-        if (!method_exists($className, $classMethod)) {
-            return false;
-        }
-
-        $object = $this->objectManager->get($className);
-        if (!$object instanceof ArgumentInterface) {
-            return false;
-        }
-
-        return call_user_func([$object, $classMethod]);
+        throw new RuntimeException('Unknown object in data layer: ' . get_class($tagValueObject));
     }
 }

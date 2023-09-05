@@ -45,9 +45,9 @@ class Refund implements EventInterface
 
     /**
      * @param OrderInterface $order
-     * @return Purchase
+     * @return Refund
      */
-    public function setOrder(OrderInterface $order): Purchase
+    public function setOrder(OrderInterface $order): Refund
     {
         $this->order = $order;
         return $this;

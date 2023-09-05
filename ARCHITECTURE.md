@@ -70,3 +70,14 @@ A RequireJS mixin is added to `Magento_Catalog/js/catalog-add-to-cart` to trigge
 
 ## Observer for `removeFromCart` event
 The datalayer event `removeFromCart` is ideally triggered from JavaScript as well, but unfortunately the JavaScript API is not consistent. Instead, the event `sales_quote_remove_item` is observed by an observer which calls upon the session data provider `\Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface` to temporarily add the event data to the session and then append this to the `customerData` section. Right.
+
+## Handling product clicks
+Product clicks are tracked through a specific template called `script-product-clicks`. Make sure the XPath identifier used as the XML layout argument `product_path` is matching with yours. By default, this is `.product-items a.product` in Luma. To change this, use an XML layout instruction like the following:
+
+```xml
+<referenceBlock name="yireo_googletagmanager2.script-product-clicks">
+    <arguments>
+        <argument name="product_path" xsi:type="string">.my-products a.product</argument>
+    </arguments>
+</referenceBlock>
+```

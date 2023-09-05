@@ -15,4 +15,16 @@
     <type name="Magento\Catalog\Block\Product\ListProduct">
         <plugin name="Yireo_GoogleTagManager2::getProductsFromCategoryBlockPlugin" type="Yireo\GoogleTagManager2\Plugin\GetProductsFromCategoryBlockPlugin"/>
     </type>
+
+    <type name="Magento\CatalogSearch\Controller\Result\Index">
+        <plugin name="Yireo_GoogleTagManager2::TriggerViewSearchResultDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerViewSearchResultDataLayerEvent"/>
+    </type>
+
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="gtm-checkout" xsi:type="string">Yireo\GoogleTagManager2\CustomerData\GtmCheckout</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
