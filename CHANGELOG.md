@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.6.0] - 6 September 2023
+### Added
+- New event `sign_up` #185 (@samicoman)
+
 ### Fixed
 - Fix position of value and currency in `add_to_cart` #186 (@anvanza)
 
