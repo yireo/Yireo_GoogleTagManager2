@@ -43,9 +43,9 @@ class AddToCart implements EventInterface
 
         return [
             'event' => 'add_to_cart',
-            'currency' => $this->currencyCode->get(),
-            'value' => $value,
             'ecommerce' => [
+                'currency' => $this->currencyCode->get(),
+                'value' => $value,
                 'items' => [$itemData]
             ]
         ];
