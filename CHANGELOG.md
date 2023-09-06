@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix position of value and currency in `add_to_cart` #186 (@anvanza)
+
 ## [3.5.8] - 9 August 2023
 ### Fixed
 - Use correct ID reference with product clicks on PLP pages
