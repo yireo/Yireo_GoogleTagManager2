@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `currency` should never be part of an `item` #189
+
 ## [3.6.0] - 6 September 2023
 ### Added
 - New event `sign_up` #185 (@samicoman)
