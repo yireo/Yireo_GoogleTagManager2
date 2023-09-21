@@ -43,7 +43,7 @@ class GetProductsFromCategoryBlockPlugin
         }
         $i = 0;
         foreach ($collection as $product) {
-            if ($maximumCategoryProducts > 0 && $i > $maximumCategoryProducts) {
+            if ($i > $maximumCategoryProducts) {
                 break;
             }
 
