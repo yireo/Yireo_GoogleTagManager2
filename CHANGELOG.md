@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `currency` should never be part of an `item` #189
+- Do not load category products if disabled #190 (@sprankhub)
 
 ## [3.6.0] - 6 September 2023
 ### Added
