@@ -37,9 +37,13 @@ class GetProductsFromCategoryBlockPlugin
         ListProduct $listProductBlock,
         AbstractCollection $collection
     ): AbstractCollection {
+        $maximumCategoryProducts = $this->config->getMaximumCategoryProducts();
+        if ($maximumCategoryProducts <= 0) {
+            return $collection;
+        }
         $i = 0;
         foreach ($collection as $product) {
-            if ($this->config->getMaximumCategoryProducts() > 0 && $i > $this->config->getMaximumCategoryProducts()) {
+            if ($i > $maximumCategoryProducts) {
                 break;
             }
 
