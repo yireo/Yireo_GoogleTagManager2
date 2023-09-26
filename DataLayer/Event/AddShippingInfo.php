@@ -40,7 +40,7 @@ class AddShippingInfo implements EventInterface
 
         if (!$shippingMethod) {
             $quoteId = $this->checkoutSession->getQuote()->getId();
-            $shippingMethod = $this->getShippingMethodFromQuote($quoteId);
+            $shippingMethod = $this->getShippingMethodFromQuote((int)$quoteId);
         }
 
         if (!$shippingMethod) {
