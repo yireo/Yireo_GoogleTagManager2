@@ -40,8 +40,7 @@ class AddShippingInfo implements EventInterface
 
         if (!$shippingMethod) {
             $quoteId = $this->checkoutSession->getQuote()->getId();
-            $shippingMethod = $this->shippingMethodManagement->get($quoteId);
-            $shippingMethod = $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
+            $shippingMethod = $this->getShippingMethodFromQuote((int)$quoteId);
         }
 
         if (!$shippingMethod) {
@@ -55,5 +54,23 @@ class AddShippingInfo implements EventInterface
                 'items' => $this->cartItems->get(),
             ],
         ];
+    }
+
+    /**
+     * Cart2Quote compatibility. When creating a quote there is no shipping info.
+     * shippingMethodManagement returns null and causes error on function getCarrierCode()
+     *
+     * @param int $quoteId
+     * @return string|null
+     */
+    public function getShippingMethodFromQuote(int $quoteId): ?string
+    {
+        $shippingMethod = $this->shippingMethodManagement->get($quoteId);
+        if(!is_null($shippingMethod)) {
+
+            return $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
+        }
+
+        return null;
     }
 }
