@@ -26,10 +26,10 @@ class CartValue implements TagInterface
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function get(): string
+    public function get(): float
     {
-        return (string) $this->priceFormatter->format((float)$this->cartModel->getQuote()->getBaseGrandTotal());
+        return $this->priceFormatter->format((float)$this->cartModel->getQuote()->getBaseGrandTotal());
     }
 }
