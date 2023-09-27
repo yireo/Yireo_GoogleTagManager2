@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
+- Properly implement `allowed_pages` in Hyva scripts
 - Make sure `minicart_collapse` is only there if cart event is allowed everywhere
 - `Fatal error: Uncaught Error: Call to a member function getCarrierCode` (#192 @WGenie @bvmax)
 

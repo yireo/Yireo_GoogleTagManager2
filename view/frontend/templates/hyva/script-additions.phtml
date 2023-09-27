@@ -43,14 +43,10 @@ $commons = $block->getCommonsViewModel();
 
             const gtmEvents = event.detail.data[sectionName].gtm_events;
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+                yireoGoogleTagManager2Logger('found event in section "' + sectionName + '"', eventData);
+
                 const metaData = eventData.meta;
-                const copyEventData = Object.assign({}, eventData);
-
-                if (metaData) {
-                    delete copyEventData.meta;
-                }
-
-                yireoGoogleTagManager2Pusher(copyEventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
+                yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
 
                 if (!metaData || metaData.cacheable !== true) {
                     yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')

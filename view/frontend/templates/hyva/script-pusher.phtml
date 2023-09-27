@@ -13,13 +13,21 @@
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
 
         const copyEventData = Object.assign({}, eventData);
+        let metaData = {};
         if (copyEventData.meta) {
+            metaData = copyEventData.meta;
             delete copyEventData.meta;
         }
 
         const eventHash = btoa(encodeURIComponent(JSON.stringify(copyEventData)));
         if (window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.includes(eventHash)) {
             yireoGoogleTagManager2Logger('Warning: Event already triggered', eventData);
+            return;
+        }
+
+        if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
+            && false === metaData.allowed_pages.includes(window.location.pathname)) {
+            yireoGoogleTagManager2Logger('Warning: Skipping event, not in allowed pages', window.location.pathname, eventData);
             return;
         }
 
