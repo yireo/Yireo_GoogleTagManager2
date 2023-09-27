@@ -14,7 +14,7 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
         }
 
         if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
-            && false === metaData.allowed_pages.includes(window.location.pathname)) {
+            && false === metaData.allowed_pages.some(page => window.location.pathname.includes(page))) {
             logger('Warning: Skipping event, not in allowed pages', window.location.pathname, eventData);
             return;
         }
