@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.6.2] - 27 September 2023
 ### Fixed
 - Properly implement `allowed_pages` in Hyva scripts
 - Make sure `minicart_collapse` is only there if cart event is allowed everywhere
