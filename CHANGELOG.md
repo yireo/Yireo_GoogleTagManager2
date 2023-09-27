@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix login event fired on every pages Hyva #193
 - Fix inconsistent price/value formatting #187
-- Allowed pages are not always picked up properly #182
+- Allowed pages are not always picked up properly #182 (@gaeldelmer)
 
 ## [3.6.2] - 27 September 2023
 ### Fixed
