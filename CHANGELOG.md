@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix login event fired on every pages Hyva #193
+
 ## [3.6.2] - 27 September 2023
 ### Fixed
 - Properly implement `allowed_pages` in Hyva scripts
