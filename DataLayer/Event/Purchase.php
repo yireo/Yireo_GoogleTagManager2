@@ -6,19 +6,23 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class Purchase implements EventInterface
 {
     private ?OrderInterface $order = null;
     private OrderItems $orderItems;
     private Config $config;
+    private PriceFormatter $priceFormatter;
 
     public function __construct(
         OrderItems $orderItems,
-        Config $config
+        Config $config,
+        PriceFormatter $priceFormatter
     ) {
         $this->orderItems = $orderItems;
         $this->config = $config;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -33,9 +37,9 @@ class Purchase implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => (float)$order->getGrandTotal(),
-                'tax' => (float)$order->getTaxAmount(),
-                'shipping' => (float)$order->getShippingAmount(),
+                'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
+                'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
+                'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
                 'coupon' => $order->getCouponCode(),
                 'items' => $this->orderItems->setOrder($order)->get()
             ]

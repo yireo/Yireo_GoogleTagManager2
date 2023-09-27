@@ -7,12 +7,14 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class Order implements MergeTagInterface
 {
     private CheckoutSession $checkoutSession;
     private OrderRepositoryInterface $orderRepository;
     private Config $config;
+    private PriceFormatter $priceFormatter;
 
     /**
      * @param CheckoutSession $checkoutSession
@@ -22,11 +24,13 @@ class Order implements MergeTagInterface
     public function __construct(
         CheckoutSession $checkoutSession,
         OrderRepositoryInterface $orderRepository,
-        Config $config
+        Config $config,
+        PriceFormatter $priceFormatter
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
         $this->config = $config;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -37,9 +41,9 @@ class Order implements MergeTagInterface
         $order = $this->getOrder();
         return [
             'currency' => (string)$order->getOrderCurrencyCode(),
-            'value' => (float)$order->getGrandTotal(),
-            'tax' => (float)$order->getTaxAmount(),
-            'shipping' => (float)$order->getShippingAmount(),
+            'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
+            'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
+            'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
             'affiliation' => $this->config->getStoreName(),
             'transaction_id' => $order->getIncrementId(),
             'coupon' => $order->getCouponCode()

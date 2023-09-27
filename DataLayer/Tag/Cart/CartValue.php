@@ -6,20 +6,23 @@ use Magento\Checkout\Model\Cart as CartModel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class CartValue implements TagInterface
 {
     private CartModel $cartModel;
+    private PriceFormatter $priceFormatter;
 
     /**
      * @param CartModel $cartModel
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @param PriceFormatter $priceFormatter
      */
     public function __construct(
-        CartModel $cartModel
+        CartModel $cartModel,
+        PriceFormatter $priceFormatter
     ) {
         $this->cartModel = $cartModel;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -27,6 +30,6 @@ class CartValue implements TagInterface
      */
     public function get(): string
     {
-        return number_format((float)$this->cartModel->getQuote()->getBaseGrandTotal(), 4);
+        return (string) $this->priceFormatter->format((float)$this->cartModel->getQuote()->getBaseGrandTotal());
     }
 }

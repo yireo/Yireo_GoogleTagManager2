@@ -8,13 +8,15 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
 use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class AddToCart implements EventInterface
 {
     private ProductDataMapper $productDataMapper;
+    private CurrencyCode $currencyCode;
+    private PriceFormatter $priceFormatter;
     private Product $product;
     private int $qty = 1;
-    private CurrencyCode $currencyCode;
 
     /**
      * @param ProductDataMapper $productDataMapper
@@ -22,10 +24,12 @@ class AddToCart implements EventInterface
      */
     public function __construct(
         ProductDataMapper $productDataMapper,
-        CurrencyCode $currencyCode
+        CurrencyCode $currencyCode,
+        PriceFormatter $priceFormatter
     ) {
         $this->productDataMapper = $productDataMapper;
         $this->currencyCode = $currencyCode;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -45,7 +49,7 @@ class AddToCart implements EventInterface
             'event' => 'add_to_cart',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
-                'value' => $value,
+                'value' => $this->priceFormatter->format((float)$value),
                 'items' => [$itemData]
             ]
         ];

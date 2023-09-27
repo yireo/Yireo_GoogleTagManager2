@@ -6,6 +6,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 // @todo: Implement this event
 class Refund implements EventInterface
@@ -13,13 +14,16 @@ class Refund implements EventInterface
     private ?OrderInterface $order = null;
     private OrderItems $orderItems;
     private Config $config;
+    private PriceFormatter $priceFormatter;
 
     public function __construct(
         OrderItems $orderItems,
-        Config $config
+        Config $config,
+        PriceFormatter $priceFormatter
     ) {
         $this->orderItems = $orderItems;
         $this->config = $config;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -34,9 +38,9 @@ class Refund implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => $order->getGrandTotal(),
-                'tax' => $order->getTaxAmount(),
-                'shipping' => $order->getShippingAmount(),
+                'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
+                'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
+                'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
                 'coupon' => $order->getCouponCode(),
                 'items' => $this->orderItems->setOrder($order)->get()
             ]

@@ -68,7 +68,7 @@ class OrderDataMapper
      */
     private function getValueFromOrder(OrderInterface $order): float
     {
-        return (float)$order->getGrandTotal();
+        return $this->priceFormatter->format((float)$order->getGrandTotal());
     }
 
     /**
