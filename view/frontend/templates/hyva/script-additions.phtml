@@ -57,10 +57,10 @@ $commons = $block->getCommonsViewModel();
                     }
 
                     if (mageCacheStorage !== null
-                        && typeof mageCacheStorage.cart !== 'undefined'
-                        && typeof mageCacheStorage.cart.gtm_events !== 'undefined'
-                        && eventId in mageCacheStorage.cart.gtm_events) {
-                        delete mageCacheStorage.cart.gtm_events[eventId];
+                        && typeof mageCacheStorage[sectionName] !== 'undefined'
+                        && typeof mageCacheStorage[sectionName].gtm_events !== 'undefined'
+                        && eventId in mageCacheStorage[sectionName].gtm_events) {
+                        delete mageCacheStorage[sectionName].gtm_events[eventId];
                     }
 
                     window.localStorage.setItem('mage-cache-storage', JSON.stringify(mageCacheStorage));
