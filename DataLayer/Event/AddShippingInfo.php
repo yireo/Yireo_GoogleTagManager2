@@ -37,8 +37,8 @@ class AddShippingInfo implements EventInterface
     public function get(): array
     {
         $shippingMethod = $this->cart->getShippingAddress()->getShippingMethod();
-
-        if (empty($shippingMethod)) {
+        
+        if (empty($shippingMethod) && $this->checkoutSession->hasQuote()) {
             $quoteId = $this->checkoutSession->getQuote()->getId();
             $shippingMethod = $this->getShippingMethodFromQuote((int)$quoteId);
         }
