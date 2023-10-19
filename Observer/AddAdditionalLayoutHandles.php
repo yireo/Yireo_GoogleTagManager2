@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Yireo\GoogleTagManager2\Observer;
+namespace AdPage\GTM\Observer;
 
 use Magento\Framework\App\Request\Http as Request;
 use Magento\Framework\App\RequestInterface;
@@ -23,8 +23,8 @@ class AddAdditionalLayoutHandles implements ObserverInterface
     public function execute(Observer $observer)
     {
         $handles = [];
-        $handles[] = 'yireo_googletagmanager2';
-        $handles[] = 'yireo_googletagmanager2_'.$this->getSystemPath();
+        $handles[] = 'AdPage_GTM';
+        $handles[] = 'AdPage_GTM_'.$this->getSystemPath();
 
         foreach ($handles as $handle) {
             $this->layout->getUpdate()->addHandle($handle);

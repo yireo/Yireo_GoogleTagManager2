@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Model\Config\Backend;
+namespace AdPage\GTM\Model\Config\Backend;
 
 use Magento\Framework\App\Config\Value;
 use Magento\Framework\App\State;
-use Yireo\GoogleTagManager2\Exception\InvalidConfig;
+use AdPage\GTM\Exception\InvalidConfig;
 
 class ContainerId extends Value
 {

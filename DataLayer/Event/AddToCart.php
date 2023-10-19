@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
-use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Mapper\ProductDataMapper;
+use AdPage\GTM\DataLayer\Tag\CurrencyCode;
+use AdPage\GTM\Util\PriceFormatter;
 
 class AddToCart implements EventInterface
 {
@@ -46,7 +46,7 @@ class AddToCart implements EventInterface
         $value = $itemData['price'] * $qty;
 
         return [
-            'event' => 'add_to_cart',
+            'event' => 'trytagging_add_to_cart',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
                 'value' => $this->priceFormatter->format((float)$value),

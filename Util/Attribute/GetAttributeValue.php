@@ -8,7 +8,7 @@
  * @license   Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Util\Attribute;
+namespace AdPage\GTM\Util\Attribute;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -20,7 +20,7 @@ use Magento\Framework\Api\AttributeInterface;
 use Magento\Framework\Api\CustomAttributesDataInterface;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Yireo\GoogleTagManager2\Util\CamelCase;
+use AdPage\GTM\Util\CamelCase;
 
 class GetAttributeValue
 {

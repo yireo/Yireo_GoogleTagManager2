@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Config\Config;
 
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
+    window.AdPage_GTM_ENABLED = true;
 
     (function (events) {
-        const initYireoGoogleTagManager2 = function () {
+        const initgoogleTagManager2 = function () {
             events.forEach(function (eventType) {
-                window.removeEventListener(eventType, initYireoGoogleTagManager2);
+                window.removeEventListener(eventType, initgoogleTagManager2);
             });
 
             (function (w, d, s, l, i) {
@@ -29,14 +29,14 @@ $config = $block->getConfig();
         }
 
         events.forEach(function (eventType) {
-            window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
+            window.addEventListener(eventType, initgoogleTagManager2, {once: true, passive: true})
         })
     })([<?php if ($config->waitForUserInteraction() === false) : ?>'load', <?php endif; ?>'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel']);
 </script>
 
 <?php if ($config->isDebug()): ?>
     <script>
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
+        window.AdPage_GTM_DEBUG = true;
+        window.AdPage_GTM_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
     </script>
 <?php endif; ?>

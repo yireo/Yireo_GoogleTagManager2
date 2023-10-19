@@ -8,7 +8,7 @@
  * @license   Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Util;
+namespace AdPage\GTM\Util;
 
 class CamelCase
 {

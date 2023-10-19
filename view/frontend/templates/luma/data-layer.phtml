@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\ViewModel\DataLayer;
 
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
@@ -13,7 +13,7 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
-    require(['yireoGoogleTagManagerPush'], function (pusher) {
+    require(['googleTagManagerPush'], function (pusher) {
         pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
         <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
         pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (initial event) [data-layer.phtml]');

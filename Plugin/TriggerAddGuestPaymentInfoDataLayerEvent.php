@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace AdPage\GTM\Plugin;
 
 use Magento\Checkout\Api\GuestPaymentInformationManagementInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddPaymentInfo;
+use AdPage\GTM\Api\CheckoutSessionDataProviderInterface;
+use AdPage\GTM\DataLayer\Event\AddPaymentInfo;
 
 class TriggerAddGuestPaymentInfoDataLayerEvent
 {

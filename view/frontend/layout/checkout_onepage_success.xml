@@ -11,24 +11,24 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="yireo_googletagmanager2.data-layer">
+        <referenceBlock name="AdPage_GTM.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="succcess_page" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\SuccessPage</item>
+                    <item name="succcess_page" xsi:type="object">AdPage\GTM\DataLayer\Processor\SuccessPage</item>
                 </argument>
 
                 <argument name="data_layer_events" xsi:type="array">
                     <item name="purchase_event" xsi:type="array">
                         <item name="event" xsi:type="string">purchase</item>
                         <item name="ecommerce" xsi:type="array">
-                            <item name="order" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Order\Order</item>
-                            <item name="items" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems</item>
+                            <item name="order" xsi:type="object">AdPage\GTM\DataLayer\Tag\Order\Order</item>
+                            <item name="items" xsi:type="object">AdPage\GTM\DataLayer\Tag\Order\OrderItems</item>
                         </item>
                     </item>
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
-                    <item name="sha256_email_address" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\EnhancedConversions\Sha256EmailAddress</item>
+                    <item name="sha256_email_address" xsi:type="object">AdPage\GTM\DataLayer\Tag\EnhancedConversions\Sha256EmailAddress</item>
                 </argument>
             </arguments>
         </referenceBlock>

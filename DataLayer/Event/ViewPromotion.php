@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\Promotion\PromotionItem;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Event\Promotion\PromotionItem;
 
 /**
  * @todo Implement this class
@@ -24,7 +24,7 @@ class ViewPromotion implements EventInterface
         }
 
         return [
-            'event' => 'view_promotion',
+            'event' => 'trytagging_view_promotion',
             'ecommerce' => [
                 'items' => $promotionsItemsData
             ]

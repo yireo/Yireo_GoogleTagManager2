@@ -1,8 +1,8 @@
 {
-  "name": "Yireo_GoogleTagManager2",
+  "name": "AdPage_GTM",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yireo/Yireo_GoogleTagManager2.git"
+    "url": "https://github.com/yireo/AdPage_GTM.git"
   },
   "devDependencies": {
     "amd-loader": "^0.0.8",

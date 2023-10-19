@@ -15,7 +15,7 @@ use Magento\Framework\View\Element\Template;
 $productPath = $block->getProductPath();
 ?>
 <script>
-    function yireoGoogleTagManager2FindParentElementWithName(element, parentTagName) {
+    function googleTagManager2FindParentElementWithName(element, parentTagName) {
         if (!element.parentElement) {
             return null;
         }
@@ -24,17 +24,17 @@ $productPath = $block->getProductPath();
             return element.parentElement;
         }
 
-        return yireoGoogleTagManager2FindParentElementWithName(element.parentElement, parentTagName);
+        return googleTagManager2FindParentElementWithName(element.parentElement, parentTagName);
     }
 
     const products = document.querySelectorAll('<?= $productPath ?>');
     if (products) {
         products.forEach(function(product) {
             product.addEventListener('click', function(event, s) {
-                let parentElement = yireoGoogleTagManager2FindParentElementWithName(event.target, 'form');
+                let parentElement = googleTagManager2FindParentElementWithName(event.target, 'form');
                 const inputElement = parentElement.querySelector('input[name="product"]');
                 const productId = inputElement.value;
-                const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
+                const productData = window['AdPage_GTM_PRODUCT_DATA_ID_' + productId] || {};
                 productData.item_id = productId;
 
                 const eventData = {
@@ -44,9 +44,9 @@ $productPath = $block->getProductPath();
                     }
                 }
 
-                yireoGoogleTagManager2Pusher(eventData, 'push (page event "select_item") [script-product-clicks.phtml]');
+                googleTagManager2Pusher(eventData, 'push (page event "select_item") [script-product-clicks.phtml]');
 
-                if (window['YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS'] && confirm("Press to continue with redirect") === false) {
+                if (window['AdPage_GTM_DEBUG_CLICKS'] && confirm("Press to continue with redirect") === false) {
                     event.preventDefault();
                 }
             });

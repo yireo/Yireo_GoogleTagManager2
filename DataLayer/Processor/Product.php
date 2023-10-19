@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Processor;
+namespace AdPage\GTM\DataLayer\Processor;
 
-use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
+use AdPage\GTM\Api\Data\ProcessorInterface;
 
 class Product implements ProcessorInterface
 {

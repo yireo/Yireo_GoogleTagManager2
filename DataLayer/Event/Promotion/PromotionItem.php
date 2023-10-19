@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event\Promotion;
+namespace AdPage\GTM\DataLayer\Event\Promotion;
 
 class PromotionItem
 {

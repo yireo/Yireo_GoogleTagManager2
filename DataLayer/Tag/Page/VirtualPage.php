@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Page;
+namespace AdPage\GTM\DataLayer\Tag\Page;
 
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 
 class VirtualPage implements TagInterface
 {

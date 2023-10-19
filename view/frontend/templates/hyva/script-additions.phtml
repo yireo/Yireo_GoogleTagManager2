@@ -9,7 +9,7 @@
  */
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\ViewModel\Commons;
+use AdPage\GTM\ViewModel\Commons;
 
 /** @var Template $block */
 /** @var Commons $commons */
@@ -43,13 +43,13 @@ $commons = $block->getCommonsViewModel();
 
             const gtmEvents = event.detail.data[sectionName].gtm_events;
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
-                yireoGoogleTagManager2Logger('found event in section "' + sectionName + '"', eventData);
+                googleTagManager2Logger('found event in section "' + sectionName + '"', eventData);
 
                 const metaData = eventData.meta;
-                yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
+                googleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
 
                 if (!metaData || metaData.cacheable !== true) {
-                    yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
+                    googleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
 
                     let mageCacheStorage = window.localStorage.getItem('mage-cache-storage');
                     if (mageCacheStorage) {
@@ -69,7 +69,7 @@ $commons = $block->getCommonsViewModel();
         });
 
         if (false === isEmpty(attributes)) {
-            yireoGoogleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
+            googleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
         }
     });
 </script>

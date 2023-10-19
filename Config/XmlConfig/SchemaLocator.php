@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config\XmlConfig;
+namespace AdPage\GTM\Config\XmlConfig;
 
 use Magento\Framework\Config\SchemaLocatorInterface;
 use Magento\Framework\Module\Dir;
@@ -41,7 +41,7 @@ class SchemaLocator implements SchemaLocatorInterface
     {
         return $this->moduleReader->getModuleDir(
                 Dir::MODULE_ETC_DIR,
-                'Yireo_GoogleTagManager2')
+                'AdPage_GTM')
             . '/' . 'data_layer.xsd';
     }
 }

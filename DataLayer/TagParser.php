@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer;
+namespace AdPage\GTM\DataLayer;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\Api\Data\MergeTagInterface;
+use AdPage\GTM\Api\Data\ProcessorInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 use RuntimeException;
 
 class TagParser

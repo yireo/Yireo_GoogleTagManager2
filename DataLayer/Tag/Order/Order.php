@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
+namespace AdPage\GTM\DataLayer\Tag\Order;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Api\Data\MergeTagInterface;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Util\PriceFormatter;
 
 class Order implements MergeTagInterface
 {

@@ -11,34 +11,34 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="yireo_googletagmanager2.data-layer">
+        <referenceBlock name="AdPage_GTM.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Category</item>
+                    <item name="category" xsi:type="object">AdPage\GTM\DataLayer\Processor\Category</item>
                 </argument>
 
                 <argument name="data_layer_events" xsi:type="array">
                     <item name="view_item_list_event" xsi:type="array">
                         <item name="event" xsi:type="string">view_item_list</item>
                         <item name="ecommerce" xsi:type="array">
-                            <item name="items" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                            <item name="items" xsi:type="object">AdPage\GTM\DataLayer\Tag\Category\Products</item>
                         </item>
                     </item>
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
                     <item name="page_type" xsi:type="string">category</item>
-                    <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory</item>
-                    <item name="category_size" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize</item>
-                    <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                    <item name="category" xsi:type="object">AdPage\GTM\DataLayer\Tag\Category\CurrentCategory</item>
+                    <item name="category_size" xsi:type="object">AdPage\GTM\DataLayer\Tag\Category\CategorySize</item>
+                    <item name="products" xsi:type="object">AdPage\GTM\DataLayer\Tag\Category\Products</item>
                 </argument>
             </arguments>
         </referenceBlock>
 
-        <block name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
+        <block name="AdPage_GTM.product-details" template="AdPage_GTM::product/details.phtml">
             <arguments>
-                <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</argument>
-                <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                <argument name="product_details" xsi:type="object">AdPage\GTM\DataLayer\Tag\Product\CurrentProduct</argument>
+                <argument name="data_layer" xsi:type="object">AdPage\GTM\ViewModel\DataLayer</argument>
             </arguments>
         </block>
     </body>

@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="layout_load_before">
-        <observer name="Yireo_GoogleTagManager2::addAdditionalLayoutHandles" instance="Yireo\GoogleTagManager2\Observer\AddAdditionalLayoutHandles" />
+        <observer name="AdPage_GTM::addAdditionalLayoutHandles" instance="AdPage\GTM\Observer\AddAdditionalLayoutHandles" />
     </event>
 
     <event name="sales_quote_remove_item">
-        <observer name="Yireo_GoogleTagManager2::triggerRemoveFromCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerRemoveFromCartDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerRemoveFromCartDataLayerEvent" instance="AdPage\GTM\Observer\TriggerRemoveFromCartDataLayerEvent" />
     </event>
 
     <event name="customer_data_object_login">
-        <observer name="Yireo_GoogleTagManager2::triggerLoginDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLoginDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerLoginDataLayerEvent" instance="AdPage\GTM\Observer\TriggerLoginDataLayerEvent" />
     </event>
 
     <event name="customer_logout">
-        <observer name="Yireo_GoogleTagManager2::triggerLogoutDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerLogoutDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerLogoutDataLayerEvent" instance="AdPage\GTM\Observer\TriggerLogoutDataLayerEvent" />
     </event>
 
     <event name="customer_register_success">
-        <observer name="Yireo_GoogleTagManager2::triggerSignUpDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerSignUpDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerSignUpDataLayerEvent" instance="AdPage\GTM\Observer\TriggerSignUpDataLayerEvent" />
     </event>
 
     <event name="wishlist_add_product">
-        <observer name="Yireo_GoogleTagManager2::triggerAddToWishlistDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToWishlistDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerAddToWishlistDataLayerEvent" instance="AdPage\GTM\Observer\TriggerAddToWishlistDataLayerEvent" />
     </event>
 
     <event name="checkout_cart_add_product_complete">
-        <observer name="Yireo_GoogleTagManager2::triggerAddToCartDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerAddToCartDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerAddToCartDataLayerEvent" instance="AdPage\GTM\Observer\TriggerAddToCartDataLayerEvent" />
     </event>
 
     <event name="sales_order_place_after">
-        <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
+        <observer name="AdPage_GTM::triggerPurchaseDataLayerEvent" instance="AdPage\GTM\Observer\TriggerPurchaseDataLayerEvent" />
     </event>
 </config>

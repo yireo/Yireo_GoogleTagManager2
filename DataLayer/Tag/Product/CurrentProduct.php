@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
+namespace AdPage\GTM\DataLayer\Tag\Product;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
+use AdPage\GTM\DataLayer\Mapper\ProductDataMapper;
+use AdPage\GTM\Api\Data\MergeTagInterface;
+use AdPage\GTM\Util\GetCurrentProduct;
 
 class CurrentProduct implements MergeTagInterface
 {

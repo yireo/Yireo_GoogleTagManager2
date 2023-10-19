@@ -11,10 +11,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="yireo_googletagmanager2.data-layer">
+        <referenceBlock name="AdPage_GTM.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="checkout" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Checkout</item>
+                    <item name="checkout" xsi:type="object">AdPage\GTM\DataLayer\Processor\Checkout</item>
                 </argument>
             </arguments>
         </referenceBlock>
@@ -35,7 +35,7 @@
                                                             <item name="children" xsi:type="array">
                                                                 <item name="yireo-googletagmanager2" xsi:type="array">
                                                                     <item name="component" xsi:type="string">
-                                                                        Yireo_GoogleTagManager2/js/checkout/payment-validator/register
+                                                                        AdPage_GTM/js/checkout/payment-validator/register
                                                                     </item>
                                                                 </item>
                                                             </item>
@@ -53,15 +53,15 @@
             </arguments>
         </referenceBlock>
 
-        <referenceContainer name="yireo_googletagmanager2.data-layer.container">
+        <referenceContainer name="AdPage_GTM.data-layer.container">
             <block
-                name="yireo_googletagmanager2.script-begin-checkout"
-                template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
+                name="AdPage_GTM.script-begin-checkout"
+                template="AdPage_GTM::luma/script-begin-checkout.phtml"
                 ifconfig="googletagmanager2/settings/enabled"
-                after="yireo_googletagmanager2.data-layer"
+                after="AdPage_GTM.data-layer"
             >
                 <arguments>
-                    <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
+                    <argument name="begin_checkout_event" xsi:type="object">AdPage\GTM\DataLayer\Event\BeginCheckout</argument>
                 </arguments>
             </block>
         </referenceContainer>

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Mapper\ProductDataMapper;
 
 class AddToWishlist implements EventInterface
 {
@@ -32,7 +32,7 @@ class AddToWishlist implements EventInterface
         $itemData = $this->productDataMapper->mapByProduct($this->product);
 
         return [
-            'event' => 'add_to_wishlist',
+            'event' => 'trytagging_add_to_wishlist',
             'ecommerce' => [
                 'items' => [$itemData]
             ]

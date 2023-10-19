@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\CustomerData;
+namespace AdPage\GTM\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
+use AdPage\GTM\Api\CheckoutSessionDataProviderInterface;
 
 class GtmCheckout implements SectionSourceInterface
 {

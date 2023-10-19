@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote as Cart;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Tag\Cart\CartItems;
+use AdPage\GTM\Util\PriceFormatter;
 
 class AddPaymentInfo implements EventInterface
 {
@@ -38,7 +38,7 @@ class AddPaymentInfo implements EventInterface
         /** @var Cart $cart */
         $cart = $this->cartRepository->get($this->cartId);
         return [
-            'event' => 'add_payment_info',
+            'event' => 'trytagging_add_payment_info',
             'ecommerce' => [
                 'currency' => $cart->getQuoteCurrencyCode(),
                 'value' => $this->priceFormatter->format((float)$cart->getGrandTotal()),

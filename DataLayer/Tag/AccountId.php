@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag;
+namespace AdPage\GTM\DataLayer\Tag;
 
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Api\Data\TagInterface;
+use AdPage\GTM\Config\Config;
 
 /**
  * @see https://developers.google.com/tag-platform/tag-manager/api/v1/reference/accounts/containers/tags

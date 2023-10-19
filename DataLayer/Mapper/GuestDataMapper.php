@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace AdPage\GTM\DataLayer\Mapper;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Model\Order;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Util\Attribute\GetAttributeValue;
 
 class GuestDataMapper
 {

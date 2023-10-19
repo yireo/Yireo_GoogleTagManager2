@@ -3,7 +3,7 @@ define([
 ], function ($) {
     'use strict';
 
-    const enabled = window.YIREO_GOOGLETAGMANAGER2_ENABLED;
+    const enabled = window.AdPage_GTM_ENABLED;
     if (enabled === null || enabled === undefined) {
         return function (targetWidget) {
             return $.mage.dropdownDialog;

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace AdPage\GTM\DataLayer\Mapper;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Util\PriceFormatter;
 
 class OrderDataMapper
 {

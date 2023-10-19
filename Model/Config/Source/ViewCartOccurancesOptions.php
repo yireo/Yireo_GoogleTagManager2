@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Model\Config\Source;
+namespace AdPage\GTM\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 

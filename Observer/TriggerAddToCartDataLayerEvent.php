@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Observer;
+namespace AdPage\GTM\Observer;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddToCart as AddToCartEvent;
+use AdPage\GTM\Api\CheckoutSessionDataProviderInterface;
+use AdPage\GTM\DataLayer\Event\AddToCart as AddToCartEvent;
 
 class TriggerAddToCartDataLayerEvent implements ObserverInterface
 {

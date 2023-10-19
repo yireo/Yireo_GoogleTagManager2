@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config\XmlConfig;
+namespace AdPage\GTM\Config\XmlConfig;
 
 use Magento\Framework\Config\Reader\Filesystem;
 

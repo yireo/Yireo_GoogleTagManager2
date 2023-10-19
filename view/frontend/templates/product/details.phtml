@@ -2,8 +2,8 @@
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct;
-use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+use AdPage\GTM\DataLayer\Tag\Product\CurrentProduct;
+use AdPage\GTM\ViewModel\DataLayer;
 
 /** @var Template $block */
 /** @var CurrentProduct $productDetails */
@@ -19,5 +19,5 @@ $product = $productDetails->getProduct();
 $productData = $dataLayer->toJson($productDetails->merge());
 ?>
 <script>
-    window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_<?= $product->getId() ?>'] = <?= $productData ?>;
+    window['AdPage_GTM_PRODUCT_DATA_ID_<?= $product->getId() ?>'] = <?= $productData ?>;
 </script>

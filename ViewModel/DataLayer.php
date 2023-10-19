@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\ViewModel;
+namespace AdPage\GTM\ViewModel;
 
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\LayoutInterface;
-use Yireo\GoogleTagManager2\Api\Data\ProcessorInterface;
-use Yireo\GoogleTagManager2\Config\XmlConfig;
-use Yireo\GoogleTagManager2\DataLayer\TagParser;
-use Yireo\GoogleTagManager2\Exception\BlockNotFound;
+use AdPage\GTM\Api\Data\ProcessorInterface;
+use AdPage\GTM\Config\XmlConfig;
+use AdPage\GTM\DataLayer\TagParser;
+use AdPage\GTM\Exception\BlockNotFound;
 
 class DataLayer implements ArgumentInterface
 {
@@ -133,7 +133,7 @@ class DataLayer implements ArgumentInterface
      */
     private function getDataLayerBlock(): AbstractBlock
     {
-        $blockName = 'yireo_googletagmanager2.data-layer';
+        $blockName = 'AdPage_GTM.data-layer';
         $block = $this->layout->getBlock($blockName);
         if ($block instanceof AbstractBlock) {
             return $block;

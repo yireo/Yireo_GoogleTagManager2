@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider"/>
+    <preference for="AdPage\GTM\Api\CheckoutSessionDataProviderInterface" type="AdPage\GTM\SessionDataProvider\CheckoutSessionDataProvider"/>
 
-    <preference for="Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface" type="Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider"/>
+    <preference for="AdPage\GTM\Api\CustomerSessionDataProviderInterface" type="AdPage\GTM\SessionDataProvider\CustomerSessionDataProvider"/>
 
-    <type name="Yireo\GoogleTagManager2\Logger\Debugger">
+    <type name="AdPage\GTM\Logger\Debugger">
         <arguments>
-            <argument name="logger" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogger</argument>
+            <argument name="logger" xsi:type="object">AdPage\GTM\Logger\CustomLogger</argument>
         </arguments>
     </type>
 
-    <type name="Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper">
+    <type name="AdPage\GTM\DataLayer\Mapper\ProductDataMapper">
         <arguments>
             <argument name="dataLayerMapping" xsi:type="array">
                 <item name="item_brand" xsi:type="string">item_manufacturer</item>
@@ -18,38 +18,38 @@
         </arguments>
     </type>
 
-    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\CustomLogger">
+    <virtualType type="Magento\Framework\Logger\Monolog" name="AdPage\GTM\Logger\CustomLogger">
         <arguments>
             <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogHandler</item>
+                <item name="system" xsi:type="object">AdPage\GTM\Logger\CustomLogHandler</item>
             </argument>
         </arguments>
     </virtualType>
 
-    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\GoogleTagManager2\Logger\CustomLogHandler">
+    <virtualType type="Magento\Framework\Logger\Handler\Base" name="AdPage\GTM\Logger\CustomLogHandler">
         <arguments>
-            <argument name="fileName" xsi:type="string">var/log/yireo_googletagmanager2.log</argument>
+            <argument name="fileName" xsi:type="string">var/log/AdPage_GTM.log</argument>
         </arguments>
     </virtualType>
 
-    <type name="Yireo\GoogleTagManager2\Config\XmlConfig">
+    <type name="AdPage\GTM\Config\XmlConfig">
         <arguments>
-            <argument name="dataStorage" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\VirtualData</argument>
+            <argument name="dataStorage" xsi:type="object">AdPage\GTM\Config\XmlConfig\VirtualData</argument>
         </arguments>
     </type>
 
-    <virtualType name="Yireo\GoogleTagManager2\Config\XmlConfig\VirtualData" type="Magento\Framework\Config\Data">
+    <virtualType name="AdPage\GTM\Config\XmlConfig\VirtualData" type="Magento\Framework\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\Reader</argument>
+            <argument name="reader" xsi:type="object">AdPage\GTM\Config\XmlConfig\Reader</argument>
             <argument name="cacheId" xsi:type="string">data_layer</argument>
         </arguments>
     </virtualType>
 
-    <type name="Yireo\GoogleTagManager2\Config\XmlConfig\Reader">
+    <type name="AdPage\GTM\Config\XmlConfig\Reader">
         <arguments>
             <argument name="fileName" xsi:type="string">data_layer.xml</argument>
-            <argument name="converter" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\SchemaLocator</argument>
+            <argument name="converter" xsi:type="object">AdPage\GTM\Config\XmlConfig\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">AdPage\GTM\Config\XmlConfig\SchemaLocator</argument>
         </arguments>
     </type>
 </config>

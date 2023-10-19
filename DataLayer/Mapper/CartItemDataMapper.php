@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace AdPage\GTM\DataLayer\Mapper;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -9,7 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Util\PriceFormatter;
 
 class CartItemDataMapper
 {

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace AdPage\GTM\Plugin;
 
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Util\GetCurrentCategoryProducts;
+use AdPage\GTM\DataLayer\Tag\Category\CategorySize;
+use AdPage\GTM\Config\Config;
 
 class GetProductsFromCategoryBlockPlugin
 {

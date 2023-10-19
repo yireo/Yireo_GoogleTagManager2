@@ -11,14 +11,14 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="yireo_googletagmanager2.data-layer">
+        <referenceBlock name="AdPage_GTM.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="cart" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Cart</item>
+                    <item name="cart" xsi:type="object">AdPage\GTM\DataLayer\Processor\Cart</item>
                 </argument>
 
                 <argument name="data_layer_events" xsi:type="array">
-                    <item name="view_cart" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\ViewCart</item>
+                    <item name="view_cart" xsi:type="object">AdPage\GTM\DataLayer\Event\ViewCart</item>
                 </argument>
             </arguments>
         </referenceBlock>

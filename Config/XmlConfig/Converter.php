@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config\XmlConfig;
+namespace AdPage\GTM\Config\XmlConfig;
 
 use DOMDocument;
 use DOMNode;
 use Magento\Framework\Config\ConverterInterface;
 use Magento\Framework\ObjectManagerInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 
 class Converter implements ConverterInterface
 {

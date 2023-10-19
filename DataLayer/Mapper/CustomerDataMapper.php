@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace AdPage\GTM\DataLayer\Mapper;
 
 use Magento\Customer\Api\Data\CustomerInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\CamelCase;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Util\Attribute\GetAttributeValue;
+use AdPage\GTM\Util\CamelCase;
 
 class CustomerDataMapper
 {

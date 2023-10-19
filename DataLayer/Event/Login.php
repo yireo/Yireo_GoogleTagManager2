@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Mapper\CustomerDataMapper;
 
 class Login implements EventInterface
 {
@@ -27,7 +27,7 @@ class Login implements EventInterface
     public function get(): array
     {
         return [
-            'event' => 'login',
+            'event' => 'trytagging_login',
             'customer' => $this->customerDataMapper->mapByCustomer($this->customer)
         ];
     }

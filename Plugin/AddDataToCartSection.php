@@ -7,13 +7,13 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace AdPage\GTM\Plugin;
 
 use Magento\Checkout\CustomerData\Cart as CustomerData;
 use Magento\Checkout\Model\Cart as CheckoutCart;
-use Yireo\GoogleTagManager2\DataLayer\Event\ViewCart as ViewCartEvent;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
-use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
+use AdPage\GTM\DataLayer\Event\ViewCart as ViewCartEvent;
+use AdPage\GTM\DataLayer\Tag\Cart\CartItems;
+use AdPage\GTM\SessionDataProvider\CheckoutSessionDataProvider;
 
 class AddDataToCartSection
 {

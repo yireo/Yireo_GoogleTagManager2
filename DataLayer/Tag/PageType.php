@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag;
+namespace AdPage\GTM\DataLayer\Tag;
 
 use Magento\Framework\App\RequestInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 
 class PageType implements TagInterface
 {

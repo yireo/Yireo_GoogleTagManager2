@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Page;
+namespace AdPage\GTM\DataLayer\Tag\Page;
 
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 use Magento\Catalog\Helper\Data as CatalogHelper;
 
 class Breadcrumbs implements TagInterface

@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace AdPage\GTM\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\GetCategoryFromProduct;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use AdPage\GTM\Api\Data\ProductTagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Util\Attribute\GetAttributeValue;
+use AdPage\GTM\Util\GetCategoryFromProduct;
+use AdPage\GTM\Util\PriceFormatter;
 
 class ProductDataMapper
 {

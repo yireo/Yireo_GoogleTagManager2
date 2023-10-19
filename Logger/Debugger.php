@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Logger;
+namespace AdPage\GTM\Logger;
 
 use Magento\Framework\Filesystem\DirectoryList;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Config\Config;
 
 class Debugger
 {

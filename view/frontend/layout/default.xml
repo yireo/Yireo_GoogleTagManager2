@@ -13,55 +13,55 @@
     <body>
         <referenceBlock name="head.additional">
             <block
-                    name="yireo_googletagmanager2.script"
-                    template="Yireo_GoogleTagManager2::script.phtml"
+                    name="AdPage_GTM.script"
+                    template="AdPage_GTM::script.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
-                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                    <argument name="config" xsi:type="object">AdPage\GTM\Config\Config</argument>
                 </arguments>
             </block>
         </referenceBlock>
 
         <referenceContainer name="after.body.start">
             <block
-                    name="yireo_googletagmanager2.iframe"
-                    template="Yireo_GoogleTagManager2::iframe.phtml"
+                    name="AdPage_GTM.iframe"
+                    template="AdPage_GTM::iframe.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
-                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                    <argument name="config" xsi:type="object">AdPage\GTM\Config\Config</argument>
                 </arguments>
             </block>
         </referenceContainer>
 
-        <container name="yireo_googletagmanager2.data-layer.container" after="before.body.end">
+        <container name="AdPage_GTM.data-layer.container" after="before.body.end">
             <block
-                    name="yireo_googletagmanager2.data-layer"
-                    template="Yireo_GoogleTagManager2::luma/data-layer.phtml"
+                    name="AdPage_GTM.data-layer"
+                    template="AdPage_GTM::luma/data-layer.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
             >
                 <arguments>
                     <argument name="data_layer_view_model" xsi:type="object">
-                        Yireo\GoogleTagManager2\ViewModel\DataLayer
+                        AdPage\GTM\ViewModel\DataLayer
                     </argument>
 
-                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                    <argument name="config" xsi:type="object">AdPage\GTM\Config\Config</argument>
 
                     <argument name="data_layer_processors" xsi:type="array">
-                        <item name="base" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Base</item>
+                        <item name="base" xsi:type="object">AdPage\GTM\DataLayer\Processor\Base</item>
                     </argument>
 
                     <argument name="data_layer" xsi:type="array">
-                        <item name="version" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Version</item>
-                        <item name="page_type" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
-                        <item name="page_path" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath</item>
-                        <item name="page_title" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle</item>
+                        <item name="version" xsi:type="object">AdPage\GTM\DataLayer\Tag\Version</item>
+                        <item name="page_type" xsi:type="object">AdPage\GTM\DataLayer\Tag\PageType</item>
+                        <item name="page_path" xsi:type="object">AdPage\GTM\DataLayer\Tag\PagePath</item>
+                        <item name="page_title" xsi:type="object">AdPage\GTM\DataLayer\Tag\PageTitle</item>
                         <item name="virtual_page" xsi:type="object">
-                            Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage
+                            AdPage\GTM\DataLayer\Tag\Page\VirtualPage
                         </item>
                         <item name="breadcrumb" xsi:type="object">
-                            Yireo\GoogleTagManager2\DataLayer\Tag\Page\Breadcrumbs
+                            AdPage\GTM\DataLayer\Tag\Page\Breadcrumbs
                         </item>
                         <item name="user" xsi:type="array">
                             <item name="has_transacted" xsi:type="boolean">false</item>
@@ -71,25 +71,25 @@
             </block>
 
             <block
-                    name="yireo_googletagmanager2.script-additions"
-                    template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
+                    name="AdPage_GTM.script-additions"
+                    template="AdPage_GTM::luma/script-additions.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
-                    after="yireo_googletagmanager2.data-layer"
+                    after="AdPage_GTM.data-layer"
             >
                 <arguments>
                     <argument name="data_layer_view_model" xsi:type="object">
-                        Yireo\GoogleTagManager2\ViewModel\DataLayer
+                        AdPage\GTM\ViewModel\DataLayer
                     </argument>
-                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons
+                    <argument name="commons_view_model" xsi:type="object">AdPage\GTM\ViewModel\Commons
                     </argument>
                 </arguments>
             </block>
 
             <block
-                    name="yireo_googletagmanager2.script-product-clicks"
-                    template="Yireo_GoogleTagManager2::luma/script-product-clicks.phtml"
+                    name="AdPage_GTM.script-product-clicks"
+                    template="AdPage_GTM::luma/script-product-clicks.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
-                    after="yireo_googletagmanager2.data-layer"
+                    after="AdPage_GTM.data-layer"
             >
                 <arguments>
                     <argument name="product_path" xsi:type="string">.product-items a.product</argument>

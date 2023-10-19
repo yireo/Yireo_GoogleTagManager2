@@ -1,6 +1,6 @@
-define(['yireoGoogleTagManagerLogger'], function (logger) {
+define(['googleTagManagerLogger'], function (logger) {
     return function (eventData, message) {
-        window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
+        window.AdPage_GTM_PAST_EVENTS = window.AdPage_GTM_PAST_EVENTS || [];
 
         const metaData = Object.assign({}, eventData.meta);
 
@@ -21,7 +21,7 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
 
         // Prevent the same event from being triggered twice, when containing the same data
         const eventHash = btoa(encodeURIComponent(JSON.stringify(cleanEventData)));
-        if (window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.includes(eventHash)) {
+        if (window.AdPage_GTM_PAST_EVENTS.includes(eventHash)) {
             logger('Warning: Event already triggered', eventData);
             return;
         }
@@ -34,6 +34,6 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ecommerce: null});
         window.dataLayer.push(cleanEventData);
-        window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
+        window.AdPage_GTM_PAST_EVENTS.push(eventHash);
     };
 });

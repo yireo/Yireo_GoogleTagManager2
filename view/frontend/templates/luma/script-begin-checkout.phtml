@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
+use AdPage\GTM\DataLayer\Event\BeginCheckout;
 
 /** @var Template $block */
 /** @var BeginCheckout $beginCheckoutEvent */
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= json_encode($beginCheckoutEvent->get()) ?>
+    window.AdPage_GTM_BEGIN_CHECKOUT = <?= json_encode($beginCheckoutEvent->get()) ?>
 </script>

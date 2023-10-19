@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Api;
+namespace AdPage\GTM\Api;
 
 interface CheckoutSessionDataProviderInterface
 {

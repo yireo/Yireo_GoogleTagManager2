@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Yireo_GoogleTagManager2:etc/data_layer.xsd">
+<data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:AdPage_GTM:etc/data_layer.xsd">
     <!--
     <default>
         <item name="example" xsi:type="string">Hello World</item>
-        <item name="currency_code" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
+        <item name="currency_code" xsi:type="object">AdPage\GTM\DataLayer\Tag\CurrencyCode</item>
     </default>
     -->
 

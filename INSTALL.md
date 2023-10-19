@@ -12,7 +12,7 @@ Next, install our module using the following command:
 
 Next, install the new module into Magento itself:
 
-    bin/magento module:enable Yireo_GoogleTagManager2
+    bin/magento module:enable AdPage_GTM
     bin/magento cache:clean
 
 There is no need to run `setup:upgrade` because this module does not require a database upgrade.
@@ -24,7 +24,7 @@ Download a ZIP of this repository. Extract the files. Upload the files to the fo
 
 Next, install the new module into Magento itself:
 
-    bin/magento module:enable Yireo_GoogleTagManager2
+    bin/magento module:enable AdPage_GTM
     bin/magento cache:clean
 
 ## Removing the extension

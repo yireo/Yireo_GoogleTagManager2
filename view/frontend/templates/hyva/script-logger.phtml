@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 ?>
 <script>
-    function yireoGoogleTagManager2Logger(...args) {
-        const debug = window.YIREO_GOOGLETAGMANAGER2_DEBUG || false;
+    function googleTagManager2Logger(...args) {
+        const debug = window.AdPage_GTM_DEBUG || false;
         if (false === debug) {
             return;
         }
@@ -17,6 +17,6 @@
         }
 
         var css = 'color:white; background-color:' + color + '; padding:1px;'
-        console.log('%cYireo_GoogleTagManager2', css, ...args);
+        console.log('%cAdPage_GTM', css, ...args);
     }
 </script>

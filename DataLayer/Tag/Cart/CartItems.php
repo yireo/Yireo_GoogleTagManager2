@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Cart;
+namespace AdPage\GTM\DataLayer\Tag\Cart;
 
 use Magento\Checkout\Model\Cart as CartModel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CartItemDataMapper;
+use AdPage\GTM\Api\Data\TagInterface;
+use AdPage\GTM\DataLayer\Mapper\CartItemDataMapper;
 
 class CartItems implements TagInterface
 {

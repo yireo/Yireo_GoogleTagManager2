@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartValue;
-use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\DataLayer\Tag\Cart\CartItems;
+use AdPage\GTM\DataLayer\Tag\Cart\CartValue;
+use AdPage\GTM\DataLayer\Tag\CurrencyCode;
 
 class ViewCart implements EventInterface
 {
@@ -49,7 +49,7 @@ class ViewCart implements EventInterface
                 'allowed_pages' => $this->getAllowedPages(),
                 'allowed_events' => $this->getAllowedEvents(),
             ],
-            'event' => 'view_cart',
+            'event' => 'trytagging_view_cart',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
                 'value' => $this->cartValue->get(),

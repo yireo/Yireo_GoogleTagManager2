@@ -2,8 +2,8 @@ define(
     [
         'uiComponent',
         'Magento_Checkout/js/model/payment/additional-validators',
-        'Yireo_GoogleTagManager2/js/checkout/payment-validator/reload-customer-data',
-        'yireoGoogleTagManagerLogger'
+        'AdPage_GTM/js/checkout/payment-validator/reload-customer-data',
+        'googleTagManagerLogger'
     ],
     function (Component, additionalValidators, reloadCustomerDataValidator, logger) {
         'use strict';

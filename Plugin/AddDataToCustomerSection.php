@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace AdPage\GTM\Plugin;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
@@ -16,8 +16,8 @@ use Magento\Customer\CustomerData\Customer as CustomerData;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
+use AdPage\GTM\Api\CustomerSessionDataProviderInterface;
+use AdPage\GTM\DataLayer\Mapper\CustomerDataMapper;
 
 class AddDataToCustomerSection
 {

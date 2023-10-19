@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag;
+namespace AdPage\GTM\DataLayer\Tag;
 
 use Magento\Framework\Component\ComponentRegistrar;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 
 class Version implements TagInterface
 {
@@ -20,7 +20,7 @@ class Version implements TagInterface
 
     public function get(): string
     {
-        $path = $this->composerRegistrar->getPath('module', 'Yireo_GoogleTagManager2');
+        $path = $this->composerRegistrar->getPath('module', 'AdPage_GTM');
         $composerPath = $path.'/composer.json';
         $composerData = json_decode(file_get_contents($composerPath), true);
         return $composerData['version'];

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\SessionDataProvider;
+namespace AdPage\GTM\SessionDataProvider;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\Logger\Debugger;
+use AdPage\GTM\Api\CheckoutSessionDataProviderInterface;
+use AdPage\GTM\Logger\Debugger;
 
 class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterface
 {

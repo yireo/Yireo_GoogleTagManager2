@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Quote\Api\ShippingMethodManagementInterface;
 use Magento\Quote\Model\Quote as Cart;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Tag\Cart\CartItems;
 
 class AddShippingInfo implements EventInterface
 {
@@ -48,7 +48,7 @@ class AddShippingInfo implements EventInterface
         }
 
         return [
-            'event' => 'add_shipping_info',
+            'event' => 'trytagging_add_shipping_info',
             'ecommerce' => [
                 'shipping_tier' => $shippingMethod,
                 'items' => $this->cartItems->get(),

@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
-        <plugin name="Yireo_GoogleTagManager2::triggerAddShippingInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddShippingInfoDataLayerEvent"/>
+        <plugin name="AdPage_GTM::triggerAddShippingInfoDataLayerEvent" type="AdPage\GTM\Plugin\TriggerAddShippingInfoDataLayerEvent"/>
     </type>
 
     <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
-        <plugin name="Yireo_GoogleTagManager2::triggerAddPaymentInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddPaymentInfoDataLayerEvent"/>
+        <plugin name="AdPage_GTM::triggerAddPaymentInfoDataLayerEvent" type="AdPage\GTM\Plugin\TriggerAddPaymentInfoDataLayerEvent"/>
     </type>
 
     <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
-        <plugin name="Yireo_GoogleTagManager2::triggerAddGuestPaymentInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddGuestPaymentInfoDataLayerEvent"/>
+        <plugin name="AdPage_GTM::triggerAddGuestPaymentInfoDataLayerEvent" type="AdPage\GTM\Plugin\TriggerAddGuestPaymentInfoDataLayerEvent"/>
     </type>
 
     <!--
     <type name="Magento\Checkout\Api\TotalsInformationManagementInterface">
-        <plugin name="Yireo_GoogleTagManager2::triggerAddShippingInfoDataLayerEvent" type="Yireo\GoogleTagManager2\Plugin\TriggerAddShippingInfoDataLayerEvent"/>
+        <plugin name="AdPage_GTM::triggerAddShippingInfoDataLayerEvent" type="AdPage\GTM\Plugin\TriggerAddShippingInfoDataLayerEvent"/>
     </type>
     -->
 </config>

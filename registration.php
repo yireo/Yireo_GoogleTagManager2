@@ -11,6 +11,6 @@ use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(
     ComponentRegistrar::MODULE,
-    'Yireo_GoogleTagManager2',
+    'AdPage_GTM',
     __DIR__
 );

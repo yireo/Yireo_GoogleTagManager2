@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
+namespace AdPage\GTM\DataLayer\Tag\Category;
 
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use AdPage\GTM\Config\Config;
+use AdPage\GTM\Api\Data\TagInterface;
+use AdPage\GTM\Util\GetCurrentCategory;
+use AdPage\GTM\Util\GetCurrentCategoryProducts;
+use AdPage\GTM\DataLayer\Mapper\ProductDataMapper;
 
 class Products implements TagInterface
 {

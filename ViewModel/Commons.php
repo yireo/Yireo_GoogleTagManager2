@@ -8,16 +8,16 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\ViewModel;
+namespace AdPage\GTM\ViewModel;
 
 use Magento\Directory\Model\Currency;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Config\Config;
 
 /**
- * Class \Yireo\GoogleTagManager2\ViewModel\Commons
+ * Class \AdPage\GTM\ViewModel\Commons
  */
 class Commons implements ArgumentInterface
 {

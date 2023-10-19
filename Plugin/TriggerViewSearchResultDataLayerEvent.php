@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace AdPage\GTM\Plugin;
 
 use Magento\CatalogSearch\Controller\Result\Index;
-use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\ViewSearchResult as ViewSearchResultEvent;
+use AdPage\GTM\Api\CustomerSessionDataProviderInterface;
+use AdPage\GTM\DataLayer\Event\ViewSearchResult as ViewSearchResultEvent;
 
 class TriggerViewSearchResultDataLayerEvent
 {

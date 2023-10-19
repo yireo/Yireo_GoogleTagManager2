@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config;
+namespace AdPage\GTM\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -9,7 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions;
+use AdPage\GTM\Model\Config\Source\ViewCartOccurancesOptions;
 
 class Config implements ArgumentInterface
 {

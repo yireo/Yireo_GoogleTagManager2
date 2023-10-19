@@ -16,7 +16,7 @@
         <section id="googletagmanager2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Yireo GoogleTagManager</label>
             <tab>yireo</tab>
-            <resource>Yireo_GoogleTagManager2::config</resource>
+            <resource>AdPage_GTM::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
                 <field id="enabled" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -26,8 +26,8 @@
                 <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container Public ID</label>
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
-                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
-                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <frontend_model>AdPage\GTM\Model\Config\Frontend\ContainerId</frontend_model>
+                    <backend_model>AdPage\GTM\Model\Config\Backend\ContainerId</backend_model>
                     <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
@@ -69,7 +69,7 @@
                 </field>
                 <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
+                    <source_model>AdPage\GTM\Model\Config\Source\ProductAttributes</source_model>
                     <comment>Product EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -77,7 +77,7 @@
                 </field>
                 <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Category EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
+                    <source_model>AdPage\GTM\Model\Config\Source\CategoryAttributes</source_model>
                     <comment>Category EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -85,7 +85,7 @@
                 </field>
                 <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Customer EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
+                    <source_model>AdPage\GTM\Model\Config\Source\CustomerAttributes</source_model>
                     <comment>Customer EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -93,7 +93,7 @@
                 </field>
                 <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>view_cart occurances</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
+                    <source_model>AdPage\GTM\Model\Config\Source\ViewCartOccurancesOptions</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

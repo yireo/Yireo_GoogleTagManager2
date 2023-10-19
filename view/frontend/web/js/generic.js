@@ -10,8 +10,8 @@ define([
     'underscore',
     'uiComponent',
     'Magento_Customer/js/customer-data',
-    'yireoGoogleTagManagerLogger',
-    'yireoGoogleTagManagerPush',
+    'googleTagManagerLogger',
+    'googleTagManagerPush',
     'knockout'
 ], function ($, _, Component, customerData, logger, pusher, ko) {
     'use strict';

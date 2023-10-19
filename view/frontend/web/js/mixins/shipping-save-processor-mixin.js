@@ -1,7 +1,7 @@
 define([
     'mage/utils/wrapper',
     'Magento_Customer/js/customer-data',
-    'yireoGoogleTagManagerLogger'
+    'googleTagManagerLogger'
 ], function (wrapper, customerData, logger) {
     'use strict';
 

@@ -11,10 +11,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="yireo_googletagmanager2.data-layer">
+        <referenceBlock name="AdPage_GTM.data-layer">
             <arguments>
                 <argument name="data_layer_processors" xsi:type="array">
-                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Processor\Product</item>
+                    <item name="product" xsi:type="object">AdPage\GTM\DataLayer\Processor\Product</item>
                 </argument>
 
                 <argument name="data_layer_events" xsi:type="array">
@@ -23,11 +23,11 @@
                         <item name="ecommerce" xsi:type="array">
                             <item name="items" xsi:type="array">
                                 <item name="0" xsi:type="array">
-                                    <item name="product" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</item>
+                                    <item name="product" xsi:type="object">AdPage\GTM\DataLayer\Tag\Product\CurrentProduct</item>
                                 </item>
                             </item>
-                            <item name="value" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentPrice</item>
-                            <item name="currency" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
+                            <item name="value" xsi:type="object">AdPage\GTM\DataLayer\Tag\Product\CurrentPrice</item>
+                            <item name="currency" xsi:type="object">AdPage\GTM\DataLayer\Tag\CurrencyCode</item>
                         </item>
                     </item>
                 </argument>
@@ -39,10 +39,10 @@
         </referenceBlock>
 
         <referenceContainer name="product.info.form.content">
-            <block name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
+            <block name="AdPage_GTM.product-details" template="AdPage_GTM::product/details.phtml">
                 <arguments>
-                    <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</argument>
-                    <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                    <argument name="product_details" xsi:type="object">AdPage\GTM\DataLayer\Tag\Product\CurrentProduct</argument>
+                    <argument name="data_layer" xsi:type="object">AdPage\GTM\ViewModel\DataLayer</argument>
                 </arguments>
             </block>
         </referenceContainer>

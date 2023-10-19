@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
+namespace AdPage\GTM\DataLayer\Tag\Order;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\OrderItemDataMapper;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use AdPage\GTM\DataLayer\Mapper\OrderItemDataMapper;
+use AdPage\GTM\Api\Data\TagInterface;
 
 class OrderItems implements TagInterface
 {

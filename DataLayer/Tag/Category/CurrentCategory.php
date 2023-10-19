@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
+namespace AdPage\GTM\DataLayer\Tag\Category;
 
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
+use AdPage\GTM\DataLayer\Mapper\CategoryDataMapper;
+use AdPage\GTM\Api\Data\MergeTagInterface;
+use AdPage\GTM\Util\GetCurrentCategory;
 
 class CurrentCategory implements MergeTagInterface
 {

@@ -1,18 +1,18 @@
 define([
     'mage/utils/wrapper',
-    'yireoGoogleTagManagerPush',
-    'yireoGoogleTagManagerLogger',
+    'googleTagManagerPush',
+    'googleTagManagerLogger',
 ], function (wrapper, pusher, logger, stepNavigator) {
     'use strict';
     return function (stepNavigator) {
-        const enabled = window.YIREO_GOOGLETAGMANAGER2_ENABLED;
+        const enabled = window.AdPage_GTM_ENABLED;
         if (enabled === null || enabled === undefined) {
             return stepNavigator;
         }
 
         stepNavigator.steps.subscribe(function (steps) {
             const firstStep = steps[0];
-            const eventData = window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT;
+            const eventData = window.AdPage_GTM_BEGIN_CHECKOUT;
 
             if (firstStep === undefined || firstStep == null || firstStep.length <= 0) {
                 logger('Error: No steps detected. Triggering event anyway :o')

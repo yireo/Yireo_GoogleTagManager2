@@ -9,12 +9,12 @@
  */
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\ViewModel\Commons;
+use AdPage\GTM\ViewModel\Commons;
 
 /** @var Template $block */
 /** @var Commons $commons */
 $commons = $block->getCommonsViewModel();
 ?>
 <script type="text/x-magento-init">
-    {"*":{"yireoGoogleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
+    {"*":{"googleTagManager":<?=  /* @noEscape */ $commons->getConfigurationAsJson() ?>}}
 </script>

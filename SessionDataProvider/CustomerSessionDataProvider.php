@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\SessionDataProvider;
+namespace AdPage\GTM\SessionDataProvider;
 
 use Magento\Customer\Model\Session as CustomerSession;
-use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\Logger\Debugger;
+use AdPage\GTM\Api\CustomerSessionDataProviderInterface;
+use AdPage\GTM\Logger\Debugger;
 
 class CustomerSessionDataProvider implements CustomerSessionDataProviderInterface
 {

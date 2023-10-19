@@ -15,7 +15,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Yireo_GoogleTagManager2::config" title="Yireo GoogleTagManager2" translate="title" />
+                            <resource id="AdPage_GTM::config" title="Yireo GoogleTagManager2" translate="title" />
                         </resource>
                     </resource>
                 </resource>

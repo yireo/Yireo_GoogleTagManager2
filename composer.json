@@ -1,5 +1,5 @@
 {
-  "name": "yireo/magento2-googletagmanager2",
+  "name": "AdPage/GTM",
   "version": "3.6.4",
   "license": "OSL-3.0",
   "type": "magento2-module",
@@ -33,13 +33,9 @@
     "ext-dom": "*",
     "ext-pcre": "*"
   },
-  "require-dev": {
-    "phpunit/phpunit": "^9.0",
-    "yireo/magento2-integration-test-helper": "*"
-  },
   "autoload": {
     "psr-4": {
-      "Yireo\\GoogleTagManager2\\": ""
+      "AdPage\\GTM\\": ""
     },
     "files": [
       "registration.php"

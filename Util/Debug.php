@@ -8,10 +8,10 @@
  * @license   Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Util;
+namespace AdPage\GTM\Util;
 
 use Psr\Log\LoggerInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use AdPage\GTM\Config\Config;
 
 class Debug
 {

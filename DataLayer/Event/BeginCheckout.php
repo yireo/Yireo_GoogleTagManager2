@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace AdPage\GTM\DataLayer\Event;
 
 use Magento\Quote\Model\Quote;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartValue;
-use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
+use AdPage\GTM\Api\Data\EventInterface;
+use AdPage\GTM\DataLayer\Tag\Cart\CartItems;
+use AdPage\GTM\DataLayer\Tag\Cart\CartValue;
+use AdPage\GTM\DataLayer\Tag\CurrencyCode;
 
 class BeginCheckout implements EventInterface
 {
@@ -36,7 +36,7 @@ class BeginCheckout implements EventInterface
     public function get(): array
     {
         return [
-            'event' => 'begin_checkout',
+            'event' => 'trytagging_begin_checkout',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
                 'value' => $this->cartValue->get(),
