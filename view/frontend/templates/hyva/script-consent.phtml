@@ -23,7 +23,6 @@ $config = $block->getConfig();
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
-ray($config->getPrivacyStatementUrl());
 ?>
 <?php if($config->isConsent()): ?>
 <script>
