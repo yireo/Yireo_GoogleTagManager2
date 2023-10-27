@@ -1,6 +1,8 @@
 # Setting up Google Analytics and Google Tag Manager for GA4 and this extension with consent
 Read the [Tutorial](TUTORIAL.md) to get yourself familiar with it. This will only substitute the `Alternatively` and `Magento` parts.
 
+Have a look at the docs for [Tag Manager](https://support.google.com/tagmanager/answer/10718549) to see how to enable & configure consent.
+
 ## Alternatively
 Download [this JSON file](https://raw.githubusercontent.com/yireo/Yireo_GoogleTagManager2/master/docs/gtm-consent-example.json). Edit it manually and replace the following strings with your own:
 
