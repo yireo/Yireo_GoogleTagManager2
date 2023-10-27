@@ -1,0 +1,123 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2023 Yireo (https://www.yireo.com/)
+ * @license     Open Software License
+ */
+/** @var Escaper $escaper */
+?>
+<div id="yireo-cookie-consent-banner" class="cookie-consent-banner" style="display: none">
+    <h3><?= $escaper->escapeHtml(__("Cookie settings")) ?></h3>
+    <p><?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?></p>
+    <div class="cookie-consent-options">
+        <label><input id="yireo-consent-necessary" type="checkbox" value="Necessary" checked disabled><?= $escaper->escapeHtml(__("Necessary")) ?>
+        </label>
+        <p>
+            <?= $escaper->escapeHtml(__('Enables storage that supports the functionality of the website or app, e.g. language settings')) ?>
+        </p>
+        <label><input id="yireo-consent-analytics" type="checkbox" value="Analytics" checked><?= $escaper->escapeHtml(__("Analytics")) ?>
+        </label>
+        <p>
+            <?= $escaper->escapeHtml(__('Enables storage (such as cookies) related to analytics, e.g. visit duration')) ?>
+        </p>
+        <label><input id="yireo-consent-preferences" type="checkbox" value="Preferences" checked><?= $escaper->escapeHtml(__("Preferences")) ?>
+        </label>
+        <p>
+            <?= $escaper->escapeHtml(__('Enables storage related to personalisation, e.g. video recommendations')) ?>
+        </p>
+        <label><input id="yireo-consent-marketing" type="checkbox" value="Marketing"><?= $escaper->escapeHtml(__("Marketing")) ?>
+        </label>
+        <p>
+            <?= $escaper->escapeHtml(__('Enables storage (such as cookies) related to advertising')) ?>
+        </p>
+    </div>
+    <button id="yireo-btn-accept-all" class="cookie-consent-button btn-success"><?= $escaper->escapeHtml(__("Accept All")) ?></button>
+    <button id="yireo-btn-accept-some" class="cookie-consent-button btn-outline"><?= $escaper->escapeHtml(__("Accept Selection")) ?></button>
+    <button id="yireo-btn-reject-all" class="cookie-consent-button btn-grayscale"><?= $escaper->escapeHtml(__("Reject All")) ?></button>
+</div>
+
+<script>
+    function yireoGoogleTagManager2BannerUpdate() {
+        const isShowing = localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') !== 'false';
+        document.getElementById('yireo-cookie-consent-banner').style.display = isShowing ? 'block' : 'none';
+    }
+
+    function yireoGoogleTagManager2BannerToggle(isShowing = null) {
+        if (isShowing === null) {
+            isShowing = !(localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') ?? true);
+        }
+        localStorage.setItem('yireoGoogleTagManager2ConsentBannerIsShowing', isShowing);
+        yireoGoogleTagManager2BannerUpdate();
+    }
+
+    function yireoGoogleTagManager2BannerShow() {
+        yireoGoogleTagManager2BannerToggle(true);
+    }
+
+    function yireoGoogleTagManager2BannerHide() {
+        yireoGoogleTagManager2BannerToggle(false);
+    }
+
+    function yireoGoogleTagManager2ConsentPusher() {
+        yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
+    }
+
+    function yireoGoogleTagManager2SetConsent(consent, mode = 'update') {
+        const consentMode = {
+            'functionality_storage': consent.necessary ? 'granted' : 'denied',
+            'security_storage': consent.necessary ? 'granted' : 'denied',
+            'ad_storage': consent.marketing ? 'granted' : 'denied',
+            'analytics_storage': consent.analytics ? 'granted' : 'denied',
+            'personalization': consent.preferences ? 'granted' : 'denied',
+        };
+
+        window.dataLayer = window.dataLayer || [];
+        yireoGoogleTagManager2ConsentPusher('consent', mode, consentMode);
+        localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(consent));
+    }
+
+    document.getElementById('yireo-btn-accept-all').addEventListener('click', function () {
+        yireoGoogleTagManager2SetConsent({
+                                             necessary: true,
+                                             analytics: true,
+                                             preferences: true,
+                                             marketing: true
+                                         });
+        yireoGoogleTagManager2BannerHide();
+    });
+    document.getElementById('yireo-btn-accept-some').addEventListener('click', function () {
+        yireoGoogleTagManager2SetConsent({
+                                             necessary: true,
+                                             analytics: document.getElementById('yireo-consent-analytics').checked,
+                                             preferences: document.getElementById('yireo-consent-preferences').checked,
+                                             marketing: document.getElementById('yireo-consent-marketing').checked
+                                         });
+        yireoGoogleTagManager2BannerHide();
+    });
+    document.getElementById('yireo-btn-reject-all').addEventListener('click', function () {
+        yireoGoogleTagManager2SetConsent({
+                                             necessary: false,
+                                             analytics: false,
+                                             preferences: false,
+                                             marketing: false
+                                         });
+        yireoGoogleTagManager2BannerHide();
+    });
+    if (localStorage.getItem('yireoGoogleTagManager2ConsentModes') === null) {
+        yireoGoogleTagManager2SetConsent({
+                                             necessary: false,
+                                             analytics: false,
+                                             preferences: false,
+                                             marketing: false
+                                         }, 'default');
+        yireoGoogleTagManager2BannerShow();
+    } else {
+        yireoGoogleTagManager2SetConsent(JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes')), 'default');
+        yireoGoogleTagManager2BannerUpdate();
+    }
+</script>

@@ -95,6 +95,13 @@
                     <argument name="product_path" xsi:type="string">.product-items a.product</argument>
                 </arguments>
             </block>
+
+            <block
+                    name="yireo_googletagmanager2.script-consent"
+                    template="Yireo_GoogleTagManager2::luma/script-consent.phtml"
+                    ifconfig="googletagmanager2/settings/enabled"
+                    before="yireo_googletagmanager2.data-layer"
+            />
         </container>
     </body>
 </page>
