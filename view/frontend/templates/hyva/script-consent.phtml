@@ -12,13 +12,20 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Config\Config;
 
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
+/** @var Config $config */
+/** @var Template $block */
+$config = $block->getConfig();
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+ray($config->getPrivacyStatementUrl());
 ?>
+<?php if($config->isConsent()): ?>
 <script>
     function initYireoCookieConsentBanner() {
         return {
@@ -75,7 +82,14 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
      @yireo-toggle-consent-banner.window="showBanner = !showBanner"
 >
     <h2 class="text-xl font-medium title-font mb-3 text-primary"><?= $escaper->escapeHtml(__('Cookie settings')) ?></h2>
-    <p class="mb-4"><?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?></p>
+    <p class="mb-4">
+        <?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?>
+        <?php if($config->getPrivacyStatementUrl() !== null): ?>
+            <a class="block underline  text-secondary" target="_blank" href="<?= $escaper->escapeUrl($config->getPrivacyStatementUrl())?>">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+            </a>
+        <?php endif; ?>
+    </p>
     <div class="w-full border-t border-gray-200 ">
         <div class="flex items-center flex-row gap-2 py-2">
             <input x-model="selectedModes.necessary" id="yireo-consent-necessary" type="checkbox" disabled />
@@ -164,3 +178,4 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </button>
     </div>
 </div>
+<?php endif; ?>

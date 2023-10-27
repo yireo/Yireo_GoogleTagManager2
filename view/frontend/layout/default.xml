@@ -101,7 +101,11 @@
                     template="Yireo_GoogleTagManager2::luma/script-consent.phtml"
                     ifconfig="googletagmanager2/settings/enabled"
                     before="yireo_googletagmanager2.data-layer"
-            />
+            >
+            <arguments>
+                <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+            </arguments>
+            </block>
         </container>
     </body>
 </page>

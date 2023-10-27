@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Config\Config;
 
 /**
  * GoogleTagManager2 plugin for Magento
@@ -10,10 +12,22 @@ use Magento\Framework\Escaper;
  * @license     Open Software License
  */
 /** @var Escaper $escaper */
+/** @var Config $config */
+/** @var Template $block */
+$config = $block->getConfig();
 ?>
+<?php if($config->isConsent()): ?>
 <div id="yireo-cookie-consent-banner" class="cookie-consent-banner" style="display: none">
     <h3><?= $escaper->escapeHtml(__("Cookie settings")) ?></h3>
-    <p><?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?></p>
+    <p>
+        <?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?>
+        <?php if($config->getPrivacyStatementUrl() !== null): ?>
+            <br/>
+            <a target="_blank" href="<?= $escaper->escapeUrl($config->getPrivacyStatementUrl())?>">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+            </a>
+        <?php endif; ?>
+    </p>
     <div class="cookie-consent-options">
         <label><input id="yireo-consent-necessary" type="checkbox" value="Necessary" checked disabled><?= $escaper->escapeHtml(__("Necessary")) ?>
         </label>
@@ -121,3 +135,4 @@ use Magento\Framework\Escaper;
         yireoGoogleTagManager2BannerUpdate();
     }
 </script>
+<?php endif; ?>
