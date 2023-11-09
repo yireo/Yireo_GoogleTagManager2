@@ -22,7 +22,7 @@ class ProductDataMapper
     private PriceFormatter $priceFormatter;
 
     private array $dataLayerMapping;
-    
+
     private int $counter = 0;
 
     /**
@@ -47,12 +47,12 @@ class ProductDataMapper
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function mapByProduct(Product $product): array
+    public function mapByProduct(ProductInterface $product): array
     {
         $prefix = 'item_';
         $productData = [];
@@ -84,7 +84,7 @@ class ProductDataMapper
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
         $productData['index'] = $this->counter++;
-        
+
         // @todo: Add "variant" reference to Configurable Product
 
         return $productData;
