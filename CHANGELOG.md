@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.6.5] - 28 November 2023
+### Fixed
+- Make sure to use `gtm-checkout` in the checkout, not customerData `cart`
+
 ## [3.6.4] - 10 October 2023
 ### Fixed
 - Prevent addShippingInfo from triggering an error in integration API #195 @rhoerr
