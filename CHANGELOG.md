@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.0] - 7 December 2023
+### Added
+- Hyva Checkout support (@hans-vereyken)
+
 ## [3.6.5] - 28 November 2023
 ### Fixed
 - Make sure to use `gtm-checkout` in the checkout, not customerData `cart`

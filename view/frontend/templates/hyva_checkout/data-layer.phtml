@@ -1,0 +1,32 @@
+<?php
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
+
+/** @var Template $block */
+/** @var BeginCheckout $beginCheckoutEvent */
+
+$beginCheckoutEvent = $block->getData('begin_checkout_event');
+?>
+<script>
+    function triggerEvent(event) {
+        yireoGoogleTagManager2Pusher(event.detail);
+    }
+
+    function initYireoGoogleTagManager() {
+        "use strict";
+
+        triggerEvent(new CustomEvent('ga:trigger-event', {detail:<?= json_encode($beginCheckoutEvent->get()) ?>}));
+
+        return {
+            triggerEvent
+        }
+    }
+</script>
+<div id="ga-trigger"
+     x-data="initYireoGoogleTagManager()"
+     class="hidden"
+     @ga:trigger-event.window="triggerEvent($event)"
+></div>
+
