@@ -7,6 +7,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use RuntimeException;
+use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
 
 class ProductProvider
 {
@@ -17,6 +18,11 @@ class ProductProvider
      * @var string[]
      */
     private array $productSkus = [];
+
+    /**
+     * @var ProductInterface[]
+     */
+    private array $products = [];
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -37,23 +43,23 @@ class ProductProvider
 
     /**
      * @return ProductInterface[]
+     * @throws NotUsingSetProductSkusException
      */
     public function getProducts(): array
     {
-        static $products = null;
-        if (!empty($products)) {
-            return $products;
+        if (!empty($this->products)) {
+            return $this->products;
         }
 
         if (empty($this->productSkus)) {
-            throw new RuntimeException('Using getProducts() before setProductSkus()');
+            throw new NotUsingSetProductSkusException('Using getProducts() before setProductSkus()');
         }
 
         $this->searchCriteriaBuilder->addFilter('sku', $this->productSkus, 'IN');
         $searchCriteria = $this->searchCriteriaBuilder->create();
-        $products = $this->productRepository->getList($searchCriteria)->getItems();
+        $this->products = $this->productRepository->getList($searchCriteria)->getItems();
 
-        return $products;
+        return $this->products;
     }
 
     /**
@@ -63,6 +69,11 @@ class ProductProvider
      */
     public function getBySku(string $sku): ProductInterface
     {
+        if (!in_array($sku, $this->productSkus)) {
+            $this->reset();
+            $this->setProductSkus([$sku]);
+        }
+
         foreach ($this->getProducts() as $product) {
             if ($product->getSku() === $sku) {
                 return $product;
@@ -76,5 +87,6 @@ class ProductProvider
     public function reset()
     {
         $this->productSkus = [];
+        $this->products = [];
     }
 }

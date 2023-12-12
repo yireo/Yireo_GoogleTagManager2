@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\Util;
 use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroup;
@@ -60,7 +61,7 @@ class GetCategoryFromProduct
      * @return CategoryInterface[]
      * @throws NoSuchEntityException
      */
-    public function getAll(Product $product): array
+    public function getAll(Product|ProductInterface $product): array
     {
         $categoryIds = $product->getCategoryIds();
 
