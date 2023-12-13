@@ -3,32 +3,38 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Api\Data\CartInterface;
+use Magento\Quote\Api\Data\ShippingMethodInterface;
 use Magento\Quote\Api\ShippingMethodManagementInterface;
-use Magento\Quote\Model\Quote as Cart;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 
 class AddShippingInfo implements EventInterface
 {
-    private Cart $cart;
     private CartItems $cartItems;
     private ShippingMethodManagementInterface $shippingMethodManagement;
     private CheckoutSession $checkoutSession;
+    private CartRepositoryInterface $cartRepository;
 
     /**
-     * @param Cart $cart
      * @param CartItems $cartItems
+     * @param ShippingMethodManagementInterface $shippingMethodManagement
+     * @param CheckoutSession $checkoutSession
+     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
-        Cart $cart,
         CartItems $cartItems,
         ShippingMethodManagementInterface $shippingMethodManagement,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        CartRepositoryInterface $cartRepository
     ) {
-        $this->cart = $cart;
         $this->cartItems = $cartItems;
         $this->shippingMethodManagement = $shippingMethodManagement;
         $this->checkoutSession = $checkoutSession;
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -36,11 +42,13 @@ class AddShippingInfo implements EventInterface
      */
     public function get(): array
     {
-        $shippingMethod = $this->cart->getShippingAddress()->getShippingMethod();
-        
-        if (empty($shippingMethod) && $this->checkoutSession->hasQuote()) {
-            $quoteId = $this->checkoutSession->getQuote()->getId();
-            $shippingMethod = $this->getShippingMethodFromQuote((int)$quoteId);
+        $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        if (false === $this->checkoutSession->hasQuote()) {
+            return [];
+        }
+
+        if (empty($shippingMethod)) {
+            $shippingMethod = $this->getShippingMethodFromQuote($this->checkoutSession->getQuote());
         }
 
         if (empty($shippingMethod)) {
@@ -57,16 +65,25 @@ class AddShippingInfo implements EventInterface
     }
 
     /**
-     * @param int $quoteId
+     * @param CartInterface $quote
      * @return string|null
      */
-    public function getShippingMethodFromQuote(int $quoteId): ?string
+    public function getShippingMethodFromQuote(CartInterface $quote): ?string
     {
-        $shippingMethod = $this->shippingMethodManagement->get($quoteId);
-        if (empty($shippingMethod)) {
-            return null;
+        try {
+            $shippingMethod = $this->shippingMethodManagement->get($quote->getId());
+            if ($shippingMethod instanceof ShippingMethodInterface) {
+                return $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
+            }
+        } catch (NoSuchEntityException $e) {
+        } catch (StateException $e) {
         }
 
-        return $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
+        try {
+            return $quote->getShippingAddress()->getShippingMethod();
+        } catch (NoSuchEntityException $e) {
+        }
+
+        return null;
     }
 }
