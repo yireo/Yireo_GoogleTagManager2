@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.3] - 15 December 2023
+### Fixed
+- Livewire: Multiple root elements detected
+
 ## [3.7.2] - 13 December 2023
 ### Fixed
 - Improve loading of shipping method (so `add_shipping_info` event)

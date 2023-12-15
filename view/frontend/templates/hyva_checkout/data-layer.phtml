@@ -9,24 +9,25 @@ use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 ?>
-<script>
-    function triggerEvent(event) {
-        yireoGoogleTagManager2Pusher(event.detail);
-    }
-
-    function initYireoGoogleTagManager() {
-        "use strict";
-
-        triggerEvent(new CustomEvent('ga:trigger-event', {detail:<?= json_encode($beginCheckoutEvent->get()) ?>}));
-
-        return {
-            triggerEvent
+<div>
+    <script>
+        function triggerEvent(event) {
+            yireoGoogleTagManager2Pusher(event.detail);
         }
-    }
-</script>
-<div id="ga-trigger"
-     x-data="initYireoGoogleTagManager()"
-     class="hidden"
-     @ga:trigger-event.window="triggerEvent($event)"
-></div>
 
+        function initYireoGoogleTagManager() {
+            "use strict";
+
+            triggerEvent(new CustomEvent('ga:trigger-event', {detail: <?= json_encode($beginCheckoutEvent->get()) ?>}));
+
+            return {
+                triggerEvent
+            }
+        }
+    </script>
+    <div id="ga-trigger"
+         x-data="initYireoGoogleTagManager()"
+         class="hidden"
+         @ga:trigger-event.window="triggerEvent($event)"
+    ></div>
+</div>
