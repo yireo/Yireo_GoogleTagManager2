@@ -14,13 +14,21 @@ class Checkout extends Component
         'shipping_method_selected' => 'triggerShippingMethod',
         'payment_method_selected' => 'triggerPaymentMethod',
     ];
+    private CheckoutSession $checkoutSession;
+    private BeginCheckout $beginCheckout;
+    private AddShippingInfo $addShippingInfo;
+    private AddPaymentInfo $addPaymentInfo;
 
     public function __construct(
-        private readonly CheckoutSession $checkoutSession,
-        private readonly BeginCheckout $beginCheckout,
-        private readonly AddShippingInfo $addShippingInfo,
-        private readonly AddPaymentInfo $addPaymentInfo,
+        CheckoutSession $checkoutSession,
+        BeginCheckout $beginCheckout,
+        AddShippingInfo $addShippingInfo,
+        AddPaymentInfo $addPaymentInfo
     ) {
+        $this->checkoutSession = $checkoutSession;
+        $this->beginCheckout = $beginCheckout;
+        $this->addShippingInfo = $addShippingInfo;
+        $this->addPaymentInfo = $addPaymentInfo;
     }
 
     public function triggerBeginCheckout()

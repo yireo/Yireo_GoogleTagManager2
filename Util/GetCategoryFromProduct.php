@@ -57,11 +57,11 @@ class GetCategoryFromProduct
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      * @return CategoryInterface[]
      * @throws NoSuchEntityException
      */
-    public function getAll(Product|ProductInterface $product): array
+    public function getAll(ProductInterface $product): array
     {
         $categoryIds = $product->getCategoryIds();
 
