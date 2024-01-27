@@ -7,4 +7,7 @@
     <action name="checkout/onepage/success">
         <section name="gtm-checkout"/>
     </action>
+    <action name="wishlist/index/add">
+        <section name="customer"/>
+    </action>
 </config>
