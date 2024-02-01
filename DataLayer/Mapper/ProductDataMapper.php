@@ -3,7 +3,6 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -11,14 +10,14 @@ use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\GetCategoryFromProduct;
+use Yireo\GoogleTagManager2\Util\CategoryProvider;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class ProductDataMapper
 {
     private Config $config;
     private GetAttributeValue $getAttributeValue;
-    private GetCategoryFromProduct $getCategoryFromProduct;
+    private CategoryProvider $categoryProvider;
     private PriceFormatter $priceFormatter;
 
     private array $dataLayerMapping;
@@ -28,20 +27,20 @@ class ProductDataMapper
     /**
      * @param Config $config
      * @param GetAttributeValue $getAttributeValue
-     * @param GetCategoryFromProduct $getCategoryFromProduct
+     * @param CategoryProvider $categoryProvider
      * @param PriceFormatter $priceFormatter
      * @param array $dataLayerMapping
      */
     public function __construct(
         Config $config,
         GetAttributeValue $getAttributeValue,
-        GetCategoryFromProduct $getCategoryFromProduct,
+        CategoryProvider $categoryProvider,
         PriceFormatter $priceFormatter,
         array $dataLayerMapping = []
     ) {
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
-        $this->getCategoryFromProduct = $getCategoryFromProduct;
+        $this->categoryProvider = $categoryProvider;
         $this->priceFormatter = $priceFormatter;
         $this->dataLayerMapping = $dataLayerMapping;
     }
@@ -73,14 +72,16 @@ class ProductDataMapper
         }
 
         try {
-            $productData[$prefix . 'list_id'] = $this->getCategoryFromProduct->get($product)->getId();
-            $productData[$prefix . 'list_name'] = $this->getCategoryFromProduct->get($product)->getName();
+            $category = $this->categoryProvider->getFirstByProduct($product);
+            $productData[$prefix . 'list_id'] = $category->getId();
+            $productData[$prefix . 'list_name'] = $category->getName();
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
         $productData['price'] = $this->priceFormatter->format(
             (float)$product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
         );
+
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);
         $productData['index'] = $this->counter++;
@@ -106,7 +107,7 @@ class ProductDataMapper
     private function attachCategoriesData(ProductInterface $product, array $data): array
     {
         try {
-            $categories = $this->getCategoryFromProduct->getAll($product);
+            $categories = $this->categoryProvider->getAllByProduct($product);
         } catch (NoSuchEntityException $e) {
             return $data;
         }

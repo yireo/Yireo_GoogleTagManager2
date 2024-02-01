@@ -43,7 +43,7 @@ class CartItems implements TagInterface
             return [];
         }
 
-        $this->productProvider->setProductSkus($this->getSkusFromCartItems($cartItems));
+        $this->productProvider->addProductSkus($this->getSkusFromCartItems($cartItems));
         $cartItemsData = [];
 
         foreach ($cartItems as $cartItem) {
@@ -65,6 +65,6 @@ class CartItems implements TagInterface
             $productSkus[] = $cartItem->getSku();
         }
 
-        return $productSkus;
+        return array_unique($productSkus);
     }
 }

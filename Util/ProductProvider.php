@@ -6,7 +6,6 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
-use RuntimeException;
 use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
 
 class ProductProvider
@@ -22,7 +21,7 @@ class ProductProvider
     /**
      * @var ProductInterface[]
      */
-    private array $products = [];
+    private array $loadedProducts = [];
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -36,30 +35,30 @@ class ProductProvider
      * @param string[] $productSkus
      * @return void
      */
-    public function setProductSkus(array $productSkus)
+    public function addProductSkus(array $productSkus)
     {
-        $this->productSkus = $productSkus;
+        $this->productSkus = array_unique(array_merge($this->productSkus, $productSkus));
     }
 
     /**
      * @return ProductInterface[]
      * @throws NotUsingSetProductSkusException
+     * @throws NoSuchEntityException
      */
-    public function getProducts(): array
+    public function getLoadedProducts(): array
     {
-        if (!empty($this->products)) {
-            return $this->products;
-        }
-
         if (empty($this->productSkus)) {
             throw new NotUsingSetProductSkusException('Using getProducts() before setProductSkus()');
         }
 
-        $this->searchCriteriaBuilder->addFilter('sku', $this->productSkus, 'IN');
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $this->products = $this->productRepository->getList($searchCriteria)->getItems();
+        $loadedProductSkus = array_diff($this->productSkus, array_keys($this->loadedProducts));
+        if (count($loadedProductSkus) > 0) {
+            foreach ($this->loadProductsBySkus($loadedProductSkus) as $product) {
+                $this->loadedProducts[$product->getSku()] = $product;
+            }
+        }
 
-        return $this->products;
+        return $this->loadedProducts;
     }
 
     /**
@@ -69,12 +68,9 @@ class ProductProvider
      */
     public function getBySku(string $sku): ProductInterface
     {
-        if (!in_array($sku, $this->productSkus)) {
-            $this->reset();
-            $this->setProductSkus([$sku]);
-        }
+        $this->addProductSkus([$sku]);
 
-        foreach ($this->getProducts() as $product) {
+        foreach ($this->getLoadedProducts() as $product) {
             if ($product->getSku() === $sku) {
                 return $product;
             }
@@ -83,10 +79,16 @@ class ProductProvider
         throw new NoSuchEntityException(__('No product with sku "'.$sku.'"'));
     }
 
-
-    public function reset()
+    /**
+     * @param array $productSkus
+     * @return ProductInterface[]
+     * @throws NoSuchEntityException
+     */
+    private function loadProductsBySkus(array $productSkus): array
     {
-        $this->productSkus = [];
-        $this->products = [];
+        $this->searchCriteriaBuilder->setPageSize(count($productSkus));
+        $this->searchCriteriaBuilder->addFilter('sku', $productSkus, 'IN');
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        return $this->productRepository->getList($searchCriteria)->getItems();
     }
 }
