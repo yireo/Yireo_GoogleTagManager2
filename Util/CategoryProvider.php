@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Util;
 
@@ -20,18 +21,18 @@ class CategoryProvider
      * @var int[]
      */
     private array $categoryIds = [];
-
+    
     /**
      * @var CategoryInterface[]
      */
     private array $loadedCategories = [];
-
+    
     private CategoryListInterface $categoryListRepository;
     private FilterBuilder $filterBuilder;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
     private FilterGroupBuilder $filterGroupBuilder;
     private StoreManagerInterface $storeManager;
-
+    
     public function __construct(
         CategoryListInterface $categoryListRepository,
         FilterBuilder $filterBuilder,
@@ -45,7 +46,7 @@ class CategoryProvider
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->storeManager = $storeManager;
     }
-
+    
     /**
      * @param int[] $categoryIds
      * @return void
@@ -53,13 +54,18 @@ class CategoryProvider
      */
     public function addCategoryIds(array $categoryIds)
     {
+        if (empty($categoryIds)) {
+            return;
+        }
+        
         $rootCategoryId = $this->getRootCategoryId();
-        $categoryIds = array_filter($categoryIds, function($categoryId) use ($rootCategoryId) {
+        $categoryIds = array_filter($categoryIds, function ($categoryId) use ($rootCategoryId) {
             return (int)$categoryId !== $rootCategoryId;
         });
+        
         $this->categoryIds = array_unique(array_merge($this->categoryIds, $categoryIds));
     }
-
+    
     /**
      * @param int $categoryId
      * @return CategoryInterface
@@ -72,10 +78,10 @@ class CategoryProvider
                 return $category;
             }
         }
-
+        
         throw new NotUsingSetProductSkusException('Using getCategoryById() delivers no result');
     }
-
+    
     /**
      * @return CategoryInterface[]
      * @throws NoSuchEntityException
@@ -85,19 +91,19 @@ class CategoryProvider
         if (empty($this->categoryIds)) {
             throw new NotUsingSetProductSkusException('Using getCategories() before setCategoryIds()');
         }
-
+        
         $loadCategoryIds = array_diff($this->categoryIds, array_keys($this->loadedCategories));
         if (count($loadCategoryIds) > 0) {
             foreach ($this->loadCategoriesByIds($loadCategoryIds) as $category) {
                 $this->loadedCategories[(int)$category->getId()] = $category;
             }
         }
-
-        return array_filter($this->loadedCategories, function(CategoryInterface $category) {
+        
+        return array_filter($this->loadedCategories, function (CategoryInterface $category) {
             return $category->getIsActive();
         });
     }
-
+    
     /**
      * @param ProductInterface $product
      * @return CategoryInterface
@@ -106,12 +112,16 @@ class CategoryProvider
     public function getFirstByProduct(ProductInterface $product): CategoryInterface
     {
         $productCategoryIds = $product->getCategoryIds();
+        if (empty($productCategoryIds)) {
+            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+        }
+        
         $productCategoryId = array_shift($productCategoryIds);
         $this->addCategoryIds([$productCategoryId]);
-
+        
         return $this->getLoadedCategories()[$productCategoryId];
     }
-
+    
     /**
      * @param ProductInterface $product
      * @return CategoryInterface[]
@@ -120,8 +130,12 @@ class CategoryProvider
     public function getAllByProduct(ProductInterface $product): array
     {
         $productCategoryIds = $product->getCategoryIds();
+        if (empty($productCategoryIds)) {
+            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+        }
+        
         $this->addCategoryIds($productCategoryIds);
-
+        
         return array_filter(
             $this->getLoadedCategories(),
             function (CategoryInterface $category) use ($productCategoryIds) {
@@ -129,7 +143,7 @@ class CategoryProvider
             }
         );
     }
-
+    
     /**
      * @param array $categoryIds
      * @return CategoryInterface[]
@@ -146,27 +160,27 @@ class CategoryProvider
                 ->setValue($categoryIds)
                 ->create(),
         ]);
-
+        
         /** @var FilterGroup $rootCategoryFilterGroup */
         $rootCategoryFilterGroup = $this->filterGroupBuilder->create();
         $rootCategoryFilterGroup->setFilters([
             $this->filterBuilder
                 ->setField('path')
                 ->setConditionType('like')
-                ->setValue('1/'.$this->getRootCategoryId().'/%')
+                ->setValue('1/' . $this->getRootCategoryId() . '/%')
                 ->create(),
         ]);
-
+        
         $this->searchCriteriaBuilder->setFilterGroups([
             $entityIdFilterGroup,
             $rootCategoryFilterGroup,
         ]);
-
+        
         $searchCriteria = $this->searchCriteriaBuilder->create();
-
+        
         return $this->categoryListRepository->getList($searchCriteria)->getItems();
     }
-
+    
     /**
      * @return int
      * @throws NoSuchEntityException

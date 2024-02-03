@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.8] - 3 February 2024
+### Fixed
+- Fix warnings when a product has no categories
+
 ## [3.7.7] - 1 February 2024
 ### Fixed
 - Fix DI compilation due to 3.7.6
