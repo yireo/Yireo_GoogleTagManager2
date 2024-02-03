@@ -54,14 +54,10 @@ class CategoryProvider
      */
     public function addCategoryIds(array $categoryIds)
     {
+        $categoryIds = $this->filterRootCategoryIdFromCategoryIds($categoryIds);
         if (empty($categoryIds)) {
             return;
         }
-        
-        $rootCategoryId = $this->getRootCategoryId();
-        $categoryIds = array_filter($categoryIds, function ($categoryId) use ($rootCategoryId) {
-            return (int)$categoryId !== $rootCategoryId;
-        });
         
         $this->categoryIds = array_unique(array_merge($this->categoryIds, $categoryIds));
     }
@@ -111,15 +107,23 @@ class CategoryProvider
      */
     public function getFirstByProduct(ProductInterface $product): CategoryInterface
     {
-        $productCategoryIds = $product->getCategoryIds();
+        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
         if (empty($productCategoryIds)) {
             throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
         }
         
         $productCategoryId = array_shift($productCategoryIds);
         $this->addCategoryIds([$productCategoryId]);
+        if (empty($this->categoryIds)) {
+            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+        }
         
-        return $this->getLoadedCategories()[$productCategoryId];
+        $categories = $this->getLoadedCategories();
+        if (false === array_key_exists($productCategoryId, $categories)) {
+            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+        }
+        
+        return $categories[$productCategoryId];
     }
     
     /**
@@ -129,7 +133,7 @@ class CategoryProvider
      */
     public function getAllByProduct(ProductInterface $product): array
     {
-        $productCategoryIds = $product->getCategoryIds();
+        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
         if (empty($productCategoryIds)) {
             throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
         }
@@ -179,6 +183,19 @@ class CategoryProvider
         $searchCriteria = $this->searchCriteriaBuilder->create();
         
         return $this->categoryListRepository->getList($searchCriteria)->getItems();
+    }
+    
+    /**
+     * @param array $categoryIds
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    private function filterRootCategoryIdFromCategoryIds(array $categoryIds): array
+    {
+        $rootCategoryId = $this->getRootCategoryId();
+        return array_filter($categoryIds, function ($categoryId) use ($rootCategoryId) {
+            return (int)$categoryId !== $rootCategoryId;
+        });
     }
     
     /**
