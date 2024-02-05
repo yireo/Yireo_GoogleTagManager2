@@ -115,7 +115,9 @@ class CategoryProvider
         $category = null;
         while ($category === null && $productCategoryId = array_shift($productCategoryIds)) {
             $subject->addCategoryIds([$productCategoryId]);
-            $category = $subject->getLoadedCategories()[$productCategoryId] ?? null;
+            if ($this->categoryIds) {
+                $category = $subject->getLoadedCategories()[$productCategoryId] ?? null;
+            }
         }
         
         return $category ?? throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
