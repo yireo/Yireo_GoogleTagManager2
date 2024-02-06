@@ -119,8 +119,12 @@ class CategoryProvider
                 $category = $subject->getLoadedCategories()[$productCategoryId] ?? null;
             }
         }
+
+        if ($category instanceof CategoryInterface) {
+            return $category;
+        }
         
-        return $category ?? throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
+        throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
     }
     
     /**
