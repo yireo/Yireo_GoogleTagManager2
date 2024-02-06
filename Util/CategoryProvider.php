@@ -95,7 +95,7 @@ class CategoryProvider
             }
         }
         
-        return array_filter($this->loadedCategories, function (CategoryInterface $category) {
+        return array_filter($this->loadedCategories, static function (CategoryInterface $category) {
             return $category->getIsActive();
         });
     }
@@ -109,21 +109,18 @@ class CategoryProvider
     {
         $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
         if (empty($productCategoryIds)) {
-            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+            throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
+        }
+
+        $category = null;
+        while ($category === null && $productCategoryId = array_shift($productCategoryIds)) {
+            $subject->addCategoryIds([$productCategoryId]);
+            if ($this->categoryIds) {
+                $category = $subject->getLoadedCategories()[$productCategoryId] ?? null;
+            }
         }
         
-        $productCategoryId = array_shift($productCategoryIds);
-        $this->addCategoryIds([$productCategoryId]);
-        if (empty($this->categoryIds)) {
-            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
-        }
-        
-        $categories = $this->getLoadedCategories();
-        if (false === array_key_exists($productCategoryId, $categories)) {
-            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
-        }
-        
-        return $categories[$productCategoryId];
+        return $category ?? throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
     }
     
     /**
@@ -135,17 +132,12 @@ class CategoryProvider
     {
         $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
         if (empty($productCategoryIds)) {
-            throw new NoSuchEntityException(__('Product "' . $product->getSku() . '" has no categories'));
+            throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
         }
         
         $this->addCategoryIds($productCategoryIds);
-        
-        return array_filter(
-            $this->getLoadedCategories(),
-            function (CategoryInterface $category) use ($productCategoryIds) {
-                return in_array($category->getId(), $productCategoryIds);
-            }
-        );
+
+        return array_intersect_key($this->getLoadedCategories(), array_flip($productCategoryIds));
     }
     
     /**
@@ -193,7 +185,7 @@ class CategoryProvider
     private function filterRootCategoryIdFromCategoryIds(array $categoryIds): array
     {
         $rootCategoryId = $this->getRootCategoryId();
-        return array_filter($categoryIds, function ($categoryId) use ($rootCategoryId) {
+        return array_filter($categoryIds, static function ($categoryId) use ($rootCategoryId) {
             return (int)$categoryId !== $rootCategoryId;
         });
     }
