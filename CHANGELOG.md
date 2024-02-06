@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.11] - 6 February 2024
+### Fixed
+- Fix PHP errors
+
 ## [3.7.10] - 6 February 2024
 ### Fixed
 - Better error handling in CategoryProvider #209 @thomas-kl1

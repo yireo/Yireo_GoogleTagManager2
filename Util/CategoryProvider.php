@@ -21,18 +21,18 @@ class CategoryProvider
      * @var int[]
      */
     private array $categoryIds = [];
-    
+
     /**
      * @var CategoryInterface[]
      */
     private array $loadedCategories = [];
-    
+
     private CategoryListInterface $categoryListRepository;
     private FilterBuilder $filterBuilder;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
     private FilterGroupBuilder $filterGroupBuilder;
     private StoreManagerInterface $storeManager;
-    
+
     public function __construct(
         CategoryListInterface $categoryListRepository,
         FilterBuilder $filterBuilder,
@@ -46,7 +46,7 @@ class CategoryProvider
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->storeManager = $storeManager;
     }
-    
+
     /**
      * @param int[] $categoryIds
      * @return void
@@ -58,10 +58,10 @@ class CategoryProvider
         if (empty($categoryIds)) {
             return;
         }
-        
+
         $this->categoryIds = array_unique(array_merge($this->categoryIds, $categoryIds));
     }
-    
+
     /**
      * @param int $categoryId
      * @return CategoryInterface
@@ -74,10 +74,10 @@ class CategoryProvider
                 return $category;
             }
         }
-        
+
         throw new NotUsingSetProductSkusException('Using getCategoryById() delivers no result');
     }
-    
+
     /**
      * @return CategoryInterface[]
      * @throws NoSuchEntityException
@@ -87,19 +87,19 @@ class CategoryProvider
         if (empty($this->categoryIds)) {
             throw new NotUsingSetProductSkusException('Using getCategories() before setCategoryIds()');
         }
-        
+
         $loadCategoryIds = array_diff($this->categoryIds, array_keys($this->loadedCategories));
         if (count($loadCategoryIds) > 0) {
             foreach ($this->loadCategoriesByIds($loadCategoryIds) as $category) {
                 $this->loadedCategories[(int)$category->getId()] = $category;
             }
         }
-        
+
         return array_filter($this->loadedCategories, static function (CategoryInterface $category) {
             return $category->getIsActive();
         });
     }
-    
+
     /**
      * @param ProductInterface $product
      * @return CategoryInterface
@@ -114,19 +114,19 @@ class CategoryProvider
 
         $category = null;
         while ($category === null && $productCategoryId = array_shift($productCategoryIds)) {
-            $subject->addCategoryIds([$productCategoryId]);
+            $this->addCategoryIds([$productCategoryId]);
             if ($this->categoryIds) {
-                $category = $subject->getLoadedCategories()[$productCategoryId] ?? null;
+                $category = $this->getLoadedCategories()[$productCategoryId] ?? null;
             }
         }
 
         if ($category instanceof CategoryInterface) {
             return $category;
         }
-        
+
         throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
     }
-    
+
     /**
      * @param ProductInterface $product
      * @return CategoryInterface[]
@@ -138,12 +138,12 @@ class CategoryProvider
         if (empty($productCategoryIds)) {
             throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
         }
-        
+
         $this->addCategoryIds($productCategoryIds);
 
         return array_intersect_key($this->getLoadedCategories(), array_flip($productCategoryIds));
     }
-    
+
     /**
      * @param array $categoryIds
      * @return CategoryInterface[]
@@ -160,7 +160,7 @@ class CategoryProvider
                 ->setValue($categoryIds)
                 ->create(),
         ]);
-        
+
         /** @var FilterGroup $rootCategoryFilterGroup */
         $rootCategoryFilterGroup = $this->filterGroupBuilder->create();
         $rootCategoryFilterGroup->setFilters([
@@ -170,17 +170,17 @@ class CategoryProvider
                 ->setValue('1/' . $this->getRootCategoryId() . '/%')
                 ->create(),
         ]);
-        
+
         $this->searchCriteriaBuilder->setFilterGroups([
             $entityIdFilterGroup,
             $rootCategoryFilterGroup,
         ]);
-        
+
         $searchCriteria = $this->searchCriteriaBuilder->create();
-        
+
         return $this->categoryListRepository->getList($searchCriteria)->getItems();
     }
-    
+
     /**
      * @param array $categoryIds
      * @return array
@@ -193,7 +193,7 @@ class CategoryProvider
             return (int)$categoryId !== $rootCategoryId;
         });
     }
-    
+
     /**
      * @return int
      * @throws NoSuchEntityException
