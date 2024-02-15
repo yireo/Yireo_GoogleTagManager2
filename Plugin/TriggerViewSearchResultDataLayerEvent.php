@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\CatalogSearch\Controller\Result\Index;
+use Magento\Framework\Controller\AbstractResult;
 use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Event\ViewSearchResult as ViewSearchResultEvent;
 
@@ -19,10 +20,11 @@ class TriggerViewSearchResultDataLayerEvent
         $this->customerSessionDataProvider = $customerSessionDataProvider;
     }
 
-    public function afterExecute(Index $subject): void
+    public function afterExecute(Index $subject, AbstractResult $result): ?AbstractResult
     {
         $searchTerm = $subject->getRequest()->getParam('q');
         $this->viewSearchResultEvent->setSearchTerm($searchTerm);
         $this->customerSessionDataProvider->add('view_search_result', $this->viewSearchResultEvent->get());
+        return $result;
     }
 }
