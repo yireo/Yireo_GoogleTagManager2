@@ -49,6 +49,7 @@ class Commons implements ArgumentInterface
     {
         $configuration = [];
         $configuration['cookie_restriction_mode'] = $this->config->getCookieRestrictionModeName();
+        $configuration['website_id'] = $this->config->getCurrentWebsiteId();
         $configuration['data_layer'] = $this->dataLayer->getDataLayer();
         $configuration['id'] = $this->config->getId();
         $configuration['debug'] = $this->config->isDebug();

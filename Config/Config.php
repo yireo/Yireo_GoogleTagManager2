@@ -168,6 +168,14 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * @return int
+     */
+    public function getCurrentWebsiteId(): int
+    {
+        return (int)$this->storeManager->getStore()->getWebsiteId();
+    }
+
+    /**
      * @return string
      */
     public function getViewCartOccurances(): string
