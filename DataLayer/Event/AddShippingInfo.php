@@ -43,6 +43,7 @@ class AddShippingInfo implements EventInterface
     public function get(): array
     {
         $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        $shippingMethod = '';
         if (false === $this->checkoutSession->hasQuote()) {
             return [];
         }
