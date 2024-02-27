@@ -40,7 +40,9 @@ define([
             return true;
         }
 
-        return $.cookie(moduleConfig.cookie_restriction_mode);
+        const parsedCookie = JSON.parse($.cookie(moduleConfig.cookie_restriction_mode) || '{}');
+
+        return parsedCookie[moduleConfig.website_id] || false;
     };
 
     var isLoggedIn = function () {
