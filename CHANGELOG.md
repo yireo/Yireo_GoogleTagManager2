@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.12] - 27 February 2024
+### Fixed
+- `hyva_checkout_index_index.xml` is loaded without having the hyva checkout enabled #218
+
 ## [3.7.11] - 6 February 2024
 ### Fixed
 - Fix PHP errors

@@ -2,21 +2,27 @@
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
+use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout as BeginCheckoutEvent;
+use Yireo\GoogleTagManager2\MageWire\Checkout as CheckoutComponent;
 
 /** @var Template $block */
-/** @var BeginCheckout $beginCheckoutEvent */
+/** @var BeginCheckoutEvent $beginCheckoutEvent */
+/** @var CheckoutComponent $magewire */
+$magewire = $block->getData('magewire');
+if (false === $magewire->isHyvaCheckoutEnabled()) {
+    return;
+}
 
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 ?>
 <div>
     <script>
-        function triggerEvent(event) {
-            yireoGoogleTagManager2Pusher(event.detail);
-        }
-
-        function initYireoGoogleTagManager() {
+        function initYireoGoogleTagManagerInHyvaCheckout() {
             "use strict";
+
+            function triggerEvent(event) {
+                yireoGoogleTagManager2Pusher(event.detail, 'Hyva Checkout');
+            }
 
             triggerEvent(new CustomEvent('ga:trigger-event', {detail: <?= json_encode($beginCheckoutEvent->get()) ?>}));
 
@@ -26,7 +32,7 @@ $beginCheckoutEvent = $block->getData('begin_checkout_event');
         }
     </script>
     <div id="ga-trigger"
-         x-data="initYireoGoogleTagManager()"
+         x-data="initYireoGoogleTagManagerInHyvaCheckout()"
          class="hidden"
          @ga:trigger-event.window="triggerEvent($event)"
     ></div>
