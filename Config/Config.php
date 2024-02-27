@@ -192,6 +192,14 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getHyvaCheckoutSupportEnabled(): bool
+    {
+        return (bool)$this->getModuleConfigValue('enable_hyva_checkout_support');
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key

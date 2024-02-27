@@ -13,6 +13,7 @@
                 <customer_eav_attributes>id</customer_eav_attributes>
                 <view_cart_occurances>everywhere</view_cart_occurances>
                 <view_cart_on_mini_cart_expand_only>0</view_cart_on_mini_cart_expand_only>
+                <enable_hyva_checkout_support>0</enable_hyva_checkout_support>
             </settings>
         </googletagmanager2>
     </default>

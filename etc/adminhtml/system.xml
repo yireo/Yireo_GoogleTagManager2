@@ -39,6 +39,10 @@
                     Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
                     <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
                 </field>
+                <field id="enable_hyva_checkout_support" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable hyva checkout support</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
