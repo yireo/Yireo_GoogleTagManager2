@@ -6,7 +6,7 @@ define([
     return {
         validate: function () {
             logger('payment-validator-reload-customer-data');
-            customerData.reload(['cart'], true);
+            customerData.reload(['gtm-checkout'], true);
             return true;
         }
     }

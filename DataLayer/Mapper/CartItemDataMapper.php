@@ -10,11 +10,12 @@ use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Yireo\GoogleTagManager2\Util\ProductProvider;
 
 class CartItemDataMapper
 {
     private ProductDataMapper $productDataMapper;
-    private ProductRepositoryInterface $productRepository;
+    private ProductProvider $productProvider;
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
 
@@ -25,12 +26,12 @@ class CartItemDataMapper
      */
     public function __construct(
         ProductDataMapper $productDataMapper,
-        ProductRepositoryInterface $productRepository,
+        ProductProvider $productProvider,
         PriceFormatter $priceFormatter,
         ScopeConfigInterface $scopeConfig
     ) {
         $this->productDataMapper = $productDataMapper;
-        $this->productRepository = $productRepository;
+        $this->productProvider = $productProvider;
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
     }
@@ -43,7 +44,7 @@ class CartItemDataMapper
     public function mapByCartItem(CartItemInterface $cartItem): array
     {
         try {
-            $product = $this->productRepository->get($cartItem->getSku());
+            $product = $this->productProvider->getBySku($cartItem->getSku());
             $cartItemData = $this->productDataMapper->mapByProduct($product);
         } catch (NoSuchEntityException $e) {
             $cartItemData = [];

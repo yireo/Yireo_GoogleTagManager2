@@ -3,24 +3,23 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Util\GetCategoryFromProduct;
+use Yireo\GoogleTagManager2\Util\CategoryProvider;
 
 class ProductCategory implements ProductTagInterface
 {
     private Product $product;
-    private GetCategoryFromProduct $getCategoryFromProduct;
+    private CategoryProvider $categoryProvider;
 
     /**
-     * @param GetCategoryFromProduct $getCategoryFromProduct
+     * @param CategoryProvider $categoryProvider
      */
     public function __construct(
-        GetCategoryFromProduct $getCategoryFromProduct
+        CategoryProvider $categoryProvider
     ) {
-        $this->getCategoryFromProduct = $getCategoryFromProduct;
+        $this->categoryProvider = $categoryProvider;
     }
 
     /**
@@ -45,7 +44,7 @@ class ProductCategory implements ProductTagInterface
         }
 
         try {
-            return $this->getCategoryFromProduct->get($this->product)->getName();
+            return $this->categoryProvider->getFirstByProduct($this->product)->getName();
         } catch (NoSuchEntityException $e) {
             return '';
         }

@@ -6,6 +6,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.12] - 27 February 2024
+### Fixed
+- Add return to TriggerViewSearchResultDataLayerEvent plugin #214
+- hyva_checkout_index_index.xml is loaded without having the hyva checkout enabled #218
+- Fix restriction cookies with multiple website IDs #217 @jemoon
+
+## [3.7.11] - 6 February 2024
+### Fixed
+- Fix PHP errors
+
+## [3.7.10] - 6 February 2024
+### Fixed
+- Better error handling in CategoryProvider #209 @thomas-kl1
+- Strange issue with empty config causing issues #210 @shwetawawale
+
+## [3.7.9] - 5 February 2024
+### Fixed
+- Fix integration test
+- Fix potential issues with products only in Root Category
+
+## [3.7.8] - 3 February 2024
+### Fixed
+- Fix warnings when a product has no categories
+
+## [3.7.7] - 1 February 2024
+### Fixed
+- Fix DI compilation due to 3.7.6
+
+## [3.7.6] - 1 February 2024
+### Fixed
+- Refactor loading performance of product data and category data in cart
+
+## [3.7.5] - 27 January 2024
+### Fixed
+- Make sure that `customer` section in localstorage is refreshed with `wishlist/index/add`
+
+## [3.7.4] - 15 December 2023
+### Fixed
+- Fix PHP 7.4 compat issues
+
+## [3.7.3] - 15 December 2023
+### Fixed
+- Livewire: Multiple root elements detected
+
+## [3.7.2] - 13 December 2023
+### Fixed
+- Improve loading of shipping method (so `add_shipping_info` event)
+
+## [3.7.1] - 12 December 2023
+### Fixed
+- Fix error when removing cart item #201
+
+## [3.7.0] - 7 December 2023
+### Added
+- Hyva Checkout support (@hans-vereyken)
+
+## [3.6.5] - 28 November 2023
+### Fixed
+- Make sure to use `gtm-checkout` in the checkout, not customerData `cart`
+
 ## [3.6.4] - 10 October 2023
 ### Fixed
 - Prevent addShippingInfo from triggering an error in integration API #195 @rhoerr

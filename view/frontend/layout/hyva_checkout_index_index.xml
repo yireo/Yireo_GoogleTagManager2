@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="checkout"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="main">
+            <block template="Yireo_GoogleTagManager2::hyva_checkout/data-layer.phtml"
+                   ifconfig="googletagmanager2/settings/enabled">
+                <arguments>
+                    <argument name="magewire" xsi:type="object">Yireo\GoogleTagManager2\MageWire\Checkout</argument>
+                    <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
