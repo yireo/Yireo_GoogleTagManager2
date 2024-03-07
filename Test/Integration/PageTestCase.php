@@ -53,6 +53,13 @@ class PageTestCase extends AbstractController
         $this->assertTrue($customerSession->isLoggedIn());
     }
 
+    protected function assertDataLayerContains(string $dataLayerKey)
+    {
+        $data = $this->getDataFromDataLayer();
+        $this->assertNotEmpty($data);
+        $this->assertArrayHasKey($dataLayerKey, $data, json_encode($data, JSON_PRETTY_PRINT));
+    }
+
     protected function assertDataLayerEquals($expectedValue, string $dataLayerKey)
     {
         $data = $this->getDataFromDataLayer();

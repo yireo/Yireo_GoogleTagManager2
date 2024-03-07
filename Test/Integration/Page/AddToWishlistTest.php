@@ -38,6 +38,7 @@ class AddToWishlistTest extends PageTestCase
             'product' => $product->getId(),
             'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
         ]);
+        
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->dispatch('wishlist/index/add');
 

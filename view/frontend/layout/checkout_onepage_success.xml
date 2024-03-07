@@ -28,7 +28,7 @@
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
-                    <item name="sha256_email_address" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\EnhancedConversions\Sha256EmailAddress</item>
+                    <item name="enhanced_conversions" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\EnhancedConversions</item>
                 </argument>
             </arguments>
         </referenceBlock>

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\EnhancedConversions;
+namespace Yireo\GoogleTagManager2\DataLayer\Tag;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
 
-class Sha256EmailAddress implements TagInterface
+class EnhancedConversions implements MergeTagInterface
 {
     private CheckoutSession $checkoutSession;
     private OrderRepositoryInterface $orderRepository;
@@ -24,10 +24,28 @@ class Sha256EmailAddress implements TagInterface
         $this->orderRepository = $orderRepository;
     }
 
-    public function get(): string
+    public function merge(): array
     {
-        $order = $this->getOrder();
-        return hash('sha256', trim(strtolower($order->getCustomerEmail())));
+        return [
+            'sha256_email_address' => $this->getSha256EmailAddress(),
+            'sha256_customer_telephone' => $this->getSha256CustomerTelephone(),
+        ];
+    }
+
+    private function getSha256EmailAddress(): string
+    {
+        return $this->sha256((string)$this->getOrder()->getCustomerEmail());
+    }
+
+    private function getSha256CustomerTelephone(): string
+    {
+        $billingAddress = $this->getOrder()->getBillingAddress();
+        return $this->sha256((string)$billingAddress?->getTelephone());
+    }
+
+    private function sha256(string $value): string
+    {
+        return hash('sha256', trim(strtolower($value)));
     }
 
     /**
