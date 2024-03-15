@@ -5,7 +5,6 @@ namespace Yireo\GoogleTagManager2\DataLayer\Event;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\ShippingMethodInterface;
 use Magento\Quote\Api\ShippingMethodManagementInterface;
@@ -17,24 +16,20 @@ class AddShippingInfo implements EventInterface
     private CartItems $cartItems;
     private ShippingMethodManagementInterface $shippingMethodManagement;
     private CheckoutSession $checkoutSession;
-    private CartRepositoryInterface $cartRepository;
 
     /**
      * @param CartItems $cartItems
      * @param ShippingMethodManagementInterface $shippingMethodManagement
      * @param CheckoutSession $checkoutSession
-     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
         CartItems $cartItems,
         ShippingMethodManagementInterface $shippingMethodManagement,
-        CheckoutSession $checkoutSession,
-        CartRepositoryInterface $cartRepository
+        CheckoutSession $checkoutSession
     ) {
         $this->cartItems = $cartItems;
         $this->shippingMethodManagement = $shippingMethodManagement;
         $this->checkoutSession = $checkoutSession;
-        $this->cartRepository = $cartRepository;
     }
 
     /**
