@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\CartInterface;
@@ -37,7 +38,12 @@ class AddShippingInfo implements EventInterface
      */
     public function get(): array
     {
-        $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        try {
+            $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        } catch (NoSuchEntityException|LocalizedException $e) {
+            return [];
+        }
+
         if (false === $this->checkoutSession->hasQuote()) {
             return [];
         }
