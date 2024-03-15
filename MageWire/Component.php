@@ -4,6 +4,8 @@
 
 namespace Yireo\GoogleTagManager2\MageWire;
 
+use Magento\Framework\View\Element\Block\ArgumentInterface;
+
 if (class_exists('\Magewirephp\Magewire\Component')) {
     class Component extends \Magewirephp\Magewire\Component
     {
