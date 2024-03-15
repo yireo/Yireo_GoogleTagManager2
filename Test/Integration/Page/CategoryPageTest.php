@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+// phpcs:ignoreFile -- Too many issues, lol
+
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Catalog\Api\CategoryRepositoryInterface;

@@ -21,8 +21,9 @@ class CartItemDataMapper
 
     /**
      * @param ProductDataMapper $productDataMapper
-     * @param ProductRepositoryInterface $productRepository
+     * @param ProductProvider $productProvider
      * @param PriceFormatter $priceFormatter
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         ProductDataMapper $productDataMapper,

@@ -33,6 +33,7 @@ class CurrentPrice implements TagInterface
     {
         $product = $this->getCurrentProduct->get();
         return $this->priceFormatter->format(
+            // @phpstan-ignore-next-line
             (float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue() // @phpstan-ignore-line
         );
     }

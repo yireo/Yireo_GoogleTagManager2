@@ -108,7 +108,7 @@ class GetAttributeValue
 
     /**
      * @param Attribute $attribute
-     * @param $attributeValue
+     * @param mixed $attributeValue
      * @return mixed|string
      */
     private function filterAttributeValue(AbstractAttribute $attribute, $attributeValue)
@@ -130,7 +130,7 @@ class GetAttributeValue
 
     /**
      * @param AbstractAttribute $attribute
-     * @param $attributeValue
+     * @param mixed $attributeValue
      * @return string
      * @throws LocalizedException
      */
@@ -152,7 +152,7 @@ class GetAttributeValue
 
     /**
      * @param AbstractAttribute $attribute
-     * @param $attributeValue
+     * @param mixed $attributeValue
      * @return array
      * @throws LocalizedException
      */

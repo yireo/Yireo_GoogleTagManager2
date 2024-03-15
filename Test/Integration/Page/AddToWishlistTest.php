@@ -34,12 +34,15 @@ class AddToWishlistTest extends PageTestCase
         $wishlist = $this->getWishlist();
         $this->assertEquals(0, $wishlist->getItemsCount());
 
-        $this->getRequest()->setPostValue([
+        /** @var HttpRequest $request */
+        $request = $this->getRequest();
+
+        $request->setPostValue([
             'product' => $product->getId(),
             'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
         ]);
-        
-        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
+
+        $request->setMethod(HttpRequest::METHOD_POST);
         $this->dispatch('wishlist/index/add');
 
         $this->assertEquals(1, $wishlist->getItemsCount());

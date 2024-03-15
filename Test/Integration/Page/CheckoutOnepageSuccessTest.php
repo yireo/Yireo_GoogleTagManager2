@@ -4,13 +4,9 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Stdlib\CookieManagerInterface;
-use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Helper\Guest;
-use Magento\TestFramework\Request;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class CheckoutOnepageSuccessTest extends PageTestCase

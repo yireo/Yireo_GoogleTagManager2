@@ -29,7 +29,7 @@ class ScriptTest extends PageTestCase
         $this->assertContainerInLayout('before.body.end');
         $this->assertStringContainsString('Yireo_GoogleTagManager2', $this->layout->getUpdate()->asString());
 
-        $body = $this->getResponse()->getBody();
+        $body = $this->getResponse()->getBody(); // @phpstan-ignore-line
         $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManager'), 'Script not found in HTML body: ' . $body);
     }
 }

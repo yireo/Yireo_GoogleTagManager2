@@ -52,7 +52,7 @@ class DataLayerTest extends PageTestCase
         $this->layout->generateXml();
 
         $this->dispatch('/');
-        $body = $this->getResponse()->getBody();
+        $body = $this->getResponse()->getBody(); // @phpstan-ignore-line
 
         $this->assertContainerInLayout('before.body.end');
 

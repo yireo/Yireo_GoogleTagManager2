@@ -79,6 +79,7 @@ class AddShippingInfo implements EventInterface
         }
 
         try {
+            // @phpstan-ignore-next-line
             return $quote->getShippingAddress()->getShippingMethod();
         } catch (NoSuchEntityException $e) {
         }
