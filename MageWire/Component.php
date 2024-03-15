@@ -13,7 +13,7 @@ if (class_exists('\Magewirephp\Magewire\Component')) {
         }
     }
 } else {
-    class Component
+    class Component implements ArgumentInterface
     {
         public function isHyvaCheckoutEnabled(): bool
         {
