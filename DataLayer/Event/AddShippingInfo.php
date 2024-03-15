@@ -38,17 +38,17 @@ class AddShippingInfo implements EventInterface
      */
     public function get(): array
     {
-        try {
-            $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
-        } catch (NoSuchEntityException|LocalizedException $e) {
-            return [];
-        }
-
         if (false === $this->checkoutSession->hasQuote()) {
             return [];
         }
 
-        $shippingMethod = $this->getShippingMethodFromQuote($this->checkoutSession->getQuote());
+        try {
+            $quote = $this->checkoutSession->getQuote();
+        } catch (NoSuchEntityException|LocalizedException $e) {
+            return [];
+        }
+
+        $shippingMethod = $this->getShippingMethodFromQuote($quote);
         if (empty($shippingMethod)) {
             return [];
         }
@@ -69,6 +69,7 @@ class AddShippingInfo implements EventInterface
     public function getShippingMethodFromQuote(CartInterface $quote): ?string
     {
         try {
+            // @phpstan-ignore-next-line
             $shippingMethod = $this->shippingMethodManagement->get($quote->getId());
             if ($shippingMethod instanceof ShippingMethodInterface) {
                 return $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
