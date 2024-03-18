@@ -27,7 +27,7 @@
     "magento/module-quote": "^101.0",
     "magento/module-sales": "^100.0 || ^101.0 || ^102.0 || ^103.0",
     "magento/module-store": "^100.0 || ^101.0",
-    "psr/log": "^1.0",
+    "psr/log": "^1 || ^2 || ^3",
     "php": "^7.4|^8.1",
     "ext-json": "*",
     "ext-dom": "*",
