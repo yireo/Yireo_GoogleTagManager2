@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.1] - 22 March 2024
+### Fixed
+- Remove page layout directive from Hyva checkout
+
 ## [3.8.0] - 15 March 2024
 ### Added
 - Lazyload non-event (non-GA4) data from localStorage in Hyva #213
