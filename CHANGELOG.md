@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.2] - 6 April 2024
+### Fixed
+- Added customer address data to enhanced conversions #226 @JuulGr
+
 ## [3.8.1] - 22 March 2024
 ### Fixed
 - Remove page layout directive from Hyva checkout
+- Compat Magento latest with psr/log
 
 ## [3.8.0] - 15 March 2024
 ### Added
