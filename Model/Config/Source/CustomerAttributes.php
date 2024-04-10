@@ -29,7 +29,7 @@ class CustomerAttributes implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $options = [['value' => '', 'label' => __('')]];
+        $options = [['value' => '', 'label' => '']];
 
         $sortOrder = $this->sortOrderFactory->create(['field' => 'attribute_code', 'direction' => 'asc']);
         $this->searchCriteriaBuilder->addSortOrder($sortOrder);

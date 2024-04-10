@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.3] - 10 April 2024
+### Fixed
+- Remove translation with empty strings #228
+
 ## [3.8.2] - 6 April 2024
 ### Fixed
 - Added customer address data to enhanced conversions #226 @JuulGr
