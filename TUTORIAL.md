@@ -12,7 +12,7 @@ Login into Google Tag Manager.
 
 Create a new **Container** for your site. Write down the **Container ID** (starting with `GTM-`) to configure later in the Magento extension.
 
-In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > GA4 Configuration**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Keep the **Send a page view event when this configuration loads** option checked. Make sure to trigger this tag on all pages with the **All pages** trigger.
+In the **Container Workspace**, under **Tags**, create a new **Tag**. As **Tag Configuration** type, choose **Google Analytics > Google Tag**. Fill in the Google Analytics **Measurement ID** (starting with `G-`). Keep the **Send a page view event when this configuration loads** option checked. Make sure to trigger this tag on all pages with the **All pages** trigger.
 
 In the **Container Workspace**, under **Variables** and then **Built-In Variables**, make sure the following variables are enabled:
 
