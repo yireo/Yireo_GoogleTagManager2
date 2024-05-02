@@ -15,11 +15,11 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 $dataLayerEventsJsonChunksScript = '';
 foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk) {
-    $dataLayerEventsJsonChunksScript .= "pusher('{$dataLayerEventsJsonChunk}', 'push (initial event) [data-layer.phtml]');";
+    $dataLayerEventsJsonChunksScript .= "pusher({$dataLayerEventsJsonChunk}, 'push (initial event) [data-layer.phtml]');";
 }
 $scriptString = <<<SCRIPT
 require(['yireoGoogleTagManagerPush'], function (pusher) {
-    pusher('{$dataLayerJson}', 'push (initial page) [data-layer.phtml]');
+    pusher({$dataLayerJson}, 'push (initial page) [data-layer.phtml]');
     {$dataLayerEventsJsonChunksScript}
 });
 SCRIPT;
