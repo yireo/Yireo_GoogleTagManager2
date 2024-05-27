@@ -31,6 +31,7 @@ class Purchase implements EventInterface
     public function get(): array
     {
         $order = $this->order;
+        
         return [
             'event' => 'purchase',
             'ecommerce' => [
