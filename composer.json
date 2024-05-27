@@ -44,5 +44,19 @@
     "files": [
       "registration.php"
     ]
-  }
+  },
+  "funding": [
+    {
+       "type": "github",
+       "url": "https://github.com/sponsors/yireo"
+    },
+    {
+       "type": "paypal",
+       "url": "https://www.paypal.me/yireo"
+    },
+    {
+       "type": "other",
+       "url": "https://www.buymeacoffee.com/jissereitsma"
+    }
+  ]
 }
