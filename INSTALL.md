@@ -8,7 +8,7 @@ Use composer to install this extension. First make sure that Magento is installe
 
 Next, install our module using the following command:
 
-    composer require tagging/gtm
+    composer require tagginggroup/gtm
 
 Next, install the new module into Magento itself:
 
@@ -34,7 +34,7 @@ If you are not the person having added this extension, we very strongly recommen
 
 If you have installed this extension via `composer`, simply follow the `composer` procedure again:
 
-    composer remove tagging/gtm
+    composer remove tagginggroup/gtm
 
 If you have copied files to `app/code/Tagging/GTM/`, remove them.
 
