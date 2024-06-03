@@ -11,7 +11,7 @@ define([
         }
 
         stepNavigator.steps.subscribe(function (steps) {
-            const firstStep = steps[0];
+            const firstStep = steps.sort((a, b) => a.sortOrder - b.sortOrder)[0];
             const eventData = window.Tagging_GTM_BEGIN_CHECKOUT;
 
             if (firstStep === undefined || firstStep == null || firstStep.length <= 0) {
