@@ -16,8 +16,6 @@ Next, install the new module into Magento itself:
     bin/magento setup:upgrade
     bin/magento cache:clean
 
-Please note `setup:upgrade` is required as of version 1.0.6 because we have added a new column in the database.
-
 ## Instructions for manual copy
 We recommend `composer` to install this package. Also, the method described here is not supported. If you are less knowledgeable on how to install extensions, use `composer` instead. If you want a manual copy instead, these are the steps.
 
