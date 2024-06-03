@@ -1,5 +1,7 @@
 # AdPage Magento Plugin 
 
+> This is the new Magento plugin for AdPage. This plugin has been renamed learn more why: https://github.com/AdPageGroup/Magento/blob/master/RENAME.md
+
 This plugin is a copy of the https://github.com/yireo/Yireo_GoogleTagManager2 plugin. The plugin has been modified to fit the needs of AdPage.
 
 ## Requirements
