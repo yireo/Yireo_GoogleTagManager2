@@ -2,7 +2,7 @@
 
 // phpcs:ignoreFile -- Only 1 class allowed in one file
 
-namespace Yireo\GoogleTagManager2\MageWire;
+namespace Tagging\GTM\MageWire;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 

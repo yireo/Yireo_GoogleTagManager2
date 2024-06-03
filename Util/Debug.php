@@ -8,10 +8,10 @@
  * @license   Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Util;
+namespace Tagging\GTM\Util;
 
 use Psr\Log\LoggerInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use Tagging\GTM\Config\Config;
 
 class Debug
 {
@@ -57,7 +57,7 @@ class Debug
             $string .= ': ' . var_export($variable, true);
         }
 
-        $this->logger->info('Yireo_GoogleTagManager: ' . $string);
+        $this->logger->info('Tagging_GTM: ' . $string);
 
         return true;
     }

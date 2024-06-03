@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Mapper;
+namespace Tagging\GTM\Test\Integration\DataLayer\Mapper;
 
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
+use Tagging\GTM\DataLayer\Mapper\CategoryDataMapper;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateCategory;
 
 class CategoryDataMapperTest extends TestCase
 {

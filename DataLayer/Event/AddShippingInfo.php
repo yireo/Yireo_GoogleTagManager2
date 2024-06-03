@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace Tagging\GTM\DataLayer\Event;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
@@ -9,8 +9,8 @@ use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\ShippingMethodInterface;
 use Magento\Quote\Api\ShippingMethodManagementInterface;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
+use Tagging\GTM\Api\Data\EventInterface;
+use Tagging\GTM\DataLayer\Tag\Cart\CartItems;
 
 class AddShippingInfo implements EventInterface
 {
@@ -54,7 +54,7 @@ class AddShippingInfo implements EventInterface
         }
 
         return [
-            'event' => 'add_shipping_info',
+            'event' => 'trytagging_add_shipping_info',
             'ecommerce' => [
                 'shipping_tier' => $shippingMethod,
                 'items' => $this->cartItems->get(),

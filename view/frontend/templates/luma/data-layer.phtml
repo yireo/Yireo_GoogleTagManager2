@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\ViewModel\DataLayer;
 
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
@@ -13,10 +15,31 @@ $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
 <script>
-    require(['yireoGoogleTagManagerPush'], function (pusher) {
+    function callInitialDataLayer() {
+        require(['googleTagManagerPush'], function(pusher) {
+            <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk) : ?>
+                pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (initial event) [data-layer.phtml]');
+            <?php endforeach; ?>
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.taggingHelpers) {
+            setTimeout(function() {
+                callInitialDataLayer();
+            }, 100); // Make sure we always sent after user_data
+        } else {
+            setTimeout(function() {
+                if (window.taggingHelpers) {
+                    callInitialDataLayer();
+                } else {
+                    console.log("taggingHelpers not available after wait, sending initial data layer anyway");
+                }
+            }, 750);
+        }
+    });
+
+    require(['googleTagManagerPush'], function(pusher) {
         pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
-        <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>
-        pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (initial event) [data-layer.phtml]');
-        <?php endforeach; ?>
     });
 </script>

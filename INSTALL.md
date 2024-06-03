@@ -8,23 +8,25 @@ Use composer to install this extension. First make sure that Magento is installe
 
 Next, install our module using the following command:
 
-    composer require yireo/magento2-googletagmanager2
+    composer require tagging/gtm
 
 Next, install the new module into Magento itself:
 
-    bin/magento module:enable Yireo_GoogleTagManager2
+    bin/magento module:enable Tagging_GTM
+    bin/magento setup:upgrade
     bin/magento cache:clean
 
-There is no need to run `setup:upgrade` because this module does not require a database upgrade.
+Please note `setup:upgrade` is required as of version 1.0.6 because we have added a new column in the database.
 
 ## Instructions for manual copy
 We recommend `composer` to install this package. Also, the method described here is not supported. If you are less knowledgeable on how to install extensions, use `composer` instead. If you want a manual copy instead, these are the steps.
 
-Download a ZIP of this repository. Extract the files. Upload the files to the folder `app/code/Yireo/GoogleTagManager2` of your site.
+Download a ZIP of this repository. Extract the files. Upload the files to the folder `app/code/Tagging/GTM` of your site.
 
 Next, install the new module into Magento itself:
 
-    bin/magento module:enable Yireo_GoogleTagManager2
+    bin/magento module:enable Tagging_GTM
+    bin/magento setup:upgrade
     bin/magento cache:clean
 
 ## Removing the extension
@@ -32,9 +34,9 @@ If you are not the person having added this extension, we very strongly recommen
 
 If you have installed this extension via `composer`, simply follow the `composer` procedure again:
 
-    composer remove yireo/magento2-googletagmanager2
+    composer remove tagging/gtm
 
-If you have copied files to `app/code/Yireo/GoogleTagManager2/`, remove them.
+If you have copied files to `app/code/Tagging/GTM/`, remove them.
 
 Next, follow your deployment procedure to copy changes to your live site. Theoretically, you can modify the `core_config_data` configuration table to remove configuration values from there. Note that Magento does not offer a solid uninstall procedure for this anyway. Double-check that the module has been removed from the `app/etc/config.php` file as well.
 

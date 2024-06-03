@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Functional\Util;
+namespace Tagging\GTM\Test\Functional\Util;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
-use Yireo\GoogleTagManager2\Util\CategoryProvider;
+use Tagging\GTM\Exception\NotUsingSetProductSkusException;
+use Tagging\GTM\Util\CategoryProvider;
 
 class CategoryProviderTest extends TestCase
 {

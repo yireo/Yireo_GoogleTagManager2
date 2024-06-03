@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Observer;
+namespace Tagging\GTM\Test\Integration\Observer;
 
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\ObjectManager;
@@ -10,10 +10,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
-use Yireo\GoogleTagManager2\SessionDataProvider\CustomerSessionDataProvider;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCustomer;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCustomer;
+use Tagging\GTM\SessionDataProvider\CheckoutSessionDataProvider;
+use Tagging\GTM\SessionDataProvider\CustomerSessionDataProvider;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateCustomer;
+use Tagging\GTM\Test\Integration\FixtureTrait\GetCustomer;
 
 class TriggerLoginDataLayerEventTest extends TestCase
 {
@@ -41,6 +41,6 @@ class TriggerLoginDataLayerEventTest extends TestCase
         $data = ObjectManager::getInstance()->get(CustomerSessionDataProvider::class)->get();
         $this->assertArrayHasKey('login_event', $data, var_export($data, true));
         $this->assertArrayHasKey('event', $data['login_event']);
-        $this->assertEquals('login', $data['login_event']['event']);
+        $this->assertEquals('trytagging_login', $data['login_event']['event']);
     }
 }

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace Tagging\GTM\DataLayer\Mapper;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\Util\PriceFormatter;
 
 class OrderDataMapper
 {
@@ -53,7 +53,7 @@ class OrderDataMapper
             'affiliation' => $this->config->getStoreName(),
             'revenue' => $this->priceFormatter->format($order->getGrandTotal()),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
-            'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+            'shipping' => $this->priceFormatter->format((float)$order->getShippingInclTax()),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
             'coupon' => $order->getCouponCode(),
             'date' => date("Y-m-d", strtotime($order->getCreatedAt())),

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Observer;
+namespace Tagging\GTM\Test\Integration\Observer;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Event\ManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetOrder;
+use Tagging\GTM\SessionDataProvider\CheckoutSessionDataProvider;
+use Tagging\GTM\Test\Integration\FixtureTrait\GetOrder;
 
 class TriggerPurchaseDataLayerEventTest extends TestCase
 {
@@ -30,7 +30,7 @@ class TriggerPurchaseDataLayerEventTest extends TestCase
         $data = ObjectManager::getInstance()->get(CheckoutSessionDataProvider::class)->get();
         $this->assertArrayHasKey('purchase_event', $data);
         $this->assertArrayHasKey('event', $data['purchase_event']);
-        $this->assertEquals('purchase', $data['purchase_event']['event']);
+        $this->assertEquals('trytagging_purchase', $data['purchase_event']['event']);
     }
 
 }

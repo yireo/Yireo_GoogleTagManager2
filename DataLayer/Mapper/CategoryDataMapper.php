@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace Tagging\GTM\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\Util\Attribute\GetAttributeValue;
 
 class CategoryDataMapper
 {
@@ -52,6 +52,6 @@ class CategoryDataMapper
      */
     private function getCategoryFields(): array
     {
-        return array_filter(array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes()));
+        return array_filter(['id', 'name']);
     }
 }

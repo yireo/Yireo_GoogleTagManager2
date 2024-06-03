@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration;
+namespace Tagging\GTM\Test\Integration;
 
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\LayoutInterface;
 use Magento\TestFramework\TestCase\AbstractController;
-use Yireo\GoogleTagManager2\ViewModel\DataLayer;
+use Tagging\GTM\ViewModel\DataLayer;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertStoreConfigValueEquals;
 
@@ -78,7 +78,7 @@ class PageTestCase extends AbstractController
 
     protected function assertEnabledFlagIsWorking()
     {
-        $this->assertStoreConfigValueEquals(1, 'googletagmanager2/settings/enabled', 'store');
+        $this->assertStoreConfigValueEquals(1, 'GTM/settings/enabled', 'store');
     }
 
     protected function assertRequestActionName(string $expectedActionName)

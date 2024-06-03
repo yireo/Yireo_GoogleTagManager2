@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Util;
+namespace Tagging\GTM\Util;
 
 use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
@@ -14,7 +14,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
+use Tagging\GTM\Exception\NotUsingSetProductSkusException;
 
 class CategoryProvider
 {

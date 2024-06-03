@@ -14,7 +14,7 @@ use Magento\Framework\View\Element\Template;
 $productPath = $block->getProductPath();
 ?>
 <script>
-    require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
+    require(['googleTagManagerProductClicks'], function(clicks) {
         clicks({productPath: '<?= $productPath ?>'});
     });
 </script>

@@ -4,15 +4,8 @@
         <googletagmanager2>
             <settings>
                 <enabled>0</enabled>
-                <id/>
+                <config/>
                 <debug>0</debug>
-                <wait_for_ui>0</wait_for_ui>
-                <category_products>3</category_products>
-                <product_eav_attributes>material</product_eav_attributes>
-                <category_eav_attributes>id,name</category_eav_attributes>
-                <customer_eav_attributes>id</customer_eav_attributes>
-                <view_cart_occurances>everywhere</view_cart_occurances>
-                <view_cart_on_mini_cart_expand_only>0</view_cart_on_mini_cart_expand_only>
             </settings>
         </googletagmanager2>
     </default>

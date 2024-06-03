@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Event;
+namespace Tagging\GTM\Test\Integration\DataLayer\Event;
 
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddToCart;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCart;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
+use Tagging\GTM\DataLayer\Event\AddToCart;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateProduct;
 
 /**
  * @magentoAppArea frontend
@@ -16,9 +15,8 @@ class AddToCartTest extends TestCase
     use CreateProduct;
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/serverside_gtm_url gtm.tryforwarder.com
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      */

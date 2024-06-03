@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\MageWire;
+namespace Tagging\GTM\MageWire;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddPaymentInfo;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddShippingInfo;
-use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
+use Tagging\GTM\DataLayer\Event\AddPaymentInfo;
+use Tagging\GTM\DataLayer\Event\AddShippingInfo;
+use Tagging\GTM\DataLayer\Event\BeginCheckout;
 
 class Checkout extends Component
 {

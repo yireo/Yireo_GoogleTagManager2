@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace Tagging\GTM\DataLayer\Event;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartValue;
-use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
+use Tagging\GTM\Api\Data\EventInterface;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\DataLayer\Tag\Cart\CartItems;
+use Tagging\GTM\DataLayer\Tag\Cart\CartValue;
+use Tagging\GTM\DataLayer\Tag\CurrencyCode;
 
 class ViewCart implements EventInterface
 {
@@ -49,7 +49,7 @@ class ViewCart implements EventInterface
                 'allowed_pages' => $this->getAllowedPages(),
                 'allowed_events' => $this->getAllowedEvents(),
             ],
-            'event' => 'view_cart',
+            'event' => 'trytagging_view_cart',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
                 'value' => $this->cartValue->get(),
@@ -63,10 +63,6 @@ class ViewCart implements EventInterface
      */
     private function getAllowedPages(): array
     {
-        if ($this->config->showViewCartEventEverywhere()) {
-            return [];
-        }
-
         return ['/checkout/cart/'];
     }
 
@@ -75,10 +71,6 @@ class ViewCart implements EventInterface
      */
     private function getAllowedEvents(): array
     {
-        if ($this->config->showViewMiniCartOnExpandOnly() && $this->config->showViewCartEventEverywhere()) {
-            return ['minicart_collapse'];
-        }
-
         return [];
     }
 }

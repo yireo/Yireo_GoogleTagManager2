@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Block;
+namespace Tagging\GTM\Test\Integration\Block;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\LayoutInterface;
-use Yireo\GoogleTagManager2\ViewModel\DataLayer;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
+use Tagging\GTM\ViewModel\DataLayer;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertContainerInLayout;
 
 /**
@@ -18,9 +18,8 @@ class DataLayerTest extends PageTestCase
     use AssertContainerInLayout;
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/serverside_gtm_url gtm.tryforwarder.com
      */
     public function testValidBlockContent()
     {
@@ -30,19 +29,19 @@ class DataLayerTest extends PageTestCase
         $layout->getUpdate()->addHandle('datalayer_default');
 
         $block = $layout->createBlock(Template::class);
-        $block->setNameInLayout('yireo_googletagmanager2.data-layer');
-        $block->setTemplate('Yireo_GoogleTagManager2::luma/data-layer.phtml');
+        $block->setNameInLayout('Tagging_GTM.data-layer');
+        $block->setTemplate('Tagging_GTM::luma/data-layer.phtml');
         $block->setData('data_layer_view_model', ObjectManager::getInstance()->get(DataLayer::class));
         $block->setData('config', ObjectManager::getInstance()->get(Config::class));
         $html = $block->toHtml();
 
-        $this->assertTrue((bool)strpos($html, 'yireoGoogleTagManagerPush'), 'Data layer not found in block output');
+        $this->assertTrue((bool)strpos($html, 'googleTagManagerPush'), 'Data layer not found in block output');
     }
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/method 1
+     * @magentoConfigFixture current_store GTM/settings/id test
      */
     public function testValidBodyContent()
     {
@@ -56,10 +55,10 @@ class DataLayerTest extends PageTestCase
 
         $this->assertContainerInLayout('before.body.end');
 
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
-        $this->assertNotFalse($block, 'Block "yireo_googletagmanager2.data-layer" is empty');
+        $block = $this->layout->getBlock('Tagging_GTM.data-layer');
+        $this->assertNotFalse($block, 'Block "Tagging_GTM.data-layer" is empty');
 
         $array = $this->layout->getUpdate()->asArray();
-        $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManagerPush'), 'Data layer not found in HTML body: '. var_export($array, true));
+        $this->assertTrue((bool)strpos($body, 'googleTagManagerPush'), 'Data layer not found in HTML body: '. var_export($array, true));
     }
 }

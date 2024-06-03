@@ -8,16 +8,16 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\ViewModel;
+namespace Tagging\GTM\ViewModel;
 
 use Magento\Directory\Model\Currency;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Yireo\GoogleTagManager2\Config\Config;
+use Tagging\GTM\Config\Config;
 
 /**
- * Class \Yireo\GoogleTagManager2\ViewModel\Commons
+ * Class \Tagging\GTM\ViewModel\Commons
  */
 class Commons implements ArgumentInterface
 {
@@ -48,10 +48,8 @@ class Commons implements ArgumentInterface
     public function getConfiguration(): array
     {
         $configuration = [];
-        $configuration['cookie_restriction_mode'] = $this->config->getCookieRestrictionModeName();
-        $configuration['website_id'] = $this->config->getCurrentWebsiteId();
         $configuration['data_layer'] = $this->dataLayer->getDataLayer();
-        $configuration['id'] = $this->config->getId();
+        $configuration['config'] = $this->config->getConfig();
         $configuration['debug'] = $this->config->isDebug();
         $configuration['gtm_url'] = $this->config->getGoogleTagmanagerUrl();
         return $configuration;

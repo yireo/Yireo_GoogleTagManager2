@@ -10,8 +10,8 @@ define([
     'underscore',
     'uiComponent',
     'Magento_Customer/js/customer-data',
-    'yireoGoogleTagManagerLogger',
-    'yireoGoogleTagManagerPush',
+    'googleTagManagerLogger',
+    'googleTagManagerPush',
     'knockout'
 ], function ($, _, Component, customerData, logger, pusher, ko) {
     'use strict';
@@ -132,12 +132,6 @@ define([
 
     return Component.extend({
         initialize: function (config) {
-            moduleConfig = config;
-
-            if (isDisabled()) {
-                return;
-            }
-
             let attributes = {};
             const sectionNames = getSectionNames();
             sectionNames.forEach(function (sectionName) {

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Page;
+namespace Tagging\GTM\Test\Integration\Page;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
+use Tagging\GTM\Test\Integration\PageTestCase;
 
 class CheckoutOnepageSuccessTest extends PageTestCase
 {
@@ -33,9 +33,8 @@ class CheckoutOnepageSuccessTest extends PageTestCase
     }
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/serverside_gtm_url gtm.tryforwarder.com
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
@@ -58,7 +57,7 @@ class CheckoutOnepageSuccessTest extends PageTestCase
         $page->getLayout()->generateXml();
         $page->getLayout()->generateElements();
 
-        $block = $page->getLayout()->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $page->getLayout()->getBlock('Tagging_GTM.data-layer');
         $this->assertNotFalse($block);
 
         $this->assertDataLayerEquals('Success Page', 'page_title');

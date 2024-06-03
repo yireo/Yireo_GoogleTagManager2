@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Util;
+namespace Tagging\GTM\Test\Integration\Util;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use Tagging\GTM\DataLayer\Mapper\ProductDataMapper;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
 
 class ProductDataMapperTest extends TestCase

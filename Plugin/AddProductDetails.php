@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace Tagging\GTM\Plugin;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\LayoutInterface;
-use Yireo\GoogleTagManager2\Exception\BlockNotFound;
+use Tagging\GTM\Exception\BlockNotFound;
 
 class AddProductDetails
 {
@@ -43,11 +43,11 @@ class AddProductDetails
      */
     private function getProductDetailsBlock(): BlockInterface
     {
-        $block = $this->layout->getBlock('yireo_googletagmanager2.product-details');
+        $block = $this->layout->getBlock('Tagging_GTM.product-details');
         if ($block instanceof BlockInterface) {
             return $block;
         }
 
-        throw new BlockNotFound('Block "yireo_googletagmanager2.product-details" not found');
+        throw new BlockNotFound('Block "Tagging_GTM.product-details" not found');
     }
 }

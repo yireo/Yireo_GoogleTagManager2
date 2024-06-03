@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer;
+namespace Tagging\GTM\Test\Integration\DataLayer;
 
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\DataLayer\TagParser;
+use Tagging\GTM\Api\Data\TagInterface;
+use Tagging\GTM\DataLayer\TagParser;
 
 class TagParserTest extends TestCase
 {

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Observer;
+namespace Tagging\GTM\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Api\Data\CartItemInterface;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\RemoveFromCart as RemoveFromCartEvent;
+use Tagging\GTM\Api\CheckoutSessionDataProviderInterface;
+use Tagging\GTM\DataLayer\Event\RemoveFromCart as RemoveFromCartEvent;
 
 class TriggerRemoveFromCartDataLayerEvent implements ObserverInterface
 {

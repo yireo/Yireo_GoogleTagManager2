@@ -1,37 +1,32 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
+namespace Tagging\GTM\DataLayer\Tag\Category;
 
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper;
+use Tagging\GTM\Api\Data\TagInterface;
+use Tagging\GTM\Util\GetCurrentCategory;
+use Tagging\GTM\Util\GetCurrentCategoryProducts;
+use Tagging\GTM\DataLayer\Mapper\ProductDataMapper;
 
 class Products implements TagInterface
 {
     private GetCurrentCategoryProducts $getCurrentCategoryProducts;
     private GetCurrentCategory $getCurrentCategory;
     private ProductDataMapper $productDataMapper;
-    private Config $config;
 
     /**
      * @param GetCurrentCategoryProducts $getCurrentCategoryProducts
      * @param GetCurrentCategory $getCurrentCategory
      * @param ProductDataMapper $productDataMapper
-     * @param Config $config
      */
     public function __construct(
         GetCurrentCategoryProducts $getCurrentCategoryProducts,
         GetCurrentCategory $getCurrentCategory,
-        ProductDataMapper $productDataMapper,
-        Config $config
+        ProductDataMapper $productDataMapper
     ) {
         $this->getCurrentCategoryProducts = $getCurrentCategoryProducts;
         $this->getCurrentCategory = $getCurrentCategory;
         $this->productDataMapper = $productDataMapper;
-        $this->config = $config;
     }
 
     /**
@@ -43,10 +38,6 @@ class Products implements TagInterface
         $productsData = [];
         $i = 1;
         foreach ($this->getCurrentCategoryProducts->getProducts() as $product) {
-            if ($this->config->getMaximumCategoryProducts() > 0 && $i > $this->config->getMaximumCategoryProducts()) {
-                break;
-            }
-
             $product->setCategory($this->getCurrentCategory->get());
             $productData = $this->productDataMapper->mapByProduct($product);
             $productData['quantity'] = 1;

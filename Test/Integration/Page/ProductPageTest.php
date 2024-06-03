@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Page;
+namespace Tagging\GTM\Test\Integration\Page;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
-use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateCategory;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateProduct;
+use Tagging\GTM\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
 /**
@@ -18,9 +18,8 @@ class ProductPageTest extends PageTestCase
     use AssertHandleInLayout;
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/serverside_gtm_url gtm.tryforwarder.com
      */
     public function testValidDataLayerWithOneCategory()
     {
@@ -36,12 +35,12 @@ class ProductPageTest extends PageTestCase
         $body = $this->getResponse()->getBody();
         $this->assertStringContainsString($product->getName(), $body);
 
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $this->layout->getBlock('Tagging_GTM.data-layer');
         $this->assertNotEmpty($block);
 
         $this->assertDataLayerEquals('product', 'page_type');
 
-        $event = $this->getEventFromDataLayerEvents('view_item_event', 'view_item');
+        $event = $this->getEventFromDataLayerEvents('view_item_event', 'trytagging_view_item');
         $this->assertArrayHasKey('ecommerce', $event);
         $this->assertNotEmpty($event['ecommerce']['items']);
 

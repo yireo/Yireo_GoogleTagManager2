@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Cart;
+namespace Tagging\GTM\DataLayer\Tag\Cart;
 
 use Magento\Checkout\Model\Cart as CartModel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Tagging\GTM\Api\Data\TagInterface;
+use Tagging\GTM\Util\PriceFormatter;
 
 class CartValue implements TagInterface
 {

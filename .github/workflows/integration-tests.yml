@@ -1,4 +1,4 @@
-name: ExtDN Integration Tests
+name: Integration Tests
 on: [push]
 
 jobs:
@@ -28,10 +28,8 @@ jobs:
           - 6379:6379
         options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     env:
-      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
-      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
-      MODULE_NAME: ${{ secrets.MODULE_NAME }}
-      COMPOSER_NAME: ${{ secrets.COMPOSER_NAME }}
+      MODULE_NAME: Tagging
+      COMPOSER_NAME: tagging/gtm
     steps:
       - uses: actions/checkout@v2
 
@@ -46,5 +44,5 @@ jobs:
           MAGENTO_VERSION: '2.4.5-p1'
           COMPOSER_VERSION: 2
         with:
-          magento_pre_install_script: .github/workflows/extdn-integration-tests-pre-install.sh
-          magento_post_install_script: .github/workflows/extdn-integration-tests-post-install.sh
+          magento_pre_install_script: .github/workflows/integration-pre-install.sh
+          magento_post_install_script: .github/workflows/integration-post-install.sh

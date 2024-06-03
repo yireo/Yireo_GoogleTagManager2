@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace Tagging\GTM\Plugin;
 
 use Magento\Checkout\Api\Data\PaymentDetailsInterface;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Checkout\Api\ShippingInformationManagementInterface;
-use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\AddShippingInfo;
+use Tagging\GTM\Api\CheckoutSessionDataProviderInterface;
+use Tagging\GTM\DataLayer\Event\AddShippingInfo;
 
 class TriggerAddShippingInfoDataLayerEvent
 {

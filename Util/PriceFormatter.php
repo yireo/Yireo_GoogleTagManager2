@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Util;
+namespace Tagging\GTM\Util;
 
 /**
  * Class PriceFormatter
  *
- * @package Yireo\GoogleTagManager2\Util
+ * @package Tagging\GTM\Util
  */
 class PriceFormatter
 {

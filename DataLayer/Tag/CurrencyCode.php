@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag;
+namespace Tagging\GTM\DataLayer\Tag;
 
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use Tagging\GTM\Api\Data\TagInterface;
 
 class CurrencyCode implements TagInterface
 {

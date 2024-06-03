@@ -1,17 +1,19 @@
 {
-  "name": "yireo/magento2-googletagmanager2",
-  "version": "3.8.3",
+  "name": "tagging/gtm",
+  "version": "1.1.7",
   "license": "OSL-3.0",
   "type": "magento2-module",
-  "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager2",
-  "description": "Add Google Tag Manager to Magento",
+  "description": "AdPage tagging integration for Magento 2",
   "keywords": [
-    "composer-installer",
     "magento"
   ],
   "authors": [
     {
-      "name": "Jisse Reitsma (Yireo)",
+      "name": "Jeroen Frenken (AdPage)",
+      "email": "jeroen@adpage.io"
+    },
+    {
+      "name": "Jisse Reitsma (Yireo) (Original author do not contact)",
       "email": "jisse@yireo.com"
     }
   ],
@@ -39,24 +41,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Yireo\\GoogleTagManager2\\": ""
+      "Tagging\\GTM\\": ""
     },
     "files": [
       "registration.php"
     ]
-  },
-  "funding": [
-    {
-       "type": "github",
-       "url": "https://github.com/sponsors/yireo"
-    },
-    {
-       "type": "paypal",
-       "url": "https://www.paypal.me/yireo"
-    },
-    {
-       "type": "other",
-       "url": "https://www.buymeacoffee.com/jissereitsma"
-    }
-  ]
+  }
 }

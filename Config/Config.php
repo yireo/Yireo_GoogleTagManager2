@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config;
+namespace Tagging\GTM\Config;
 
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -9,7 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions;
+use Tagging\GTM\DataLayer\Tag\Version;
 
 class Config implements ArgumentInterface
 {
@@ -17,6 +17,7 @@ class Config implements ArgumentInterface
     private CookieHelper $cookieHelper;
     private StoreManagerInterface $storeManager;
     private AppState $appState;
+    private Version $version;
 
     /**
      * Config constructor.
@@ -29,12 +30,14 @@ class Config implements ArgumentInterface
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
         CookieHelper $cookieHelper,
-        AppState $appState
+        AppState $appState,
+        Version $version
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
         $this->appState = $appState;
+        $this->version = $version;
     }
 
     /**
@@ -49,11 +52,22 @@ class Config implements ArgumentInterface
             return false;
         }
 
-        if (false === $this->isDeveloperMode() && false === $this->isIdValid()) {
-            return false;
+        return true;
+    }
+
+    /**
+     * Checks if the module should place the GTM code or it is done by the user
+     * 
+     * @return bool 
+     */
+    public function isPlacedByPlugin(): bool
+    {
+        $enabled = (bool)$this->getModuleConfigValue('choose_script_placement', false);
+        if (false === $enabled) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -66,7 +80,7 @@ class Config implements ArgumentInterface
     {
         return $this->getModuleConfigValue(
             'serverside_gtm_url',
-            'https://www.googletagmanager.com'
+            ''
         );
     }
 
@@ -81,57 +95,13 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * Wait for user interaction to start
-     *
-     * @return bool
-     */
-    public function waitForUserInteraction(): bool
-    {
-        return (bool)$this->getModuleConfigValue('wait_for_ui');
-    }
-
-    /**
-     * Check whether mouse clicks are debugged as well
-     *
-     * @return bool
-     */
-    public function isDebugClicks(): bool
-    {
-        return $this->isDeveloperMode() && $this->isDebug() && $this->getModuleConfigValue('debug_clicks');
-    }
-
-    /**
      * Return the GA ID
      *
      * @return string
      */
-    public function getId(): string
+    public function getConfig(): string
     {
-        return (string)$this->getModuleConfigValue('id');
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaximumCategoryProducts(): int
-    {
-        return (int)$this->getModuleConfigValue('category_products');
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getProductEavAttributeCodes(): array
-    {
-        return explode(',', (string)$this->getModuleConfigValue('product_eav_attributes'));
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getCategoryEavAttributeCodes(): array
-    {
-        return explode(',', (string)$this->getModuleConfigValue('category_eav_attributes'));
+        return (string)$this->getModuleConfigValue('config');
     }
 
     /**
@@ -139,7 +109,14 @@ class Config implements ArgumentInterface
      */
     public function getCustomerEavAttributeCodes(): array
     {
-        return explode(',', (string)$this->getModuleConfigValue('customer_eav_attributes'));
+        return [
+            'email',
+            'firstname',
+            'middlename',
+            'lastname',
+            'dob',
+            'created_at'
+        ];
     }
 
     /**
@@ -156,50 +133,6 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * @return string
-     */
-    public function getCookieRestrictionModeName(): string
-    {
-        if ($this->cookieHelper->isCookieRestrictionModeEnabled()) {
-            return CookieHelper::IS_USER_ALLOWED_SAVE_COOKIE;
-        }
-
-        return '';
-    }
-
-    /**
-     * @return int
-     */
-    public function getCurrentWebsiteId(): int
-    {
-        return (int)$this->storeManager->getStore()->getWebsiteId();
-    }
-
-    /**
-     * @return string
-     */
-    public function getViewCartOccurances(): string
-    {
-        return $this->getModuleConfigValue('view_cart_occurances');
-    }
-
-    /**
-     * @return bool
-     */
-    public function showViewCartEventEverywhere(): bool
-    {
-        return $this->getViewCartOccurances() === ViewCartOccurancesOptions::EVERYWHERE;
-    }
-
-    /**
-     * @return bool
-     */
-    public function showViewMiniCartOnExpandOnly(): bool
-    {
-        return (bool)$this->getModuleConfigValue('view_cart_on_mini_cart_expand_only');
-    }
-
-    /**
      * Return a configuration value
      *
      * @param string $key
@@ -209,7 +142,7 @@ class Config implements ArgumentInterface
      */
     public function getModuleConfigValue(string $key, $defaultValue = null)
     {
-        return $this->getConfigValue('googletagmanager2/settings/' . $key, $defaultValue);
+        return $this->getConfigValue('GTM/settings/' . $key, $defaultValue);
     }
 
     /**
@@ -239,19 +172,16 @@ class Config implements ArgumentInterface
         return $value;
     }
 
+    public function getVersion(): string
+    {
+        return $this->version->get();
+    }
+
     /**
      * @return bool
      */
     private function isDeveloperMode(): bool
     {
         return $this->appState->getMode() === AppState::MODE_DEVELOPER;
-    }
-
-    /**
-     * @return bool
-     */
-    private function isIdValid(): bool
-    {
-        return 0 === strpos($this->getId(), 'GTM-');
     }
 }

@@ -1,6 +1,6 @@
 define([
     'Magento_Customer/js/customer-data',
-    'yireoGoogleTagManagerLogger'
+    'googleTagManagerLogger'
 ], function (customerData, logger) {
     'use strict';
     return {

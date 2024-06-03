@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace Tagging\GTM\DataLayer\Event;
 
 use Magento\Sales\Api\Data\OrderInterface;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Tagging\GTM\Api\Data\EventInterface;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\DataLayer\Tag\Order\OrderItems;
+use Tagging\GTM\Util\PriceFormatter;
 
 // @todo: Implement this event
 class Refund implements EventInterface
@@ -33,14 +33,14 @@ class Refund implements EventInterface
     {
         $order = $this->order;
         return [
-            'event' => 'refund',
+            'event' => 'trytagging_refund',
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
                 'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
                 'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
-                'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+                'shipping' => $this->priceFormatter->format((float)$order->getShippingInclTax()),
                 'coupon' => $order->getCouponCode(),
                 'items' => $this->orderItems->setOrder($order)->get()
             ]

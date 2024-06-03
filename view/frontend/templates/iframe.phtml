@@ -1,10 +1,15 @@
 <?php declare(strict_types=1);
 
-use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Config\Config;
+use Tagging\GTM\Config\Config;
 
 /** @var Config $config */
-/** @var Template $block */
 $config = $block->getConfig();
+
+if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config->getGoogleTagmanagerUrl()) > 0 && $config->isPlacedByPlugin()) {
+echo "
+<script defer src='https://{$config->getGoogleTagmanagerUrl()}/adex.js'></script>
+<script defer src='https://{$config->getGoogleTagmanagerUrl()}/user-data-minified.es.js'></script>
+<script defer src='https://{$config->getGoogleTagmanagerUrl()}/settings.js'></script>
+";
+}
 ?>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?= $config->getId() ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Event;
+namespace Tagging\GTM\DataLayer\Event;
 
 use Magento\Quote\Api\Data\CartItemInterface;
-use Yireo\GoogleTagManager2\Api\Data\EventInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CartItemDataMapper;
+use Tagging\GTM\Api\Data\EventInterface;
+use Tagging\GTM\DataLayer\Mapper\CartItemDataMapper;
 
 class RemoveFromCart implements EventInterface
 {
@@ -26,7 +26,7 @@ class RemoveFromCart implements EventInterface
     {
         $cartItemData = $this->cartItemDataMapper->mapByCartItem($this->cartItem);
         return [
-            'event' => 'remove_from_cart',
+            'event' => 'trytagging_remove_from_cart',
             'ecommerce' => [
                 'items' => [$cartItemData]
             ]

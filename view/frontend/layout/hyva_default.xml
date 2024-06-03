@@ -13,29 +13,37 @@
     <body>
         <referenceContainer name="after.body.start">
             <block
-                name="yireo_googletagmanager2.pusher-script"
-                template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
-                ifconfig="googletagmanager2/settings/enabled"
+                name="Tagging_GTM.pusher-script"
+                template="Tagging_GTM::hyva/script-pusher.phtml"
+                ifconfig="GTM/settings/enabled"
             />
 
             <block
-                name="yireo_googletagmanager2.logger-script"
-                template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
-                ifconfig="googletagmanager2/settings/enabled"
+                name="Tagging_GTM.logger-script"
+                template="Tagging_GTM::hyva/script-logger.phtml"
+                ifconfig="GTM/settings/enabled"
             />
         </referenceContainer>
 
-        <referenceBlock
-            name="yireo_googletagmanager2.data-layer"
-            template="Yireo_GoogleTagManager2::hyva/data-layer.phtml"/>
+        <referenceBlock name="Tagging_GTM.data-layer">
+            <arguments>
+                <argument name="data_layer_events" xsi:type="array">
+                    <item name="user_data" xsi:type="object">Tagging\GTM\DataLayer\Event\UserData</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
 
         <referenceBlock
-            name="yireo_googletagmanager2.script-additions"
-            template="Yireo_GoogleTagManager2::hyva/script-additions.phtml"/>
+            name="Tagging_GTM.data-layer"
+            template="Tagging_GTM::hyva/data-layer.phtml"/>
 
         <referenceBlock
-            name="yireo_googletagmanager2.script-product-clicks"
-            template="Yireo_GoogleTagManager2::hyva/script-product-clicks.phtml">
+            name="Tagging_GTM.script-additions"
+            template="Tagging_GTM::hyva/script-additions.phtml"/>
+
+        <referenceBlock
+            name="Tagging_GTM.script-product-clicks"
+            template="Tagging_GTM::hyva/script-product-clicks.phtml">
             <arguments>
                 <argument name="product_path" xsi:type="string">.products a.product</argument>
             </arguments>

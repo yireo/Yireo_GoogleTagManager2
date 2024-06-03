@@ -10,34 +10,35 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="yireo" sortOrder="999" translate="label">
-            <label>Yireo</label>
+        <tab id="adpage" sortOrder="999" translate="label">
+            <label>AdPage</label>
         </tab>
-        <section id="googletagmanager2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Yireo GoogleTagManager</label>
-            <tab>yireo</tab>
-            <resource>Yireo_GoogleTagManager2::config</resource>
+        <section id="GTM" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>AdPage GTM</label>
+            <tab>adpage</tab>
+            <resource>Tagging_GTM::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
                 <field id="enabled" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Container Public ID</label>
-                    <comment>ID of your Google Tag container, starting with "GTM-"</comment>
-                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
-                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
-                    <validate>validate-ga4-container-id</validate>
+                <field id="config" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container HEAD code</label>
+                    <comment>Container Head code which can be found in the trytagging dashboard. Be sure to select "Magento" as platform else the code will not work.</comment>
+                    <frontend_model>Tagging\GTM\Model\Config\Frontend\ContainerConfig</frontend_model>
+                    <backend_model>Tagging\GTM\Model\Config\Backend\ContainerConfig</backend_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="serverside_gtm_url" type="text" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container URL</label>
-                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
-                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
-                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
+                    <comment><![CDATA[<span>Enter the container url without https://<span><br/>
+                    <b>Keep in mind</b>; This must much with the container config you are installing. ]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
@@ -46,66 +47,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="debug_clicks" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Debug Clicks</label>
+                <field id="choose_script_placement" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Choose script placement</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="debug">1</field>
-                    </depends>
-                </field>
-                <field id="wait_for_ui" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Wait for user interaction</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[<span>If you want to control on where the scripts are placed you can enable this option. Then the plugin will not load the files and you have to do it on your own.<span><br/>
+                    <b>NOTE</b>; If all necessary scripts are not included, tracking will not function. ]]></comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
-                </field>
-                <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Maximum Products in Category</label>
-                    <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
-                <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Product EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
-                    <comment>Product EAV attributes to show in datalayer</comment>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
-                <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Category EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
-                    <comment>Category EAV attributes to show in datalayer</comment>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
-                <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Customer EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
-                    <comment>Customer EAV attributes to show in datalayer</comment>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
-                <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>view_cart occurances</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                    <comment>Where to generate the view_cart event</comment>
-                </field>
-                <field id="view_cart_on_mini_cart_expand_only" type="select" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>view_cart only with expanded minicart</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="view_cart_occurances">everywhere</field>
-                    </depends>
-                    <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
             </group>
         </section>

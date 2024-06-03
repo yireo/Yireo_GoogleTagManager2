@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Order;
+namespace Tagging\GTM\DataLayer\Tag\Order;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Tagging\GTM\Api\Data\MergeTagInterface;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\Util\PriceFormatter;
 
 class Order implements MergeTagInterface
 {
@@ -43,7 +43,7 @@ class Order implements MergeTagInterface
             'currency' => (string)$order->getOrderCurrencyCode(),
             'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
-            'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+            'shipping' => $this->priceFormatter->format((float)$order->getShippingInclTax()),
             'affiliation' => $this->config->getStoreName(),
             'transaction_id' => $order->getIncrementId(),
             'coupon' => $order->getCouponCode()

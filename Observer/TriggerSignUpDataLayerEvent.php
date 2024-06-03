@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Observer;
+namespace Tagging\GTM\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Event\SignUp as SignUpEvent;
+use Tagging\GTM\Api\CustomerSessionDataProviderInterface;
+use Tagging\GTM\DataLayer\Event\SignUp as SignUpEvent;
 
 class TriggerSignUpDataLayerEvent implements ObserverInterface
 {

@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace Tagging\GTM\Plugin;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
@@ -16,8 +16,9 @@ use Magento\Customer\CustomerData\Customer as CustomerData;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
-use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
+use Tagging\GTM\Api\CustomerSessionDataProviderInterface;
+use Tagging\GTM\DataLayer\Mapper\CustomerDataMapper;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 class AddDataToCustomerSection
 {
@@ -26,6 +27,7 @@ class AddDataToCustomerSection
     private CustomerSessionDataProviderInterface $customerSessionDataProvider;
     private CustomerDataMapper $customerDataMapper;
     private CustomerRepositoryInterface $customerRepository;
+    private CollectionFactory $orderCollectionFactory;
 
     /**
      * Customer constructor.
@@ -40,13 +42,15 @@ class AddDataToCustomerSection
         GroupRepositoryInterface $groupRepository,
         CustomerSessionDataProviderInterface $customerSessionDataProvider,
         CustomerDataMapper $customerDataMapper,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        CollectionFactory $orderCollectionFactory
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
         $this->customerSessionDataProvider = $customerSessionDataProvider;
         $this->customerDataMapper = $customerDataMapper;
         $this->customerRepository = $customerRepository;
+        $this->orderCollectionFactory = $orderCollectionFactory;
     }
 
     /**
@@ -82,7 +86,11 @@ class AddDataToCustomerSection
                 'customerLoggedIn' => 0,
                 'customerId' => 0,
                 'customerGroupId' => 0,
-                'customerGroupCode' => 'GUEST'
+                'customerGroupCode' => 'GUEST',
+                'visitorLoginState' => 'Logged out',
+                'visitorLifeTimeValue' => 0,
+                'visitorExistingCustomer' => 'No',
+                'visitorType' => 'NOT LOGGED IN'
             ];
         }
 
@@ -90,11 +98,28 @@ class AddDataToCustomerSection
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
+
         return array_merge([
             'customerLoggedIn' => 1,
             'customerId' => $customerId,
             'customerGroupId' => $customerGroup->getId(),
-            'customerGroupCode' => strtoupper($customerGroup->getCode())
+            'customerGroupCode' => strtoupper($customerGroup->getCode()),
+            'visitorLoginState' => 'logged in',
+            'visitorLifeTimeValue' => $this->getLifeTimeValue($customer->getEmail()),
+            'visitorExistingCustomer' => $this->getLifeTimeValue($customer->getEmail()) > 0 ? 'Yes' : 'No',
+            'visitorType' => 'LOGGED IN'
         ], $customerGtmData);
+    }
+
+    private function getLifeTimeValue($customerEmail) 
+    {
+        $total=0;
+        $orders = $this->orderCollectionFactory->create()
+            ->addAttributeToFilter('customer_email', $customerEmail);
+        foreach ($orders as $order) {
+            $total=$total+$order->getGrandTotal();
+        }
+
+        return $total;
     }
 }

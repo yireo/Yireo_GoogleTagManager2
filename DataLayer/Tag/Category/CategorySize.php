@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
+namespace Tagging\GTM\DataLayer\Tag\Category;
 
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use Tagging\GTM\Api\Data\TagInterface;
 
 class CategorySize implements TagInterface
 {

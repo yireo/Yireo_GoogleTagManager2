@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Plugin;
+namespace Tagging\GTM\Plugin;
 
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
-use Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize;
-use Yireo\GoogleTagManager2\Config\Config;
+use Tagging\GTM\Util\GetCurrentCategoryProducts;
+use Tagging\GTM\DataLayer\Tag\Category\CategorySize;
+use Tagging\GTM\Config\Config;
 
 class GetProductsFromCategoryBlockPlugin
 {
@@ -37,10 +37,7 @@ class GetProductsFromCategoryBlockPlugin
         ListProduct $listProductBlock,
         AbstractCollection $collection
     ): AbstractCollection {
-        $maximumCategoryProducts = $this->config->getMaximumCategoryProducts();
-        if ($maximumCategoryProducts <= 0) {
-            return $collection;
-        }
+        $maximumCategoryProducts = 50;
         $i = 0;
         foreach ($collection as $product) {
             if ($i > $maximumCategoryProducts) {

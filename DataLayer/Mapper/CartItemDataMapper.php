@@ -1,16 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+namespace Tagging\GTM\DataLayer\Mapper;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
-use Yireo\GoogleTagManager2\Util\ProductProvider;
+use Tagging\GTM\Util\PriceFormatter;
+use Tagging\GTM\Util\ProductProvider;
 
 class CartItemDataMapper
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration;
+namespace Tagging\GTM\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertModuleIsEnabled;
@@ -15,8 +15,8 @@ class ModuleTest extends TestCase
 
     public function testIfModuleIsEnabled()
     {
-        $this->assertModuleIsEnabled('Yireo_GoogleTagManager2');
-        $this->assertModuleIsRegistered('Yireo_GoogleTagManager2');
-        $this->assertModuleIsRegisteredForReal('Yireo_GoogleTagManager2');
+        $this->assertModuleIsEnabled('Tagging_GTM');
+        $this->assertModuleIsRegistered('Tagging_GTM');
+        $this->assertModuleIsRegisteredForReal('Tagging_GTM');
     }
 }

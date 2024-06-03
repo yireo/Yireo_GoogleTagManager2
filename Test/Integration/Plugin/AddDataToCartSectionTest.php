@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Plugin;
+namespace Tagging\GTM\Test\Integration\Plugin;
 
 use Magento\Checkout\CustomerData\Cart;
 use PHPUnit\Framework\TestCase;
-use Yireo\GoogleTagManager2\Plugin\AddDataToCartSection;
+use Tagging\GTM\Plugin\AddDataToCartSection;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertInterceptorPluginIsRegistered;
 
 /**
@@ -19,7 +19,7 @@ class AddDataToCartSectionTest extends TestCase
         $this->assertInterceptorPluginIsRegistered(
             Cart::class,
             AddDataToCartSection::class,
-            'Yireo_GoogleTagManager2::addAdditionalDataToCartSection'
+            'Tagging_GTM::addAdditionalDataToCartSection'
         );
     }
 }

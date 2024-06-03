@@ -1,42 +1,57 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Config\Config;
+use Tagging\GTM\Config\Config;
 
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
+    window.Tagging_GTM_ENABLED = true;
 
-    (function (events) {
-        const initYireoGoogleTagManager2 = function () {
-            events.forEach(function (eventType) {
-                window.removeEventListener(eventType, initYireoGoogleTagManager2);
-            });
+    <?php
+    if ($config->isEnabled()) {
+        echo "window.AdPage_ENABLED_PLUGIN = true;";
+    } else {
+        echo "window.AdPage_ENABLED_PLUGIN = false;";
+    }
 
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-                var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src = '<?= $config->getGoogleTagmanagerUrl() ?>' + '/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '<?= $config->getId() ?>');
-        }
+    if ($config->isPlacedByPlugin()) {
+        echo "window.AdPage_PLACED_BY_PLUGIN = true;";
+    } else {
+        echo "window.AdPage_PLACED_BY_PLUGIN = false;";
+    }
 
-        events.forEach(function (eventType) {
-            window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
-        })
-    })([<?php if ($config->waitForUserInteraction() === false) : ?>'load', <?php endif; ?>'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel']);
+    echo "window.AdPage_PLUGIN_VERSION = '{$config->getVersion()}';";
+    ?>
+
+        (function(events) {
+            const initgoogleTagManager2 = function() {
+                events.forEach(function(eventType) {
+                    window.removeEventListener(eventType, initgoogleTagManager2);
+                });
+
+                <?php
+                if ($config->isEnabled() && $config->isPlacedByPlugin()) {
+                    echo $config->getConfig();
+                }
+                ?>
+            }
+
+            events.forEach(function(eventType) {
+                window.addEventListener(eventType, initgoogleTagManager2, {
+                    once: true,
+                    passive: true
+                })
+            })
+        })(['load']);
 </script>
 
-<?php if ($config->isDebug()): ?>
+<?php if ($config->isDebug()) : ?>
     <script>
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
+        window.Tagging_GTM_DEBUG = true;
     </script>
 <?php endif; ?>

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Config;
+namespace Tagging\GTM\Config;
 
 use Magento\Framework\Config\DataInterface;
 

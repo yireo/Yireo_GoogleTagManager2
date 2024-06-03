@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag\Product;
+namespace Tagging\GTM\DataLayer\Tag\Product;
 
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Util\GetCurrentProduct;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Tagging\GTM\Api\Data\TagInterface;
+use Tagging\GTM\Util\GetCurrentProduct;
+use Tagging\GTM\Util\PriceFormatter;
 
 class CurrentPrice implements TagInterface
 {

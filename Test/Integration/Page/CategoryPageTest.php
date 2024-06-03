@@ -2,7 +2,7 @@
 
 // phpcs:ignoreFile -- Too many issues, lol
 
-namespace Yireo\GoogleTagManager2\Test\Integration\Page;
+namespace Tagging\GTM\Test\Integration\Page;
 
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
@@ -10,10 +10,10 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Framework\Registry;
 use Magento\Framework\View\LayoutInterface;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
-use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
-use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateCategory;
+use Tagging\GTM\Test\Integration\FixtureTrait\CreateProduct;
+use Tagging\GTM\Test\Integration\PageTestCase;
+use Tagging\GTM\Util\GetCurrentCategoryProducts;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
 /**
@@ -26,10 +26,8 @@ class CategoryPageTest extends PageTestCase
     use AssertHandleInLayout;
 
     /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
-     * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
+     * @magentoConfigFixture current_store GTM/settings/enabled 1
+     * @magentoConfigFixture current_store GTM/settings/serverside_gtm_url gtm.tryforwarder.com
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
@@ -51,14 +49,14 @@ class CategoryPageTest extends PageTestCase
 
         $body = $this->getResponse()->getBody();
         $this->assertStringContainsString($category->getName(), $body);
-        $this->assertStringContainsString('"view_item_list"', $body);
+        $this->assertStringContainsString('"trytagging_view_item_list"', $body);
 
         $productListBlock = $this->layout->getBlock('category.products.list');
         $productListBlock->setCollection($products);
         $this->assertInstanceOf(ListProduct::class, $productListBlock);
         $this->assertTrue($productListBlock->getLoadedProductCollection()->count() > 0);
 
-        $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
+        $block = $this->layout->getBlock('Tagging_GTM.data-layer');
         $this->assertNotEmpty($block);
 
         $this->assertDataLayerEquals($category->getName(), 'category_name');
@@ -66,7 +64,7 @@ class CategoryPageTest extends PageTestCase
         $this->assertDataLayerEquals(count($productListBlock->getLoadedProductCollection()), 'category_size');
         $this->assertDataLayerEquals('category', 'page_type');
 
-        $event = $this->getEventFromDataLayerEvents('view_item_list_event', 'view_item_list');
+        $event = $this->getEventFromDataLayerEvents('view_item_list_event', 'trytagging_view_item_list');
         $this->assertArrayHasKey('ecommerce', $event);
         $this->assertArrayHasKey('items', $event['ecommerce']);
 

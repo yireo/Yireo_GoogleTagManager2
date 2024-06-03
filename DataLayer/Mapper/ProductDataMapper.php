@@ -1,17 +1,20 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
+declare(strict_types=1);
+
+namespace Tagging\GTM\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
-use Yireo\GoogleTagManager2\Util\CategoryProvider;
-use Yireo\GoogleTagManager2\Util\PriceFormatter;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Tagging\GTM\Api\Data\ProductTagInterface;
+use Tagging\GTM\Api\Data\TagInterface;
+use Tagging\GTM\Config\Config;
+use Tagging\GTM\Util\Attribute\GetAttributeValue;
+use Tagging\GTM\Util\PriceFormatter;
+use Tagging\GTM\Util\CategoryProvider;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 
 class ProductDataMapper
 {
@@ -19,6 +22,8 @@ class ProductDataMapper
     private GetAttributeValue $getAttributeValue;
     private CategoryProvider $categoryProvider;
     private PriceFormatter $priceFormatter;
+    private Configurable $configurableType;
+    private ProductRepositoryInterface $productRepository;
 
     private array $dataLayerMapping;
 
@@ -36,12 +41,16 @@ class ProductDataMapper
         GetAttributeValue $getAttributeValue,
         CategoryProvider $categoryProvider,
         PriceFormatter $priceFormatter,
+        Configurable $configurableType,
+        ProductRepositoryInterface $productRepository,
         array $dataLayerMapping = []
     ) {
         $this->config = $config;
         $this->getAttributeValue = $getAttributeValue;
         $this->categoryProvider = $categoryProvider;
         $this->priceFormatter = $priceFormatter;
+        $this->configurableType = $configurableType;
+        $this->productRepository = $productRepository;
         $this->dataLayerMapping = $dataLayerMapping;
     }
 
@@ -55,11 +64,6 @@ class ProductDataMapper
     {
         $prefix = 'item_';
         $productData = [];
-        $productData['item_id'] = $product->getSku();
-        $productData['item_sku'] = $product->getSku();
-        $productData['magento_sku'] = $product->getSku();
-        $productData['magento_id'] = $product->getId();
-
         $productFields = $this->getProductFields();
         foreach ($productFields as $productAttributeCode) {
             $dataLayerKey = $prefix . $productAttributeCode;
@@ -69,6 +73,19 @@ class ProductDataMapper
             }
 
             $productData[$dataLayerKey] = $attributeValue;
+        }
+
+        $productData['item_id'] = $product->getSku();
+        $productData['item_sku'] = $product->getSku();
+        $productData['magento_sku'] = $product->getSku();
+        $productData['magento_id'] = $product->getId();
+
+        $parentIds = $this->configurableType->getParentIdsByChild($product->getId());
+
+        if (!empty($parentIds)) {
+            $parentProduct = $this->productRepository->getById($parentIds[0]);
+            $productData['item_id'] = $parentProduct->getSku();
+            $productData['item_variant'] = $product->getSku();
         }
 
         try {
@@ -94,7 +111,7 @@ class ProductDataMapper
      */
     private function getProductFields(): array
     {
-        return array_filter(array_merge(['name'], $this->config->getProductEavAttributeCodes()));
+        return array_filter(['id', 'name', 'brand']);
     }
 
     /**

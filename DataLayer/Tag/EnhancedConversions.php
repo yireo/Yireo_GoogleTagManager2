@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\DataLayer\Tag;
+namespace Tagging\GTM\DataLayer\Tag;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderAddressInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
+use Tagging\GTM\Api\Data\MergeTagInterface;
 
 class EnhancedConversions implements MergeTagInterface
 {
