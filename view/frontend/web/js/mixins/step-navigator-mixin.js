@@ -5,7 +5,7 @@ define([
   ], function (wrapper, pusher, logger, stepNavigator) {
     "use strict";
     return function (stepNavigator) {
-      const enabled = window.AdPage_GTM_ENABLED;
+      const enabled = window.Tagging_GTM_ENABLED;
       if (enabled === null || enabled === undefined) {
         return stepNavigator;
       }
@@ -20,7 +20,7 @@ define([
           .filter((f) => f.sortOrder > 0);
   
         const firstStep = sortedSteps[0];
-        const eventData = window.AdPage_GTM_BEGIN_CHECKOUT;
+        const eventData = window.Tagging_GTM_BEGIN_CHECKOUT;
   
         if (
           firstStep === undefined ||
