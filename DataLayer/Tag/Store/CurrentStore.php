@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tagging\GTM\DataLayer\Tag\Store;
+namespace AdPage\GTM\DataLayer\Tag\Store;
 
-use Tagging\GTM\Api\Data\TagInterface;
+use AdPage\GTM\Api\Data\TagInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 class CurrentStore implements TagInterface
@@ -19,11 +19,20 @@ class CurrentStore implements TagInterface
 
     public function get(): array
     {
-        return [
-            'code' => $this->storeManager->getStore()->getCode(),
-            'name' => $this->storeManager->getStore()->getName(),
-            'website_id' => $this->storeManager->getStore()->getWebsiteId(),
-            'url' => $this->storeManager->getStore()->getCurrentUrl(),
-        ];
+        try {
+            return [
+                'code' => $this->storeManager->getStore()->getCode(),
+                'name' => $this->storeManager->getStore()->getName(),
+                'website_id' => $this->storeManager->getStore()->getWebsiteId(),
+                'url' => $this->storeManager->getStore()->getCurrentUrl(),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'code' => null,
+                'name' => null,
+                'website_id' => null,
+                'url' => null,
+            ];
+        }
     }
 }
