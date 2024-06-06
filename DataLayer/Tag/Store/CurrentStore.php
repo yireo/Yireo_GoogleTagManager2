@@ -12,7 +12,7 @@ class CurrentStore implements TagInterface
     private $storeManager;
 
     public function __construct(
-        StoreManagerInterface $storeManager,
+        StoreManagerInterface $storeManager
     ) {
         $this->storeManager = $storeManager;
     }
