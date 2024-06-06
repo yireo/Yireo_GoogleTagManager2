@@ -14,18 +14,18 @@ $config = $block->getConfig();
 
     <?php
     if ($config->isEnabled()) {
-        echo "window.AdPage_ENABLED_PLUGIN = true;";
+        echo "window.Tagging_ENABLED_PLUGIN = true;";
     } else {
-        echo "window.AdPage_ENABLED_PLUGIN = false;";
+        echo "window.Tagging_ENABLED_PLUGIN = false;";
     }
 
     if ($config->isPlacedByPlugin()) {
-        echo "window.AdPage_PLACED_BY_PLUGIN = true;";
+        echo "window.Tagging_PLACED_BY_PLUGIN = true;";
     } else {
-        echo "window.AdPage_PLACED_BY_PLUGIN = false;";
+        echo "window.Tagging_PLACED_BY_PLUGIN = false;";
     }
 
-    echo "window.AdPage_PLUGIN_VERSION = '{$config->getVersion()}';";
+    echo "window.Tagging_PLUGIN_VERSION = '{$config->getVersion()}';";
     ?>
 
         (function(events) {

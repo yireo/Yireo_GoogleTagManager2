@@ -19,11 +19,20 @@ class CurrentStore implements TagInterface
 
     public function get(): array
     {
-        return [
-            'code' => $this->storeManager->getStore()->getCode(),
-            'name' => $this->storeManager->getStore()->getName(),
-            'website_id' => $this->storeManager->getStore()->getWebsiteId(),
-            'url' => $this->storeManager->getStore()->getCurrentUrl(),
-        ];
+        try {
+            return [
+                'code' => $this->storeManager->getStore()->getCode(),
+                'name' => $this->storeManager->getStore()->getName(),
+                'website_id' => $this->storeManager->getStore()->getWebsiteId(),
+                'url' => $this->storeManager->getStore()->getCurrentUrl(),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'code' => null,
+                'name' => null,
+                'website_id' => null,
+                'url' => null,
+            ];
+        }
     }
 }
