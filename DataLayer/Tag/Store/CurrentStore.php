@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AdPage\GTM\DataLayer\Tag\Store;
+namespace Tagging\GTM\DataLayer\Tag\Store;
 
-use AdPage\GTM\Api\Data\TagInterface;
+use Tagging\GTM\Api\Data\TagInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 class CurrentStore implements TagInterface
