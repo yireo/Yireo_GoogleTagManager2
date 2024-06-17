@@ -67,6 +67,13 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="product_list_value_on_category" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product List Value on Category Page</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product EAV Attributes</label>
                     <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
