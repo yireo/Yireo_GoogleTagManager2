@@ -31,4 +31,8 @@
     <event name="sales_order_place_after">
         <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
     </event>
+
+    <event name="view_block_abstract_to_html_before">
+        <observer name="Yireo_GoogleTagManager2::fixNonExistingSecureRenderer" instance="Yireo\GoogleTagManager2\Observer\FixNonExistingSecureRenderer" />
+    </event>
 </config>
