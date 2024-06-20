@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.0] - 20 June 2024
+### Added
+- Added $secureRenderer, so CSP compliance #231 @jemoon @hostep @nige-one
+- Added compatibility with older versions without SecureHtmlRenderer class
+
 ## [3.8.3] - 10 April 2024
 ### Fixed
 - Remove translation with empty strings #228
