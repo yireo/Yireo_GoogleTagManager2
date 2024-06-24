@@ -40,5 +40,9 @@
                 <argument name="product_path" xsi:type="string">.products a.product</argument>
             </arguments>
         </referenceBlock>
+
+        <referenceBlock
+                name="yireo_googletagmanager2.script-consent"
+                template="Yireo_GoogleTagManager2::hyva/script-consent.phtml"/>
     </body>
 </page>

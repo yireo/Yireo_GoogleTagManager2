@@ -23,6 +23,7 @@ See `composer.json` for other requirements.
 - [Installation](INSTALL.md)
 - [Usage](USAGE.md)
 - [Tutorial](TUTORIAL.md)
+- [Tutorial with Consent](TUTORIAL_CONSENT.md)
 - [FAQ](FAQ.md)
 - [Architecture](ARCHITECTURE.md)
 - [Testing](TESTING.md)
