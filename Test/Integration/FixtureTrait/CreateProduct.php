@@ -6,6 +6,7 @@ use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Helper\DefaultCategory;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
@@ -13,7 +14,9 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
 use Magento\Store\Api\WebsiteRepositoryInterface;
+use Magento\TestFramework\Helper\Bootstrap;
 
 trait CreateProduct
 {
@@ -22,19 +25,25 @@ trait CreateProduct
         array $data = []
     ): ProductInterface {
         //$objectManager = ObjectManager::getInstance();
-        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+        $objectManager = Bootstrap::getObjectManager();
         $productFactory = $objectManager->get(ProductInterfaceFactory::class);
+        $defaultCategory = $objectManager->get(DefaultCategory::class);
+        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
 
         /** @var $product ProductModel */
         $product = $productFactory->create();
-        $product->setId($id)
+        $product->isObjectNew(true);
+        $product
+            ->setId($id)
             ->setName('Product ' . $id)
             ->setSku('product' . $id)
+            ->setUrlKey('product' . $id)
+            ->setUrlPath('product' . $id)
             ->setWeight(10)
+            ->setCategoryIds([$defaultCategory->getId()])
             ->setTypeId(Type::TYPE_SIMPLE)
             ->setPrice(10)
             ->setStatus(Status::STATUS_ENABLED)
-            ->setStoreId(1)
             ->setWebsiteIds([$this->getDefaultWebsiteId()])
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
@@ -44,8 +53,6 @@ trait CreateProduct
             ->addData($data);
 
         $product->isObjectNew(true);
-
-        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
         $productRepository->save($product);
 
         if (!empty($product->getCategoryIds())) {
