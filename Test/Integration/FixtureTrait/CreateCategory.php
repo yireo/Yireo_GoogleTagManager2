@@ -27,16 +27,18 @@ trait CreateCategory
             ->setUrlKey('category'.$id)
             ->setUrlPath('category'.$id)
             ->setLevel(2)
-            ->setPath('1/'.$parentId.'/'.$id)
+            ->setPath(Category::TREE_ROOT_ID.'/'.$parentId.'/'.$id)
             ->setParentId($parentId)
+            ->setStoreId(1)
             ->setIsActive(true)
             ->setIncludeInMenu(true)
             ->setPosition(1)
             ->addData($data);
         $category->isObjectNew(true);
         $category->save();
+        return $category;
 
-        return $categoryRepository->save($category);
+        //return $categoryRepository->save($category);
     }
 
     public function createCategories($numberOfCategories = 1): array

@@ -12,9 +12,11 @@ use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
+use Magento\CatalogSearch\Model\Indexer\Fulltext;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
+use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Store\Api\WebsiteRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 
@@ -24,8 +26,7 @@ trait CreateProduct
         int $id,
         array $data = []
     ): ProductInterface {
-        //$objectManager = ObjectManager::getInstance();
-        $objectManager = Bootstrap::getObjectManager();
+        $objectManager = ObjectManager::getInstance();
         $productFactory = $objectManager->get(ProductInterfaceFactory::class);
         $defaultCategory = $objectManager->get(DefaultCategory::class);
         $productRepository = $objectManager->get(ProductRepositoryInterface::class);
@@ -44,13 +45,15 @@ trait CreateProduct
             ->setTypeId(Type::TYPE_SIMPLE)
             ->setPrice(10)
             ->setStatus(Status::STATUS_ENABLED)
+            ->setStoreId(0)
             ->setWebsiteIds([$this->getDefaultWebsiteId()])
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
             ->setStockData(['use_config_manage_stock' => 0])
-            ->setCanSaveCustomOptions(true)
-            ->setHasOptions(true)
-            ->addData($data);
+            //->setCanSaveCustomOptions(true)
+            //->setHasOptions(true)
+            ->addData($data)
+        ;
 
         $product->isObjectNew(true);
         $productRepository->save($product);

@@ -7,6 +7,7 @@ use Magento\Customer\CustomerData\SectionPool;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Controller\WishlistProviderInterface;
 use Magento\Wishlist\Model\Wishlist;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCustomer;
@@ -22,6 +23,8 @@ class AddToWishlistTest extends PageTestCase
      * @magentoAppArea frontend
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
      * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function testAddToWishlist()
     {

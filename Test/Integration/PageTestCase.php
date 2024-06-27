@@ -2,11 +2,17 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration;
 
+use Magento\CatalogSearch\Model\Indexer\Fulltext;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Framework\View\LayoutInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\TestFramework\Annotation\DataFixture;
 use Magento\TestFramework\TestCase\AbstractController;
+use Magento\TestFramework\Workaround\Override\Fixture\Resolver;
 use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertNonEmptyValueInArray;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\AssertStoreConfigValueEquals;
@@ -24,6 +30,16 @@ class PageTestCase extends AbstractController
         parent::setUp();
         $this->objectManager = ObjectManager::getInstance();
         $this->layout = $this->objectManager->get(LayoutInterface::class);
+
+        //$indexerRegistry = $this->objectManager->create(IndexerRegistry::class);
+        //$indexerRegistry->get(Fulltext::INDEXER_ID)->reindexAll();
+
+        $fixtureResolver = Resolver::getInstance();
+        $fixtureResolver->setCurrentFixtureType(DataFixture::ANNOTATION);
+        $fixtureResolver->requireDataFixture('Magento/Store/_files/store.php');
+
+        $storeManager = $this->objectManager->get(StoreManagerInterface::class);
+        $storeManager->setCurrentStore(1);
     }
 
     protected function getDataFromDataLayer(): array

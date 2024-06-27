@@ -4,14 +4,8 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\ListProduct;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Registry;
-use Magento\Framework\View\LayoutInterface;
-use Magento\Indexer\Model\Indexer;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
@@ -32,8 +26,11 @@ class CategoryPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
      * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
+     * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
      * @magentoAppArea frontend
      * @magentoCache full_page disabled
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
      */
     public function testValidDataLayerWithOneCategory()
     {
