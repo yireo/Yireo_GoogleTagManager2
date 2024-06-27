@@ -10,26 +10,30 @@
 
 namespace Yireo\GoogleTagManager2\Util;
 
-class SecureHtmlRendererStub
-{
-    public function renderTag(
-        string $tagName,
-        array $attributes,
-        ?string $content = null,
-        bool $textContent = true
-    ): string {
-        $htmlAttributes = '';
-        if (!empty($attributes)) {
-            $htmlAttributes .= ' ';
-            foreach ($attributes as $attributeName => $attributeValue) {
-                $htmlAttributes .= $attributeName.'="'.$attributeValue.'"';
+if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
+    class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer {}
+} else {
+    class SecureHtmlRendererStub
+    {
+        public function renderTag(
+            string $tagName,
+            array $attributes,
+            ?string $content = null,
+            bool $textContent = true
+        ): string {
+            $htmlAttributes = '';
+            if (!empty($attributes)) {
+                $htmlAttributes .= ' ';
+                foreach ($attributes as $attributeName => $attributeValue) {
+                    $htmlAttributes .= $attributeName . '="' . $attributeValue . '"';
+                }
             }
+            
+            $html = '<' . $tagName . $htmlAttributes . '>' . "\n";
+            $html .= $content;
+            $html .= "\n" . '</' . $tagName . '>' . "\n";
+            
+            return $html;
         }
-
-        $html = '<'.$tagName.$htmlAttributes.'>'."\n";
-        $html .= $content;
-        $html .= "\n".'</'.$tagName.'>'."\n";
-
-        return $html;
     }
 }
