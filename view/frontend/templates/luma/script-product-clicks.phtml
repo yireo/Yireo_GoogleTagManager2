@@ -9,15 +9,12 @@
  */
 
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /** @var Template $block */
-/** @var SecureHtmlRenderer $secureRenderer */
 $productPath = $block->getProductPath();
-$scriptString = <<<SCRIPT
-    require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
-        clicks({productPath: '{$productPath}'});
-    });
-SCRIPT;
 ?>
-<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<script>
+    require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
+        clicks({productPath: '<?= $productPath ?>'});
+    });
+</script>

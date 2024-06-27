@@ -13,16 +13,28 @@
     <body>
         <referenceContainer name="after.body.start">
             <block
-                name="yireo_googletagmanager2.pusher-script"
-                template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
+                name="yireo_googletagmanager2.pusher-script.outer"
+                class="Yireo\GoogleTagManager2\Block\InlineScriptParent"
                 ifconfig="googletagmanager2/settings/enabled"
-            />
+            >
+                <block
+                    name="yireo_googletagmanager2.pusher-script"
+                    as="inner"
+                    template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
+                />
+            </block>
 
             <block
-                name="yireo_googletagmanager2.logger-script"
-                template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
+                name="yireo_googletagmanager2.logger-script.outer"
+                class="Yireo\GoogleTagManager2\Block\InlineScriptParent"
                 ifconfig="googletagmanager2/settings/enabled"
-            />
+            >
+                <block
+                    name="yireo_googletagmanager2.logger-script"
+                    as="inner"
+                    template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
+                />
+            </block>
         </referenceContainer>
 
         <referenceBlock

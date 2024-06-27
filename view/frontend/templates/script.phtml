@@ -1,12 +1,10 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Yireo\GoogleTagManager2\Config\Config;
 
 /** @var Config $config */
 /** @var Template $block */
-/** @var SecureHtmlRenderer $secureRenderer */
 $config = $block->getConfig();
 ?>
 
@@ -14,8 +12,9 @@ $config = $block->getConfig();
 $events = ($config->waitForUserInteraction() === false)
     ? "'load', 'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'"
     : "'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'";
-$scriptString = <<<SCRIPT
-window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
+?>
+<script>
+    window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
     (function (events) {
         const initYireoGoogleTagManager2 = function () {
             events.forEach(function (eventType) {
@@ -29,27 +28,18 @@ window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
-                j.src = '{$config->getGoogleTagmanagerUrl()}' + '/gtm.js?id=' + i + dl;
+                j.src = '<?= $config->getGoogleTagmanagerUrl() ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '{$config->getId()}');
+            })(window, document, 'script', 'dataLayer', '<?= $config->getId() ?>');
         }
 
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
         })
-    })([{$events}]);
-SCRIPT;
-?>
+    })([<?= $events ?>]);
 
-<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
-
-<?php if ($config->isDebug()): ?>
-    <?php
-    $debugClicks = $config->isDebugClicks() ? 'true' : 'false';
-    $debugString = <<<SCRIPT
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = {$debugClicks};
-SCRIPT;
-    ?>
-    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $debugString, false); ?>
-<?php endif; ?>
+    <?php if ($config->isDebug()): ?>
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
+    <?php endif; ?>
+</script>

@@ -1,17 +1,13 @@
 <?php declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 
 /** @var Template $block */
-/** @var SecureHtmlRenderer $secureRenderer */
 /** @var BeginCheckout $beginCheckoutEvent */
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 $encodedEvent = json_encode($beginCheckoutEvent->get());
-$scriptString = <<<SCRIPT
-    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = {$encodedEvent}
-SCRIPT;
 ?>
-
-<?= /** noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<script>
+    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= $encodedEvent ?>;
+</script>
