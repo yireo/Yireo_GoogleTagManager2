@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout as BeginCheckoutEvent;
+use Yireo\GoogleTagManager2\MageWire\Checkout as CheckoutComponent;
+
+/** @var Template $block */
+/** @var BeginCheckoutEvent $beginCheckoutEvent */
+/** @var CheckoutComponent $magewire */
+$beginCheckoutEvent = $block->getData('begin_checkout_event');
+?>
+<script>
+    window.addEventListener('ga:trigger-event', function(event) {
+        yireoGoogleTagManager2Pusher(event.detail, 'Hyva Checkout');
+    });
+
+    (function() {
+        yireoGoogleTagManager2Pusher(<?= json_encode($beginCheckoutEvent->get()) ?>, 'Hyva Checkout');
+    })();
+</script>

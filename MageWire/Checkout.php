@@ -15,25 +15,17 @@ class Checkout extends Component
         'payment_method_selected' => 'triggerPaymentMethod',
     ];
     private CheckoutSession $checkoutSession;
-    private BeginCheckout $beginCheckout;
     private AddShippingInfo $addShippingInfo;
     private AddPaymentInfo $addPaymentInfo;
 
     public function __construct(
         CheckoutSession $checkoutSession,
-        BeginCheckout $beginCheckout,
         AddShippingInfo $addShippingInfo,
         AddPaymentInfo $addPaymentInfo
     ) {
         $this->checkoutSession = $checkoutSession;
-        $this->beginCheckout = $beginCheckout;
         $this->addShippingInfo = $addShippingInfo;
         $this->addPaymentInfo = $addPaymentInfo;
-    }
-
-    public function triggerBeginCheckout()
-    {
-        $this->dispatchBrowserEvent('ga:trigger-event', $this->beginCheckout->get());
     }
 
     public function triggerShippingMethod()
