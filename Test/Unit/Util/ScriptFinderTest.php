@@ -24,11 +24,13 @@ class ScriptFinderTest extends TestCase
         return [
             ["<div>\n</div>", 0],
             ["<div>\n<script>\nalert(true);</script>\n</div>", 1],
+            ["<div>\n<script></script>\n</div>", 0],
             ["<div>\n<script nonce='foobar'>\nalert(true);</script>\n</div>", 0],
             ['<div><script type="text/javascript">foobar</script></div>', 1],
             ['<div><script type="text/javascript" nonce="foobar">foobar</script></div>', 0],
             ['<div><script type="application/javascript">foobar</script></div>', 1],
             ['<div><script type="text/x-magento-init">foobar</script></div>', 0],
+            ['<div><script>test1</script><script>test2</script></div>', 2],
         ];
     }
 }

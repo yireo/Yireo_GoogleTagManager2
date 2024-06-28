@@ -15,7 +15,7 @@ class ScriptFinder
             return [];
         }
 
-        if (false === preg_match_all('#<script([^>]*)>(.*)</script>#msi', $html, $matches)) {
+        if (false === preg_match_all('#<script([^>]*)>(.*)</script>#msUi', $html, $matches)) {
             return [];
         }
 
@@ -27,7 +27,11 @@ class ScriptFinder
         foreach ($matches[0] as $matchIndex => $match) {
             $fullScript = $matches[0][$matchIndex];
             $scriptAttributes = $matches[1][$matchIndex];
-            $inlineJs = $matches[2][$matchIndex];
+            $inlineJs = trim($matches[2][$matchIndex]);
+            if (empty($inlineJs)) {
+                continue;
+            }
+
             if (false === $this->needsCsp($scriptAttributes)) {
                 continue;
             }
