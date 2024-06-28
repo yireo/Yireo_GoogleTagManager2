@@ -43,18 +43,15 @@
         </referenceBlock>
 
         <block
-            name="yireo_googletagmanager2.product-details"
-            class="Yireo\GoogleTagManager2\Block\InlineScriptParent"
+            name="yireo_googletagmanager2.product-details.inner"
+            template="Yireo_GoogleTagManager2::product/details.phtml"
             ifconfig="googletagmanager2/settings/enabled">
-            <block
-                name="yireo_googletagmanager2.product-details.inner"
-                as="inner"
-                template="Yireo_GoogleTagManager2::product/details.phtml">
-                <arguments>
-                    <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</argument>
-                    <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
-                </arguments>
-            </block>
+            <arguments>
+                <argument name="product_details" xsi:type="object">
+                    Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct
+                </argument>
+                <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+            </arguments>
         </block>
     </body>
 </page>

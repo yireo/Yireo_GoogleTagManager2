@@ -55,20 +55,13 @@
 
         <referenceContainer name="yireo_googletagmanager2.data-layer.container">
             <block
-                name="yireo_googletagmanager2.script-begin-checkout.outer"
-                class="Yireo\GoogleTagManager2\Block\InlineScriptParent"
-                ifconfig="googletagmanager2/settings/enabled"
+                name="yireo_googletagmanager2.script-begin-checkout"
+                template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
                 after="yireo_googletagmanager2.data-layer"
-            >
-                <block
-                    name="yireo_googletagmanager2.script-begin-checkout"
-                    as="inner"
-                    template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
-                >
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
                 </arguments>
-                </block>
             </block>
         </referenceContainer>
     </body>
