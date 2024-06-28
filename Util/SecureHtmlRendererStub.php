@@ -10,6 +10,7 @@
 
 namespace Yireo\GoogleTagManager2\Util;
 
+// phpcs:ignoreFile
 if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
     class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer {}
 } else {
@@ -28,11 +29,11 @@ if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
                     $htmlAttributes .= $attributeName . '="' . $attributeValue . '"';
                 }
             }
-            
+
             $html = '<' . $tagName . $htmlAttributes . '>' . "\n";
             $html .= $content;
             $html .= "\n" . '</' . $tagName . '>' . "\n";
-            
+
             return $html;
         }
     }
