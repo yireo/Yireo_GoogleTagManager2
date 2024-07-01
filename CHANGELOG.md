@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.1] - 1 July 2024
+### Fixed
+- Type Error in class AddCspInlineScripts with the Hyva Checkout #237
+
 ## [3.9.0] - 20 June 2024
 ### Added
 - Added $secureRenderer, so CSP compliance #231 @jemoon @hostep @nige-one

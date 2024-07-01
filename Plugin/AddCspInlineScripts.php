@@ -19,8 +19,12 @@ class AddCspInlineScripts
         $this->secureHtmlRendererStub = $secureHtmlRendererStub;
     }
 
-    public function afterToHtml(Template $block, string $html): string
+    public function afterToHtml(Template $block, $html): string
     {
+        if (empty($html)) {
+            return '';
+        }
+
         if (false === strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
             return $html;
         }
