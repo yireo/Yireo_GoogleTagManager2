@@ -200,6 +200,14 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * @return string
+     */
+    public function getProductListValueOnCategory(): string
+    {
+        return (string)$this->getModuleConfigValue('product_list_value_on_category');
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key

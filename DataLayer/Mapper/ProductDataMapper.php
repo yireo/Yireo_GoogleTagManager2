@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
@@ -9,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\CategoryProvider;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
@@ -72,7 +74,7 @@ class ProductDataMapper
         }
 
         try {
-            $category = $this->categoryProvider->getFirstByProduct($product);
+            $category = $this->getProductCategory($product);
             $productData[$prefix . 'list_id'] = $category->getId();
             $productData[$prefix . 'list_name'] = $category->getName();
         } catch (NoSuchEntityException $noSuchEntityException) {
@@ -87,6 +89,20 @@ class ProductDataMapper
         // @todo: Add "variant" reference to Configurable Product
 
         return $productData;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return CategoryInterface
+     */
+    private function getProductCategory($product)
+    {
+        if ($this->config->getProductListValueOnCategory() == ProductListValue::CURRENT_CATEGORY
+            && $product->getCategory()
+        ) {
+            return $product->getCategory();
+        }
+        return $this->categoryProvider->getFirstByProduct($product);
     }
 
     /**
