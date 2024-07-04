@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.2] - 4 July 2024
+### Fixed
+- Extend from SecureHtmlRenderer\Proxy to delay the instantiation #239 @hostep
+
 ## [3.9.1] - 1 July 2024
 ### Fixed
 - Type Error in class AddCspInlineScripts with the Hyva Checkout #237
