@@ -12,7 +12,7 @@ namespace Yireo\GoogleTagManager2\Util;
 
 // phpcs:ignoreFile
 if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
-    class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer {}
+    class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer\Proxy {}
 } else {
     class SecureHtmlRendererStub
     {
