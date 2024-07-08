@@ -53,6 +53,8 @@ class PurchaseWebhookEvent
 
         $data = [
             'marketing' => $marketingData,
+            'store_domain' => $this->config->getStoreDomain(),
+            'plugin_version' => $this->config->getVersion(),
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),

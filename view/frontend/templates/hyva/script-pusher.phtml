@@ -50,9 +50,11 @@ declare(strict_types=1);
 
         googleTagManager2Logger(message, eventData);
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            ecommerce: null
-        });
+        if (eventData && eventData.ecommerce) {
+            window.dataLayer.push({
+                ecommerce: null
+            });
+        }
         window.dataLayer.push(eventData);
         window.Tagging_GTM_PAST_EVENTS.push(eventHash);
     }

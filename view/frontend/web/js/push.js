@@ -43,7 +43,9 @@ define(["googleTagManagerLogger"], function (logger) {
 
     logger(message, eventData);
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ ecommerce: null });
+    if (cleanEventData && cleanEventData.ecommerce) {
+      window.dataLayer.push({ ecommerce: null });
+    }
 
     if (window.taggingHelpers) {
       cleanEventData.marketing = window.taggingHelpers.getMarketingObject();
