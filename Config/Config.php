@@ -9,6 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\UrlInterface;
 use Tagging\GTM\DataLayer\Tag\Version;
 
 class Config implements ArgumentInterface
@@ -130,6 +131,11 @@ class Config implements ArgumentInterface
         }
 
         return (string)$this->storeManager->getDefaultStoreView()->getName();
+    }
+
+    public function getStoreDomain(): string
+    {
+        return (string)$this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_WEB);
     }
 
     /**
