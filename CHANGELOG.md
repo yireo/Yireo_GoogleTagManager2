@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Prevent `add_to_cart` from firing twice #236 @henk-hypershop @MaximGns
 - Changed reported value from `grand_total` to `subtotal` in various events #240
+- Use current category as item_list_name parameter #234 @marcinfr
+- Only trigger `purchase` event when order is not canceled #227
 
 ## [3.9.2] - 4 July 2024
 ### Fixed
