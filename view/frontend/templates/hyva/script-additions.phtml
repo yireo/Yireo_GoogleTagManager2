@@ -64,10 +64,7 @@ $commons = $block->getCommonsViewModel();
                 if (!metaData || metaData.cacheable !== true) {
                     yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
 
-                    let mageCacheStorage = window.localStorage.getItem('mage-cache-storage');
-                    if (mageCacheStorage) {
-                        mageCacheStorage = JSON.parse(mageCacheStorage);
-                    }
+                    let mageCacheStorage = event.detail.data;
 
                     if (mageCacheStorage !== null
                         && typeof mageCacheStorage[sectionName] !== 'undefined'
