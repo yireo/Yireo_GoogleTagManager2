@@ -8,6 +8,7 @@ use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
+// See https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtm#purchase
 class Purchase implements EventInterface
 {
     private ?OrderInterface $order = null;
@@ -31,7 +32,7 @@ class Purchase implements EventInterface
     public function get(): array
     {
         $order = $this->order;
-        
+
         return [
             'event' => 'purchase',
             'ecommerce' => [
