@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Event\Purchase as PurchaseEvent;
 
@@ -25,6 +26,10 @@ class TriggerPurchaseDataLayerEvent implements ObserverInterface
     {
         /** @var OrderInterface $order */
         $order = $observer->getData('order');
+        if ($order->getStatus() === Order::STATE_CANCELED) {
+            return;
+        }
+
         $this->checkoutSessionDataProvider->add(
             'purchase_event',
             $this->purchaseEvent->setOrder($order)->get()
