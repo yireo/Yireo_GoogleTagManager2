@@ -39,7 +39,7 @@ class Purchase implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => $this->priceFormatter->format($this->getPurchaseValue($order)),
+                'value' => $this->priceFormatter->format($order->getSubtotal()),
                 'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
                 'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
                 'coupon' => $order->getCouponCode(),
@@ -56,10 +56,5 @@ class Purchase implements EventInterface
     {
         $this->order = $order;
         return $this;
-    }
-
-    private function getPurchaseValue(OrderInterface $order): float
-    {
-        return (float)$order->getGrandTotal() - (float)$order->getTaxAmount() - (float)$order->getShippingAmount();
     }
 }

@@ -30,6 +30,6 @@ class CartValue implements TagInterface
      */
     public function get(): float
     {
-        return $this->priceFormatter->format((float)$this->cartModel->getQuote()->getBaseGrandTotal());
+        return $this->priceFormatter->format((float)$this->cartModel->getQuote()->getSubtotal());
     }
 }

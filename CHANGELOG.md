@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.3] - 2 August July 2024
+### Fixed
+- Prevent `add_to_cart` from firing twice #236 @henk-hypershop @MaximGns
+- Changed reported value from `grand_total` to `subtotal` in various events #240
+
 ## [3.9.2] - 4 July 2024
 ### Fixed
 - Extend from SecureHtmlRenderer\Proxy to delay the instantiation #239 @hostep

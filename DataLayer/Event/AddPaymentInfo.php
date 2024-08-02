@@ -41,7 +41,7 @@ class AddPaymentInfo implements EventInterface
             'event' => 'add_payment_info',
             'ecommerce' => [
                 'currency' => $cart->getQuoteCurrencyCode(),
-                'value' => $this->priceFormatter->format((float)$cart->getGrandTotal()),
+                'value' => $this->priceFormatter->format((float)$cart->getSubtotal()),
                 'coupon' => $cart->getCouponCode(),
                 'payment_type' => $this->paymentMethod,
                 'items' => $this->cartItems->get()
