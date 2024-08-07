@@ -51,7 +51,7 @@ class OrderDataMapper
             'value' => $this->getValueFromOrder($order),
             'id' => $order->getIncrementId(),
             'affiliation' => $this->config->getStoreName(),
-            'revenue' => $this->priceFormatter->format($order->getSubtotal()),
+            'revenue' => $this->priceFormatter->format((float)$order->getSubtotal()),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
             'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
