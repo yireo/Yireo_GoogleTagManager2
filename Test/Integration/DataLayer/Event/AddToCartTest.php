@@ -2,6 +2,7 @@
 
 namespace Tagging\GTM\Test\Integration\DataLayer\Event;
 
+use Magento\Catalog\Model\Product;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Tagging\GTM\DataLayer\Event\AddToCart;
@@ -22,6 +23,7 @@ class AddToCartTest extends TestCase
      */
     public function testValidDataLayerWithCart()
     {
+        /** @var Product $product */
         $product = $this->createProduct(1);
         $addToCartEvent = ObjectManager::getInstance()->get(AddToCart::class);
         $data = $addToCartEvent->setProduct($product)->get();
