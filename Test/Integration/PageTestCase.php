@@ -7,8 +7,10 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Framework\View\LayoutInterface;
+use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Annotation\DataFixture;
 use Magento\TestFramework\TestCase\AbstractController;
@@ -34,9 +36,19 @@ class PageTestCase extends AbstractController
         //$indexerRegistry = $this->objectManager->create(IndexerRegistry::class);
         //$indexerRegistry->get(Fulltext::INDEXER_ID)->reindexAll();
 
-        $fixtureResolver = Resolver::getInstance();
-        $fixtureResolver->setCurrentFixtureType(DataFixture::ANNOTATION);
-        $fixtureResolver->requireDataFixture('Magento/Store/_files/store.php');
+        $this->loadStore();
+    }
+
+    protected function loadStore()
+    {
+        $storeRepository = $this->objectManager->get(StoreRepositoryInterface::class);
+        try {
+            $storeRepository->getById(1);
+        } catch (NoSuchEntityException $e) {
+            $fixtureResolver = Resolver::getInstance();
+            $fixtureResolver->setCurrentFixtureType(DataFixture::ANNOTATION);
+            $fixtureResolver->requireDataFixture('Magento/Store/_files/store.php');
+        }
 
         $storeManager = $this->objectManager->get(StoreManagerInterface::class);
         $storeManager->setCurrentStore(1);
@@ -102,4 +114,6 @@ class PageTestCase extends AbstractController
         $request = $this->objectManager->get(RequestInterface::class);
         $this->assertSame($expectedActionName, $request->getActionName());
     }
+
+
 }

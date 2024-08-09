@@ -5,9 +5,11 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\CustomerData\SectionPool;
 use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\App\Response\Http as HttpResponse;
 use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Wishlist\Controller\WishlistProviderInterface;
 use Magento\Wishlist\Model\Wishlist;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCustomer;
@@ -18,8 +20,7 @@ class AddToWishlistTest extends PageTestCase
     use CreateCustomer;
 
     /**
-     * @magentoDbIsolation enabled
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation disabled
      * @magentoAppArea frontend
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
      * @return void
@@ -45,10 +46,15 @@ class AddToWishlistTest extends PageTestCase
             'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
         ]);
 
+        $request->setParam('isAjax', 1);
         $request->setMethod(HttpRequest::METHOD_POST);
+
         $this->dispatch('wishlist/index/add');
 
-        $this->assertEquals(1, $wishlist->getItemsCount());
+        /** @var HttpResponse $response */
+        $response = $this->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(1, $wishlist->getItemsCount(), 'Wishlist items do not count to 1');
 
         $customerSectionPool = $this->objectManager->get(SectionPool::class);
         $data = $customerSectionPool->getSectionsData(['customer']);
