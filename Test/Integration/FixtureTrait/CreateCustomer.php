@@ -45,6 +45,7 @@ trait CreateCustomer
             ->addData($data);
 
         $customer->isObjectNew(true);
+        // @phpstan-ignore-next-line
         $customer->save();
 
         $customerRegistry = $objectManager->get(CustomerRegistry::class);
