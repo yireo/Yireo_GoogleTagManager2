@@ -3,8 +3,6 @@
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Cart;
 
 use Magento\Checkout\Model\Cart as CartModel;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 

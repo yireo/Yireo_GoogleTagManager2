@@ -21,8 +21,10 @@ class AddToWishlistTest extends PageTestCase
 
     /**
      * @magentoDbIsolation disabled
+     * @magentoAppIsolation disabled
      * @magentoAppArea frontend
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
+     * @magentoConfigFixture current_store cataloginventory/options/show_out_of_stock 1
      * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -34,6 +36,8 @@ class AddToWishlistTest extends PageTestCase
 
         $productRepository = $this->objectManager->get(ProductRepositoryInterface::class);
         $product = $productRepository->get('simple');
+        $product->setData('is_saleable', 1);
+        $productRepository->save($product);
 
         $wishlist = $this->getWishlist();
         $this->assertEquals(0, $wishlist->getItemsCount());
@@ -42,6 +46,7 @@ class AddToWishlistTest extends PageTestCase
         $request = $this->getRequest();
 
         $request->setPostValue([
+            'wishlist_id' => $wishlist->getId(),
             'product' => $product->getId(),
             'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
         ]);
