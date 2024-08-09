@@ -5,7 +5,7 @@ namespace AdPage\GTM\Plugin;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-class OrderRepositoryPlugin
+class AddOrderMarketingField
 {
     public function afterGet(OrderRepositoryInterface $subject, OrderInterface $order)
     {

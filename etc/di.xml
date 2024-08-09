@@ -55,6 +55,6 @@
     </type>
 
     <type name="Magento\Sales\Api\OrderRepositoryInterface">
-        <plugin name="tagging_gtm_order_repository_plugin" type="Tagging\GTM\Plugin\OrderRepositoryPlugin" />
+        <plugin name="tagging_gtm_order_add_marketing_field" type="Tagging\GTM\Plugin\AddOrderMarketingField" />
     </type>
 </config>
