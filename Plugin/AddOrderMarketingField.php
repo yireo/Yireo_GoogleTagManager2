@@ -1,6 +1,6 @@
 <?php
 
-namespace AdPage\GTM\Plugin;
+namespace Tagging\GTM\Plugin;
 
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
