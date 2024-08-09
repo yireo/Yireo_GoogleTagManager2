@@ -1,4 +1,5 @@
-<?php declare(strict_types=1); // phpcs:ignoreFile
+<?php declare(strict_types=1);
+// phpcs:ignoreFile
 
 /**
  * GoogleTagManager2 plugin for Magento
@@ -11,6 +12,7 @@
 namespace Yireo\GoogleTagManager2\Util;
 
 if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
+    // @phpstan-ignore-next-line
     class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer\Proxy {}
 } else {
     class SecureHtmlRendererStub
