@@ -13,7 +13,7 @@ namespace Yireo\GoogleTagManager2\Util;
 
 if (class_exists('\Magento\Framework\View\Helper\SecureHtmlRenderer')) {
     // @phpstan-ignore-next-line
-    class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer\Proxy {}
+    class SecureHtmlRendererStub extends \Magento\Framework\View\Helper\SecureHtmlRenderer {}
 } else {
     class SecureHtmlRendererStub
     {
