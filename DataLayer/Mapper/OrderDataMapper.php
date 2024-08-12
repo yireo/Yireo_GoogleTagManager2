@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Payment\Model\MethodInterface as PaymentMethod;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
@@ -97,12 +98,16 @@ class OrderDataMapper
      */
     protected function getPaymentType(OrderInterface $order): string
     {
-        /** @var Payment $orderPayment */
         $orderPayment = $order->getPayment();
-        if (!$orderPayment || !$orderPayment->getMethodInstance()) {
+        if (!$orderPayment instanceof Payment) {
+            return '';
+        }
+        
+        $paymentMethod = $orderPayment->getMethodInstance();
+        if (!$paymentMethod instanceof PaymentMethod) {
             return '';
         }
 
-        return $orderPayment->getMethodInstance()->getTitle();
+        return $paymentMethod->getTitle();
     }
 }
