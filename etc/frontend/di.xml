@@ -35,7 +35,7 @@
     <type name="Yireo\GoogleTagManager2\Observer\FixNonExistingSecureRenderer">
         <arguments>
             <argument name="secureHtmlRendererStub" xsi:type="object">
-                Yireo\GoogleTagManager2\Plugin\AddCspInlineScripts\Proxy
+                Yireo\GoogleTagManager2\Util\SecureHtmlRendererStub\Proxy
             </argument>
         </arguments>
     </type>
@@ -43,7 +43,7 @@
     <type name="Yireo\GoogleTagManager2\Plugin\AddCspInlineScripts">
         <arguments>
             <argument name="secureHtmlRendererStub" xsi:type="object">
-                Yireo\GoogleTagManager2\Plugin\AddCspInlineScripts\Proxy
+                Yireo\GoogleTagManager2\Util\SecureHtmlRendererStub\Proxy
             </argument>
         </arguments>
     </type>
