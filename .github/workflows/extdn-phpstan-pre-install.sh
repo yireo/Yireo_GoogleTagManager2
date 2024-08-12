@@ -4,6 +4,8 @@ composer config prefer-stable false
 
 composer require yireo/magento2-integration-test-helper --no-update
 
+composer require --dev bitexpert/phpstan-magento --no-update
+
 composer require yireo/magento2-replace-bundled:^4.0 --no-update
 composer require yireo/magento2-replace-inventory:^4.0 --no-update
 composer require yireo/magento2-replace-pagebuilder:^4.0 --no-update
