@@ -6,36 +6,31 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class OrderItemDataMapper
 {
-    private OrderRepositoryInterface $orderRepository;
     private ProductDataMapper $productDataMapper;
     private ProductRepositoryInterface $productRepository;
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
      * @param ProductDataMapper $productDataMapper
      * @param ProductRepositoryInterface $productRepository
      * @param PriceFormatter $priceFormatter
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
         ProductDataMapper $productDataMapper,
         ProductRepositoryInterface $productRepository,
         PriceFormatter $priceFormatter,
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->orderRepository = $orderRepository;
         $this->productDataMapper = $productDataMapper;
         $this->productRepository = $productRepository;
         $this->priceFormatter = $priceFormatter;
@@ -46,12 +41,9 @@ class OrderItemDataMapper
      * @param OrderItemInterface $orderItem
      * @return array
      */
-    public function mapByOrderItem(OrderItemInterface $orderItem, ?OrderInterface $order = null): array
+    public function mapByOrderItem(OrderItemInterface $orderItem): array
     {
-        if (!$order instanceof OrderInterface) {
-            $order = $this->orderRepository->get($orderItem->getOrderId());
-        }
-
+        /** @var OrderItem $orderItem */
         $orderItemData = [
             'item_id' => $orderItem->getSku(),
             'item_name' => $orderItem->getName(),
@@ -61,7 +53,7 @@ class OrderItemDataMapper
         ];
 
         if ($orderItem->getProductType() == Configurable::TYPE_CODE) {
-            $orderItemData['item_id'] = $orderItem->getProduct()->getSku(); // @phpstan-ignore-line
+            $orderItemData['item_id'] = $orderItem->getProduct()->getSku();
             $orderItemData['item_variant'] = $orderItem->getSku();
         }
 
@@ -80,7 +72,11 @@ class OrderItemDataMapper
 
         return $orderItemData;
     }
-
+    
+    /**
+     * @param OrderItemInterface $orderItem
+     * @return float
+     */
     private function getPrice(OrderItemInterface $orderItem): float
     {
         $displayType = (int)$this->scopeConfig->getValue(

@@ -4,8 +4,7 @@ namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\AbstractProduct;
-use Magento\Framework\View\Element\BlockInterface;
-use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Exception\BlockNotFound;
 
@@ -33,18 +32,18 @@ class AddProductDetails
             return $html;
         }
 
-        $html .= $block->setProduct($product)->toHtml(); // @phpstan-ignore-line
+        $html .= $block->setData('product', $product)->toHtml();
         return $html;
     }
 
     /**
-     * @return BlockInterface
+     * @return AbstractBlock
      * @throws BlockNotFound
      */
-    private function getProductDetailsBlock(): BlockInterface
+    private function getProductDetailsBlock(): AbstractBlock
     {
         $block = $this->layout->getBlock('yireo_googletagmanager2.product-details');
-        if ($block instanceof BlockInterface) {
+        if ($block instanceof AbstractBlock) {
             return $block;
         }
 

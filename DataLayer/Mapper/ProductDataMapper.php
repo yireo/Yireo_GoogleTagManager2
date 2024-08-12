@@ -4,6 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -55,6 +56,7 @@ class ProductDataMapper
      */
     public function mapByProduct(ProductInterface $product): array
     {
+        /** @var Product $product */
         $prefix = 'item_';
         $productData = [];
         $productData['item_id'] = $product->getSku();
@@ -97,6 +99,7 @@ class ProductDataMapper
      */
     private function getProductCategory($product)
     {
+        /** @var Product $product */
         if ($this->config->getProductListValueOnCategory() == ProductListValue::CURRENT_CATEGORY
             && $product->getCategory()
         ) {

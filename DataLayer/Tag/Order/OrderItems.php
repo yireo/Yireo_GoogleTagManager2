@@ -6,6 +6,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\OrderItemDataMapper;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
+use Magento\Sales\Model\Order;
 
 class OrderItems implements TagInterface
 {
@@ -34,11 +35,11 @@ class OrderItems implements TagInterface
         if (empty($order)) {
             $order = $this->checkoutSession->getLastRealOrder();
         }
-
+        
+        /** @var Order $order */
         $orderItemsData = [];
-        // @phpstan-ignore-next-line
-        foreach ($order->getAllVisibleItems() as $item) {
-            $orderItemsData[] = $this->orderItemDataMapper->mapByOrderItem($item, $order);
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            $orderItemsData[] = $this->orderItemDataMapper->mapByOrderItem($orderItem);
         }
 
         return $orderItemsData;

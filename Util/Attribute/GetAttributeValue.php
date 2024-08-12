@@ -82,7 +82,7 @@ class GetAttributeValue
     public function getAttributeValue(CustomAttributesDataInterface $entity, string $entityType, string $attributeCode)
     {
         if ($attributeCode === 'id') {
-            /** @phpstan-ignore-next-line  */
+            /** @var \Magento\Framework\Model\AbstractExtensibleModel $entity */
             return $entity->getId();
         }
 

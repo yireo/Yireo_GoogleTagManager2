@@ -21,5 +21,9 @@ if (class_exists('\Magewirephp\Magewire\Component')) {
         {
             return false;
         }
+        
+        public function dispatchBrowserEvent(string $browserEvent, $data)
+        {
+        }
     }
 }

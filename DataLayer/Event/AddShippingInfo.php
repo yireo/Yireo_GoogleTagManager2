@@ -8,7 +8,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\ShippingMethodInterface;
-use Magento\Quote\Api\ShippingMethodManagementInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\ShippingMethodManagementInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 
@@ -63,13 +64,12 @@ class AddShippingInfo implements EventInterface
     }
 
     /**
-     * @param CartInterface $quote
+     * @param Quote $quote
      * @return string|null
      */
-    public function getShippingMethodFromQuote(CartInterface $quote): ?string
+    public function getShippingMethodFromQuote(Quote $quote): ?string
     {
         try {
-            // @phpstan-ignore-next-line
             $shippingMethod = $this->shippingMethodManagement->get($quote->getId());
             if ($shippingMethod instanceof ShippingMethodInterface) {
                 return $shippingMethod->getCarrierCode().'_'.$shippingMethod->getMethodCode();
@@ -79,7 +79,6 @@ class AddShippingInfo implements EventInterface
         }
 
         try {
-            // @phpstan-ignore-next-line
             return $quote->getShippingAddress()->getShippingMethod();
         } catch (NoSuchEntityException $e) {
         }
