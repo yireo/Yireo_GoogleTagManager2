@@ -5,14 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.9.4] - 14 August 2024
 ### Fixed
 - Guarantee `subtotal` is always float
 
-## [3.9.3] - 2 August July 2024
+## [3.9.3] - 2 August 2024
 ### Fixed
 - Prevent `add_to_cart` from firing twice #236 @henk-hypershop @MaximGns
 - Changed reported value from `grand_total` to `subtotal` in various events #240
-- Use current category as item_list_name parameter #234 @marcinfr
+- Use current category as `item_list_name` parameter #234 @marcinfr
 - Only trigger `purchase` event when order is not canceled #227
 
 ## [3.9.2] - 4 July 2024
