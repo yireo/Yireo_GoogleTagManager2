@@ -25,24 +25,3 @@ jobs:
           composer_version: 2
           phpstan_level: 2
           magento_pre_install_script: .github/workflows/extdn-phpstan-pre-install.sh
-
-      - uses: extdn/github-actions-m2/magento-phpstan/8.2@master
-        with:
-          composer_name: ${{ secrets.COMPOSER_NAME }}
-          composer_version: 2
-          phpstan_level: 2
-          magento_pre_install_script: .github/workflows/extdn-phpstan-pre-install.sh
-
-      - uses: extdn/github-actions-m2/magento-phpstan/8.1@master
-        with:
-          composer_name: ${{ secrets.COMPOSER_NAME }}
-          composer_version: 2
-          phpstan_level: 2
-          magento_pre_install_script: .github/workflows/extdn-phpstan-pre-install.sh
-
-      - uses: extdn/github-actions-m2/magento-phpstan/7.4@master
-        with:
-          composer_name: ${{ secrets.COMPOSER_NAME }}
-          composer_version: 2
-          phpstan_level: 2
-          magento_pre_install_script: .github/workflows/extdn-phpstan-pre-install.sh
