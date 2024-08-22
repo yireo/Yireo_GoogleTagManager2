@@ -46,7 +46,23 @@ class PurchaseWebhookEvent
         $marketingData = [];
 
         try {
-            $marketingData = $this->json->unserialize($order->getData('trytagging_marketing'));
+            $connection = $order->getResource()->getConnection();
+            $tableName = $order->getResource()->getMainTable();
+            $orderId = $order->getId();
+            
+            $select = $connection->select()
+                ->from($tableName, ['trytagging_marketing'])
+                ->where('entity_id = ?', $orderId);
+            
+            $marketingData = $connection->fetchOne($select);
+            
+            if ($marketingData === false) {
+                $marketingData = [
+                    '_error' => 'trytagging_marketing data not found for order: ' . $order->getIncrementId()
+                ];
+            } else {
+                $marketingData = $this->json->unserialize($marketingData);
+            }
         } catch (\Exception $e) {
             $marketingData = [
                 '_error' => $e->getMessage()
