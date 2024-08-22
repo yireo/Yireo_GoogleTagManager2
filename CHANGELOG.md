@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.5] - 22 August 2024
+### Fixed
+- Revert back to hard-coded proxy #242
+
 ## [3.9.4] - 14 August 2024
 ### Fixed
 - Guarantee `subtotal` is always float
