@@ -5,9 +5,6 @@ composer config prefer-stable false
 composer require yireo/magento2-integration-test-helper --no-update
 
 composer config --no-plugins allow-plugins true
-#composer config allow-plugins.phpstan/extension-installer true
-#composer magento/composer-dependency-version-audit-plugin true
-
 composer require --dev phpstan/extension-installer --no-update
 composer require --dev bitexpert/phpstan-magento --no-update
 
