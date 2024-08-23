@@ -26,7 +26,7 @@ class AddCspInlineScripts
         }
 
         if (false === strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
-            return $html;
+            return (string)$html;
         }
 
         $scripts = $this->scriptFinder->find($html);
