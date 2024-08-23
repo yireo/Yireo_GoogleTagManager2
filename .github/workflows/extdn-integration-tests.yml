@@ -47,3 +47,11 @@ jobs:
         with:
           magento_pre_install_script: .github/workflows/extdn-integration-tests-pre-install.sh
           magento_post_install_script: .github/workflows/extdn-integration-tests-post-install.sh
+
+      - uses: extdn/github-actions-m2/magento-integration-tests/8.3@master
+        env:
+          MAGENTO_VERSION: '2.4.7-p1'
+          COMPOSER_VERSION: 2
+        with:
+          magento_pre_install_script: .github/workflows/extdn-integration-tests-pre-install.sh
+          magento_post_install_script: .github/workflows/extdn-integration-tests-post-install.sh

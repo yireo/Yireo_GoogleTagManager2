@@ -3,38 +3,24 @@
 namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Framework\View\Element\Template;
-use Yireo\GoogleTagManager2\Util\ScriptFinder;
-use Yireo\GoogleTagManager2\Util\SecureHtmlRendererStub;
+use Yireo\CspUtilities\Util\ReplaceInlineScripts;
 
 class AddCspInlineScripts
 {
-    private ScriptFinder $scriptFinder;
-    private SecureHtmlRendererStub $secureHtmlRendererStub;
+    private ReplaceInlineScripts $replaceInlineScripts;
 
     public function __construct(
-        ScriptFinder $scriptFinder,
-        SecureHtmlRendererStub $secureHtmlRendererStub
+        ReplaceInlineScripts $replaceInlineScripts
     ) {
-        $this->scriptFinder = $scriptFinder;
-        $this->secureHtmlRendererStub = $secureHtmlRendererStub;
+        $this->replaceInlineScripts = $replaceInlineScripts;
     }
 
     public function afterToHtml(Template $block, $html): string
     {
-        if (empty($html)) {
-            return '';
-        }
-
         if (false === strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
             return $html;
         }
 
-        $scripts = $this->scriptFinder->find($html);
-        foreach ($scripts as $fullScript => $inlineJs) {
-            $newScript = $this->secureHtmlRendererStub->renderTag('script', [], $inlineJs, false);
-            $html = str_replace($fullScript, $newScript, $html);
-        }
-
-        return $html;
+        return $this->replaceInlineScripts->replace((string)$html);
     }
 }
