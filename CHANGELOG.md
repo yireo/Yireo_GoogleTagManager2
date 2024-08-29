@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.7] - 29 August 2024
+### Fixed
+- Only clean dataLayer.ecommerce, if new push actually contains ecommerce data
+
 ## [3.9.6] - 23 August 2024
 ### Fixed
 - Move CSP logic to external module `Yireo_CspUtilities`
