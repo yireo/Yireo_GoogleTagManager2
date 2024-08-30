@@ -27,10 +27,11 @@ The following events are implemented in the current version:
 - `logout`
 - `purchase`
 - `remove_from_cart`
+- `select_item`
 - `sign_up`
 - `view_cart`
-- `view_item_list_event`
-- `view_item_event`
+- `view_item_list`
+- `view_item`
 - `view_search_result`
 
 If you think an event is missing, post a GitHub Issue to kickstart such an initiative.
