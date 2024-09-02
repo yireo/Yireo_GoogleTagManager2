@@ -53,8 +53,4 @@
             <argument name="schemaLocator" xsi:type="object">Tagging\GTM\Config\XmlConfig\SchemaLocator</argument>
         </arguments>
     </type>
-
-    <type name="Magento\Sales\Api\OrderRepositoryInterface">
-        <plugin name="tagging_gtm_order_add_marketing_field" type="Tagging\GTM\Plugin\AddOrderMarketingField" />
-    </type>
 </config>

@@ -1,6 +1,6 @@
 {
   "name": "tagginggroup/gtm",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "OSL-3.0",
   "type": "magento2-module",
   "description": "AdPage tagging integration for Magento 2",
