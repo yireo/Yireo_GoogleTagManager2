@@ -27,5 +27,4 @@ See `composer.json` for other requirements.
 - [Architecture](ARCHITECTURE.md)
 - [Testing](TESTING.md)
 - [CHANGELOG](CHANGELOG.md)
-- [TODO](TODO.md)
 - [License](LICENSE.txt)
