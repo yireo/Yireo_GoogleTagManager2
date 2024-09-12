@@ -6,13 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.9.9] - 12 September 2024
-### Fixed
-- Allow configuring which order states should lead to `purchase` event
-
-## [3.9.8] - 7 September 2024
+## [3.9.8] - 12 September 2024
 ### Fixed
 - Fix Uncaught TypeError: products.forEach is not a function #246 @nahall
+- Allow configuring which order states should lead to `purchase` event
 
 ## [3.9.7] - 29 August 2024
 ### Fixed
