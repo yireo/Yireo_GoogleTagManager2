@@ -6,7 +6,19 @@ namespace Yireo\GoogleTagManager2\MageWire;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
-if (class_exists('\Magewirephp\Magewire\Component')) {
+if (false === class_exists('\Magewirephp\Magewire\Component')) {
+    class Component implements ArgumentInterface
+    {
+        public function isHyvaCheckoutEnabled(): bool
+        {
+            return false;
+        }
+
+        public function dispatchBrowserEvent(string $browserEvent, $data)
+        {
+        }
+    }
+} else {
     class Component extends \Magewirephp\Magewire\Component
     {
         public function isHyvaCheckoutEnabled(): bool
@@ -14,16 +26,5 @@ if (class_exists('\Magewirephp\Magewire\Component')) {
             return true;
         }
     }
-} else {
-    class Component implements ArgumentInterface
-    {
-        public function isHyvaCheckoutEnabled(): bool
-        {
-            return false;
-        }
-        
-        public function dispatchBrowserEvent(string $browserEvent, $data)
-        {
-        }
-    }
+
 }
