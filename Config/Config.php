@@ -207,6 +207,11 @@ class Config implements ArgumentInterface
         return (string)$this->getModuleConfigValue('product_list_value_on_category');
     }
 
+    public function getOrderStatesForPurchaseEvent(): array
+    {
+        return explode(',', (string)$this->getModuleConfigValue('order_states_for_purchase_event'));
+    }
+
     /**
      * Return a configuration value
      *

@@ -114,6 +114,14 @@
                     </depends>
                     <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
+                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Orders states for purchase event</label>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\OrderStateOptions</source_model>
+                    <comment>Order states at which to trigger the purchase event</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>
