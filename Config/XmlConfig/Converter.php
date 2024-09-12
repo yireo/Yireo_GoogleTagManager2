@@ -57,8 +57,7 @@ class Converter implements ConverterInterface
     {
         $result = [];
         foreach ($node->childNodes as $childNode) {
-            /** @phpstan-ignore-next-line  */
-            if (empty($childNode)) {
+            if (false === $childNode instanceof DOMNode) {
                 continue;
             }
 
