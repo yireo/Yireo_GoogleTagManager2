@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tagging\GTM\Setup;
@@ -13,10 +14,13 @@ class UpgradeSchema implements UpgradeSchemaInterface
 {
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        $setup->startSetup();
+        $installer = $setup;
+        $installer->startSetup();
 
-        if (version_compare($context->getVersion(), '1.0.6', '<')) {
-            $setup->getConnection()->addColumn(
+        $tableName = $installer->getTable('sales_order');
+
+        if ($installer->getConnection()->isTableExists($tableName) == true) {
+            $installer->getConnection()->addColumn(
                 $setup->getTable('sales_order'),
                 'trytagging_marketing',
                 [
@@ -27,6 +31,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
             );
         }
 
-        $setup->endSetup();
+        $installer->endSetup();
     }
 }

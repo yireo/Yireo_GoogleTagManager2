@@ -53,4 +53,8 @@
             <argument name="schemaLocator" xsi:type="object">Tagging\GTM\Config\XmlConfig\SchemaLocator</argument>
         </arguments>
     </type>
+
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="trytagging_marketing_plugin" type="Tagging\GTM\Plugin\OrderRepository" />
+    </type>
 </config>

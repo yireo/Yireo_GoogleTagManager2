@@ -45,16 +45,8 @@ class PurchaseWebhookEvent
 
         $marketingData = [];
 
-        try {
-            $connection = $order->getResource()->getConnection();
-            $tableName = $order->getResource()->getMainTable();
-            $orderId = $order->getId();
-            
-            $select = $connection->select()
-                ->from($tableName, ['trytagging_marketing'])
-                ->where('entity_id = ?', $orderId);
-            
-            $marketingData = $connection->fetchOne($select);
+        try {            
+            $marketingData = $order->getExtensionAttributes()->getTrytaggingMarketing();
             
             if ($marketingData === false) {
                 $marketingData = [

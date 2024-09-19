@@ -38,7 +38,7 @@ class TriggerCheckoutSessionSaveEvent implements ObserverInterface
             $marketingCookie['ip'] = $_SERVER['REMOTE_ADDR'];
             $marketingCookie = json_encode($marketingCookie);
  
-            $order->setData('trytagging_marketing', $marketingCookie);
+            $order->getExtensionAttributes()->setTrytaggingMarketing($marketingCookie);
             $this->orderRepository->save($order);
         } catch (\Exception $e) {
             $this->logger->error("TriggerCheckoutSessionSaveEvent: " . $e->getMessage());
