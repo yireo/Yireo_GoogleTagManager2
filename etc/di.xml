@@ -55,6 +55,6 @@
     </type>
 
     <type name="Magento\Sales\Api\OrderRepositoryInterface">
-        <plugin name="trytagging_marketing_plugin" type="Tagging\GTM\Plugin\OrderRepository" />
+        <plugin name="tagging_gtm_order_repository_plugin" type="Tagging\GTM\Plugin\OrderRepositoryPlugin" />
     </type>
 </config>
