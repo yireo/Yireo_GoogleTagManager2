@@ -46,9 +46,20 @@ class PurchaseWebhookEvent
         $marketingData = [];
 
         try {            
-            $marketingData = $order->getExtensionAttributes()->getTrytaggingMarketing();
+            $this->logger->info("InvoicePaymentObserver: Processing order " . $order->getIncrementId());
+
+            $extensionAttributes = $order->getExtensionAttributes();
+            $this->logger->info("InvoicePaymentObserver: Extension attributes object: " . ($extensionAttributes ? 'exists' : 'is null'));
+    
+            if ($extensionAttributes) {
+                $marketingData = $extensionAttributes->getTrytaggingMarketing();
+                $this->logger->info("InvoicePaymentObserver: Marketing data: " . ($marketingData ?: 'is null'));
+            }
+    
+            $rawMarketingData = $order->getData('trytagging_marketing');
+            $this->logger->info("InvoicePaymentObserver: Raw marketing data from order: " . ($rawMarketingData ?: 'is null'));
             
-            if ($marketingData === false) {
+            if ($marketingData === null) {
                 $marketingData = [
                     '_error' => 'trytagging_marketing data not found for order: ' . $order->getIncrementId()
                 ];
