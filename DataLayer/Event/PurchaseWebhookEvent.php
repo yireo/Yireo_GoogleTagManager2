@@ -63,6 +63,10 @@ class PurchaseWebhookEvent
             $rawMarketingData = $order->getData('trytagging_marketing');
             $this->debugger->debug("InvoicePaymentObserver: Raw marketing data from order: " . ($rawMarketingData ?: 'is null'), $rawMarketingData);
             
+            if ($rawMarketingData) {
+                $marketingData = $rawMarketingData;
+            }
+
             if ($marketingData === null) {
                 $marketingData = [
                     '_error' => 'trytagging_marketing data not found for order: ' . $order->getIncrementId()
