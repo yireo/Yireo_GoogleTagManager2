@@ -19,7 +19,6 @@ class TriggerCheckoutSessionSaveEvent implements ObserverInterface
         OrderRepositoryInterface $orderRepository,
         Debugger $debugger
     ) {
-        $this->logger = $logger;
         $this->cookieManager = $cookieManager;
         $this->orderRepository = $orderRepository;
         $this->debugger = $debugger;
