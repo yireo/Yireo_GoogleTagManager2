@@ -3,4 +3,8 @@
     <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
         <attribute code="session_information" type="string"/>
     </extension_attributes>
+
+    <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
+        <attribute code="trytagging_marketing" type="string"/>
+    </extension_attributes>
 </config>

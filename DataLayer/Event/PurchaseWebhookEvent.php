@@ -11,6 +11,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Tagging\GTM\Util\PriceFormatter;
 use Tagging\GTM\Config\Config;
 use Psr\Log\LoggerInterface;
+use Tagging\GTM\Logger\Debugger;
 
 class PurchaseWebhookEvent
 {
@@ -20,6 +21,7 @@ class PurchaseWebhookEvent
     private $orderItems;
     private $priceFormatter;
     private LoggerInterface $logger;
+    private Debugger $debugger;
 
     public function __construct(
         Json            $json,
@@ -27,7 +29,8 @@ class PurchaseWebhookEvent
         OrderItems      $orderItems,
         Config          $config,
         PriceFormatter  $priceFormatter,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Debugger $debugger
     ) {
         $this->json = $json;
         $this->clientFactory = $clientFactory;
@@ -35,6 +38,7 @@ class PurchaseWebhookEvent
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
         $this->logger = $logger;
+        $this->debugger = $debugger;
     }
 
     public function purchase(OrderInterface $order)
@@ -45,18 +49,25 @@ class PurchaseWebhookEvent
 
         $marketingData = [];
 
-        try {
-            $connection = $order->getResource()->getConnection();
-            $tableName = $order->getResource()->getMainTable();
-            $orderId = $order->getId();
+        try {            
+            $this->debugger->debug("InvoicePaymentObserver: Processing order " . $order->getIncrementId());
+
+            $extensionAttributes = $order->getExtensionAttributes();
+            $this->debugger->debug("InvoicePaymentObserver: Extension attributes object: " . ($extensionAttributes ? 'exists' : 'is null'));
+    
+            if ($extensionAttributes) {
+                $marketingData = $extensionAttributes->getTrytaggingMarketing();
+                $this->debugger->debug("InvoicePaymentObserver: Marketing data: " . ($marketingData ?: 'is null'), $marketingData);
+            }
+    
+            $rawMarketingData = $order->getData('trytagging_marketing');
+            $this->debugger->debug("InvoicePaymentObserver: Raw marketing data from order: " . ($rawMarketingData ?: 'is null'), $rawMarketingData);
             
-            $select = $connection->select()
-                ->from($tableName, ['trytagging_marketing'])
-                ->where('entity_id = ?', $orderId);
-            
-            $marketingData = $connection->fetchOne($select);
-            
-            if ($marketingData === false) {
+            if ($rawMarketingData) {
+                $marketingData = $rawMarketingData;
+            }
+
+            if ($marketingData === null) {
                 $marketingData = [
                     '_error' => 'trytagging_marketing data not found for order: ' . $order->getIncrementId()
                 ];
@@ -67,7 +78,7 @@ class PurchaseWebhookEvent
             $marketingData = [
                 '_error' => $e->getMessage()
             ];
-            $this->logger->error($e->getMessage());
+            $this->debugger->debug($e->getMessage());
         }
 
         $data = [

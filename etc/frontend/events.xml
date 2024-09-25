@@ -31,8 +31,4 @@
     <event name="sales_order_place_after">
         <observer name="Tagging_GTM::triggerPurchaseDataLayerEvent" instance="Tagging\GTM\Observer\TriggerPurchaseDataLayerEvent" />
     </event>
-
-    <event name="checkout_onepage_controller_success_action">
-        <observer name="Tagging_GTM::triggerCheckoutSessionSaveEvent" instance="Tagging\GTM\Observer\TriggerCheckoutSessionSaveEvent" />
-    </event>
 </config>

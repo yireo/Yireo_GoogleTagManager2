@@ -60,22 +60,6 @@ define(["googleTagManagerLogger"], function (logger) {
       )};expires=${expires.toUTCString()};path=/`;
     }
 
-    if (
-      cleanEventData.event === "trytagging_begin_checkout" ||
-      cleanEventData.event === "trytagging_view_cart" ||
-      cleanEventData.event === "trytagging_add_to_cart"
-    ) {
-      // Post marketingObject to server
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/rest/V1/trytagging/save", true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(
-        JSON.stringify({
-          jsonData: cleanEventData.marketing || {},
-        })
-      );
-    }
-
     window.dataLayer.push(cleanEventData);
     window.Tagging_GTM_PAST_EVENTS.push(eventHash);
   };

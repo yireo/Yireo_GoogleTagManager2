@@ -3,4 +3,7 @@
     <event name="sales_order_invoice_pay">
         <observer name="Tagging_GTM::triggerPurchaseWebhookEvent" instance="Tagging\GTM\Observer\TriggerPurchaseWebhookEvent" />
     </event>
+    <event name="sales_order_place_after">
+        <observer name="Tagging_GTM::triggerCheckoutSessionSaveEvent" instance="Tagging\GTM\Observer\TriggerCheckoutSessionSaveEvent" />
+    </event>
 </config>
