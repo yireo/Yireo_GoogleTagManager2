@@ -8,7 +8,7 @@ use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
-// @todo: Implement this event
+// See https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtm#refund
 class Refund implements EventInterface
 {
     private ?OrderInterface $order = null;
@@ -38,7 +38,7 @@ class Refund implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => $this->priceFormatter->format((float)$order->getGrandTotal()),
+                'value' => $this->priceFormatter->format((float)$order->getSubtotal()),
                 'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
                 'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
                 'coupon' => $order->getCouponCode(),

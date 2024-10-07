@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Event;
 
+use Magento\Checkout\Model\Cart as CartModel;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Api\Data\CartInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,6 @@ class ViewCartTest extends TestCase
      */
     public function testValidViewCartEvent()
     {
-        $this->markTestSkipped('Broken test');
         $om = ObjectManager::getInstance();
         $cart = $om->create(CartInterface::class);
 
@@ -33,6 +33,8 @@ class ViewCartTest extends TestCase
         $item = $cart->addProduct($product);
         $item->setQty(2);
         $cart->setItems([$item]);
+        $cart->setSubtotal(42.0);
+        $om->get(CartModel::class)->setQuote($cart);
 
         $this->assertNotEmpty($cart->getItems());
         $this->assertCount(1, $cart->getItems());
@@ -43,7 +45,9 @@ class ViewCartTest extends TestCase
         $data = $viewCartEvent->get();
         $this->assertTrue($data['meta']['cacheable']);
         $this->assertEquals('view_cart', $data['event']);
-        $this->assertNotEmpty($data['ecommerce']['items']);
+        $this->assertEquals('USD', $data['ecommerce']['currency']);
+        $this->assertNotEquals(0.0, $data['ecommerce']['value']);
+        $this->assertNotEmpty($data['ecommerce']['items'], 'No ecommerce items found');
         $this->assertEquals(2, (int)$data['ecommerce']['items'][0]['quantity']);
     }
 }

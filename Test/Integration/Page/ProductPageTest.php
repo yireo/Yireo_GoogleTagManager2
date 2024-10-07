@@ -21,6 +21,12 @@ class ProductPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
+     * @magentoConfigFixture static_content_on_demand_in_production 1
+     * @magentoAppArea frontend
+     * @magentoCache full_page disabled
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
      */
     public function testValidDataLayerWithOneCategory()
     {

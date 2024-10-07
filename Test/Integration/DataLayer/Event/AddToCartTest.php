@@ -2,10 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Event;
 
+use Magento\Catalog\Model\Product;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\DataLayer\Event\AddToCart;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCart;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 
 /**
@@ -24,6 +24,7 @@ class AddToCartTest extends TestCase
      */
     public function testValidDataLayerWithCart()
     {
+        /** @var Product $product */
         $product = $this->createProduct(1);
         $addToCartEvent = ObjectManager::getInstance()->get(AddToCart::class);
         $data = $addToCartEvent->setProduct($product)->get();

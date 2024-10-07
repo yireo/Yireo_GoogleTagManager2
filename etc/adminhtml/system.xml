@@ -67,6 +67,13 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="product_list_value_on_category" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product List Value on Category Page</label>
+                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product EAV Attributes</label>
                     <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
@@ -106,6 +113,14 @@
                         <field id="view_cart_occurances">everywhere</field>
                     </depends>
                     <comment>Generate the view_cart event only when expanding the minicart</comment>
+                </field>
+                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Orders states for purchase event</label>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\OrderStateOptions</source_model>
+                    <comment>Order states at which to trigger the purchase event</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="consent" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">

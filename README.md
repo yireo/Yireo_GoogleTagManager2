@@ -1,5 +1,7 @@
 # Magento 2 module for Google Tag Manager
 
+**A client-side implementation of Google Tag Manager for Magento 2**
+
 **Also see: https://www.yireo.com/software/magento-extensions/googletagmanager2**
 
 **Currently, the `Yireo_GoogleTagManager2` module has been refactored heavily: The architecture is redesigned, GA4
@@ -28,5 +30,4 @@ See `composer.json` for other requirements.
 - [Architecture](ARCHITECTURE.md)
 - [Testing](TESTING.md)
 - [CHANGELOG](CHANGELOG.md)
-- [TODO](TODO.md)
 - [License](LICENSE.txt)

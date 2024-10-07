@@ -6,6 +6,7 @@ namespace Yireo\GoogleTagManager2\Util;
 use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\FilterGroup;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
@@ -107,7 +108,9 @@ class CategoryProvider
      */
     public function getFirstByProduct(ProductInterface $product): CategoryInterface
     {
-        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
+        /** @var Product $product */
+        $productCategoryIds = $product->getCategoryIds();
+        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($productCategoryIds);
         if (empty($productCategoryIds)) {
             throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
         }
@@ -134,7 +137,9 @@ class CategoryProvider
      */
     public function getAllByProduct(ProductInterface $product): array
     {
-        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($product->getCategoryIds());
+        /** @var Product $product */
+        $productCategoryIds = $product->getCategoryIds();
+        $productCategoryIds = $this->filterRootCategoryIdFromCategoryIds($productCategoryIds);
         if (empty($productCategoryIds)) {
             throw new NoSuchEntityException(__('Product "%1" has no categories', $product->getSku()));
         }

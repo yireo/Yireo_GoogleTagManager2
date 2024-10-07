@@ -6,7 +6,6 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
-use Yireo\GoogleTagManager2\Config\Config;
 
 class Sha256EmailAddress implements TagInterface
 {

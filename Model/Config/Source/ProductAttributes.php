@@ -30,7 +30,7 @@ class ProductAttributes implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $options = [['value' => '', 'label' => __('')]];
+        $options = [['value' => '', 'label' => '']];
 
         $this->searchCriteriaBuilder->addFilter('is_visible', 1);
         $this->searchCriteriaBuilder->addFilter('is_visible_on_front', 1);

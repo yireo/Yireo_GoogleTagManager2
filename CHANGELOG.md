@@ -6,10 +6,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.8] - 12 September 2024
+### Fixed
+- Fix Uncaught TypeError: products.forEach is not a function #246 @nahall
+- Allow configuring which order states should lead to `purchase` event
+
+## [3.9.7] - 29 August 2024
+### Fixed
+- Only clean dataLayer.ecommerce, if new push actually contains ecommerce data
+
+## [3.9.6] - 23 August 2024
+### Fixed
+- Move CSP logic to external module `Yireo_CspUtilities`
+
+## [3.9.5] - 22 August 2024
+### Fixed
+- Revert back to hard-coded proxy #242
+
+## [3.9.4] - 14 August 2024
+### Fixed
+- Guarantee `subtotal` is always float
+
+## [3.9.3] - 2 August 2024
+### Fixed
+- Prevent `add_to_cart` from firing twice #236 @henk-hypershop @MaximGns
+- Changed reported value from `grand_total` to `subtotal` in various events #240
+- Use current category as `item_list_name` parameter #234 @marcinfr
+- Only trigger `purchase` event when order is not canceled #227
+
+## [3.9.2] - 4 July 2024
+### Fixed
+- Extend from SecureHtmlRenderer\Proxy to delay the instantiation #239 @hostep
+
+## [3.9.1] - 1 July 2024
+### Fixed
+- Type Error in class AddCspInlineScripts with the Hyva Checkout #237
+
+## [3.9.0] - 20 June 2024
+### Added
+- Added $secureRenderer, so CSP compliance #231 @jemoon @hostep @nige-one
+- Added compatibility with older versions without SecureHtmlRenderer class
+
+## [3.8.3] - 10 April 2024
+### Fixed
+- Remove translation with empty strings #228
+
+## [3.8.2] - 6 April 2024
+### Fixed
+- Added customer address data to enhanced conversions #226 @JuulGr
+
+## [3.8.1] - 22 March 2024
+### Fixed
+- Remove page layout directive from Hyva checkout
+- Compat Magento latest with psr/log
+
+## [3.8.0] - 15 March 2024
+### Added
+- Lazyload non-event (non-GA4) data from localStorage in Hyva #213
+
+### Fixed
+- Make sure `value` of event `purchase` is without tax and shipping
+
+## [3.7.13] - 15 March 2024
+### Fixed
+- Require array return type for merge tags
+- Create separate EnhancedConversions tag class
+- Implement `ArgumentInterface` for Magewire dummy component class @wahidnory #223
+
 ## [3.7.12] - 27 February 2024
 ### Fixed
 - Add return to TriggerViewSearchResultDataLayerEvent plugin #214
-- hyva_checkout_index_index.xml is loaded without having the hyva checkout enabled #218
+- `hyva_checkout_index_index.xml` is loaded without having the hyva checkout enabled #218
 - Fix restriction cookies with multiple website IDs #217 @jemoon
 
 ## [3.7.11] - 6 February 2024

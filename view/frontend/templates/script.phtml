@@ -7,9 +7,14 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
+
+<?php
+$events = ($config->waitForUserInteraction() === false)
+    ? "'load', 'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'"
+    : "'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'";
+?>
 <script>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
-
     (function (events) {
         const initYireoGoogleTagManager2 = function () {
             events.forEach(function (eventType) {
@@ -31,12 +36,10 @@ $config = $block->getConfig();
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
         })
-    })([<?php if ($config->waitForUserInteraction() === false) : ?>'load', <?php endif; ?>'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel']);
-</script>
+    })([<?= $events ?>]);
 
-<?php if ($config->isDebug()): ?>
-    <script>
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
-        window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
-    </script>
-<?php endif; ?>
+    <?php if ($config->isDebug()): ?>
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;
+    window.YIREO_GOOGLETAGMANAGER2_DEBUG_CLICKS = <?= $config->isDebugClicks() ? 'true' : 'false' ?>;
+    <?php endif; ?>
+</script>

@@ -46,9 +46,9 @@ class TriggerAddPaymentInfoDataLayerEvent
     }
 
     /**
-     * @param $orderId
+     * @param int $orderId
      * @param PaymentInformationManagementInterface $subject
-     * @param $cartId
+     * @param int $cartId
      * @param PaymentInterface $paymentMethod
      * @param AddressInterface|null $billingAddress
      * @return int

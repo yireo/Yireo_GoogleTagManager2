@@ -2,14 +2,13 @@
 namespace Yireo\GoogleTagManager2\Observer;
 
 use Magento\Framework\App\Request\Http as Request;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\View\LayoutInterface;
 
 class AddAdditionalLayoutHandles implements ObserverInterface
 {
-    private RequestInterface $request;
+    private Request $request;
     private LayoutInterface $layout;
 
     public function __construct(
@@ -33,7 +32,7 @@ class AddAdditionalLayoutHandles implements ObserverInterface
 
     private function getSystemPath(): string
     {
-        $parts = explode('/', $this->request->getFullActionName()); // @phpstan-ignore-line
+        $parts = explode('/', $this->request->getFullActionName());
         return implode('_', array_slice($parts, 0, 3));
     }
 }

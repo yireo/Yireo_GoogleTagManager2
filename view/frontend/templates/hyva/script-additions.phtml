@@ -35,6 +35,19 @@ $commons = $block->getCommonsViewModel();
             return ['cart', 'customer'];
         }
 
+        getSectionNames().forEach(function (sectionName) {
+            if (!event.detail.data[sectionName].gtm) {
+                return;
+            }
+
+            const attributes = event.detail.data[sectionName].gtm;
+            if (!Object.keys(attributes).length > 0) {
+                return;
+            }
+
+            yireoGoogleTagManager2Pusher(attributes, 'push (attributes) [script-additions.phtml]');
+        });
+
         let attributes = {};
         getSectionNames().forEach(function (sectionName) {
             if (!event.detail.data[sectionName].gtm_events) {
@@ -51,10 +64,7 @@ $commons = $block->getCommonsViewModel();
                 if (!metaData || metaData.cacheable !== true) {
                     yireoGoogleTagManager2Logger('removing event "' + eventId + '" from section "' + sectionName + '"')
 
-                    let mageCacheStorage = window.localStorage.getItem('mage-cache-storage');
-                    if (mageCacheStorage) {
-                        mageCacheStorage = JSON.parse(mageCacheStorage);
-                    }
+                    let mageCacheStorage = event.detail.data;
 
                     if (mageCacheStorage !== null
                         && typeof mageCacheStorage[sectionName] !== 'undefined'

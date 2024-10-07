@@ -28,7 +28,7 @@ class CategoryAttributes implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $options = [['value' => '', 'label' => __('')]];
+        $options = [['value' => '', 'label' => '']];
 
         $this->searchCriteriaBuilder->addFilter('is_visible', 1);
         $sortOrder = $this->sortOrderFactory->create(['field' => 'attribute_code', 'direction' => 'asc']);

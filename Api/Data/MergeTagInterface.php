@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 interface MergeTagInterface extends ArgumentInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
-    public function merge();
+    public function merge(): array;
 }

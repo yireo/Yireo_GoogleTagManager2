@@ -32,7 +32,11 @@ define(['yireoGoogleTagManagerLogger'], function (logger) {
 
         logger(message, eventData);
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ecommerce: null});
+
+        if (cleanEventData.ecommerce) {
+            window.dataLayer.push({ecommerce: null});
+        }
+
         window.dataLayer.push(cleanEventData);
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
     };

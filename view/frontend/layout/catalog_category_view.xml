@@ -21,23 +21,35 @@
                     <item name="view_item_list_event" xsi:type="array">
                         <item name="event" xsi:type="string">view_item_list</item>
                         <item name="ecommerce" xsi:type="array">
-                            <item name="items" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                            <item name="items" xsi:type="object">
+                                Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products
+                            </item>
                         </item>
                     </item>
                 </argument>
 
                 <argument name="data_layer" xsi:type="array">
                     <item name="page_type" xsi:type="string">category</item>
-                    <item name="category" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory</item>
-                    <item name="category_size" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize</item>
-                    <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products</item>
+                    <item name="category" xsi:type="object">
+                        Yireo\GoogleTagManager2\DataLayer\Tag\Category\CurrentCategory
+                    </item>
+                    <item name="category_size" xsi:type="object">
+                        Yireo\GoogleTagManager2\DataLayer\Tag\Category\CategorySize
+                    </item>
+                    <item name="products" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Category\Products
+                    </item>
                 </argument>
             </arguments>
         </referenceBlock>
 
-        <block name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
+        <block
+            name="yireo_googletagmanager2.product-details.inner"
+            template="Yireo_GoogleTagManager2::product/details.phtml"
+            ifconfig="googletagmanager2/settings/enabled">
             <arguments>
-                <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</argument>
+                <argument name="product_details" xsi:type="object">
+                    Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct
+                </argument>
                 <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
             </arguments>
         </block>

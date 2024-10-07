@@ -43,3 +43,11 @@ public function afterMapByProduct(ProductDataMapper $productDataMapper, array $p
 }
 ```
 
+# I'm getting CSP errors with this extension
+We have tested this extension with out-of-the-box functionality thoroughly upon CSP errors. And the chance that there are CSP errors
+related to this extension itself is small.
+
+Note that non-developers can easily add new third-party scripts to the Google Tag Manager console (so not within Magento, but from
+their click-click Google account) which then would cause issues with CSP. This is the goal of CSP: Make sure that third-party
+scripts are only allowed if the CSP policy is modified to accommodate them. This CSP concept has zero to do with the Magento
+extension though.
