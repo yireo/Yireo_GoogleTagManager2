@@ -2,11 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Api\Data\CartItemInterface;
+use Magento\Quote\Model\Quote\Item as CartItem;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
@@ -21,8 +20,9 @@ class CartItemDataMapper
 
     /**
      * @param ProductDataMapper $productDataMapper
-     * @param ProductRepositoryInterface $productRepository
+     * @param ProductProvider $productProvider
      * @param PriceFormatter $priceFormatter
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         ProductDataMapper $productDataMapper,
@@ -37,11 +37,11 @@ class CartItemDataMapper
     }
 
     /**
-     * @param CartItemInterface $cartItem
+     * @param CartItem $cartItem
      * @return array
      * @throws LocalizedException
      */
-    public function mapByCartItem(CartItemInterface $cartItem): array
+    public function mapByCartItem(CartItem $cartItem): array
     {
         try {
             $product = $this->productProvider->getBySku($cartItem->getSku());
@@ -60,25 +60,25 @@ class CartItemDataMapper
     }
 
     /**
-     * @param CartItemInterface $cartItem
+     * @param CartItem $cartItem
      * @return float
      */
-    private function getPrice(CartItemInterface $cartItem): float
+    private function getPrice(CartItem $cartItem): float
     {
         $displayType = (int)$this->scopeConfig->getValue(
             Config::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE,
             ScopeInterface::SCOPE_STORE,
-            $cartItem->getStoreId() // @phpstan-ignore-line
+            $cartItem->getStoreId()
         );
 
         switch ($displayType) {
             case Config::DISPLAY_TYPE_EXCLUDING_TAX:
             case Config::DISPLAY_TYPE_BOTH:
-                $price = $cartItem->getConvertedPrice(); // @phpstan-ignore-line
+                $price = $cartItem->getConvertedPrice();
                 break;
             case Config::DISPLAY_TYPE_INCLUDING_TAX:
             default:
-                $price = $cartItem->getPriceInclTax(); // @phpstan-ignore-line
+                $price = $cartItem->getPriceInclTax();
                 break;
         }
 

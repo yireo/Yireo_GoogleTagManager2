@@ -4,6 +4,10 @@
         <plugin name="Yireo_GoogleTagManager2::addProductDetails" type="Yireo\GoogleTagManager2\Plugin\AddProductDetails"/>
     </type>
 
+    <type name="Magento\Framework\View\Element\Template">
+        <plugin name="Yireo_GoogleTagManager2::addCspInlineScripts" type="Yireo\GoogleTagManager2\Plugin\AddCspInlineScripts"/>
+    </type>
+
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="Yireo_GoogleTagManager2::addDataToCustomerSection" type="Yireo\GoogleTagManager2\Plugin\AddDataToCustomerSection"/>
     </type>

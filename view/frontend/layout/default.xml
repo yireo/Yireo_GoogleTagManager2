@@ -13,10 +13,9 @@
     <body>
         <referenceBlock name="head.additional">
             <block
-                    name="yireo_googletagmanager2.script"
-                    template="Yireo_GoogleTagManager2::script.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
-            >
+                name="yireo_googletagmanager2.script"
+                template="Yireo_GoogleTagManager2::script.phtml"
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
                 </arguments>
@@ -25,10 +24,9 @@
 
         <referenceContainer name="after.body.start">
             <block
-                    name="yireo_googletagmanager2.iframe"
-                    template="Yireo_GoogleTagManager2::iframe.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
-            >
+                name="yireo_googletagmanager2.iframe"
+                template="Yireo_GoogleTagManager2::iframe.phtml"
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
                 </arguments>
@@ -37,10 +35,9 @@
 
         <container name="yireo_googletagmanager2.data-layer.container" after="before.body.end">
             <block
-                    name="yireo_googletagmanager2.data-layer"
-                    template="Yireo_GoogleTagManager2::luma/data-layer.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
-            >
+                name="yireo_googletagmanager2.data-layer"
+                template="Yireo_GoogleTagManager2::luma/data-layer.phtml"
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="data_layer_view_model" xsi:type="object">
                         Yireo\GoogleTagManager2\ViewModel\DataLayer
@@ -54,9 +51,12 @@
 
                     <argument name="data_layer" xsi:type="array">
                         <item name="version" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Version</item>
-                        <item name="page_type" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType</item>
-                        <item name="page_path" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath</item>
-                        <item name="page_title" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle</item>
+                        <item name="page_type" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageType
+                        </item>
+                        <item name="page_path" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PagePath
+                        </item>
+                        <item name="page_title" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\PageTitle
+                        </item>
                         <item name="virtual_page" xsi:type="object">
                             Yireo\GoogleTagManager2\DataLayer\Tag\Page\VirtualPage
                         </item>
@@ -71,26 +71,21 @@
             </block>
 
             <block
-                    name="yireo_googletagmanager2.script-additions"
-                    template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
-                    after="yireo_googletagmanager2.data-layer"
-            >
+                name="yireo_googletagmanager2.script-additions"
+                template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+                after="yireo_googletagmanager2.data-layer">
                 <arguments>
-                    <argument name="data_layer_view_model" xsi:type="object">
-                        Yireo\GoogleTagManager2\ViewModel\DataLayer
-                    </argument>
-                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons
-                    </argument>
+                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
+                    <argument name="commons_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\Commons</argument>
                 </arguments>
             </block>
 
             <block
-                    name="yireo_googletagmanager2.script-product-clicks"
-                    template="Yireo_GoogleTagManager2::luma/script-product-clicks.phtml"
-                    ifconfig="googletagmanager2/settings/enabled"
-                    after="yireo_googletagmanager2.data-layer"
-            >
+                name="yireo_googletagmanager2.script-product-clicks"
+                template="Yireo_GoogleTagManager2::luma/script-product-clicks.phtml"
+                after="yireo_googletagmanager2.data-layer"
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="product_path" xsi:type="string">.product-items a.product</argument>
                 </arguments>

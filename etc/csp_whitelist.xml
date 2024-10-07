@@ -6,7 +6,6 @@
             <values>
                 <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
                 <value id="tagmanager.google.com" type="host">tagmanager.google.com</value>
-                <!--<value id="unsafe-eval" type="host">unsafe-eval</value>-->
             </values>
         </policy>
         <policy id="connect-src">

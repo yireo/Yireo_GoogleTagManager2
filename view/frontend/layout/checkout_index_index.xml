@@ -57,9 +57,8 @@
             <block
                 name="yireo_googletagmanager2.script-begin-checkout"
                 template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
-                ifconfig="googletagmanager2/settings/enabled"
                 after="yireo_googletagmanager2.data-layer"
-            >
+                ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
                 </arguments>

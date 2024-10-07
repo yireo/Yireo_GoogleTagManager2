@@ -1,13 +1,11 @@
 <?php declare(strict_types=1);
 
+// phpcs:ignoreFile -- Too many issues, lol
+
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\ListProduct;
-use Magento\Framework\Registry;
-use Magento\Framework\View\LayoutInterface;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
@@ -28,19 +26,21 @@ class CategoryPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
      * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
+     * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
      * @magentoAppArea frontend
-     * @magentoAppIsolation enabled
+     * @magentoCache full_page disabled
      * @magentoDbIsolation enabled
-     * @magentoCache all disabled
+     * @magentoAppIsolation enabled
      */
     public function testValidDataLayerWithOneCategory()
     {
         $this->assertEnabledFlagIsWorking();
 
-
         /** @var CategoryInterface $category */
         $category = $this->createCategory(3);
+        $this->assertTrue($category->getId() > 0);
         $this->createProducts(3, ['category_ids' => [$category->getId()]]);
+
         $products = $category->getProductCollection();
         $this->assertTrue($products->count() >= 3, 'Product count is '.$products->count());
 

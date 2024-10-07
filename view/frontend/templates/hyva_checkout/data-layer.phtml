@@ -8,32 +8,16 @@ use Yireo\GoogleTagManager2\MageWire\Checkout as CheckoutComponent;
 /** @var Template $block */
 /** @var BeginCheckoutEvent $beginCheckoutEvent */
 /** @var CheckoutComponent $magewire */
-$magewire = $block->getData('magewire');
-if (false === $magewire->isHyvaCheckoutEnabled()) {
-    return;
-}
-
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
 ?>
-<div>
+<div class="hidden">
     <script>
-        function initYireoGoogleTagManagerInHyvaCheckout() {
-            "use strict";
+        window.addEventListener('ga:trigger-event', function (event) {
+            yireoGoogleTagManager2Pusher(event.detail, 'Hyva Checkout');
+        });
 
-            function triggerEvent(event) {
-                yireoGoogleTagManager2Pusher(event.detail, 'Hyva Checkout');
-            }
-
-            triggerEvent(new CustomEvent('ga:trigger-event', {detail: <?= json_encode($beginCheckoutEvent->get()) ?>}));
-
-            return {
-                triggerEvent
-            }
-        }
+        (function () {
+            yireoGoogleTagManager2Pusher(<?= json_encode($beginCheckoutEvent->get()) ?>, 'Hyva Checkout');
+        })();
     </script>
-    <div id="ga-trigger"
-         x-data="initYireoGoogleTagManagerInHyvaCheckout()"
-         class="hidden"
-         @ga:trigger-event.window="triggerEvent($event)"
-    ></div>
 </div>

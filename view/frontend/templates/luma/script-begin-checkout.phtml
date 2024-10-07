@@ -6,7 +6,8 @@ use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 /** @var Template $block */
 /** @var BeginCheckout $beginCheckoutEvent */
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
+$encodedEvent = json_encode($beginCheckoutEvent->get());
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= json_encode($beginCheckoutEvent->get()) ?>
+    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= $encodedEvent ?>;
 </script>

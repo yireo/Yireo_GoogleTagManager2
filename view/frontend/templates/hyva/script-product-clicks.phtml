@@ -28,7 +28,7 @@ $productPath = $block->getProductPath();
     }
 
     const products = document.querySelectorAll('<?= $productPath ?>');
-    if (products) {
+    if (products && products.length > 0) {
         products.forEach(function(product) {
             product.addEventListener('click', function(event, s) {
                 let parentElement = yireoGoogleTagManager2FindParentElementWithName(event.target, 'form');

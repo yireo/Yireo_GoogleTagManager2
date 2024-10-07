@@ -37,7 +37,11 @@
 
         yireoGoogleTagManager2Logger(message, eventData);
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ecommerce: null});
+
+        if (eventData.ecommerce) {
+            window.dataLayer.push({ecommerce: null});
+        }
+
         window.dataLayer.push(eventData);
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
     }

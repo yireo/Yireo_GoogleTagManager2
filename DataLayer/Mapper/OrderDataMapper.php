@@ -5,7 +5,10 @@ namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Payment\Model\MethodInterface as PaymentMethod;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Payment;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -51,7 +54,7 @@ class OrderDataMapper
             'value' => $this->getValueFromOrder($order),
             'id' => $order->getIncrementId(),
             'affiliation' => $this->config->getStoreName(),
-            'revenue' => $this->priceFormatter->format($order->getGrandTotal()),
+            'revenue' => $this->priceFormatter->format((float)$order->getSubtotal()),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
             'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
@@ -68,7 +71,7 @@ class OrderDataMapper
      */
     private function getValueFromOrder(OrderInterface $order): float
     {
-        return $this->priceFormatter->format((float)$order->getGrandTotal());
+        return $this->priceFormatter->format((float)$order->getSubtotal());
     }
 
     /**
@@ -84,6 +87,7 @@ class OrderDataMapper
             return $this->customerDataMapper->mapByCustomer($customer);
         }
 
+        /** @var Order $order */
         return $this->guestDataMapper->mapByOrder($order);
     }
 
@@ -94,12 +98,16 @@ class OrderDataMapper
      */
     protected function getPaymentType(OrderInterface $order): string
     {
-        // @phpstan-ignore-next-line
-        if (!$order || !$order->getPayment() || !$order->getPayment()->getMethodInstance()) {
+        $orderPayment = $order->getPayment();
+        if (!$orderPayment instanceof Payment) {
+            return '';
+        }
+        
+        $paymentMethod = $orderPayment->getMethodInstance();
+        if (!$paymentMethod instanceof PaymentMethod) {
             return '';
         }
 
-        // @phpstan-ignore-next-line
-        return $order->getPayment()->getMethodInstance()->getTitle();
+        return $paymentMethod->getTitle();
     }
 }

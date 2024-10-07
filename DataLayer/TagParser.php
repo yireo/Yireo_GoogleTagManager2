@@ -30,8 +30,8 @@ class TagParser
     }
 
     /**
-     * @param $tagName
-     * @param $tagValue
+     * @param string $tagName
+     * @param mixed $tagValue
      * @param array $data
      * @return array
      */

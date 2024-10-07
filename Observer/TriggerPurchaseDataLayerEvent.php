@@ -25,6 +25,11 @@ class TriggerPurchaseDataLayerEvent implements ObserverInterface
     {
         /** @var OrderInterface $order */
         $order = $observer->getData('order');
+        $purchaseEventData = $this->purchaseEvent->setOrder($order)->get();
+        if (empty($purchaseEventData)) {
+            return;
+        }
+
         $this->checkoutSessionDataProvider->add(
             'purchase_event',
             $this->purchaseEvent->setOrder($order)->get()

@@ -3,7 +3,7 @@
 namespace Yireo\GoogleTagManager2\Model\Config\Source;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
-use Magento\Eav\Api\Data\AttributeInterface;
+use Magento\Eav\Model\Attribute;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderFactory;
 use Magento\Framework\Data\OptionSourceInterface;
@@ -29,7 +29,7 @@ class CustomerAttributes implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $options = [['value' => '', 'label' => __('')]];
+        $options = [['value' => '', 'label' => '']];
 
         $sortOrder = $this->sortOrderFactory->create(['field' => 'attribute_code', 'direction' => 'asc']);
         $this->searchCriteriaBuilder->addSortOrder($sortOrder);
@@ -37,6 +37,7 @@ class CustomerAttributes implements OptionSourceInterface
 
         $searchResult = $this->attributeRepository->getList('customer', $searchCriteria);
         foreach ($searchResult->getItems() as $customerAttribute) {
+            /** @var Attribute $customerAttribute */
             if (false === $this->isAttributeDisplayedInFrontend($customerAttribute)) {
                 continue;
             }
@@ -52,12 +53,12 @@ class CustomerAttributes implements OptionSourceInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param Attribute $attribute
      * @return bool
      */
-    private function isAttributeDisplayedInFrontend(AttributeInterface $attribute): bool
+    private function isAttributeDisplayedInFrontend(Attribute $attribute): bool
     {
-        $forms = $attribute->getUsedInForms(); // @phpstan-ignore-line
+        $forms = $attribute->getUsedInForms();
         foreach ($forms as $form) {
             if (preg_match('/^customer_/', $form)) {
                 return true;

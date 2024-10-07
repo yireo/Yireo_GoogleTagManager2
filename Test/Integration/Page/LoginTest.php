@@ -22,14 +22,17 @@ class LoginTest extends PageTestCase
     {
         $this->createCustomer();
 
-        $this->getRequest()->setPostValue([
+        /** @var HttpRequest $request */
+        $request = $this->getRequest();
+
+        $request->setPostValue([
             'login' => [
                 'username' => 'customer@example.com',
                 'password' => 'password',
             ],
             'formKey' => $this->objectManager->get(FormKey::class)->getFormKey(),
         ]);
-        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
+        $request->setMethod(HttpRequest::METHOD_POST);
         $this->dispatch('customer/account/loginPost');
 
         $customerSectionPool = $this->objectManager->get(SectionPool::class);

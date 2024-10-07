@@ -15,14 +15,12 @@
             <block
                 name="yireo_googletagmanager2.pusher-script"
                 template="Yireo_GoogleTagManager2::hyva/script-pusher.phtml"
-                ifconfig="googletagmanager2/settings/enabled"
-            />
+                ifconfig="googletagmanager2/settings/enabled"/>
 
             <block
                 name="yireo_googletagmanager2.logger-script"
                 template="Yireo_GoogleTagManager2::hyva/script-logger.phtml"
-                ifconfig="googletagmanager2/settings/enabled"
-            />
+                ifconfig="googletagmanager2/settings/enabled"/>
         </referenceContainer>
 
         <referenceBlock
