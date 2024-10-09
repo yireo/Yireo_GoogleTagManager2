@@ -49,20 +49,20 @@ class PurchaseWebhookEvent
 
         $marketingData = [];
 
-        try {            
+        try {
             $this->debugger->debug("InvoicePaymentObserver: Processing order " . $order->getIncrementId());
 
             $extensionAttributes = $order->getExtensionAttributes();
             $this->debugger->debug("InvoicePaymentObserver: Extension attributes object: " . ($extensionAttributes ? 'exists' : 'is null'));
-    
+
             if ($extensionAttributes) {
                 $marketingData = $extensionAttributes->getTrytaggingMarketing();
                 $this->debugger->debug("InvoicePaymentObserver: Marketing data: " . ($marketingData ?: 'is null'), $marketingData);
             }
-    
+
             $rawMarketingData = $order->getData('trytagging_marketing');
             $this->debugger->debug("InvoicePaymentObserver: Raw marketing data from order: " . ($rawMarketingData ?: 'is null'), $rawMarketingData);
-            
+
             if ($rawMarketingData) {
                 $marketingData = $rawMarketingData;
             }
@@ -82,6 +82,7 @@ class PurchaseWebhookEvent
         }
 
         $data = [
+            'event' => 'trytagging_purchase',
             'marketing' => $marketingData,
             'store_domain' => $this->config->getStoreDomain(),
             'plugin_version' => $this->config->getVersion(),
@@ -97,7 +98,36 @@ class PurchaseWebhookEvent
             ]
         ];
 
-        $data['event'] = 'trytagging_purchase';
+        try {
+            $data['user_data'] = [
+                "customer_id" => $order->getCustomerId() ?? '',
+                "billing_first_name" => $order->getBillingAddress() ? $order->getBillingAddress()->getFirstname() ?? '' : '',
+                "billing_last_name" => $order->getBillingAddress() ? $order->getBillingAddress()->getLastname() ?? '' : '',
+                "billing_address" => $order->getBillingAddress() && $order->getBillingAddress()->getStreet() ? $order->getBillingAddress()->getStreet()[0] ?? '' : '',
+                "billing_postcode" => $order->getBillingAddress() ? $order->getBillingAddress()->getPostcode() ?? '' : '',
+                "billing_country" => $order->getBillingAddress() ? $order->getBillingAddress()->getCountryId() ?? '' : '',
+                "billing_state" => $order->getBillingAddress() ? $order->getBillingAddress()->getRegion() ?? '' : '',
+                "billing_city" => $order->getBillingAddress() ? $order->getBillingAddress()->getCity() ?? '' : '',
+                "billing_email" => $order->getBillingAddress() ? $order->getBillingAddress()->getEmail() ?? '' : '',
+                "billing_phone" => $order->getBillingAddress() ? $order->getBillingAddress()->getTelephone() ?? '' : '',
+                "shipping_first_name" => $order->getShippingAddress() ? $order->getShippingAddress()->getFirstname() ?? '' : '',
+                "shipping_last_name" => $order->getShippingAddress() ? $order->getShippingAddress()->getLastname() ?? '' : '',
+                "shipping_company" => $order->getShippingAddress() ? $order->getShippingAddress()->getCompany() ?? '' : '',
+                "shipping_address" => $order->getShippingAddress() && $order->getShippingAddress()->getStreet() ? $order->getShippingAddress()->getStreet()[0] ?? '' : '',
+                "shipping_postcode" => $order->getShippingAddress() ? $order->getShippingAddress()->getPostcode() ?? '' : '',
+                "shipping_country" => $order->getShippingAddress() ? $order->getShippingAddress()->getCountryId() ?? '' : '',
+                "shipping_state" => $order->getShippingAddress() ? $order->getShippingAddress()->getRegion() ?? '' : '',
+                "shipping_city" => $order->getShippingAddress() ? $order->getShippingAddress()->getCity() ?? '' : '',
+                "shipping_phone" => $order->getShippingAddress() ? $order->getShippingAddress()->getTelephone() ?? '' : '',
+                "email" => $order->getCustomerEmail() ?? '',
+                "first_name" => $order->getCustomerFirstname() ?? '',
+                "last_name" => $order->getCustomerLastname() ?? '',
+                "new_customer" => (string)($order->getCustomerIsGuest() ? "true" : "false")
+            ];
+        } catch (\Exception $e) {
+            $this->debugger->debug($e->getMessage());
+        }
+
         $client = $this->clientFactory->create();
         $client->addHeader('Content-Type', 'application/json');
         $client->addHeader('Accept', 'application/json');
