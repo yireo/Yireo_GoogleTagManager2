@@ -19,6 +19,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Tagging\GTM\Api\CustomerSessionDataProviderInterface;
 use Tagging\GTM\DataLayer\Mapper\CustomerDataMapper;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Psr\Log\LoggerInterface;
+use Tagging\GTM\Logger\Debugger;
 
 class AddDataToCustomerSection
 {
@@ -28,6 +30,8 @@ class AddDataToCustomerSection
     private CustomerDataMapper $customerDataMapper;
     private CustomerRepositoryInterface $customerRepository;
     private CollectionFactory $orderCollectionFactory;
+    private LoggerInterface $logger;
+    private Debugger $debugger;
 
     /**
      * Customer constructor.
@@ -43,7 +47,9 @@ class AddDataToCustomerSection
         CustomerSessionDataProviderInterface $customerSessionDataProvider,
         CustomerDataMapper $customerDataMapper,
         CustomerRepositoryInterface $customerRepository,
-        CollectionFactory $orderCollectionFactory
+        CollectionFactory $orderCollectionFactory,
+        LoggerInterface $logger,
+        Debugger $debugger
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
@@ -51,6 +57,8 @@ class AddDataToCustomerSection
         $this->customerDataMapper = $customerDataMapper;
         $this->customerRepository = $customerRepository;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->logger = $logger;
+        $this->debugger = $debugger;
     }
 
     /**
@@ -98,6 +106,7 @@ class AddDataToCustomerSection
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
+        $totalLifeTimeValue = $this->getLifeTimeValue($customer->getEmail());
 
         return array_merge([
             'customerLoggedIn' => 1,
@@ -105,21 +114,36 @@ class AddDataToCustomerSection
             'customerGroupId' => $customerGroup->getId(),
             'customerGroupCode' => strtoupper($customerGroup->getCode()),
             'visitorLoginState' => 'logged in',
-            'visitorLifeTimeValue' => $this->getLifeTimeValue($customer->getEmail()),
-            'visitorExistingCustomer' => $this->getLifeTimeValue($customer->getEmail()) > 0 ? 'Yes' : 'No',
+            'visitorLifeTimeValue' => $totalLifeTimeValue,
+            'visitorExistingCustomer' => $totalLifeTimeValue > 0 ? 'Yes' : 'No',
             'visitorType' => 'LOGGED IN'
         ], $customerGtmData);
     }
 
     private function getLifeTimeValue($customerEmail) 
     {
-        $total=0;
-        $orders = $this->orderCollectionFactory->create()
-            ->addAttributeToFilter('customer_email', $customerEmail);
-        foreach ($orders as $order) {
-            $total=$total+$order->getGrandTotal();
-        }
+        $this->debugger->debug("Calculating lifetime value for customer email: " . $customerEmail);
 
-        return $total;
+        try {
+            $collection = $this->orderCollectionFactory->create();
+            $collection->addAttributeToFilter('customer_email', $customerEmail);
+            $collection->addExpressionAttributeToSelect(
+                'total_lifetime_value',
+                'SUM({{grand_total}})',
+                'grand_total'
+            );
+            $collection->setPageSize(1);
+
+            $result = $collection->getFirstItem();
+            $lifetimeValue = (float) $result->getTotalLifetimeValue();
+
+            $this->debugger->debug("Calculated lifetime value: " . $lifetimeValue);
+
+            return $lifetimeValue;
+        } catch (\Exception $e) {
+            $this->logger->error("Error calculating lifetime value: " . $e->getMessage());
+            $this->debugger->debug("Error calculating lifetime value: " . $e->getMessage());
+            return 0.0; // Return a default value in case of an error
+        }
     }
 }
