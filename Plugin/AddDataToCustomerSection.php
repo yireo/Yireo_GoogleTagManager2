@@ -127,15 +127,12 @@ class AddDataToCustomerSection
         try {
             $collection = $this->orderCollectionFactory->create();
             $collection->addAttributeToFilter('customer_email', $customerEmail);
-            $collection->addExpressionAttributeToSelect(
-                'total_lifetime_value',
-                'SUM({{grand_total}})',
-                'grand_total'
-            );
-            $collection->setPageSize(1);
-
-            $result = $collection->getFirstItem();
-            $lifetimeValue = (float) $result->getTotalLifetimeValue();
+            $collection->addAttributeToSelect('grand_total');
+            
+            $lifetimeValue = 0.0;
+            foreach ($collection as $order) {
+                $lifetimeValue += (float)$order->getGrandTotal();
+            }
 
             $this->debugger->debug("Calculated lifetime value: " . $lifetimeValue);
 
