@@ -93,6 +93,7 @@ class Purchase implements EventInterface
     private function getDefaultOrderStates(): array
     {
         return [
+            Order::STATE_NEW,
             Order::STATE_PENDING_PAYMENT,
             Order::STATE_PAYMENT_REVIEW,
             Order::STATE_HOLDED,
