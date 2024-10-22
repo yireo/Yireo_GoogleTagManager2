@@ -209,13 +209,14 @@ class Config implements ArgumentInterface
      */
     public function getGoogleTagmanagerUrl(): string
     {
+        $default = 'https://www.googletagmanager.com';
         if (false === $this->hasServerSideTracking()) {
-            return '';
+            return $default;
         }
 
         return $this->getModuleConfigValue(
             'serverside_gtm_url',
-            'https://www.googletagmanager.com'
+            $default
         );
     }
 
