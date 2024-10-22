@@ -6,6 +6,7 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
+$gtmIds = explode(',', $config->getId());
 ?>
 
 <?php
@@ -21,6 +22,7 @@ $events = ($config->waitForUserInteraction() === false)
                 window.removeEventListener(eventType, initYireoGoogleTagManager2);
             });
 
+            <?php foreach($gtmIds as $gtmId): ?>
             (function (w, d, s, l, i) {
                 w[l] = w[l] || [];
                 w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
@@ -31,6 +33,7 @@ $events = ($config->waitForUserInteraction() === false)
                 j.src = '<?= $config->getGoogleTagmanagerUrl() ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', '<?= $config->getId() ?>');
+            <?php endforeach; ?>
         }
 
         events.forEach(function (eventType) {

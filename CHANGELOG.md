@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Only trigger `view_cart` event when there are items in the cart
+- Allow multiple GTM IDs
 
 ## [3.9.9] - 22 October 2024
 ### Fixed
