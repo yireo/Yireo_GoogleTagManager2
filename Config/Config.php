@@ -87,7 +87,7 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * Return the GA ID
+     * Return the GTM ID
      *
      * @return string
      */
