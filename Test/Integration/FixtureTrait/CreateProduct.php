@@ -12,19 +12,17 @@ use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
 use Magento\CatalogUrlRewrite\Observer\ProductProcessUrlRewriteSavingObserver;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\State;
 use Magento\Framework\Event\Config\Data;
 use Magento\Framework\Event\ConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
-use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Framework\Registry;
 use Magento\Store\Api\WebsiteRepositoryInterface;
-use Magento\TestFramework\Helper\Bootstrap;
+use Yireo\GoogleTagManager2\Test\Integration\Stub\FulltextStub;
 
 trait CreateProduct
 {
@@ -33,6 +31,18 @@ trait CreateProduct
         array $data = []
     ): ProductInterface {
         $objectManager = ObjectManager::getInstance();
+        /*$objectManager->configure([
+            'preferences' => [
+                Fulltext::class => FulltextStub::class
+            ]
+        ]);*/
+
+        /*
+        $indexerFactory = $objectManager->get(\Magento\Indexer\Model\IndexerFactory::class);
+        /** @var \Magento\Indexer\Model\Indexer $indexer */
+        //$indexer = $indexerFactory->create()->load('catalogsearch_fulltext');
+        //$indexer->reindexAll();
+
         $productFactory = $objectManager->get(ProductInterfaceFactory::class);
         $defaultCategory = $objectManager->get(DefaultCategory::class);
         $productRepository = $objectManager->get(ProductRepositoryInterface::class);
@@ -58,13 +68,20 @@ trait CreateProduct
             ->setWebsiteIds([$this->getDefaultWebsiteId()])
             ->setAttributeSetId($this->getDefaultAttributeSetId())
             ->setVisibility(Visibility::VISIBILITY_BOTH)
-            ->setStockData(['use_config_manage_stock' => 0])
             //->setCanSaveCustomOptions(true)
             //->setHasOptions(true)
             ->addData($data);
 
         $product->isObjectNew(true);
         $productRepository->save($product);
+
+        $stockRegistry = $objectManager->get(StockRegistryInterface::class);
+        $stockItem = $stockRegistry->getStockItemBySku($product->getSku());
+        $stockItem->setUseConfigManageStock(1);
+        $stockItem->setIsInStock(1);
+        $stockItem->setProductId($product->getId());
+        $stockItem->setQty(9999);
+        $stockRegistry->updateStockItemBySku($product->getSku(), $stockItem);
 
         if (!empty($product->getCategoryIds())) {
             $categoryLinkManagement = $objectManager->get(CategoryLinkManagementInterface::class);
@@ -73,6 +90,8 @@ trait CreateProduct
                 $product->getCategoryIds()
             );
         }
+
+
 
         return $product;
     }
