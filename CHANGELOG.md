@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.9] - 22 October 2024
+### Fixed
+- Add new order state to `order_states_for_purchase_event` default
+- New setting `googletagmanager2/settings/serverside_enabled`
+- Only custom order states for `purchase` when Server-Side Tracking is enabled
+
 ## [3.9.8] - 12 September 2024
 ### Fixed
 - Fix Uncaught TypeError: products.forEach is not a function #246 @nahall

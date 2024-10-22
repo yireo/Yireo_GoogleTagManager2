@@ -33,12 +33,6 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="serverside_gtm_url" type="text" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Container URL</label>
-                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
-                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
-                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
-                </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -114,12 +108,27 @@
                     </depends>
                     <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
-                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="serverside_enabled" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server-Side Tracking</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Only enable this, if you are using some kind of Server-Side Tracking extension already. Note that this extension does not enable Server-Side Tracking.</comment>
+                </field>
+                <field id="serverside_gtm_url" type="text" translate="label" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container URL</label>
+                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
+                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
+                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
+                    <depends>
+                        <field id="serverside_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Orders states for purchase event</label>
                     <source_model>Yireo\GoogleTagManager2\Config\Source\OrderStateOptions</source_model>
-                    <comment>Order states at which to trigger the purchase event</comment>
+                    <comment>Order states at which to trigger the purchase event. Note that this only makes sense when using Server-Side Tracking, because otherwise no purchase event will be triggered ever. When Server-Side Tracking is disabled in this extension, the default of this setting will be to trigger at any state.</comment>
                     <depends>
                         <field id="enabled">1</field>
+                        <field id="serverside_enabled">1</field>
                     </depends>
                 </field>
             </group>

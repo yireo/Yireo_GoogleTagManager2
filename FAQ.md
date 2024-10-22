@@ -3,6 +3,11 @@ Yes, this extension ships with native JavaScript code that works with Hyvä. Add
 
 Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
 
+# This extension is not generating any `purchase` event
+First of all, make sure to upgrade to the latest version of this extension, before reporting any issue. 
+
+When making use of Server-Side Tracking, make sure to customize the setting **Orders states for purchase event** (`order_states_for_purchase_event`) and to manually trigger the `purchase` event where needed.
+
 # Does this extension work under PHP 8.2?
 Yes, version 3 does. Version 2 is no longer maintained, but you could use the following composer patch with `vaimo/composer-patches`:
 ```bash

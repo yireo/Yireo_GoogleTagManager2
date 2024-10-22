@@ -57,20 +57,6 @@ class Config implements ArgumentInterface
     }
 
     /**
-     *
-     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
-     *
-     * @return string
-     */
-    public function getGoogleTagmanagerUrl(): string
-    {
-        return $this->getModuleConfigValue(
-            'serverside_gtm_url',
-            'https://www.googletagmanager.com'
-        );
-    }
-
-    /**
      * Check whether the module is in debugging mode
      *
      * @return bool
@@ -207,8 +193,38 @@ class Config implements ArgumentInterface
         return (string)$this->getModuleConfigValue('product_list_value_on_category');
     }
 
+    public function hasServerSideTracking(): bool
+    {
+        return (bool)$this->getModuleConfigValue(
+            'serverside_enabled',
+            0
+        );
+    }
+
+    /**
+     *
+     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
+     *
+     * @return string
+     */
+    public function getGoogleTagmanagerUrl(): string
+    {
+        if (false === $this->hasServerSideTracking()) {
+            return '';
+        }
+
+        return $this->getModuleConfigValue(
+            'serverside_gtm_url',
+            'https://www.googletagmanager.com'
+        );
+    }
+
     public function getOrderStatesForPurchaseEvent(): array
     {
+        if (false === $this->hasServerSideTracking()) {
+            return [];
+        }
+
         return explode(',', (string)$this->getModuleConfigValue('order_states_for_purchase_event'));
     }
 
