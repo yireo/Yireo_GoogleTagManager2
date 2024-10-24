@@ -11,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue;
+use Yireo\GoogleTagManager2\Config\Source\ProductListValue;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\CategoryProvider;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
