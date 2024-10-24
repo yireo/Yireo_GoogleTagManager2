@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.12] - 24 October 2024
+### Fixed
+- Move `Model/Config/` classes to `Config/`
+- Add `Funding` label to backend configuration
+
 ## [3.9.11] - 22 October 2024
 ### Fixed
 - Change default `category_products` to 100 because it makes more sense

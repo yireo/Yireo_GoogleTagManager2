@@ -19,6 +19,10 @@
             <resource>Yireo_GoogleTagManager2::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
+                <field id="funding" type="note" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Funding</label>
+                    <frontend_model>Yireo\GoogleTagManager2\Config\Frontend\Funding</frontend_model>
+                </field>
                 <field id="enabled" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -26,8 +30,8 @@
                 <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container Public ID</label>
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
-                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
-                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <frontend_model>Yireo\GoogleTagManager2\Config\Frontend\ContainerId</frontend_model>
+                    <backend_model>Yireo\GoogleTagManager2\Config\Backend\ContainerId</backend_model>
                     <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
@@ -63,14 +67,14 @@
                 </field>
                 <field id="product_list_value_on_category" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product List Value on Category Page</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ProductListValue</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ProductAttributes</source_model>
                     <comment>Product EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -78,7 +82,7 @@
                 </field>
                 <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Category EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\CategoryAttributes</source_model>
                     <comment>Category EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -86,7 +90,7 @@
                 </field>
                 <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Customer EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\CustomerAttributes</source_model>
                     <comment>Customer EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -94,7 +98,7 @@
                 </field>
                 <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>view_cart occurances</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ViewCartOccurancesOptions</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
