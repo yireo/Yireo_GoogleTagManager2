@@ -35,7 +35,11 @@ class TriggerCheckoutSessionSaveEvent implements ObserverInterface
             $this->debugger->debug("TriggerCheckoutSessionSaveEvent: Cookie value: " . $marketingCookie, $marketingCookie);
 
             $marketingCookie = json_decode(base64_decode($marketingCookie), true);
-            $marketingCookie['ip'] = $_SERVER['REMOTE_ADDR'];
+            $marketingCookie['ip'] = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 
+                $_SERVER['HTTP_CLIENT_IP'] ?? 
+                $_SERVER['HTTP_X_REAL_IP'] ?? 
+                $_SERVER['REMOTE_ADDR'] ?? 
+                'unknown';
             $marketingCookie = json_encode($marketingCookie);
 
             $this->debugger->debug("TriggerCheckoutSessionSaveEvent: Prepared marketing data: " . $marketingCookie, $marketingCookie);
