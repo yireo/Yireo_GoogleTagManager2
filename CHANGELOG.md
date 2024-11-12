@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.9.13] - 12 November 2024
 ### Fixed
 - Avoid calling function twice, data already exist #254 @taoufiqaitali
+- Use price with currency instead base price #253 @florinm8
 
 ## [3.9.12] - 24 October 2024
 ### Fixed
