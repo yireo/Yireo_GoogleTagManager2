@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Avoid calling function twice, data already exist #254 @taoufiqaitali
 - Use price with currency instead base price #253 @florinm8
+- Re-enable product details in category view #250
 
 ## [3.9.12] - 24 October 2024
 ### Fixed
