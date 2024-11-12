@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.13] - 12 November 2024
+### Fixed
+- Avoid calling function twice, data already exist #254 @taoufiqaitali
+
 ## [3.9.12] - 24 October 2024
 ### Fixed
 - Move `Model/Config/` classes to `Config/`
