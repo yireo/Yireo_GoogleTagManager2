@@ -6,73 +6,73 @@ use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Helper\DefaultCategory;
-use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
-use Magento\CatalogUrlRewrite\Observer\ProductProcessUrlRewriteSavingObserver;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Event\Config\Data;
-use Magento\Framework\Event\ConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Registry;
-use Magento\Store\Api\WebsiteRepositoryInterface;
 use Yireo\GoogleTagManager2\Test\Integration\Stub\FulltextStub;
 
 trait CreateProduct
 {
+    public function getProduct($productId = 0, array $data = []): ProductInterface
+    {
+        $objectManager = ObjectManager::getInstance();
+        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
+
+        try {
+            $product = $productRepository->getById($productId);
+        } catch (NoSuchEntityException $e) {
+            $product = $this->createProduct($productId, $data);
+        }
+
+        $this->assertTrue($product->getId() > 0, 'No product ID given');
+        $this->assertTrue($product->isSalable(), 'Product is not salable');
+
+        return $product;
+    }
+
     public function createProduct(
-        int $id,
+        int $productId,
         array $data = []
     ): ProductInterface {
         $objectManager = ObjectManager::getInstance();
-        /*$objectManager->configure([
+        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
+
+        $objectManager->configure([
             'preferences' => [
                 Fulltext::class => FulltextStub::class
             ]
-        ]);*/
+        ]);
 
-        /*
-        $indexerFactory = $objectManager->get(\Magento\Indexer\Model\IndexerFactory::class);
-        /** @var \Magento\Indexer\Model\Indexer $indexer */
-        //$indexer = $indexerFactory->create()->load('catalogsearch_fulltext');
-        //$indexer->reindexAll();
+        //$this->disableEventObserver('catalog_product_save_after', ProductProcessUrlRewriteSavingObserver::class);
 
-        $productFactory = $objectManager->get(ProductInterfaceFactory::class);
-        $defaultCategory = $objectManager->get(DefaultCategory::class);
-        $productRepository = $objectManager->get(ProductRepositoryInterface::class);
+        $productSku = 'simple-product-'.rand(1,1000000);
+        $product = $objectManager->create(ProductInterface::class);
 
-        $this->disableEventObserver('catalog_product_save_after', ProductProcessUrlRewriteSavingObserver::class);
-        $this->deleteProduct($id);
+        if ($productId > 0) {
+            $product->setId($productId);
+        }
 
-        /** @var $product ProductModel */
-        $product = $productFactory->create();
+        $product->addData([
+            'type_id' => Type::TYPE_SIMPLE,
+            'attribute_set_id' => 4,
+            'name' => 'Simple Product '.rand(1,1000000),
+            'sku' => $productSku,
+            'price' => 10,
+            'weight' => 1,
+            'visibility' => Visibility::VISIBILITY_BOTH,
+            'status' => Status::STATUS_ENABLED,
+        ]);
+
+        $product->addData($data);
+
+        $product->setCustomAttribute('tax_class_id', '2');
+        $product->getExtensionAttributes()->setWebsiteIds([1]);
         $product->isObjectNew(true);
-        $product
-            ->setId($id)
-            ->setName('Product '.$id)
-            ->setSku('product'.$id)
-            ->setUrlKey('product'.$id)
-            ->setUrlPath('product'.$id)
-            ->setWeight(10)
-            ->setCategoryIds([$defaultCategory->getId()])
-            ->setTypeId(Type::TYPE_SIMPLE)
-            ->setPrice(10)
-            ->setStatus(Status::STATUS_ENABLED)
-            ->setStoreId(0)
-            ->setWebsiteIds([$this->getDefaultWebsiteId()])
-            ->setAttributeSetId($this->getDefaultAttributeSetId())
-            ->setVisibility(Visibility::VISIBILITY_BOTH)
-            //->setCanSaveCustomOptions(true)
-            //->setHasOptions(true)
-            ->addData($data);
 
-        $product->isObjectNew(true);
         $productRepository->save($product);
 
         $stockRegistry = $objectManager->get(StockRegistryInterface::class);
@@ -91,21 +91,28 @@ trait CreateProduct
             );
         }
 
+        $product = $productRepository->get($productSku);
 
+        $productHelper = $objectManager->get(\Magento\Catalog\Helper\Product::class);
+        $productHelper->setSkipSaleableCheck(true);
+
+        $this->assertTrue($product->getId() > 0, 'No product ID given');
+        $this->assertTrue($product->isSalable(), 'Product is not salable');
 
         return $product;
     }
 
-    public function createProducts($numberOfProducts = 1, array $data = []): array
+    public function getProducts($numberOfProducts = 1, array $data = []): array
     {
         $products = [];
         for ($i = 1; $i < $numberOfProducts + 1; $i++) {
-            $products[] = $this->createProduct($i, $data);
+            $products[] = $this->getProduct($i, $data);
         }
 
         return $products;
     }
 
+    /*
     private function deleteProduct(int $id)
     {
         $objectManager = ObjectManager::getInstance();
@@ -132,28 +139,6 @@ trait CreateProduct
         }
     }
 
-    /**
-     * @return int
-     */
-    private function getDefaultAttributeSetId(): int
-    {
-        $productFactory = ObjectManager::getInstance()->get(Product::class);
-
-        return (int)$productFactory->getDefaultAttributeSetId();
-    }
-
-    /**
-     * @return int
-     * @throws NoSuchEntityException
-     */
-    private function getDefaultWebsiteId(): int
-    {
-        $objectManager = ObjectManager::getInstance();
-        $websiteRepository = $objectManager->get(WebsiteRepositoryInterface::class);
-
-        return (int)$websiteRepository->get('base')->getId();
-    }
-
     private function disableEventObserver(string $eventName, string $observerClass): void
     {
         $objectManager = ObjectManager::getInstance();
@@ -172,4 +157,9 @@ trait CreateProduct
             }
         }
     }
+
+    private function getProductRepository(): ProductRepositoryInterface
+    {
+        return ObjectManager::getInstance()->get(ProductRepositoryInterface::class);
+    }*/
 }

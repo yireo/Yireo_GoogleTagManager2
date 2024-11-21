@@ -29,7 +29,7 @@ class ViewCartTest extends TestCase
         $om = ObjectManager::getInstance();
         $cart = $om->create(CartInterface::class);
 
-        $product = $this->createProduct(1);
+        $product = $this->getProduct(1);
         $item = $cart->addProduct($product);
         $item->setQty(2);
         $cart->setItems([$item]);

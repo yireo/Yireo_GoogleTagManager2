@@ -34,7 +34,7 @@ class ProductPageTest extends PageTestCase
 
         /** @var CategoryInterface $category */
         $category = $this->createCategory(3);
-        $product = $this->createProducts(1, ['category_ids' => [$category->getId()]])[0];
+        $product = $this->getProducts(1, ['category_ids' => [$category->getId()]])[0];
 
         $this->dispatch('catalog/product/view/id/' . $product->getId());
         $this->assertRequestActionName('view');

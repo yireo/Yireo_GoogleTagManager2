@@ -39,7 +39,7 @@ class CategoryPageTest extends PageTestCase
         /** @var CategoryInterface $category */
         $category = $this->createCategory(3);
         $this->assertTrue($category->getId() > 0);
-        $this->createProducts(3, ['category_ids' => [$category->getId()]]);
+        $this->getProducts(3, ['category_ids' => [$category->getId()]]);
 
         $products = $category->getProductCollection();
         $this->assertTrue($products->count() >= 3, 'Product count is '.$products->count());
