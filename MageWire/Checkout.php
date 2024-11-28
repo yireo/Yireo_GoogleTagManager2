@@ -6,14 +6,9 @@ namespace Yireo\GoogleTagManager2\MageWire;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Yireo\GoogleTagManager2\DataLayer\Event\AddPaymentInfo;
 use Yireo\GoogleTagManager2\DataLayer\Event\AddShippingInfo;
-use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 
 class Checkout extends Component
 {
-    protected $listeners = [
-        'shipping_method_selected' => 'triggerShippingMethod',
-        'payment_method_selected' => 'triggerPaymentMethod',
-    ];
     private CheckoutSession $checkoutSession;
     private AddShippingInfo $addShippingInfo;
     private AddPaymentInfo $addPaymentInfo;
@@ -26,6 +21,19 @@ class Checkout extends Component
         $this->checkoutSession = $checkoutSession;
         $this->addShippingInfo = $addShippingInfo;
         $this->addPaymentInfo = $addPaymentInfo;
+    }
+
+    public function booted(): void
+    {
+        parent::booted();
+
+        // @todo: Do this only with the Hyva Checkout
+        $this->listeners['shipping_method_selected'] = 'triggerShippingMethod';
+        $this->listeners['payment_method_selected'] = 'triggerShippingMethod';
+
+        // @todo: Do this only with the Loki Checkout
+        $this->listeners['afterSaveShippingMethod'] = 'triggerShippingMethod';
+        $this->listeners['afterSavePaymentMethod'] = 'triggerShippingMethod';
     }
 
     public function triggerShippingMethod()
