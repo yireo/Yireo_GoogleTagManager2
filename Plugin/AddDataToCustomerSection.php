@@ -21,6 +21,7 @@ use Tagging\GTM\DataLayer\Mapper\CustomerDataMapper;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Psr\Log\LoggerInterface;
 use Tagging\GTM\Logger\Debugger;
+use Tagging\GTM\Config\Config;
 
 class AddDataToCustomerSection
 {
@@ -32,6 +33,7 @@ class AddDataToCustomerSection
     private CollectionFactory $orderCollectionFactory;
     private LoggerInterface $logger;
     private Debugger $debugger;
+    private Config $config;
 
     /**
      * Customer constructor.
@@ -50,6 +52,7 @@ class AddDataToCustomerSection
         CollectionFactory $orderCollectionFactory,
         LoggerInterface $logger,
         Debugger $debugger
+        Config $config
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
@@ -124,9 +127,13 @@ class AddDataToCustomerSection
     {
         $this->debugger->debug("Calculating lifetime value for customer email: " . $customerEmail);
 
+        if(!$this->config->isLifetimeValueEnabled()) {
+            return 0;
+        }
+
         try {
             $collection = $this->orderCollectionFactory->create();
-            $collection->addAttributeToFilter('customer_email', $customerEmail);
+            $collection->addAttributeToFilter('customer_email', $customerEmail); 
             $collection->addAttributeToSelect('grand_total');
             
             $lifetimeValue = 0.0;
