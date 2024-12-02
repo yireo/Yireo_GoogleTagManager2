@@ -125,11 +125,11 @@ class AddDataToCustomerSection
 
     private function getLifeTimeValue($customerId) 
     {
-        $this->debugger->debug("Calculating lifetime value for customer id: " . $customerId);
-
         if(!$this->config->isLifetimeValueEnabled()) {
             return 0;
         }
+
+        $this->debugger->debug("Calculating lifetime value for customer id: " . $customerId);
 
         try {
             $collection = $this->orderCollectionFactory->create();
