@@ -63,7 +63,7 @@ class Config implements ArgumentInterface
      */
     public function isLifetimeValueEnabled(): bool
     {
-        return (bool)$this->getModuleConfigValue('lifetime_value', false);
+        return (bool)$this->getModuleConfigValue('lifetime_value', true);
     }
 
     /**

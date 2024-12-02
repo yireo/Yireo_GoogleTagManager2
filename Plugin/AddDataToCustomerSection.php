@@ -51,7 +51,7 @@ class AddDataToCustomerSection
         CustomerRepositoryInterface $customerRepository,
         CollectionFactory $orderCollectionFactory,
         LoggerInterface $logger,
-        Debugger $debugger
+        Debugger $debugger,
         Config $config
     ) {
         $this->customerSession = $customerSession;
@@ -62,6 +62,7 @@ class AddDataToCustomerSection
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->logger = $logger;
         $this->debugger = $debugger;
+        $this->config = $config;
     }
 
     /**
