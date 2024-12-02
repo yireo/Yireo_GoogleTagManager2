@@ -109,7 +109,7 @@ class AddDataToCustomerSection
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
-        $totalLifeTimeValue = $this->getLifeTimeValue($customer->getEmail());
+        $totalLifeTimeValue = $this->getLifeTimeValue($customerId);
 
         return array_merge([
             'customerLoggedIn' => 1,
@@ -123,9 +123,9 @@ class AddDataToCustomerSection
         ], $customerGtmData);
     }
 
-    private function getLifeTimeValue($customerEmail) 
+    private function getLifeTimeValue($customerId) 
     {
-        $this->debugger->debug("Calculating lifetime value for customer email: " . $customerEmail);
+        $this->debugger->debug("Calculating lifetime value for customer id: " . $customerId);
 
         if(!$this->config->isLifetimeValueEnabled()) {
             return 0;
@@ -133,7 +133,7 @@ class AddDataToCustomerSection
 
         try {
             $collection = $this->orderCollectionFactory->create();
-            $collection->addAttributeToFilter('customer_email', $customerEmail); 
+            $collection->addAttributeToFilter('customer_id', $customerId); 
             $collection->addAttributeToSelect('grand_total');
             
             $lifetimeValue = 0.0;
