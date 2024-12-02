@@ -57,6 +57,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check if lifetime value calculation is enabled in configuration
+     *
+     * @return bool
+     */
+    public function isLifetimeValueEnabled(): bool
+    {
+        return (bool)$this->getModuleConfigValue('lifetime_value', false);
+    }
+
+    /**
      * Checks if the module should place the GTM code or it is done by the user
      * 
      * @return bool 

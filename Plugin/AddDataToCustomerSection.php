@@ -21,6 +21,7 @@ use Tagging\GTM\DataLayer\Mapper\CustomerDataMapper;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Psr\Log\LoggerInterface;
 use Tagging\GTM\Logger\Debugger;
+use Tagging\GTM\Config\Config;
 
 class AddDataToCustomerSection
 {
@@ -32,6 +33,7 @@ class AddDataToCustomerSection
     private CollectionFactory $orderCollectionFactory;
     private LoggerInterface $logger;
     private Debugger $debugger;
+    private Config $config;
 
     /**
      * Customer constructor.
@@ -50,6 +52,7 @@ class AddDataToCustomerSection
         CollectionFactory $orderCollectionFactory,
         LoggerInterface $logger,
         Debugger $debugger
+        Config $config
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
@@ -106,7 +109,7 @@ class AddDataToCustomerSection
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
         $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
-        $totalLifeTimeValue = $this->getLifeTimeValue($customer->getEmail());
+        $totalLifeTimeValue = $this->getLifeTimeValue($customerId);
 
         return array_merge([
             'customerLoggedIn' => 1,
@@ -120,13 +123,17 @@ class AddDataToCustomerSection
         ], $customerGtmData);
     }
 
-    private function getLifeTimeValue($customerEmail) 
+    private function getLifeTimeValue($customerId) 
     {
-        $this->debugger->debug("Calculating lifetime value for customer email: " . $customerEmail);
+        if(!$this->config->isLifetimeValueEnabled()) {
+            return 0;
+        }
+
+        $this->debugger->debug("Calculating lifetime value for customer id: " . $customerId);
 
         try {
             $collection = $this->orderCollectionFactory->create();
-            $collection->addAttributeToFilter('customer_email', $customerEmail);
+            $collection->addAttributeToFilter('customer_id', $customerId); 
             $collection->addAttributeToSelect('grand_total');
             
             $lifetimeValue = 0.0;

@@ -32,6 +32,10 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="lifetime_value" type="select" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lifetime value</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="serverside_gtm_url" type="text" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container URL</label>
                     <comment><![CDATA[<span>Enter the container url without https://<span><br/>
