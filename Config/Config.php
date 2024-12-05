@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tagging\GTM\Config;
 
@@ -50,6 +52,21 @@ class Config implements ArgumentInterface
     {
         $enabled = (bool)$this->getModuleConfigValue('enabled', false);
         if (false === $enabled) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if lifetime value calculation is enabled in configuration
+     *
+     * @return bool
+     */
+    public function isLifetimeValueEnabled(): bool
+    {
+        $enabledLifetimeValue = (bool)$this->getModuleConfigValue('lifetime_value', false);
+        if (false === $enabledLifetimeValue) {
             return false;
         }
 
