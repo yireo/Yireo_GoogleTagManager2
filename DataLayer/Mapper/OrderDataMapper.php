@@ -61,6 +61,7 @@ class OrderDataMapper
             'coupon' => $order->getCouponCode(),
             'date' => date("Y-m-d", strtotime($order->getCreatedAt())),
             'paymentType' => $this->getPaymentType($order),
+            'payment_method' => $order->getPayment()?->getMethod() ?? '',
             'customer' => $this->getCustomerData($order),
         ];
     }
