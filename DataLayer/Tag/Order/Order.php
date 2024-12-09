@@ -46,7 +46,8 @@ class Order implements MergeTagInterface
             'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
             'affiliation' => $this->config->getStoreName(),
             'transaction_id' => $order->getIncrementId(),
-            'coupon' => $order->getCouponCode()
+            'coupon' => $order->getCouponCode(),
+            'payment_method' => $order->getPayment()?->getMethod() ?? '',
         ];
     }
 
