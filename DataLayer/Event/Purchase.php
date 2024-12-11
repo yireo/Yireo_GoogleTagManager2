@@ -55,7 +55,7 @@ class Purchase implements EventInterface
                 'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
                 'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
                 'coupon' => $order->getCouponCode(),
-                'payment_method' => $order->getPayment()?->getMethod() ?? '',
+                'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() ? '',
                 'items' => $this->orderItems->setOrder($order)->get(),
             ]
         ];

@@ -47,7 +47,7 @@ class Order implements MergeTagInterface
             'affiliation' => $this->config->getStoreName(),
             'transaction_id' => $order->getIncrementId(),
             'coupon' => $order->getCouponCode(),
-            'payment_method' => $order->getPayment()?->getMethod() ?? '',
+            'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() ? ''
         ];
     }
 
