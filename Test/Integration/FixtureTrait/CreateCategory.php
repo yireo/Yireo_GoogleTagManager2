@@ -7,7 +7,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
 use Magento\Catalog\Model\Category;
 use Magento\Framework\App\ObjectManager;
-use RuntimeException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 trait CreateCategory
 {
@@ -16,14 +16,20 @@ trait CreateCategory
         int $parentId = 2,
         array $data = []
     ): CategoryInterface {
-        $categoryFactory = ObjectManager::getInstance()->get(CategoryInterfaceFactory::class);
         $categoryRepository = ObjectManager::getInstance()->get(CategoryRepositoryInterface::class);
+        try {
+            if ($category = $categoryRepository->get($id)) {
+                return $category;
+            }
+        } catch (NoSuchEntityException $e) {
+        }
 
         /** @var $category Category */
+        $categoryFactory = ObjectManager::getInstance()->get(CategoryInterfaceFactory::class);
         $category = $categoryFactory->create();
         $category
             ->setId($id)
-            ->setName(isset($data['name']) ? $data['name'] : 'Category ' . $id)
+            ->setName(isset($data['name']) ? $data['name'] : 'Category '.$id)
             ->setUrlKey('category'.$id)
             ->setUrlPath('category'.$id)
             ->setLevel(2)
@@ -34,11 +40,11 @@ trait CreateCategory
             ->setIncludeInMenu(true)
             ->setPosition(1)
             ->addData($data);
+
         $category->isObjectNew(true);
         $category->save();
-        return $category;
 
-        //return $categoryRepository->save($category);
+        return $category;
     }
 
     public function createCategories($numberOfCategories = 1): array

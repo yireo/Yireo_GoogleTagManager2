@@ -6,6 +6,7 @@ use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
@@ -56,10 +57,12 @@ trait CreateProduct
             $product->setId($productId);
         }
 
+        $id = rand(1,100000);
         $product->addData([
             'type_id' => Type::TYPE_SIMPLE,
             'attribute_set_id' => 4,
-            'name' => 'Simple Product '.rand(1,1000000),
+            'name' => 'Simple Product '.$id,
+            'url_key' => 'simple_product_'.$id,
             'sku' => $productSku,
             'price' => 10,
             'weight' => 1,
@@ -74,6 +77,10 @@ trait CreateProduct
         $product->isObjectNew(true);
 
         $productRepository->save($product);
+
+        // @todo: Somehow this works and the rest does not?
+        $product->setStockData(['is_in_stock' => 1, 'qty' => 10, 'manage_stock' => 1]);
+        $product->save();
 
         $stockRegistry = $objectManager->get(StockRegistryInterface::class);
         $stockItem = $stockRegistry->getStockItemBySku($product->getSku());
@@ -93,7 +100,7 @@ trait CreateProduct
 
         $product = $productRepository->get($productSku);
 
-        $productHelper = $objectManager->get(\Magento\Catalog\Helper\Product::class);
+        $productHelper = $objectManager->get(Product::class);
         $productHelper->setSkipSaleableCheck(true);
 
         $this->assertTrue($product->getId() > 0, 'No product ID given');

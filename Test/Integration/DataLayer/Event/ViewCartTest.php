@@ -3,7 +3,9 @@
 namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Event;
 
 use Magento\Checkout\Model\Cart as CartModel;
+use Magento\Checkout\Model\Session;
 use Magento\Framework\App\ObjectManager;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\DataLayer\Event\ViewCart;
@@ -30,12 +32,18 @@ class ViewCartTest extends TestCase
         $cart = $om->create(CartInterface::class);
 
         $product = $this->getProduct(1);
-        $item = $cart->addProduct($product);
-        $item->setQty(2);
-        $cart->setItems([$item]);
-        $cart->setSubtotal(42.0);
-        $om->get(CartModel::class)->setQuote($cart);
+        $cart->addProduct($product, 2);
+        $cart->collectTotals();
+        $cart->save();
+        $cartId = $cart->getId();
 
+        $checkoutSession = ObjectManager::getInstance()->get(Session::class);
+        $checkoutSession->setQuoteId($cartId);
+        $checkoutSession->getQuote()->collectTotals();
+        $checkoutSession->getQuote()->save();
+
+        $cartRepository = ObjectManager::getInstance()->get(CartRepositoryInterface::class);
+        $cart = $cartRepository->get($cartId);
         $this->assertNotEmpty($cart->getItems());
         $this->assertCount(1, $cart->getItems());
 
@@ -43,6 +51,7 @@ class ViewCartTest extends TestCase
         $viewCartEvent = $om->create(ViewCart::class, ['cartItems' => $cartItems]);
 
         $data = $viewCartEvent->get();
+        $this->assertArrayHasKey('meta', $data);
         $this->assertTrue($data['meta']['cacheable']);
         $this->assertEquals('view_cart', $data['event']);
         $this->assertEquals('USD', $data['ecommerce']['currency']);
