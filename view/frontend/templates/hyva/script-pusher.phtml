@@ -9,9 +9,18 @@
  */
 ?>
 <script>
-    function yireoGoogleTagManager2Pusher(eventData, message) {
+    function yireoGoogleTagManager2Pusher(eventData, message, callback) {
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
 
+        function doCallback(cb) {
+            if (undefined === cb) {
+                return;
+            }
+
+            cb();
+        }
+
+        
         const copyEventData = Object.assign({}, eventData);
         let metaData = {};
         if (copyEventData.meta) {
@@ -22,12 +31,14 @@
         const eventHash = btoa(encodeURIComponent(JSON.stringify(copyEventData)));
         if (window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.includes(eventHash)) {
             yireoGoogleTagManager2Logger('Warning: Event already triggered', eventData);
+            doCallback(callback);
             return;
         }
 
         if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
             && false === metaData.allowed_pages.some(page => window.location.pathname.includes(page))) {
             yireoGoogleTagManager2Logger('Warning: Skipping event, not in allowed pages', window.location.pathname, eventData);
+            doCallback(callback);
             return;
         }
 
@@ -42,7 +53,13 @@
             window.dataLayer.push({ecommerce: null});
         }
 
-        window.dataLayer.push(eventData);
-        window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
+        try {
+            window.dataLayer.push(eventData);
+            window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
+        } catch(error) {
+            doCallback(callback);
+        }
+
+        doCallback(callback);
     }
 </script>
