@@ -83,7 +83,9 @@ class ProductDataMapper
         }
 
         $productData['price'] = $this->priceFormatter->format((float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
+        // @phpstan-ignore-next-line
         if ($product->getCustomOption('simple_product') && $product->getCustomOption('simple_product')->getProduct()) {
+            // @phpstan-ignore-next-line
             $simpleProduct = $product->getCustomOption('simple_product')->getProduct();
             $productData['price'] = $this->priceFormatter->format((float) $simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
         }
