@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.9.14] - 11 December 2024
 ### Fixed
+- Add payment method to order data #258 @sprankhub
 - Fix issue with multiple GTM IDs #257 @taoufiqaitali
 
 ## [3.9.13] - 12 November 2024
