@@ -25,9 +25,11 @@ class Checkout extends Component
 
     public function booted(): void
     {
+        // @phpstan-ignore-next-line
         parent::booted();
 
         // @todo: Do this only with the Hyva Checkout
+        // @phpstan-ignore-next-line
         $this->listeners['shipping_method_selected'] = 'triggerShippingMethod';
         $this->listeners['payment_method_selected'] = 'triggerShippingMethod';
 
