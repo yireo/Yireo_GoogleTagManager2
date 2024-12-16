@@ -9,15 +9,12 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\DataLayer\Event\Purchase;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
 
 /**
  * @magentoAppArea frontend
  */
 class PurchaseTest extends TestCase
 {
-    use CreateProduct;
-
     /**
      * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1

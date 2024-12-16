@@ -6,20 +6,22 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Block\Product\ListProduct;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCategory;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\Reindex;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategoryProducts;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
 /**
  * @magentoAppArea frontend
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation disabled
  */
 class CategoryPageTest extends PageTestCase
 {
-    use CreateCategory;
-    use CreateProduct;
+    use GetCategory;
     use AssertHandleInLayout;
+    use Reindex;
 
     /**
      * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
@@ -27,22 +29,16 @@ class CategoryPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
      * @magentoConfigFixture current_store googletagmanager2/settings/category_products 3
      * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
-     * @magentoAppArea frontend
-     * @magentoCache full_page disabled
-     * @magentoDbIsolation enabled
-     * @magentoAppIsolation enabled
+     * @magentoDataFixture Magento/Catalog/_files/category_with_three_products.php
      */
     public function testValidDataLayerWithOneCategory()
     {
         $this->assertEnabledFlagIsWorking();
 
-        /** @var CategoryInterface $category */
-        $category = $this->createCategory(3);
-        $this->assertTrue($category->getId() > 0);
-        $this->getProducts(3, ['category_ids' => [$category->getId()]]);
+        $category = $this->getCategoryByName('Category 999');
 
-        $products = $category->getProductCollection();
-        $this->assertTrue($products->count() >= 3, 'Product count is '.$products->count());
+        $productCollection = $category->getProductCollection();
+        $this->assertTrue($productCollection->count() >= 3, 'Product count is '.$productCollection->count());
 
         $this->dispatch('catalog/category/view/id/' . $category->getId());
         $this->assertRequestActionName('view');
@@ -52,7 +48,7 @@ class CategoryPageTest extends PageTestCase
         $this->assertStringContainsString('"view_item_list"', $body);
 
         $productListBlock = $this->layout->getBlock('category.products.list');
-        $productListBlock->setCollection($products);
+        $productListBlock->setCollection($productCollection);
         $this->assertInstanceOf(ListProduct::class, $productListBlock);
         $this->assertTrue($productListBlock->getLoadedProductCollection()->count() > 0);
 
