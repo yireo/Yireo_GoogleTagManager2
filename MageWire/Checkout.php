@@ -23,19 +23,19 @@ class Checkout extends Component
         $this->addPaymentInfo = $addPaymentInfo;
     }
 
-    public function booted(): void
+    public function boot(): void
     {
         // @phpstan-ignore-next-line
-        parent::booted();
+        parent::boot();
 
         // @todo: Do this only with the Hyva Checkout
         // @phpstan-ignore-next-line
         $this->listeners['shipping_method_selected'] = 'triggerShippingMethod';
-        $this->listeners['payment_method_selected'] = 'triggerShippingMethod';
+        $this->listeners['payment_method_selected'] = 'triggerPaymentMethod';
 
         // @todo: Do this only with the Loki Checkout
         $this->listeners['afterSaveShippingMethod'] = 'triggerShippingMethod';
-        $this->listeners['afterSavePaymentMethod'] = 'triggerShippingMethod';
+        $this->listeners['afterSavePaymentMethod'] = 'triggerPaymentMethod';
     }
 
     public function triggerShippingMethod()
