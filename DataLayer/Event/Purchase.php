@@ -41,7 +41,7 @@ class Purchase implements EventInterface
             return [];
         }
 
-        if ($this->config->hasServerSideTracking() && false === in_array($order->getState(), $this->getOrderStates())) {
+        if (false === in_array($order->getState(), $this->getOrderStates())) {
             return [];
         }
 
