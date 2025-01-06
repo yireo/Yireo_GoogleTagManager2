@@ -9,7 +9,7 @@ class OrderTotals
 {
     public function getValueTotal(OrderInterface $order): float
     {
-        return (float)$order->getSubtotal() - (float)$order->getDiscountAmount();
+        return (float)$order->getSubtotal() - abs((float)$order->getDiscountAmount());
     }
 
     public function getShippingTotal(OrderInterface $order): float
