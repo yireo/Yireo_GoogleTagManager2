@@ -10,6 +10,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class OrderDataMapper
@@ -19,6 +20,7 @@ class OrderDataMapper
     private CustomerDataMapper $customerDataMapper;
     private CustomerRepositoryInterface $customerRepository;
     private Config $config;
+    private OrderTotals $orderTotals;
 
     /**
      * @param PriceFormatter $priceFormatter
@@ -32,13 +34,15 @@ class OrderDataMapper
         GuestDataMapper $guestDataMapper,
         CustomerDataMapper $customerDataMapper,
         CustomerRepositoryInterface $customerRepository,
-        Config $config
+        Config $config,
+        OrderTotals $orderTotals
     ) {
         $this->priceFormatter = $priceFormatter;
         $this->guestDataMapper = $guestDataMapper;
         $this->customerDataMapper = $customerDataMapper;
         $this->customerRepository = $customerRepository;
         $this->config = $config;
+        $this->orderTotals = $orderTotals;
     }
 
     /**
@@ -56,7 +60,7 @@ class OrderDataMapper
             'affiliation' => $this->config->getStoreName(),
             'revenue' => $this->priceFormatter->format((float)$order->getSubtotal()),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
-            'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+            'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
             'coupon' => $order->getCouponCode(),
             'date' => date("Y-m-d", strtotime($order->getCreatedAt())),
@@ -103,7 +107,7 @@ class OrderDataMapper
         if (!$orderPayment instanceof Payment) {
             return '';
         }
-        
+
         $paymentMethod = $orderPayment->getMethodInstance();
         if (!$paymentMethod instanceof PaymentMethod) {
             return '';
