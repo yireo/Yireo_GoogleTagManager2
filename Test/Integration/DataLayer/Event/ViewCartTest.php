@@ -38,7 +38,7 @@ class ViewCartTest extends TestCase
         $checkoutSession = ObjectManager::getInstance()->get(Session::class);
         $checkoutSession->setQuoteId($cartId);
         $checkoutSession->getQuote()->collectTotals();
-        $checkoutSession->getQuote()->save();
+        $quoteRepository->save($checkoutSession->getQuote());
 
         $cartRepository = ObjectManager::getInstance()->get(CartRepositoryInterface::class);
         $cart = $cartRepository->get($cartId);
