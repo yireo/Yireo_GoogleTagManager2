@@ -55,10 +55,10 @@ class OrderDataMapper
     {
         return [
             'currency' => $order->getOrderCurrencyCode(),
-            'value' => $this->getValueFromOrder($order),
+            'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'id' => $order->getIncrementId(),
             'affiliation' => $this->config->getStoreName(),
-            'revenue' => $this->priceFormatter->format((float)$order->getSubtotal()),
+            'revenue' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'discount' => $this->priceFormatter->format((float)$order->getDiscountAmount()),
             'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
@@ -68,15 +68,6 @@ class OrderDataMapper
             'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
             'customer' => $this->getCustomerData($order),
         ];
-    }
-
-    /**
-     * @param OrderInterface $order
-     * @return float
-     */
-    private function getValueFromOrder(OrderInterface $order): float
-    {
-        return $this->priceFormatter->format((float)$order->getSubtotal());
     }
 
     /**

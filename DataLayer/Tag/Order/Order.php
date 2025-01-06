@@ -45,7 +45,7 @@ class Order implements MergeTagInterface
         $order = $this->getOrder();
         return [
             'currency' => (string)$order->getOrderCurrencyCode(),
-            'value' => $this->priceFormatter->format((float)$order->getSubtotal()),
+            'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
             'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
             'affiliation' => $this->config->getStoreName(),

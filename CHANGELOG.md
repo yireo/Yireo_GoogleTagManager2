@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.9.15] - 6 January 2025
 ### Fixed
 - Subtract shipping discount amount from shipping amount #248
+- Subtract discount amount from subtotal
 
 ## [3.9.14] - 11 December 2024
 ### Fixed
