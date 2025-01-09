@@ -29,7 +29,7 @@ class XmlConfig
         return $this->dataStorage->get('events');
     }
 
-    public function getEvent(string $eventName): array
+    public function getEvent($eventName): array
     {
         $events = $this->getEvents();
         foreach ($events as $eventId => $eventData) {
