@@ -16,6 +16,8 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 $commons = $block->getCommonsViewModel();
 ?>
 <script>
+    window.YIREO_GOOGLETAGMANAGER2_SKIPPED_EVENTS = window.YIREO_GOOGLETAGMANAGER2_SKIPPED_EVENTS || [];
+
     window.addEventListener('private-content-loaded', function(event) {
         window.dataLayer = window.dataLayer || [];
 
@@ -55,10 +57,21 @@ $commons = $block->getCommonsViewModel();
             }
 
             const gtmEvents = event.detail.data[sectionName].gtm_events;
-            for (const [eventId, eventData] of Object.entries(gtmEvents)) {
+            eventsLoop: for (const [eventId, eventData] of Object.entries(gtmEvents)) {
                 yireoGoogleTagManager2Logger('found event in section "' + sectionName + '"', eventData);
 
                 const metaData = eventData.meta;
+
+                if (metaData && metaData.allowed_events) {
+                    for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
+                        if (allowedEventKey === eventId) {
+                            yireoGoogleTagManager2Logger('Warning: Skipping event, not in allowed events', eventData);
+                            window.YIREO_GOOGLETAGMANAGER2_SKIPPED_EVENTS.push(eventData);
+                            continue eventsLoop;
+                        }
+                    }
+                }
+
                 yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
 
                 if (!metaData || metaData.cacheable !== true) {
@@ -80,6 +93,15 @@ $commons = $block->getCommonsViewModel();
 
         if (false === isEmpty(attributes)) {
             yireoGoogleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
+        }
+    });
+    window.addEventListener('toggle-cart', function(event) {
+        if (event.detail.isOpen) {
+            for (const skippedEvent of window.YIREO_GOOGLETAGMANAGER2_SKIPPED_EVENTS) {
+                if (skippedEvent.event === 'view_cart') {
+                    yireoGoogleTagManager2Pusher(skippedEvent, 'push (view_cart - mini-cart) [script-additions.phtml]')
+                }
+            }
         }
     });
 </script>

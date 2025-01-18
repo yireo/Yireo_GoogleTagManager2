@@ -81,7 +81,7 @@ class ViewCart implements EventInterface
     private function getAllowedEvents(): array
     {
         if ($this->config->showViewMiniCartOnExpandOnly() && $this->config->showViewCartEventEverywhere()) {
-            return ['minicart_collapse'];
+            return ['view_cart_event' => 'minicart_collapse'];
         }
 
         return [];
