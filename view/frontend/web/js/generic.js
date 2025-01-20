@@ -76,7 +76,7 @@ define([
         logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
         const metaData = Object.assign({}, eventData.meta);
-        if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
+        if (metaData && metaData.allowed_events) {
             for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
                 $(window).on(allowedEvent, function () {
                     pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
