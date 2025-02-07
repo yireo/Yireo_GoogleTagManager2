@@ -31,7 +31,7 @@ class TriggerPurchaseDataLayerEvent implements ObserverInterface
         /** @var OrderInterface $order */
         $order = $observer->getData('order');
 
-        $this->logger->critical('TriggerPurchaseDataLayerEvent::execute(): has changed ');
+        $this->logger->info('TriggerPurchaseDataLayerEvent::execute(): has changed ');
         $this->checkoutSessionDataProvider->add(
             'purchase_event',
             $this->purchaseEvent->setOrder($order)->get()
