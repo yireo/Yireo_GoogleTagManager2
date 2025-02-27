@@ -69,6 +69,7 @@ Create the **GA4 Configuration** tag manually like described above. Next, instea
 
 - `ACCOUNT_ID` should be replaced with your own numeric account ID (visible in GTM URL)
 - `CONTAINER_ID` should be replaced with your own numeric container ID (visible in GTM URL)
+- `MESUREMENT_ID` should be replaced with your own numeric container ID (visible in GTM URL)
 - `CONTAINER_NAME` should be replaced with your own container name
 - `GTM_PUBLIC_ID` should be replaced with your own container public ID (starting with `GTM-`)
 
