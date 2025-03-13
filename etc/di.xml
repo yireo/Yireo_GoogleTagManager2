@@ -39,12 +39,6 @@
         </arguments>
     </type>
 
-    <type name="Tagging\GTM\Controller\Adminhtml\System\Config\Download">
-        <arguments>
-            <argument name="file" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
-        </arguments>
-    </type>
-
     <virtualType name="Tagging\GTM\Config\XmlConfig\VirtualData" type="Magento\Framework\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Tagging\GTM\Config\XmlConfig\Reader</argument>

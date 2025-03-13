@@ -15,7 +15,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Tagging_GTM::config" title="GTM Configuration" sortOrder="50" />
+                            <resource id="Tagging_GTM::config" title="Tagging GTM" translate="title" />
                         </resource>
                     </resource>
                 </resource>

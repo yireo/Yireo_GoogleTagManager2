@@ -10,7 +10,7 @@ class ContainerConfig extends Value
     public function beforeSave()
     {
         if (false === $this->validate()) {
-            throw new InvalidConfig('Invalid container ID "' . $this->getValue() . '". It should start with "GTM-"');
+            throw new InvalidConfig('Invalid container HEAD code');
         }
 
         return parent::beforeSave();
