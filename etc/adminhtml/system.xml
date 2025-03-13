@@ -63,6 +63,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="download_debug_data" translate="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1" type="button">
+                    <label>Download Debug Data</label>
+                    <frontend_model>Tagging\GTM\Model\Config\Frontend\DownloadButton</frontend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="debug">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

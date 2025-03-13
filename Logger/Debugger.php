@@ -53,4 +53,9 @@ class Debugger
         $this->logger->notice($msg);
         return true;
     }
+
+    public function getDebugData()
+    {
+        return $this->logger->getDebugData();
+    }
 }

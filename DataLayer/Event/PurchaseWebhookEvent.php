@@ -136,6 +136,7 @@ class PurchaseWebhookEvent
             $url = $this->config->getGoogleTagmanagerUrl();
             $client->post('https://' . $url . '/order_created', $this->json->serialize($data));
         } catch (\Exception $e) {
+            $this->debugger->debug($e->getMessage());
             $this->logger->error($e->getMessage());
         }
 

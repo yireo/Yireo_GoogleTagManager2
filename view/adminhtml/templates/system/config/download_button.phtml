@@ -1,0 +1,16 @@
+<?php
+/** @var \Tagging\GTM\Model\Config\Frontend\DownloadButton $block */
+?>
+<div class="download-button">
+    <?= $block->getButtonHtml() ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#download_button": {
+            "Tagging_GTM/js/download": {
+                "ajaxUrl": "<?= $block->escapeJs($block->getAjaxUrl()) ?>"
+            }
+        }
+    }
+</script> 
