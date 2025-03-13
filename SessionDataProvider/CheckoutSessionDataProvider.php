@@ -5,26 +5,21 @@ namespace Tagging\GTM\SessionDataProvider;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Tagging\GTM\Api\CheckoutSessionDataProviderInterface;
-use Tagging\GTM\Logger\Debugger;
 
 class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterface
 {
     private CheckoutSession $checkoutSession;
-    private Debugger $debugger;
-    
+
     public function __construct(
-        CheckoutSession $checkoutSession,
-        Debugger $debugger
+        CheckoutSession $checkoutSession
     ) {
         $this->checkoutSession = $checkoutSession;
-        $this->debugger = $debugger;
     }
     
     public function add(string $identifier, array $data)
     {
         $gtmData = $this->get();
         $gtmData[$identifier] = $data;
-        $this->debugger->debug('CheckoutSessionDataProvider::add(): ' . $identifier, $data);
         $this->checkoutSession->setYireoGtmData($gtmData);
     }
     
