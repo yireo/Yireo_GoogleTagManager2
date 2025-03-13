@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tagging\GTM\Observer;
 
@@ -9,20 +11,21 @@ use Tagging\GTM\DataLayer\Event\PurchaseWebhookEvent;
 use Psr\Log\LoggerInterface;
 use Exception;
 use Tagging\GTM\Logger\Debugger;
+use Magento\Sales\Api\OrderPaymentRepositoryInterface;
+
 class TriggerPurchaseWebhookEvent implements ObserverInterface
 {
-    private LoggerInterface $logger;
     private PurchaseWebhookEvent $webhookEvent;
     private Debugger $debugger;
-
+    private OrderPaymentRepositoryInterface $orderPaymentRepository;
     public function __construct(
         PurchaseWebhookEvent $webhookEvent,
-        LoggerInterface $logger,
-        Debugger $debugger
+        Debugger $debugger,
+        OrderPaymentRepositoryInterface $orderPaymentRepository
     ) {
-        $this->logger = $logger;
         $this->webhookEvent = $webhookEvent;
         $this->debugger = $debugger;
+        $this->orderPaymentRepository = $orderPaymentRepository;
     }
 
     public function execute(Observer $observer)
@@ -39,10 +42,10 @@ class TriggerPurchaseWebhookEvent implements ObserverInterface
         $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): order_total_paid: ' . $order->getTotalPaid());
         $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): order_total_due: ' . $order->getTotalDue());
         $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): order_payment_method: ' . $order->getPayment()->getMethod());
-        
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): data_has_changed_for_total_paid: ' . 
+
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): data_has_changed_for_total_paid: ' .
             ($order->dataHasChangedFor('total_paid') ? 'true' : 'false'));
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): grand_total_greater_than_total_paid: ' . 
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): grand_total_greater_than_total_paid: ' .
             ($order->getGrandTotal() > $order->getTotalPaid() ? 'true' : 'false'));
 
         if (!$order->dataHasChangedFor('total_paid') || $order->getGrandTotal() > $order->getTotalPaid()) {
@@ -50,7 +53,18 @@ class TriggerPurchaseWebhookEvent implements ObserverInterface
         }
 
         try {
+            $payment = $order->getPayment();
+            $saveKey = 'trytagging_webhook_processed';
+
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): trigger process_status: ' . $payment->getAdditionalInformation($saveKey));
+
+            if ($payment->getAdditionalInformation($saveKey)) {
+                return;
+            }
+
             $this->webhookEvent->purchase($order);
+            $payment->setAdditionalInformation($saveKey, true);
+            $this->orderPaymentRepository->save($payment);
         } catch (\Exception $e) {
             $this->debugger->debug('TriggerPurchaseWebhookEvent::execute(): error: ' . $e->getMessage());
         }
