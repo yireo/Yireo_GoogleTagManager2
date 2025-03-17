@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.16] - 17 March 2025
+### Fixed
+- Issue with js minify, script not loaded #269 @taoufiqaitali
+
 ## [3.9.15] - 6 January 2025
 ### Fixed
 - Subtract shipping discount amount from shipping amount #248
