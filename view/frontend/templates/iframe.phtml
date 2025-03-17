@@ -7,4 +7,4 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Template $block */
 $config = $block->getConfig();
 ?>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?= $config->getId() ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="<?= $config->getGoogleTagmanagerUrl() ?>/ns.html?id=<?= $config->getId() ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

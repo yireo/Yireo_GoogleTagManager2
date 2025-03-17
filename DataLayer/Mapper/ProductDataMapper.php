@@ -83,8 +83,10 @@ class ProductDataMapper
         }
 
         $productData['price'] = $this->priceFormatter->format((float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
-        if ($product->getCustomOption('simple_product') && $product->getCustomOption('simple_product')->getProduct()) {
-            $simpleProduct = $product->getCustomOption('simple_product')->getProduct();
+
+        $simpleProductOption = $product->getCustomOption('simple_product');
+        if ($simpleProductOption && method_exists($simpleProductOption, 'getProduct') && $simpleProductOption->getProduct()) {
+            $simpleProduct = $simpleProductOption->getProduct();
             $productData['price'] = $this->priceFormatter->format((float) $simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
         }
 
