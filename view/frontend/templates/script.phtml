@@ -34,11 +34,11 @@ $events = ($config->waitForUserInteraction() === false)
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', '<?= $gtmId ?>');
             <?php endforeach; ?>
-        }
+        };
 
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
-        })
+        });
     })([<?= $events ?>]);
 
     <?php if ($config->isDebug()): ?>
