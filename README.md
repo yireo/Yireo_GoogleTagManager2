@@ -16,7 +16,8 @@ using major version 2 in the past, edit your `composer.json` file manually to us
 [![ExtDN Static Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-phpstan.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-phpstan.yml)
 [![ExtDN Integration Tests](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml/badge.svg)](https://github.com/yireo/Yireo_GoogleTagManager2/actions/workflows/extdn-integration-tests.yml)
 
-[![Hyvä Themes compatible](https://img.shields.io/badge/Hyv%C3%A4%20Themes-compatible-blue?style=flat)]
+![Luma Themes compatible](https://img.shields.io/badge/Luma%20Themes-compatible-blue?style=flat)
+![Hyvä Themes compatible](https://img.shields.io/badge/Hyv%C3%A4%20Themes-compatible-blue?style=flat)
 
 ## Need help?
 We offer courses on various topics of Magento 2, including the usage and configuration of Google Tag Manager and Google Analytics. See the following course page for more details:
