@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.18] - 23 April 2025
+### Fixed
+- PHP 8.4 compatibility issues
+
 ## [3.9.17] - 17 March 2025
 ### Fixed
 - Issue with js minify, script not loaded #269 @taoufiqaitali

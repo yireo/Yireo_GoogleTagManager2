@@ -34,7 +34,7 @@ class TriggerAddPaymentInfoDataLayerEvent
         $orderId,
         $cartId,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     ) {
         $addPaymentInfoEventData = $this->addPaymentInfo
             ->setPaymentMethod($paymentMethod->getMethod())
@@ -58,7 +58,7 @@ class TriggerAddPaymentInfoDataLayerEvent
         $orderId,
         $cartId,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     ) {
         $addPaymentInfoEventData = $this->addPaymentInfo
             ->setPaymentMethod($paymentMethod->getMethod())
