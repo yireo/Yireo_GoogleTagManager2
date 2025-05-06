@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.19] - 06 May 2025
+### Fixed
+- Do not use custom product provider by default anymore
+
 ## [3.9.18] - 23 April 2025
 ### Fixed
 - PHP 8.4 compatibility issues
