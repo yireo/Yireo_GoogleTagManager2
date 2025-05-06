@@ -40,9 +40,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
-        "yireo/magento2-integration-test-helper": "*"
+        "yireo/magento2-integration-test-helper": "~0.0|^1.0"
     },
-    "suggests":{
+    "suggest": {
         "yireo/magento2-googletagmanager2-loki-checkout": "Use this if you are using the Loki Checkout",
         "yireo/magento2-googletagmanager2-hyva-checkout": "Use this if you are using the Hyvä Checkout"
     },

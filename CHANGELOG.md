@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.9.19] - 06 May 2025
+## [3.10.0] - 06 May 2025
+### Moved
+- Move Hyva Checkout compat into separate package
+ 
 ### Fixed
 - Do not use custom product provider by default anymore
 
