@@ -43,6 +43,11 @@ class ViewCart implements EventInterface
      */
     public function get(): array
     {
+        $cartItems = $this->cartItems->get();
+        if (empty($cartItems)) {
+            return [];
+        }
+
         return [
             'meta' => [
                 'cacheable' => true,
@@ -53,7 +58,7 @@ class ViewCart implements EventInterface
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
                 'value' => $this->cartValue->get(),
-                'items' => $this->cartItems->get()
+                'items' => $cartItems
             ]
         ];
     }

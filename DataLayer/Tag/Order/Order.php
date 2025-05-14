@@ -7,6 +7,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class Order implements MergeTagInterface
@@ -15,6 +16,7 @@ class Order implements MergeTagInterface
     private OrderRepositoryInterface $orderRepository;
     private Config $config;
     private PriceFormatter $priceFormatter;
+    private OrderTotals $orderTotals;
 
     /**
      * @param CheckoutSession $checkoutSession
@@ -25,12 +27,14 @@ class Order implements MergeTagInterface
         CheckoutSession $checkoutSession,
         OrderRepositoryInterface $orderRepository,
         Config $config,
-        PriceFormatter $priceFormatter
+        PriceFormatter $priceFormatter,
+        OrderTotals $orderTotals
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
+        $this->orderTotals = $orderTotals;
     }
 
     /**
@@ -41,12 +45,13 @@ class Order implements MergeTagInterface
         $order = $this->getOrder();
         return [
             'currency' => (string)$order->getOrderCurrencyCode(),
-            'value' => $this->priceFormatter->format((float)$order->getSubtotal()),
+            'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
-            'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+            'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
             'affiliation' => $this->config->getStoreName(),
             'transaction_id' => $order->getIncrementId(),
-            'coupon' => $order->getCouponCode()
+            'coupon' => $order->getCouponCode(),
+            'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : ''
         ];
     }
 

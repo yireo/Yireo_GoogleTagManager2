@@ -8,6 +8,7 @@ use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
+use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 // See https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtm#purchase
@@ -18,17 +19,20 @@ class Purchase implements EventInterface
     private Config $config;
     private PriceFormatter $priceFormatter;
     private Session $checkoutSession;
+    private OrderTotals $orderTotals;
 
     public function __construct(
         OrderItems $orderItems,
         Config $config,
         PriceFormatter $priceFormatter,
-        Session $checkoutSession
+        Session $checkoutSession,
+        OrderTotals $orderTotals
     ) {
         $this->orderItems = $orderItems;
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
         $this->checkoutSession = $checkoutSession;
+        $this->orderTotals = $orderTotals;
     }
 
     /**
@@ -41,7 +45,7 @@ class Purchase implements EventInterface
             return [];
         }
 
-        if (false === in_array($order->getState(), $this->getOrderStates())) {
+        if ($this->config->hasServerSideTracking() && false === in_array($order->getState(), $this->getOrderStates())) {
             return [];
         }
 
@@ -51,11 +55,12 @@ class Purchase implements EventInterface
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
                 'currency' => $order->getOrderCurrencyCode(),
-                'value' => $this->priceFormatter->format((float)$order->getSubtotal()),
+                'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
                 'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
-                'shipping' => $this->priceFormatter->format((float)$order->getShippingAmount()),
+                'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
                 'coupon' => $order->getCouponCode(),
-                'items' => $this->orderItems->setOrder($order)->get()
+                'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
+                'items' => $this->orderItems->setOrder($order)->get(),
             ]
         ];
     }
@@ -93,6 +98,7 @@ class Purchase implements EventInterface
     private function getDefaultOrderStates(): array
     {
         return [
+            Order::STATE_NEW,
             Order::STATE_PENDING_PAYMENT,
             Order::STATE_PAYMENT_REVIEW,
             Order::STATE_HOLDED,

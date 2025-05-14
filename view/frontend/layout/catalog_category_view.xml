@@ -43,7 +43,7 @@
         </referenceBlock>
 
         <block
-            name="yireo_googletagmanager2.product-details.inner"
+            name="yireo_googletagmanager2.product-details"
             template="Yireo_GoogleTagManager2::product/details.phtml"
             ifconfig="googletagmanager2/settings/enabled">
             <arguments>

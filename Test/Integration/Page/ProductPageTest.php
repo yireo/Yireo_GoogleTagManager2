@@ -2,19 +2,20 @@
 
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
-use Magento\Catalog\Api\Data\CategoryInterface;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateProduct;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\App\ObjectManager;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
 /**
  * @magentoAppArea frontend
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation disabled
  */
 class ProductPageTest extends PageTestCase
 {
-    use CreateCategory;
-    use CreateProduct;
+    use GetProduct;
     use AssertHandleInLayout;
 
     /**
@@ -23,18 +24,13 @@ class ProductPageTest extends PageTestCase
      * @magentoConfigFixture current_store googletagmanager2/settings/id test
      * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
      * @magentoConfigFixture static_content_on_demand_in_production 1
-     * @magentoAppArea frontend
-     * @magentoCache full_page disabled
-     * @magentoDbIsolation enabled
-     * @magentoAppIsolation enabled
+     * @magentoDataFixture Magento/Catalog/_files/category_with_three_products.php
      */
     public function testValidDataLayerWithOneCategory()
     {
         $this->assertEnabledFlagIsWorking();
 
-        /** @var CategoryInterface $category */
-        $category = $this->createCategory(3);
-        $product = $this->createProducts(1, ['category_ids' => [$category->getId()]])[0];
+        $product = $this->getProductBySku('simple1002');
 
         $this->dispatch('catalog/product/view/id/' . $product->getId());
         $this->assertRequestActionName('view');

@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Model\Config\Source;
+// Disable PHPCS due to false positive in PHPCompatibility\Sniffs\NewClassesSniff
+// phpcs:disable
+
+namespace Yireo\GoogleTagManager2\Config\Source;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\Attribute;
@@ -52,10 +55,6 @@ class CustomerAttributes implements OptionSourceInterface
         return $options;
     }
 
-    /**
-     * @param Attribute $attribute
-     * @return bool
-     */
     private function isAttributeDisplayedInFrontend(Attribute $attribute): bool
     {
         $forms = $attribute->getUsedInForms();

@@ -19,6 +19,10 @@
             <resource>Yireo_GoogleTagManager2::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
+                <field id="funding" type="note" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Funding</label>
+                    <frontend_model>Yireo\GoogleTagManager2\Config\Frontend\Funding</frontend_model>
+                </field>
                 <field id="enabled" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -26,18 +30,12 @@
                 <field id="id" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container Public ID</label>
                     <comment>ID of your Google Tag container, starting with "GTM-"</comment>
-                    <frontend_model>Yireo\GoogleTagManager2\Model\Config\Frontend\ContainerId</frontend_model>
-                    <backend_model>Yireo\GoogleTagManager2\Model\Config\Backend\ContainerId</backend_model>
+                    <frontend_model>Yireo\GoogleTagManager2\Config\Frontend\ContainerId</frontend_model>
+                    <backend_model>Yireo\GoogleTagManager2\Config\Backend\ContainerId</backend_model>
                     <validate>validate-ga4-container-id</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
-                </field>
-                <field id="serverside_gtm_url" type="text" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Container URL</label>
-                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
-                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
-                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
                 </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
@@ -69,14 +67,14 @@
                 </field>
                 <field id="product_list_value_on_category" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product List Value on Category Page</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ProductListValue</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="product_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ProductAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ProductAttributes</source_model>
                     <comment>Product EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -84,7 +82,7 @@
                 </field>
                 <field id="category_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Category EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CategoryAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\CategoryAttributes</source_model>
                     <comment>Category EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -92,7 +90,7 @@
                 </field>
                 <field id="customer_eav_attributes" type="multiselect" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Customer EAV Attributes</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\CustomerAttributes</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\CustomerAttributes</source_model>
                     <comment>Customer EAV attributes to show in datalayer</comment>
                     <depends>
                         <field id="enabled">1</field>
@@ -100,7 +98,7 @@
                 </field>
                 <field id="view_cart_occurances" type="select" translate="label" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>view_cart occurances</label>
-                    <source_model>Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions</source_model>
+                    <source_model>Yireo\GoogleTagManager2\Config\Source\ViewCartOccurancesOptions</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
@@ -114,12 +112,27 @@
                     </depends>
                     <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
-                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="serverside_enabled" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server-Side Tracking</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Only enable this, if you are using some kind of Server-Side Tracking extension already. Note that this extension does not enable Server-Side Tracking.</comment>
+                </field>
+                <field id="serverside_gtm_url" type="text" translate="label" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Container URL</label>
+                    <comment><![CDATA[<span>When a value is present in this field, data will send to this url instead of https://www.googletagmanager.com.
+                    Default output: https://gtm-test123.uc.r.appspot.com. Create a cname in the dns records for a name like marketing.shopname.com</span><br/>
+                    <b>Keep in mind</b>; enter a full url (with https://). ]]></comment>
+                    <depends>
+                        <field id="serverside_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Orders states for purchase event</label>
                     <source_model>Yireo\GoogleTagManager2\Config\Source\OrderStateOptions</source_model>
-                    <comment>Order states at which to trigger the purchase event</comment>
+                    <comment>Order states at which to trigger the purchase event. Note that this only makes sense when using Server-Side Tracking, because otherwise no purchase event will be triggered ever. When Server-Side Tracking is disabled in this extension, the default of this setting will be to trigger at any state.</comment>
                     <depends>
                         <field id="enabled">1</field>
+                        <field id="serverside_enabled">1</field>
                     </depends>
                 </field>
             </group>
