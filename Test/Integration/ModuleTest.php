@@ -17,6 +17,5 @@ class ModuleTest extends TestCase
     {
         $this->assertModuleIsEnabled('Yireo_GoogleTagManager2');
         $this->assertModuleIsRegistered('Yireo_GoogleTagManager2');
-        $this->assertModuleIsRegisteredForReal('Yireo_GoogleTagManager2');
     }
 }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Model\Config\Backend;
+namespace Yireo\GoogleTagManager2\Config\Backend;
 
 use Magento\Framework\App\Config\Value;
 use Magento\Framework\App\State;

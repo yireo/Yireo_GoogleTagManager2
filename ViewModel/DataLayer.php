@@ -85,7 +85,7 @@ class DataLayer implements ArgumentInterface
         $data = $this->variableParser->parse($data, $processors);
 
         foreach ($data as $eventId => $eventData) {
-            $data[$eventId] = array_merge($eventData, $this->xmlConfig->getEvent($eventId));
+            $data[$eventId] = array_merge($eventData, $this->xmlConfig->getEvent((string)$eventId));
         }
 
         return $data;

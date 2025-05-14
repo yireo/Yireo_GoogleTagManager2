@@ -6,6 +6,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.0] - 06 May 2025
+### Moved
+- Move Hyva Checkout compat into separate package
+ 
+### Fixed
+- Do not use custom product provider by default anymore
+
+## [3.9.18] - 23 April 2025
+### Fixed
+- PHP 8.4 compatibility issues
+
+## [3.9.17] - 17 March 2025
+### Fixed
+- Issue with js minify, script not loaded #269 @taoufiqaitali
+- Fix type error when event name is empty #259
+
+## [3.9.16] - 19 February 2025
+### Fixed
+- Make sure to apply Container URL to IFRAME URL as well #267 @rikwillems
+
+## [3.9.15] - 6 January 2025
+### Fixed
+- Subtract shipping discount amount from shipping amount #248
+- Subtract discount amount from subtotal
+
+## [3.9.14] - 11 December 2024
+### Fixed
+- Add payment method to order data #258 @sprankhub
+- Fix issue with multiple GTM IDs #257 @taoufiqaitali
+
+## [3.9.13] - 12 November 2024
+### Fixed
+- Avoid calling function twice, data already exist #254 @taoufiqaitali
+- Use price with currency instead base price #253 @florinm8
+- Re-enable product details in category view #250
+
+## [3.9.12] - 24 October 2024
+### Fixed
+- Move `Model/Config/` classes to `Config/`
+- Add `Funding` label to backend configuration
+
+## [3.9.11] - 22 October 2024
+### Fixed
+- Change default `category_products` to 100 because it makes more sense
+- Change default `view_cart_on_mini_cart_expand_only` to 1 because it makes more sense
+
+## [3.9.10] - 22 October 2024
+### Fixed
+- Only trigger `view_cart` event when there are items in the cart
+- Allow multiple GTM IDs
+- Fix GTM URL
+
+## [3.9.9] - 22 October 2024
+### Fixed
+- Add new order state to `order_states_for_purchase_event` default
+- New setting `googletagmanager2/settings/serverside_enabled`
+- Only custom order states for `purchase` when Server-Side Tracking is enabled
+
 ## [3.9.8] - 12 September 2024
 ### Fixed
 - Fix Uncaught TypeError: products.forEach is not a function #246 @nahall

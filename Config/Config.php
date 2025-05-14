@@ -9,7 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Yireo\GoogleTagManager2\Model\Config\Source\ViewCartOccurancesOptions;
+use Yireo\GoogleTagManager2\Config\Source\ViewCartOccurancesOptions;
 
 class Config implements ArgumentInterface
 {
@@ -57,20 +57,6 @@ class Config implements ArgumentInterface
     }
 
     /**
-     *
-     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
-     *
-     * @return string
-     */
-    public function getGoogleTagmanagerUrl(): string
-    {
-        return $this->getModuleConfigValue(
-            'serverside_gtm_url',
-            'https://www.googletagmanager.com'
-        );
-    }
-
-    /**
      * Check whether the module is in debugging mode
      *
      * @return bool
@@ -101,7 +87,7 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * Return the GA ID
+     * Return the GTM ID
      *
      * @return string
      */
@@ -207,8 +193,39 @@ class Config implements ArgumentInterface
         return (string)$this->getModuleConfigValue('product_list_value_on_category');
     }
 
+    public function hasServerSideTracking(): bool
+    {
+        return (bool)$this->getModuleConfigValue(
+            'serverside_enabled',
+            0
+        );
+    }
+
+    /**
+     *
+     * Get the Google tag manager url. Defaults to googletagmanager.com. when field is filled return that url.
+     *
+     * @return string
+     */
+    public function getGoogleTagmanagerUrl(): string
+    {
+        $default = 'https://www.googletagmanager.com';
+        if (false === $this->hasServerSideTracking()) {
+            return $default;
+        }
+
+        return $this->getModuleConfigValue(
+            'serverside_gtm_url',
+            $default
+        );
+    }
+
     public function getOrderStatesForPurchaseEvent(): array
     {
+        if (false === $this->hasServerSideTracking()) {
+            return [];
+        }
+
         return explode(',', (string)$this->getModuleConfigValue('order_states_for_purchase_event'));
     }
 

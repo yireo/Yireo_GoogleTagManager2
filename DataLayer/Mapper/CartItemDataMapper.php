@@ -17,6 +17,7 @@ class CartItemDataMapper
     private ProductProvider $productProvider;
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
+    private bool $useProductProvider = false;
 
     /**
      * @param ProductDataMapper $productDataMapper
@@ -28,12 +29,14 @@ class CartItemDataMapper
         ProductDataMapper $productDataMapper,
         ProductProvider $productProvider,
         PriceFormatter $priceFormatter,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        bool $useProductProvider = false
     ) {
         $this->productDataMapper = $productDataMapper;
         $this->productProvider = $productProvider;
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
+        $this->useProductProvider = $useProductProvider;
     }
 
     /**
@@ -44,7 +47,12 @@ class CartItemDataMapper
     public function mapByCartItem(CartItem $cartItem): array
     {
         try {
-            $product = $this->productProvider->getBySku($cartItem->getSku());
+            if ($this->useProductProvider) {
+                $product = $this->productProvider->getBySku($cartItem->getSku());
+            } else {
+                $product = $cartItem->getProduct();
+            }
+
             $cartItemData = $this->productDataMapper->mapByProduct($product);
         } catch (NoSuchEntityException $e) {
             $cartItemData = [];

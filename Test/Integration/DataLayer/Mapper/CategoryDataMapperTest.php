@@ -5,18 +5,26 @@ namespace Yireo\GoogleTagManager2\Test\Integration\DataLayer\Mapper;
 use Magento\Framework\App\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
-use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\CreateCategory;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCategory;
 
+/**
+ * @magentoAppArea frontend
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation disabled
+ */
 class CategoryDataMapperTest extends TestCase
 {
-    use CreateCategory;
+    use GetCategory;
 
+    /**
+     * @magentoDataFixture Magento/Catalog/_files/category_with_three_products.php
+     */
     public function testMapByCategory()
     {
-        $category = $this->createCategory(3);
+        $category = $this->getCategoryByName('Category 999');
         $categoryDataMapper = ObjectManager::getInstance()->get(CategoryDataMapper::class);
         $categoryData = $categoryDataMapper->mapByCategory($category);
-        $this->assertEquals('Category ' . $category->getId(), $categoryData['category_name']);
+        $this->assertEquals('Category 999', $categoryData['category_name']);
         $this->assertEquals($category->getId(), $categoryData['category_id']);
     }
 }

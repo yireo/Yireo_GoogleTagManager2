@@ -3,6 +3,20 @@ Yes, this extension ships with native JavaScript code that works with Hyvä. Add
 
 Currently, Luma-based checkouts work without an issue, but for using the React-based checkout or the MageWire-based checkout, more work is needed.
 
+# This extension is not generating any `purchase` event
+First of all, make sure to upgrade to the latest version of this extension, before reporting any issue. 
+
+When making use of Server-Side Tracking, make sure to customize the setting **Orders states for purchase event** (`order_states_for_purchase_event`) and to manually trigger the `purchase` event where needed.
+
+# The purchase event is fired when the order hasn't been completed yet
+The Yireo GoogleTagManager extension uses the core event `sales_order_place_after` to trigger the `purchase` event. And this event is passed on from the server-side (PHP) towards the client-side (JavaScript) whenever a page is hit again (for instance, the loading of the checkout success page) or whenever an AJAX call occurs. At this moment, it might be that the payment has not yet occurred, so that the order status is not yet complete, but still the `purchase` event is triggered. This is **not** a bug, this is where you step in as an integrator of this Yireo GoogleTagManager2 extension and your custom choice of PSPs.
+
+How do you want this to work? Firing the `purchase` event on the success page will often **not** work either: It could be that a payment is delayed, so that the PSP only notifies the Magento application of the payment (so that the order can be completed) *after* the customer has left the shop. A similar scenario pops up when you are placing an order in the Magento Admin Panel. In these scenarios, there no longer is a scenario where client-side tracking (via JavaScript in the frontend) can be used. Instead, the solution is server-side tracking.
+
+The Yireo GoogleTagManager2 extension does not offer server-side tracking as a functionality, but it does support it. Simply enable the setting **Server-Side Tracking**, configure the **Container URL** and select which order states should trigger the `purchase` event (most likely only the `complete` status).
+
+If you need any additional help, the company of [Yireo](https://www.yireo.com/) is happy to help out with a custom (paid) consult as well.
+
 # Does this extension work under PHP 8.2?
 Yes, version 3 does. Version 2 is no longer maintained, but you could use the following composer patch with `vaimo/composer-patches`:
 ```bash

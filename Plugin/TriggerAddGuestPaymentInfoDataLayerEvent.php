@@ -31,7 +31,7 @@ class TriggerAddGuestPaymentInfoDataLayerEvent
         $cartId,
         $email,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     ) {
         $cartId = $this->maskedQuoteIdToQuoteId->execute($cartId);
         $addPaymentInfoEventData = $this->addPaymentInfo
@@ -49,7 +49,7 @@ class TriggerAddGuestPaymentInfoDataLayerEvent
         $cartId,
         $email,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     ) {
         $cartId = $this->maskedQuoteIdToQuoteId->execute($cartId);
         $addPaymentInfoEventData = $this->addPaymentInfo

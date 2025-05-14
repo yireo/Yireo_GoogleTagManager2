@@ -32,7 +32,7 @@ class TriggerPurchaseDataLayerEvent implements ObserverInterface
 
         $this->checkoutSessionDataProvider->add(
             'purchase_event',
-            $this->purchaseEvent->setOrder($order)->get()
+            $purchaseEventData
         );
     }
 }

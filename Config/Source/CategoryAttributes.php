@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yireo\GoogleTagManager2\Model\Config\Source;
+namespace Yireo\GoogleTagManager2\Config\Source;
 
 use Magento\Catalog\Api\CategoryAttributeRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;

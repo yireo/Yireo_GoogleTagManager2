@@ -11,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\Data\ProductTagInterface;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
-use Yireo\GoogleTagManager2\Model\Config\Source\ProductListValue;
+use Yireo\GoogleTagManager2\Config\Source\ProductListValue;
 use Yireo\GoogleTagManager2\Util\Attribute\GetAttributeValue;
 use Yireo\GoogleTagManager2\Util\CategoryProvider;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
@@ -82,7 +82,13 @@ class ProductDataMapper
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
-        $productData['price'] = $this->priceFormatter->format((float)$product->getFinalPrice());
+        $productData['price'] = $this->priceFormatter->format((float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
+
+        $simpleProductOption = $product->getCustomOption('simple_product');
+        if ($simpleProductOption && method_exists($simpleProductOption, 'getProduct') && $simpleProductOption->getProduct()) {
+            $simpleProduct = $simpleProductOption->getProduct();
+            $productData['price'] = $this->priceFormatter->format((float) $simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
+        }
 
         $productData = $this->attachCategoriesData($product, $productData);
         $productData = $this->parseDataLayerMapping($product, $productData);

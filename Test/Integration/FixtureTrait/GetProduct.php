@@ -16,9 +16,20 @@ trait GetProduct
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProduct(int $productId = 1): ProductInterface
+    public function getProductById(int $productId): ProductInterface
     {
         $productRepository = ObjectManager::getInstance()->get(ProductRepositoryInterface::class);
         return $productRepository->getById($productId);
+    }
+
+    /**
+     * @param string $productSku
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProductBySku(string $productSku): ProductInterface
+    {
+        $productRepository = ObjectManager::getInstance()->get(ProductRepositoryInterface::class);
+        return $productRepository->get($productSku);
     }
 }

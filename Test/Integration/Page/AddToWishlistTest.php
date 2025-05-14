@@ -20,8 +20,6 @@ class AddToWishlistTest extends PageTestCase
     use CreateCustomer;
 
     /**
-     * @magentoDbIsolation disabled
-     * @magentoAppIsolation disabled
      * @magentoAppArea frontend
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
      * @magentoConfigFixture current_store cataloginventory/options/show_out_of_stock 1
