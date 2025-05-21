@@ -39,13 +39,13 @@ class AddShippingInfo implements EventInterface
      */
     public function get(): array
     {
-        if (false === $this->checkoutSession->hasQuote()) {
-            return [];
-        }
-
         try {
             $quote = $this->checkoutSession->getQuote();
         } catch (NoSuchEntityException|LocalizedException $e) {
+            return [];
+        }
+
+        if (false === $this->checkoutSession->hasQuote()) {
             return [];
         }
 
