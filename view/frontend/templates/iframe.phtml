@@ -12,7 +12,7 @@ if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config-
     <script>
         window.tagging_proxy_domain = 'https://<?php echo $config->getGoogleTagmanagerUrl(); ?>';
     </script>
-    <script defer src='https://{$config->getGoogleTagmanagerUrl()}/user-data-minified.es.js'></script>
+    <script defer src='https://<?php echo $config->getGoogleTagmanagerUrl(); ?>/user-data-minified.es.js'></script>
     <script>
         /**
          * Generate simple hash based only on items and quantities
