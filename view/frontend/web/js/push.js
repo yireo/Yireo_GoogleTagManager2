@@ -60,6 +60,24 @@ define(["googleTagManagerLogger"], function (logger) {
       )};expires=${expires.toUTCString()};path=/`;
     }
 
+    try {
+      // Add logic to store event
+      if (
+        (eventData.event === "trytagging_begin_checkout" ||
+          eventData.event === "trytagging_view_cart") &&
+        eventData.marketing
+      ) {
+        const simpleHash = window.tagging_gtm_simple_hash(eventData);
+        const advancedHash = window.tagging_gtm_advanced_hash(eventData);
+
+        window.tagging_gtm_save_hash(simpleHash, eventData.marketing);
+        window.tagging_gtm_save_hash(advancedHash, eventData.marketing);
+      }
+    } catch (error) {
+      // Ensure we don't break the event
+      console.error("Error generating hashes:", error);
+    }
+
     window.dataLayer.push(cleanEventData);
     window.Tagging_GTM_PAST_EVENTS.push(eventHash);
   };

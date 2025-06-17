@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Tagging\GTM\Config\Config;
 
@@ -6,10 +8,86 @@ use Tagging\GTM\Config\Config;
 $config = $block->getConfig();
 
 if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config->getGoogleTagmanagerUrl()) > 0 && $config->isPlacedByPlugin()) {
-echo "
-<script defer src='https://{$config->getGoogleTagmanagerUrl()}/adex.js'></script>
+    echo "
 <script defer src='https://{$config->getGoogleTagmanagerUrl()}/user-data-minified.es.js'></script>
-<script defer src='https://{$config->getGoogleTagmanagerUrl()}/settings.js'></script>
 ";
 }
 ?>
+
+<script>
+    /**
+     * Generate simple hash based only on items and quantities
+     * @param {Object} eventData - GA4 event data
+     * @returns {string} Base64 encoded hash
+     */
+    window.tagging_gtm_simple_hash = function(eventData) {
+        if (!eventData.ecommerce || !eventData.ecommerce.items) {
+            return '';
+        }
+
+        const parts = [];
+
+        // Add items and quantities
+        eventData.ecommerce.items.forEach(item => {
+            const itemId = item.item_id || '';
+            const quantity = item.quantity || 0;
+            parts.push(`i_id=${itemId}&qt=${quantity}`);
+        });
+
+        // Join all parts and encode to base64
+        const value = parts.join('&');
+        return btoa(value);
+    }
+
+    /**
+     * Generate advanced hash based on items, quantities, and user agent
+     * @param {Object} eventData - GA4 event data
+     * @returns {string} Base64 encoded hash
+     */
+    window.tagging_gtm_advanced_hash = function(eventData) {
+        if (!eventData.ecommerce || !eventData.ecommerce.items) {
+            return '';
+        }
+
+        const parts = [];
+
+        // Add items and quantities
+        eventData.ecommerce.items.forEach(item => {
+            const itemId = item.item_id || '';
+            const quantity = item.quantity || 0;
+            parts.push(`i_id=${itemId}&qt=${quantity}`);
+        });
+
+        // Add user agent (normalized: lowercase, spaces removed)
+        const userAgent = navigator.userAgent || '';
+        const normalizedUserAgent = userAgent.toLowerCase().replace(/\s+/g, '');
+        parts.push(`--ua=${normalizedUserAgent}`);
+
+        // Join all parts and encode to base64
+        const value = parts.join('&');
+        return btoa(value);
+    }
+
+    window.tagging_gtm_save_hash = function(hash, marketingObject) {
+        if (!hash || !marketingObject) {
+            console.error('Hash or marketingObject is missing');
+            return;
+        }
+
+        fetch(window.tagging_proxy_domain + "/_tools/kv/" + hash, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    value: marketingObject,
+                }),
+            })
+            .then(() => {
+                return;
+            })
+            .catch((err) => {
+                console.error(`Error sending data to API`, err);
+            });
+    }
+</script>
