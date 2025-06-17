@@ -63,15 +63,15 @@ define(["googleTagManagerLogger"], function (logger) {
     try {
       // Add logic to store event
       if (
-        (eventData.event === "trytagging_begin_checkout" ||
-          eventData.event === "trytagging_view_cart") &&
-        eventData.marketing
+        (cleanEventData.event === "trytagging_begin_checkout" ||
+          cleanEventData.event === "trytagging_view_cart") &&
+          cleanEventData.marketing
       ) {
-        const simpleHash = window.tagging_gtm_simple_hash(eventData);
-        const advancedHash = window.tagging_gtm_advanced_hash(eventData);
+        const simpleHash = window.tagging_gtm_simple_hash(cleanEventData);
+        const advancedHash = window.tagging_gtm_advanced_hash(cleanEventData);
 
-        window.tagging_gtm_save_hash(simpleHash, eventData.marketing);
-        window.tagging_gtm_save_hash(advancedHash, eventData.marketing);
+        window.tagging_gtm_save_hash(simpleHash, cleanEventData.marketing);
+        window.tagging_gtm_save_hash(advancedHash, cleanEventData.marketing);
       }
     } catch (error) {
       // Ensure we don't break the event
