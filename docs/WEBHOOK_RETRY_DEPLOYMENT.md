@@ -1,7 +1,7 @@
 # Deployment Instructies voor Webhook Retry Hotfix
 
 ## Versie Informatie
-- **Hotfix versie**: `1.0.14-hotfix1`
+- **Hotfix versie**: `1.0.14-beta1`
 - **Specifiek voor**: Webhook reliability problemen
 - **Veilig voor productie**: Ja (alleen verbeteringen, geen breaking changes)
 
@@ -13,11 +13,11 @@
 cd /path/to/magento
 
 # Update naar de specifieke hotfix versie
-composer require tagginggroup/gtm:1.0.14-hotfix1
+composer require tagginggroup/gtm:1.0.14-beta1
 
 # Of als je een specifieke repository hebt:
 composer config repositories.tagging-gtm-hotfix vcs https://github.com/[repository-url]
-composer require tagginggroup/gtm:1.0.14-hotfix1
+composer require tagginggroup/gtm:1.0.14-beta1
 ```
 
 ### Stap 2: Magento Setup
