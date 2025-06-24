@@ -1,13 +1,17 @@
 {
   "name": "tagginggroup/gtm",
-  "version": "1.0.13",
+  "version": "1.0.14-hotfix-webhook-retry",
   "license": "OSL-3.0",
   "type": "magento2-module",
-  "description": "AdPage tagging integration for Magento 2",
+  "description": "AdPage tagging integration for Magento 2 - Webhook retry reliability hotfix",
   "keywords": [
     "magento"
   ],
   "authors": [
+    {
+      "name": "Chris van Steenbergen (AdPage)",
+      "email": "chris@adpage.io"
+    },
     {
       "name": "Jeroen Frenken (AdPage)",
       "email": "jeroen@adpage.io"

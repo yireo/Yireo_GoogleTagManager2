@@ -135,11 +135,39 @@ class PurchaseWebhookEvent
         try {
             $url = $this->config->getGoogleTagmanagerUrl();
             $client->post('https://' . $url . '/order_created', $this->json->serialize($data));
+            
+            $statusCode = $client->getStatus();
+            $this->debugger->debug('PurchaseWebhookEvent::purchase(): HTTP status code: ' . $statusCode);
+            
+            // Handle different HTTP status codes
+            if ($statusCode === 200) {
+                $this->debugger->debug('PurchaseWebhookEvent::purchase(): webhook sent successfully');
+                return true;
+            } elseif ($statusCode === 425) {
+                // 425 Too Early - server is not ready to process the request
+                $this->debugger->debug('PurchaseWebhookEvent::purchase(): received 425 Too Early, will retry later');
+                $this->logger->info('Webhook received 425 Too Early for order: ' . $order->getIncrementId() . ', retry recommended');
+                return false; // This will trigger retry logic in the observer
+            } elseif ($statusCode >= 500) {
+                // Server errors - temporary, should retry
+                $this->debugger->debug('PurchaseWebhookEvent::purchase(): server error (5xx), will retry later');
+                $this->logger->warning('Webhook server error ' . $statusCode . ' for order: ' . $order->getIncrementId());
+                return false;
+            } elseif ($statusCode >= 400) {
+                // Client errors - likely permanent, log and don't retry
+                $this->debugger->debug('PurchaseWebhookEvent::purchase(): client error (4xx), will not retry');
+                $this->logger->error('Webhook client error ' . $statusCode . ' for order: ' . $order->getIncrementId());
+                return true; // Don't retry client errors to avoid infinite loops
+            } else {
+                // Unexpected status code
+                $this->debugger->debug('PurchaseWebhookEvent::purchase(): unexpected status code: ' . $statusCode);
+                $this->logger->warning('Webhook unexpected status ' . $statusCode . ' for order: ' . $order->getIncrementId());
+                return false;
+            }
         } catch (\Exception $e) {
-            $this->debugger->debug($e->getMessage());
-            $this->logger->error($e->getMessage());
+            $this->debugger->debug('PurchaseWebhookEvent::purchase(): exception: ' . $e->getMessage());
+            $this->logger->error('Webhook exception for order ' . $order->getIncrementId() . ': ' . $e->getMessage());
+            return false; // Network errors should be retried
         }
-
-        return $client->getStatus() == 200;
     }
 }
