@@ -11,6 +11,9 @@ class VersionTest extends TestCase
     public function testIfVersionIsSemantic()
     {
         $version = ObjectManager::getInstance()->get(Version::class);
-        $this->assertTrue((bool)preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+)$/', $version->get()));
+        // SemVer 2.0.0 compliant regex pattern that supports pre-release identifiers
+        // Matches: X.Y.Z, X.Y.Z-alpha1, X.Y.Z-beta1, X.Y.Z-rc1, etc.
+        $semverPattern = '/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
+        $this->assertTrue((bool)preg_match($semverPattern, $version->get()));
     }
 }
