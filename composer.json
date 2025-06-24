@@ -1,6 +1,6 @@
 {
   "name": "tagginggroup/gtm",
-  "version": "1.0.14-hotfix-webhook-retry",
+  "version": "1.0.14-hotfix1",
   "license": "OSL-3.0",
   "type": "magento2-module",
   "description": "AdPage tagging integration for Magento 2 - Webhook retry reliability hotfix",
