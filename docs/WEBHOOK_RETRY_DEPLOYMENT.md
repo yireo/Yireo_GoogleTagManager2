@@ -18,6 +18,9 @@ composer require tagginggroup/gtm:1.0.14-beta1
 # Of als je een specifieke repository hebt:
 composer config repositories.tagging-gtm-hotfix vcs https://github.com/[repository-url]
 composer require tagginggroup/gtm:1.0.14-beta1
+
+# Alternatief: Installeer development branch (no tag required)
+composer require tagginggroup/gtm:dev-retagging
 ```
 
 ### Stap 2: Magento Setup
