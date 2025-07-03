@@ -35,25 +35,4 @@ class ScriptTest extends PageTestCase
         $body = $this->getResponse()->getBody(); // @phpstan-ignore-line
         $this->assertTrue((bool)strpos($body, 'yireoGoogleTagManager'), 'Script not found in HTML body: ' . $body);
     }
-
-    /**
-     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
-     * @magentoConfigFixture current_store googletagmanager2/settings/id test
-     */
-    public function testCspNonceInScript()
-    {
-        $this->assertEnabledFlagIsWorking();
-
-        $this->layout->getUpdate()->addPageHandles(['empty', '1column']);
-        $this->layout->generateXml();
-
-        $block = $this->layout->createBlock(Template::class);
-        $block->setNameInLayout('yireo_googletagmanager2.hyva_checkout.data-layer.component');
-        $block->setTemplate('Yireo_GoogleTagManager2::hyva_checkout/data-layer.phtml');
-        $block->setData('begin_checkout_event', ObjectManager::getInstance()->get(BeginCheckout::class));
-
-        $html = $block->toHtml();
-        $this->assertStringContainsString('nonce="', $html);
-    }
 }

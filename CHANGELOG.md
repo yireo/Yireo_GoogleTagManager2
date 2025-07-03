@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.0] - 06 May 2025
+### Moved
+- Move Hyva Checkout compat into separate package
+ 
+### Fixed
+- Do not use custom product provider by default anymore
+
+## [3.9.18] - 23 April 2025
+### Fixed
+- PHP 8.4 compatibility issues
+
+## [3.9.17] - 17 March 2025
+### Fixed
+- Issue with js minify, script not loaded #269 @taoufiqaitali
+- Fix type error when event name is empty #259
+
+## [3.9.16] - 19 February 2025
+### Fixed
+- Make sure to apply Container URL to IFRAME URL as well #267 @rikwillems
+
 ## [3.9.15] - 6 January 2025
 ### Fixed
 - Subtract shipping discount amount from shipping amount #248

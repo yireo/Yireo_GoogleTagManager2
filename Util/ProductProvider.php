@@ -54,11 +54,20 @@ class ProductProvider
         $loadedProductSkus = array_diff($this->productSkus, array_keys($this->loadedProducts));
         if (count($loadedProductSkus) > 0) {
             foreach ($this->loadProductsBySkus($loadedProductSkus) as $product) {
-                $this->loadedProducts[$product->getSku()] = $product;
+                $this->addProductToLoadedProducts($product);
             }
         }
 
         return $this->loadedProducts;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return void
+     */
+    public function addProductToLoadedProducts(ProductInterface $product): void
+    {
+        $this->loadedProducts[$product->getSku()] = $product;
     }
 
     /**
