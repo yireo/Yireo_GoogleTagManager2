@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="tagging_gtm_retry_failed_webhooks" instance="Tagging\GTM\Cron\RetryFailedWebhooks" method="execute">
+            <schedule>0 */2 * * *</schedule> <!-- Run every 2 hours -->
+        </job>
+    </group>
+</config> 
