@@ -3,15 +3,11 @@
   "version": "1.2.0",
   "license": "OSL-3.0",
   "type": "magento2-module",
-  "description": "AdPage tagging integration for Magento 2 - Webhook retry reliability hotfix",
+  "description": "AdPage tagging integration for Magento 2",
   "keywords": [
     "magento"
   ],
   "authors": [
-    {
-      "name": "Chris van Steenbergen (AdPage)",
-      "email": "chris@adpage.io"
-    },
     {
       "name": "Jeroen Frenken (AdPage)",
       "email": "jeroen@adpage.io"
