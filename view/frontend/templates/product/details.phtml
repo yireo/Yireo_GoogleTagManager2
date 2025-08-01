@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\View\Element\Template;
@@ -8,16 +10,32 @@ use Tagging\GTM\ViewModel\DataLayer;
 /** @var Template $block */
 /** @var CurrentProduct $productDetails */
 /** @var DataLayer $dataLayer */
+
 $dataLayer = $block->getDataLayer();
 $productDetails = $block->getProductDetails();
 $product = $block->getProduct();
+
 if ($product instanceof ProductInterface) {
     $productDetails->setProduct($product);
 }
 
 $product = $productDetails->getProduct();
 $productData = $dataLayer->toJson($productDetails->merge());
-?>
-<script>
-    window['Tagging_GTM_PRODUCT_DATA_ID_<?= $product->getId() ?>'] = <?= $productData ?>;
-</script>
+$productId = $product->getId();
+
+// Detect if we're in Hyvä context
+$isHyva = isset($hyvaCsp) && $hyvaCsp;
+
+// Build the script content
+$scriptContent = "window['Tagging_GTM_PRODUCT_DATA_ID_{$productId}'] = {$productData};";
+
+// Render based on context
+if ($isHyva): ?>
+    <script>
+        <?= $scriptContent ?>
+    </script><?php $hyvaCsp->registerInlineScript() ?>
+<?php else:
+    /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+    $secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+    echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
+endif; ?>

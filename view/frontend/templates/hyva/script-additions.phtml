@@ -89,4 +89,4 @@ $commons = $block->getCommonsViewModel();
             googleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
         }
     });
-</script>
+</script><?php if (isset($hyvaCsp) && $hyvaCsp): ?><?php $hyvaCsp->registerInlineScript() ?><?php endif; ?>

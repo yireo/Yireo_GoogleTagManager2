@@ -30,7 +30,7 @@ $beginCheckoutEvent = $block->getData('begin_checkout_event');
                 triggerEvent
             }
         }
-    </script>
+    </script><?php if (isset($hyvaCsp) && $hyvaCsp): ?><?php $hyvaCsp->registerInlineScript() ?><?php endif; ?>
     <div id="ga-trigger"
          x-data="initYireoGoogleTagManagerInHyvaCheckout()"
          class="hidden"

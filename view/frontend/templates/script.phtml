@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
@@ -8,50 +7,70 @@ use Tagging\GTM\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
-?>
-<script>
-    window.Tagging_GTM_ENABLED = true;
 
-    <?php
-    if ($config->isEnabled()) {
-        echo "window.Tagging_ENABLED_PLUGIN = true;";
-    } else {
-        echo "window.Tagging_ENABLED_PLUGIN = false;";
+// Detect if we're in Hyvä context
+$isHyva = isset($hyvaCsp) && $hyvaCsp;
+
+// Build the script content
+$scriptContent = <<<SCRIPT
+window.Tagging_GTM_ENABLED = true;
+SCRIPT;
+
+if ($config->isEnabled()) {
+    $scriptContent .= "\nwindow.Tagging_ENABLED_PLUGIN = true;";
+} else {
+    $scriptContent .= "\nwindow.Tagging_ENABLED_PLUGIN = false;";
+}
+
+if ($config->isPlacedByPlugin()) {
+    $scriptContent .= "\nwindow.Tagging_PLACED_BY_PLUGIN = true;";
+} else {
+    $scriptContent .= "\nwindow.Tagging_PLACED_BY_PLUGIN = false;";
+}
+
+$scriptContent .= "\nwindow.Tagging_PLUGIN_VERSION = '{$config->getVersion()}';";
+
+$scriptContent .= <<<SCRIPT
+
+(function(events) {
+    const initgoogleTagManager2 = function() {
+        events.forEach(function(eventType) {
+            window.removeEventListener(eventType, initgoogleTagManager2);
+        });
+SCRIPT;
+
+if ($config->isEnabled() && $config->isPlacedByPlugin()) {
+    $scriptContent .= "\n" . $config->getConfig();
+}
+
+$scriptContent .= <<<SCRIPT
+
     }
 
-    if ($config->isPlacedByPlugin()) {
-        echo "window.Tagging_PLACED_BY_PLUGIN = true;";
-    } else {
-        echo "window.Tagging_PLACED_BY_PLUGIN = false;";
-    }
+    events.forEach(function(eventType) {
+        window.addEventListener(eventType, initgoogleTagManager2, {
+            once: true,
+            passive: true
+        })
+    })
+})(['load']);
+SCRIPT;
 
-    echo "window.Tagging_PLUGIN_VERSION = '{$config->getVersion()}';";
-    ?>
-
-        (function(events) {
-            const initgoogleTagManager2 = function() {
-                events.forEach(function(eventType) {
-                    window.removeEventListener(eventType, initgoogleTagManager2);
-                });
-
-                <?php
-                if ($config->isEnabled() && $config->isPlacedByPlugin()) {
-                    echo $config->getConfig();
-                }
-                ?>
-            }
-
-            events.forEach(function(eventType) {
-                window.addEventListener(eventType, initgoogleTagManager2, {
-                    once: true,
-                    passive: true
-                })
-            })
-        })(['load']);
-</script>
+// Render the main script based on context
+if ($isHyva): ?>
+    <script><?= $scriptContent ?></script><?php $hyvaCsp->registerInlineScript() ?>
+<?php else:
+    /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+    $secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+    echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
+endif; ?>
 
 <?php if ($config->isDebug()) : ?>
-    <script>
-        window.Tagging_GTM_DEBUG = true;
-    </script>
+    <?php 
+    $debugScript = "window.Tagging_GTM_DEBUG = true;";
+    if ($isHyva): ?>
+        <script><?= $debugScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
+    <?php else:
+        echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $debugScript, false);
+    endif; ?>
 <?php endif; ?>

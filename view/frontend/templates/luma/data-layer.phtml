@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
@@ -9,37 +8,46 @@ use Tagging\GTM\ViewModel\DataLayer;
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
 /** @var Template $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
 $config = $block->getConfig();
 $dataLayerViewModel = $block->getDataLayerViewModel();
 $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
-?>
-<script>
-    function callInitialDataLayer() {
-        require(['googleTagManagerPush'], function(pusher) {
-            <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk) : ?>
-                pusher(<?= /* @noEscape */ $dataLayerEventsJsonChunk ?>, 'push (initial event) [data-layer.phtml]');
-            <?php endforeach; ?>
-        });
-    }
+$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
-    document.addEventListener("DOMContentLoaded", function() {
-        if (window.taggingHelpers) {
-            setTimeout(function() {
+// Build the script content dynamically
+$scriptContent = "function callInitialDataLayer() {\n";
+$scriptContent .= "    require(['googleTagManagerPush'], function(pusher) {\n";
+
+foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk) {
+    $scriptContent .= "        pusher(" . $dataLayerEventsJsonChunk . ", 'push (initial event) [data-layer.phtml]');\n";
+}
+
+$scriptContent .= "    });\n";
+$scriptContent .= "}\n\n";
+
+$scriptContent .= <<<SCRIPT
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.taggingHelpers) {
+        setTimeout(function() {
+            callInitialDataLayer();
+        }, 100); // Make sure we always sent after user_data
+    } else {
+        setTimeout(function() {
+            if (window.taggingHelpers) {
                 callInitialDataLayer();
-            }, 100); // Make sure we always sent after user_data
-        } else {
-            setTimeout(function() {
-                if (window.taggingHelpers) {
-                    callInitialDataLayer();
-                } else {
-                    console.log("taggingHelpers not available after wait, sending initial data layer anyway");
-                }
-            }, 750);
-        }
-    });
+            } else {
+                console.log("taggingHelpers not available after wait, sending initial data layer anyway");
+            }
+        }, 750);
+    }
+});
 
-    require(['googleTagManagerPush'], function(pusher) {
-        pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
-    });
-</script>
+require(['googleTagManagerPush'], function(pusher) {
+    pusher({$dataLayerJson}, 'push (initial page) [data-layer.phtml]');
+});
+SCRIPT;
+
+echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
+?>

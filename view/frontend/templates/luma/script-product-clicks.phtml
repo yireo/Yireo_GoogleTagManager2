@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * GoogleTagManager2 plugin for Magento
@@ -11,10 +13,15 @@
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
 $productPath = $block->getProductPath();
-?>
-<script>
-    require(['googleTagManagerProductClicks'], function(clicks) {
-        clicks({productPath: '<?= $productPath ?>'});
-    });
-</script>
+$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
+$scriptContent = <<<SCRIPT
+require(['googleTagManagerProductClicks'], function(clicks) {
+    clicks({productPath: '{$productPath}'});
+});
+SCRIPT;
+
+echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);

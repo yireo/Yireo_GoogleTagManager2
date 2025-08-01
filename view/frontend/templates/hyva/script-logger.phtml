@@ -19,4 +19,4 @@
         var css = 'color:white; background-color:' + color + '; padding:1px;'
         console.log('%cTagging_GTM', css, ...args);
     }
-</script>
+</script><?php if (isset($hyvaCsp) && $hyvaCsp): ?><?php $hyvaCsp->registerInlineScript() ?><?php endif; ?>

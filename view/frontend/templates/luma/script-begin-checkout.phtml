@@ -1,12 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
 use Tagging\GTM\DataLayer\Event\BeginCheckout;
 
 /** @var Template $block */
 /** @var BeginCheckout $beginCheckoutEvent */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
-?>
-<script>
-    window.Tagging_GTM_BEGIN_CHECKOUT = <?= json_encode($beginCheckoutEvent->get()) ?>
-</script>
+$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
+$eventData = json_encode($beginCheckoutEvent->get());
+$scriptContent = "window.Tagging_GTM_BEGIN_CHECKOUT = {$eventData};";
+
+echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
