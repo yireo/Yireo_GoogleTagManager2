@@ -8,13 +8,15 @@ use Tagging\GTM\ViewModel\DataLayer;
 /** @var DataLayer $dataLayerViewModel */
 /** @var Config $config */
 /** @var Template $block */
-/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 
 $config = $block->getConfig();
 $dataLayerViewModel = $block->getDataLayerViewModel();
 $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
-$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
 // Build the script content dynamically
 $scriptContent = "function callInitialDataLayer() {\n";

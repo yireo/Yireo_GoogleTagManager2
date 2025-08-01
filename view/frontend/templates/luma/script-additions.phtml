@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 declare(strict_types=1);
 
 /**
@@ -15,10 +14,12 @@ use Tagging\GTM\ViewModel\Commons;
 
 /** @var Template $block */
 /** @var Commons $commons */
-/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 
 $commons = $block->getCommonsViewModel();
-$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
 // Build the x-magento-init content
 $scriptContent = json_encode([
@@ -33,3 +34,4 @@ echo $secureRenderer->renderTag(
     $scriptContent,
     false
 );
+?>

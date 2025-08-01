@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
@@ -7,6 +8,10 @@ use Tagging\GTM\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
+
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
 // Detect if we're in Hyvä context
 $isHyva = isset($hyvaCsp) && $hyvaCsp;
@@ -58,18 +63,20 @@ SCRIPT;
 
 // Render the main script based on context
 if ($isHyva): ?>
-    <script><?= $scriptContent ?></script><?php $hyvaCsp->registerInlineScript() ?>
+    <script>
+        <?= $scriptContent ?>
+    </script><?php $hyvaCsp->registerInlineScript() ?>
 <?php else:
-    /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
-    $secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
     echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
 endif; ?>
 
 <?php if ($config->isDebug()) : ?>
-    <?php 
+    <?php
     $debugScript = "window.Tagging_GTM_DEBUG = true;";
     if ($isHyva): ?>
-        <script><?= $debugScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
+        <script>
+            <?= $debugScript ?>
+        </script><?php $hyvaCsp->registerInlineScript() ?>
     <?php else:
         echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $debugScript, false);
     endif; ?>

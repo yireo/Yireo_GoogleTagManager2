@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 declare(strict_types=1);
 
 /**
@@ -13,10 +12,12 @@ declare(strict_types=1);
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
-/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 
 $productPath = $block->getProductPath();
-$secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
 $scriptContent = <<<SCRIPT
 require(['googleTagManagerProductClicks'], function(clicks) {
@@ -25,3 +26,4 @@ require(['googleTagManagerProductClicks'], function(clicks) {
 SCRIPT;
 
 echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptContent, false);
+?>

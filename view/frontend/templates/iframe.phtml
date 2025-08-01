@@ -9,6 +9,10 @@ use Magento\Framework\View\Element\Template;
 $config = $block->getConfig();
 $isHyva = isset($hyvaCsp) && $hyvaCsp;
 
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
+
 if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config->getGoogleTagmanagerUrl()) > 0 && $config->isPlacedByPlugin()) :
     
     // First script - proxy domain
@@ -17,8 +21,6 @@ if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config-
     if ($isHyva): ?>
         <script><?= $proxyScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
     <?php else:
-        /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
-        $secureRenderer = $this->helper(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
         echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $proxyScript, false);
     endif; ?>
     
