@@ -41,7 +41,7 @@ jobs:
 
       - uses: extdn/github-actions-m2/magento-integration-tests/8.3@master
         env:
-          MAGENTO_VERSION: '2.4.7-p1'
+          MAGENTO_VERSION: '2.4.7-p3'
           COMPOSER_VERSION: 2
         with:
           magento_pre_install_script: .github/workflows/integration-pre-install.sh

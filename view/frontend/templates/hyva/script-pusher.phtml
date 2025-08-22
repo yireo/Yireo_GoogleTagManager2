@@ -73,4 +73,4 @@ declare(strict_types=1);
         window.dataLayer.push(eventData);
         window.Tagging_GTM_PAST_EVENTS.push(eventHash);
     }
-</script>
+</script><?php if (isset($hyvaCsp) && $hyvaCsp): ?><?php $hyvaCsp->registerInlineScript() ?><?php endif; ?>

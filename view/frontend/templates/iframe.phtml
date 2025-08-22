@@ -1,95 +1,115 @@
 <?php
-
 declare(strict_types=1);
 
 use Tagging\GTM\Config\Config;
+use Magento\Framework\View\Element\Template;
 
 /** @var Config $config */
+/** @var Template $block */
 $config = $block->getConfig();
+$isHyva = isset($hyvaCsp) && $hyvaCsp;
 
-if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config->getGoogleTagmanagerUrl()) > 0 && $config->isPlacedByPlugin()) {
-?>
-    <script>
-        window.tagging_proxy_domain = 'https://<?php echo $config->getGoogleTagmanagerUrl(); ?>';
-    </script>
-    <script defer src='https://<?php echo $config->getGoogleTagmanagerUrl(); ?>/user-data-minified.es.js'></script>
-    <script>
-        /**
-         * Generate simple hash based only on items and quantities
-         * @param {Object} eventData - GA4 event data
-         * @returns {string} Base64 encoded hash
-         */
-        window.tagging_gtm_simple_hash = function(eventData) {
-            if (!eventData.ecommerce || !eventData.ecommerce.items) {
-                return '';
-            }
+// Get SecureHtmlRenderer using Object Manager for compatibility
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$secureRenderer = $objectManager->get(\Magento\Framework\View\Helper\SecureHtmlRenderer::class);
 
-            const parts = [];
+if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config->getGoogleTagmanagerUrl()) > 0 && $config->isPlacedByPlugin()) :
+    
+    // First script - proxy domain
+    $proxyScript = "window.tagging_proxy_domain = 'https://" . $config->getGoogleTagmanagerUrl() . "';";
+    
+    if ($isHyva): ?>
+        <script><?= $proxyScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
+    <?php else:
+        echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $proxyScript, false);
+    endif; ?>
+    
+    <!-- External script - no CSP needed as it's whitelisted in csp_whitelist.xml -->
+    <script defer src='https://<?= $config->getGoogleTagmanagerUrl() ?>/user-data-minified.es.js'></script>
+    
+    <?php
+    // Main functionality script
+    $mainScript = <<<'SCRIPT'
+/**
+ * Generate simple hash based only on items and quantities
+ * @param {Object} eventData - GA4 event data
+ * @returns {string} Base64 encoded hash
+ */
+window.tagging_gtm_simple_hash = function(eventData) {
+    if (!eventData.ecommerce || !eventData.ecommerce.items) {
+        return '';
+    }
 
-            // Add items and quantities
-            eventData.ecommerce.items.forEach(item => {
-                const itemId = item.item_id || '';
-                const quantity = item.quantity || 0;
-                parts.push(`i_id=${itemId}&qt=${quantity}`);
-            });
+    const parts = [];
 
-            // Join all parts and encode to base64
-            const value = parts.join('&');
-            return btoa(value);
-        }
+    // Add items and quantities
+    eventData.ecommerce.items.forEach(item => {
+        const itemId = item.item_id || '';
+        const quantity = item.quantity || 0;
+        parts.push(`i_id=${itemId}&qt=${quantity}`);
+    });
 
-        /**
-         * Generate advanced hash based on items, quantities, and user agent
-         * @param {Object} eventData - GA4 event data
-         * @returns {string} Base64 encoded hash
-         */
-        window.tagging_gtm_advanced_hash = function(eventData) {
-            if (!eventData.ecommerce || !eventData.ecommerce.items) {
-                return '';
-            }
-
-            const parts = [];
-
-            // Add items and quantities
-            eventData.ecommerce.items.forEach(item => {
-                const itemId = item.item_id || '';
-                const quantity = item.quantity || 0;
-                parts.push(`i_id=${itemId}&qt=${quantity}`);
-            });
-
-            // Add user agent (normalized: lowercase, spaces removed)
-            const userAgent = navigator.userAgent || '';
-            const normalizedUserAgent = userAgent.toLowerCase().replace(/\s+/g, '');
-            parts.push(`--ua=${normalizedUserAgent}`);
-
-            // Join all parts and encode to base64
-            const value = parts.join('&');
-            return btoa(value);
-        }
-
-        window.tagging_gtm_save_hash = function(hash, marketingObject) {
-            if (!hash || !marketingObject) {
-                console.error('Hash or marketingObject is missing');
-                return;
-            }
-
-            fetch(window.tagging_proxy_domain + "/_tools/kv/" + hash, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        value: marketingObject,
-                    }),
-                })
-                .then(() => {
-                    return;
-                })
-                .catch((err) => {
-                    console.error(`Error sending data to API`, err);
-                });
-        }
-    </script>
-<?php
+    // Join all parts and encode to base64
+    const value = parts.join('&');
+    return btoa(value);
 }
-?>
+
+/**
+ * Generate advanced hash based on items, quantities, and user agent
+ * @param {Object} eventData - GA4 event data
+ * @returns {string} Base64 encoded hash
+ */
+window.tagging_gtm_advanced_hash = function(eventData) {
+    if (!eventData.ecommerce || !eventData.ecommerce.items) {
+        return '';
+    }
+
+    const parts = [];
+
+    // Add items and quantities
+    eventData.ecommerce.items.forEach(item => {
+        const itemId = item.item_id || '';
+        const quantity = item.quantity || 0;
+        parts.push(`i_id=${itemId}&qt=${quantity}`);
+    });
+
+    // Add user agent (normalized: lowercase, spaces removed)
+    const userAgent = navigator.userAgent || '';
+    const normalizedUserAgent = userAgent.toLowerCase().replace(/\s+/g, '');
+    parts.push(`--ua=${normalizedUserAgent}`);
+
+    // Join all parts and encode to base64
+    const value = parts.join('&');
+    return btoa(value);
+}
+
+window.tagging_gtm_save_hash = function(hash, marketingObject) {
+    if (!hash || !marketingObject) {
+        console.error('Hash or marketingObject is missing');
+        return;
+    }
+
+    fetch(window.tagging_proxy_domain + "/_tools/kv/" + hash, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            value: marketingObject,
+        }),
+    })
+    .then(() => {
+        return;
+    })
+    .catch((err) => {
+        console.error(`Error sending data to API`, err);
+    });
+}
+SCRIPT;
+    
+    if ($isHyva): ?>
+        <script><?= $mainScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
+    <?php else:
+        echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $mainScript, false);
+    endif;
+endif; ?>

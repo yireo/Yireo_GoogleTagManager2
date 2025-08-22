@@ -48,4 +48,4 @@ $productPath = $block->getProductPath();
             });
         })
     }
-</script>
+</script><?php if (isset($hyvaCsp) && $hyvaCsp): ?><?php $hyvaCsp->registerInlineScript() ?><?php endif; ?>
