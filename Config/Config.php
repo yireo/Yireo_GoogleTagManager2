@@ -168,6 +168,11 @@ class Config implements ArgumentInterface
         return $this->getConfigValue('GTM/settings/' . $key, $defaultValue);
     }
 
+    public function getModuleConfigValueAdvanced(string $key, $defaultValue = null)
+    {
+        return $this->getConfigValue('GTM/advanced/' . $key, $defaultValue);
+    }
+
     /**
      * Return a configuration value
      *
@@ -207,7 +212,7 @@ class Config implements ArgumentInterface
      */
     public function getWebhookTriggerMode(): string
     {
-        return (string)$this->getModuleConfigValue('webhook_trigger_mode', 'default');
+        return (string)$this->getModuleConfigValueAdvanced('webhook_trigger_mode', 'default');
     }
 
     /**
@@ -217,7 +222,7 @@ class Config implements ArgumentInterface
      */
     public function getWebhookTriggerOrderState(): string
     {
-        return (string)$this->getModuleConfigValue('webhook_trigger_order_state', '');
+        return (string)$this->getModuleConfigValueAdvanced('webhook_trigger_order_state', '');
     }
 
     /**
