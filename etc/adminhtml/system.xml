@@ -78,7 +78,7 @@
                 <field id="webhook_trigger_order_state" type="text" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Order state for webhook trigger</label>
                     <comment><![CDATA[Enter the order state that should trigger the webhook.<br/>
-                    <b>Available Magento order states:</b> new, pending_payment, processing, complete, closed, canceled, holded, payment_review]]></comment>
+                    <b>Example Magento order states:</b> pending_payment, processing, complete, closed, canceled, holded, payment_review]]></comment>
                     <depends>
                         <field id="*/settings/enabled">1</field>
                         <field id="webhook_trigger_mode">on_order_state</field>
