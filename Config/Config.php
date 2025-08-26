@@ -201,6 +201,36 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Get webhook trigger mode configuration
+     *
+     * @return string
+     */
+    public function getWebhookTriggerMode(): string
+    {
+        return (string)$this->getModuleConfigValue('webhook_trigger_mode', 'default');
+    }
+
+    /**
+     * Get webhook trigger order state configuration
+     *
+     * @return string
+     */
+    public function getWebhookTriggerOrderState(): string
+    {
+        return (string)$this->getModuleConfigValue('webhook_trigger_order_state', '');
+    }
+
+    /**
+     * Check if webhook should be triggered based on order state
+     *
+     * @return bool
+     */
+    public function isWebhookTriggerOnOrderState(): bool
+    {
+        return $this->getWebhookTriggerMode() === 'on_order_state';
+    }
+
+    /**
      * @return bool
      */
     private function isDeveloperMode(): bool

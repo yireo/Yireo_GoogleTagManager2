@@ -12,21 +12,25 @@ use Psr\Log\LoggerInterface;
 use Exception;
 use Tagging\GTM\Logger\Debugger;
 use Magento\Sales\Api\OrderPaymentRepositoryInterface;
+use Tagging\GTM\Config\Config;
 
 class TriggerPurchaseWebhookEvent implements ObserverInterface
 {
     private PurchaseWebhookEvent $webhookEvent;
     private Debugger $debugger;
     private OrderPaymentRepositoryInterface $orderPaymentRepository;
+    private Config $config;
     
     public function __construct(
         PurchaseWebhookEvent $webhookEvent,
         Debugger $debugger,
-        OrderPaymentRepositoryInterface $orderPaymentRepository
+        OrderPaymentRepositoryInterface $orderPaymentRepository,
+        Config $config
     ) {
         $this->webhookEvent = $webhookEvent;
         $this->debugger = $debugger;
         $this->orderPaymentRepository = $orderPaymentRepository;
+        $this->config = $config;
     }
 
     public function execute(Observer $observer)
@@ -86,38 +90,83 @@ class TriggerPurchaseWebhookEvent implements ObserverInterface
 
     /**
      * Improved logic to determine if webhook should be triggered
-     * More robust than the original early return logic
+     * Supports both default (total paid) and order state trigger modes
      */
     private function shouldTriggerWebhook(OrderInterface $order): bool
+    {
+        $triggerMode = $this->config->getWebhookTriggerMode();
+        
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): trigger_mode: ' . $triggerMode);
+        
+        // Use order state trigger mode if configured
+        if ($this->config->isWebhookTriggerOnOrderState()) {
+            return $this->shouldTriggerWebhookOnOrderState($order);
+        }
+        
+        // Default behavior: use total paid logic (backwards compatible)
+        return $this->shouldTriggerWebhookOnTotalPaid($order);
+    }
+
+    /**
+     * Default trigger logic based on total paid (backwards compatible)
+     */
+    private function shouldTriggerWebhookOnTotalPaid(OrderInterface $order): bool
     {
         $grandTotal = (float)$order->getGrandTotal();
         $totalPaid = (float)$order->getTotalPaid();
         $tolerance = 0.01; // Tolerance for floating point comparison
 
         // Log the comparison for debugging
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): grand_total: ' . $grandTotal);
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): total_paid: ' . $totalPaid);
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): difference: ' . abs($grandTotal - $totalPaid));
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): grand_total: ' . $grandTotal);
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): total_paid: ' . $totalPaid);
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): difference: ' . abs($grandTotal - $totalPaid));
 
         // Primary condition: data has changed for total_paid AND order is fully paid (with tolerance)
         if ($order->dataHasChangedFor('total_paid') && abs($grandTotal - $totalPaid) <= $tolerance) {
-            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): primary condition met');
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): primary condition met');
             return true;
         }
 
         // Fallback condition 1: Order is in paid state regardless of data changes
         if (in_array($order->getState(), ['processing', 'complete']) && abs($grandTotal - $totalPaid) <= $tolerance) {
-            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): fallback condition 1 met (order in paid state)');
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): fallback condition 1 met (order in paid state)');
             return true;
         }
 
         // Fallback condition 2: Total paid is close to grand total (handles partial payments completing)
         if ($totalPaid > 0 && abs($grandTotal - $totalPaid) <= $tolerance) {
-            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): fallback condition 2 met (payment complete)');
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): fallback condition 2 met (payment complete)');
             return true;
         }
 
-        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhook(): no conditions met');
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnTotalPaid(): no conditions met');
+        return false;
+    }
+
+    /**
+     * New trigger logic based on order state
+     */
+    private function shouldTriggerWebhookOnOrderState(OrderInterface $order): bool
+    {
+        $configuredState = $this->config->getWebhookTriggerOrderState();
+        $currentOrderState = $order->getState();
+        
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnOrderState(): configured_state: ' . $configuredState);
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnOrderState(): current_order_state: ' . $currentOrderState);
+        
+        // If no specific state is configured, fall back to default logic for safety
+        if (empty($configuredState)) {
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnOrderState(): no state configured, falling back to total paid logic');
+            return $this->shouldTriggerWebhookOnTotalPaid($order);
+        }
+        
+        // Check if order state matches configured state
+        if ($currentOrderState === $configuredState) {
+            $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnOrderState(): order state matches configured state');
+            return true;
+        }
+        
+        $this->debugger->debug('TriggerPurchaseWebhookEvent::shouldTriggerWebhookOnOrderState(): order state does not match configured state');
         return false;
     }
 }
