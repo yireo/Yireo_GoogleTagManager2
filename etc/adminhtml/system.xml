@@ -64,6 +64,27 @@
                     </depends>
                 </field>
             </group>
+            <group id="advanced" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Advanced Settings</label>
+                <attribute type="expanded">0</attribute>
+                <field id="webhook_trigger_mode" type="select" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Change webhook trigger</label>
+                    <comment>Choose how the purchase webhook should be triggered</comment>
+                    <source_model>Tagging\GTM\Model\Config\Source\WebhookTriggerOptions</source_model>
+                    <depends>
+                        <field id="*/settings/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="webhook_trigger_order_state" type="text" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order state for webhook trigger</label>
+                    <comment><![CDATA[Enter the order state that should trigger the webhook.<br/>
+                    <b>Example Magento order states:</b> pending_payment, processing, complete, closed, canceled, holded, payment_review]]></comment>
+                    <depends>
+                        <field id="*/settings/enabled">1</field>
+                        <field id="webhook_trigger_mode">on_order_state</field>
+                    </depends>
+                </field>
+            </group>
         </section>
     </system>
 </config>
