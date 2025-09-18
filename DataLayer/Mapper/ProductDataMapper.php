@@ -75,10 +75,13 @@ class ProductDataMapper
             $productData[$dataLayerKey] = $attributeValue;
         }
 
+        $brand = $product->getAttributeText('manufacturer') === false ? null : $product->getAttributeText('manufacturer');
+
         $productData['item_id'] = $product->getSku();
         $productData['item_sku'] = $product->getSku();
         $productData['magento_sku'] = $product->getSku();
         $productData['magento_id'] = $product->getId();
+        $productData['item_brand'] = $brand;
 
         $parentIds = $this->configurableType->getParentIdsByChild($product->getId());
 
