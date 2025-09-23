@@ -37,6 +37,7 @@ class AddPaymentInfo implements EventInterface
     {
         /** @var Cart $cart */
         $cart = $this->cartRepository->get($this->cartId);
+
         return [
             'event' => 'add_payment_info',
             'ecommerce' => [
