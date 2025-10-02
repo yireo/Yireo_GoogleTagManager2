@@ -21,17 +21,17 @@ class DynamicTaggingCollector implements PolicyCollectorInterface
     {
         try {
             if (!$this->config->isEnabled()) {
-                return [];
+                return $defaultPolicies;
             }
 
             if (!$this->config->isPlacedByPlugin()) {
-                return [];
-            }
+                return $defaultPolicies;
+            }   
 
             $gtmUrl = $this->config->getGoogleTagmanagerUrl();
 
             if (empty($gtmUrl)) {
-                return [];
+                return $defaultPolicies;
             }
 
             if (!preg_match('/^https?:\/\//', $gtmUrl)) {
@@ -41,7 +41,7 @@ class DynamicTaggingCollector implements PolicyCollectorInterface
             $parsedUrl = parse_url($gtmUrl);
 
             if (!$parsedUrl || !isset($parsedUrl['host'])) {
-                return [];
+                return $defaultPolicies;
             }
 
             $domain = $parsedUrl['host'];
