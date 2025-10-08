@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.2] - 08 October 2025
+### Fixed
+- Fix wrong encoding
+
 ## [3.10.1] - 08 October 2025
 ### Fixed
 - Allow CSP frame-src from googletagmanager.com
