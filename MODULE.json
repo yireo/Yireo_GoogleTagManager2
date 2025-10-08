@@ -1,0 +1,136 @@
+{
+    "sequence": [
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_CatalogSearch",
+        "Magento_Checkout",
+        "Magento_Config",
+        "Magento_ConfigurableProduct",
+        "Magento_Cookie",
+        "Magento_Customer",
+        "Magento_Eav",
+        "Magento_Payment",
+        "Magento_Quote",
+        "Magento_Sales",
+        "Magento_Store",
+        "Magento_Tax",
+        "Yireo_CspUtilities"
+    ],
+    "modules": [
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_CatalogInventory",
+        "Magento_CatalogRule",
+        "Magento_CatalogSearch",
+        "Magento_Checkout",
+        "Magento_Cms",
+        "Magento_Config",
+        "Magento_ConfigurableProduct",
+        "Magento_Cookie",
+        "Magento_Csp",
+        "Magento_Customer",
+        "Magento_Directory",
+        "Magento_Eav",
+        "Magento_Indexer",
+        "Magento_Msrp",
+        "Magento_Payment",
+        "Magento_Quote",
+        "Magento_Rule",
+        "Magento_Sales",
+        "Magento_SalesSequence",
+        "Magento_Search",
+        "Magento_Store",
+        "Magento_Tax",
+        "Magento_Theme",
+        "Magento_User",
+        "Yireo_CspUtilities"
+    ],
+    "components": [],
+    "config": [
+        {
+            "path": "googletagmanager2\/settings\/funding",
+            "label": "Settings > Funding",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/enabled",
+            "label": "Settings > Enabled",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/id",
+            "label": "Settings > Container Public ID",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/debug",
+            "label": "Settings > Debug",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/debug_clicks",
+            "label": "Settings > Debug Clicks",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/wait_for_ui",
+            "label": "Settings > Wait for user interaction",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/category_products",
+            "label": "Settings > Maximum Products in Category",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/product_list_value_on_category",
+            "label": "Settings > Product List Value on Category Page",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/product_eav_attributes",
+            "label": "Settings > Product EAV Attributes",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/category_eav_attributes",
+            "label": "Settings > Category EAV Attributes",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/customer_eav_attributes",
+            "label": "Settings > Customer EAV Attributes",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/view_cart_occurances",
+            "label": "Settings > view_cart occurances",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/view_cart_on_mini_cart_expand_only",
+            "label": "Settings > view_cart only with expanded minicart",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/serverside_enabled",
+            "label": "Settings > Server-Side Tracking",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/serverside_gtm_url",
+            "label": "Settings > Container URL",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2\/settings\/order_states_for_purchase_event",
+            "label": "Settings > Orders states for purchase event",
+            "description": ""
+        }
+    ],
+    "tests": {
+        "unit": 5,
+        "integration": 28,
+        "functional": 0
+    }
+}
