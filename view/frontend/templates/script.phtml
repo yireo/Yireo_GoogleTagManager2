@@ -32,16 +32,16 @@ $events = ($config->waitForUserInteraction() === false)
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
-                j.src = '<?= $config->getGoogleTagmanagerUrl() ?>' + '/gtm.js?id=' + i + dl;
+                j.src = '<?= $escaper->escapeUrl($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '<?= $gtmId ?>');
+            })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeHtml($gtmId) ?>');
             <?php endforeach; ?>
         };
 
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
         });
-    })([<?= $events ?>]);
+    })([<?= $escaper->escapeHtml($events) ?>]);
 
     <?php if ($config->isDebug()): ?>
     window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;

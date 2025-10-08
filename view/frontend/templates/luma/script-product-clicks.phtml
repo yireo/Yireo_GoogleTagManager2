@@ -17,6 +17,6 @@ $productPath = $block->getProductPath();
 ?>
 <script>
     require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
-        clicks({productPath: '<?= $productPath ?>'});
+        clicks({productPath: '<?= $escaper->escapeHtml($productPath) ?>'});
     });
 </script>
