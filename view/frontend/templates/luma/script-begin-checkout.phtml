@@ -11,5 +11,5 @@ $beginCheckoutEvent = $block->getData('begin_checkout_event');
 $encodedEvent = json_encode($beginCheckoutEvent->get());
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= $escaper->escapeHtml($encodedEvent) ?>;
+    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= /* @noEscape */ $encodedEvent ?>;
 </script>
