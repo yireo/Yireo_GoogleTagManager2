@@ -6,7 +6,7 @@
 
     <type name="Yireo\GoogleTagManager2\Logger\Debugger">
         <arguments>
-            <argument name="logger" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogger</argument>
+            <argument name="logger" xsi:type="object">Yireo\GoogleTagManager2\Logger\VirtualCustom</argument>
         </arguments>
     </type>
 
@@ -18,15 +18,15 @@
         </arguments>
     </type>
 
-    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\CustomLogger">
+    <virtualType type="Magento\Framework\Logger\Monolog" name="Yireo\GoogleTagManager2\Logger\VirtualCustom">
         <arguments>
             <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">Yireo\GoogleTagManager2\Logger\CustomLogHandler</item>
+                <item name="system" xsi:type="object">Yireo\GoogleTagManager2\Logger\VirtualCustomLogHandler</item>
             </argument>
         </arguments>
     </virtualType>
 
-    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\GoogleTagManager2\Logger\CustomLogHandler">
+    <virtualType type="Magento\Framework\Logger\Handler\Base" name="Yireo\GoogleTagManager2\Logger\VirtualCustomLogHandler">
         <arguments>
             <argument name="fileName" xsi:type="string">var/log/yireo_googletagmanager2.log</argument>
         </arguments>
