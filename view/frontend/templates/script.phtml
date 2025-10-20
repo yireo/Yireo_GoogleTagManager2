@@ -32,9 +32,9 @@ $events = ($config->waitForUserInteraction() === false)
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
-                j.src = '<?= $escaper->escapeUrl($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
+                j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeHtml($gtmId) ?>');
+            })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
             <?php endforeach; ?>
         };
 

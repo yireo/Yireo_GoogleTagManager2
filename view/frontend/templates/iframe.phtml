@@ -8,5 +8,6 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
+$url = sprintf('%s/ns.html?id=%s', $config->getGoogleTagmanagerUrl(), $config->getId());
 ?>
-<noscript><iframe src="<?= $escaper->escapeUrl($config->getGoogleTagmanagerUrl()) ?>/ns.html?id=<?= $escaper->escapeHtml($config->getId()) ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="<?= $escaper->escapeUrl($url) ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
