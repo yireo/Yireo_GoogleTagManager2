@@ -5,18 +5,27 @@ namespace Yireo\GoogleTagManager2\DataLayer\Event;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\CartItemDataMapper;
+use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
+use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class RemoveFromCart implements EventInterface
 {
+    private ?CartItemInterface $cartItem = null;
     private CartItemDataMapper $cartItemDataMapper;
-    private CartItemInterface $cartItem;
+    private CurrencyCode $currencyCode;
+    private PriceFormatter $priceFormatter;
 
     /**
      * @param CartItemDataMapper $cartItemDataMapper
      */
-    public function __construct(CartItemDataMapper $cartItemDataMapper)
-    {
+    public function __construct(
+        CartItemDataMapper $cartItemDataMapper,
+        CurrencyCode $currencyCode,
+        PriceFormatter $priceFormatter
+    ) {
         $this->cartItemDataMapper = $cartItemDataMapper;
+        $this->currencyCode = $currencyCode;
+        $this->priceFormatter = $priceFormatter;
     }
 
     /**
@@ -24,17 +33,22 @@ class RemoveFromCart implements EventInterface
      */
     public function get(): array
     {
-        $cartItemData = $this->cartItemDataMapper->mapByCartItem($this->cartItem);
+        $itemData = $this->cartItemDataMapper->mapByCartItem($this->cartItem);
+        $value = $itemData['price'] * $itemData['quantity'];
+
         return [
             'event' => 'remove_from_cart',
             'ecommerce' => [
-                'items' => [$cartItemData]
+                'currency' => $this->currencyCode->get(),
+                'value'    => $this->priceFormatter->format((float)$value),
+                'items'    => [$itemData]
             ]
         ];
     }
 
     /**
      * @param CartItemInterface $cartItem
+     *
      * @return RemoveFromCart
      */
     public function setCartItem(CartItemInterface $cartItem): RemoveFromCart
