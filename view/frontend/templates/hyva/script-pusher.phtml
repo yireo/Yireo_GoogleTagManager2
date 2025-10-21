@@ -22,7 +22,7 @@
             cb();
         }
 
-        
+
         const copyEventData = Object.assign({}, eventData);
         let metaData = {};
         if (copyEventData.meta) {
@@ -40,6 +40,20 @@
         if (metaData && metaData.allowed_pages && metaData.allowed_pages.length > 0
             && false === metaData.allowed_pages.some(page => window.location.pathname.includes(page))) {
             yireoGoogleTagManager2Logger('Warning: Skipping event, not in allowed pages', window.location.pathname, eventData);
+            doCallback(callback);
+            return;
+        }
+
+        if (metaData && metaData.allowed_events) {
+            for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
+                window.addEventListener(allowedEvent, function () {
+                    const eventDataCopy = Object.assign({}, eventData);
+                    eventDataCopy.meta.allowed_events = false;
+                    yireoGoogleTagManager2Pusher(eventDataCopy, 'push (allowed event "' + eventData.event + '") [script-pusher]');
+                });
+            }
+
+            yireoGoogleTagManager2Logger('Warning: Skipping event, not in allowed events', window.location.pathname, eventData);
             doCallback(callback);
             return;
         }
