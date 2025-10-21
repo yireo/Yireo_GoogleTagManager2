@@ -58,12 +58,16 @@ class CartItemDataMapper
             $cartItemData = [];
         }
 
+        $price = $this->getPrice($cartItem);
         return array_merge($cartItemData, [
             'item_sku' => $cartItem->getSku(),
             'item_name' => $cartItem->getName(),
             'order_item_id' => $cartItem->getItemId(),
             'quantity' => (float) $cartItem->getQty(),
-            'price' => $this->getPrice($cartItem)
+            'price_excl_tax' => $cartItem->getRowTotal() / $cartItem->getQty(),
+            'price_incl_tax' => $cartItem->getRowTotalInclTax() / $cartItem->getQty(),
+            'price' => $price,
+            'discount' => $this->getPriceDiscount($cartItem, $price)
         ]);
     }
 
@@ -82,14 +86,19 @@ class CartItemDataMapper
         switch ($displayType) {
             case Config::DISPLAY_TYPE_EXCLUDING_TAX:
             case Config::DISPLAY_TYPE_BOTH:
-                $price = $cartItem->getConvertedPrice();
+                $price = ($cartItem->getRowTotal() - $cartItem->getDiscountAmount()) / $cartItem->getQty();
                 break;
             case Config::DISPLAY_TYPE_INCLUDING_TAX:
             default:
-                $price = $cartItem->getPriceInclTax();
+                $price = $cartItem->getRowTotalInclTax() / $cartItem->getQty();
                 break;
         }
 
         return $this->priceFormatter->format((float)$price);
+    }
+
+    private function getPriceDiscount(CartItem $cartItem, float $price): float
+    {
+        return $cartItem->getDiscountAmount() / $cartItem->getQty();
     }
 }
