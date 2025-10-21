@@ -35,7 +35,7 @@
             name="yireo_googletagmanager2.script-product-clicks"
             template="Yireo_GoogleTagManager2::hyva/script-product-clicks.phtml">
             <arguments>
-                <argument name="product_path" xsi:type="string">.products a.product</argument>
+                <argument name="product_path" xsi:type="string">.products a.product, .products a.product-item-link, .card a.product-item-link, .card a.product-item-photo, .card a.btn-primary</argument>
             </arguments>
         </referenceBlock>
     </body>
