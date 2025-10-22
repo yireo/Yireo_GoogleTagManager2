@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.3] - 22 October 2025
+### Fixed
+- Do not add products in event if category display mode does not show products @samicoman #266
+- Make sure to trigger `view_cart` when collapsing minicart
+- Make sure cart item price includes discount; Add discount, `price_excl_tax` and `price_incl_tax`
+- Cart total should include discount
+- Re-add `payment_method` not to break anything
+- Rename `payment_method` to `payment_type` property #283
+- Missing value & currency in `remove_from_cart` event #285
+- Move logout event to onload event via XML layout handle `customer_account_logoutsuccess`
+- Rename virtual logger to prevent DI code generation notice
+- Fixes some more wrong escaping methods being used in frontend files.
+- Update AddDataToCustomerSection.php
+- Add more product click selectors for Hyvä
+
 ## [3.10.2] - 08 October 2025
 ### Fixed
 - Fix wrong encoding
