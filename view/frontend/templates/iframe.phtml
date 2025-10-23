@@ -29,7 +29,7 @@ if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config-
     
     <?php
     // Main functionality script
-    $mainScript = <<<'SCRIPT'
+    $mainScript = '
 /**
  * Generate simple hash based only on items and quantities
  * @param {Object} eventData - GA4 event data
@@ -37,20 +37,20 @@ if ($config->isEnabled() && $config->getGoogleTagmanagerUrl() && strlen($config-
  */
 window.tagging_gtm_simple_hash = function(eventData) {
     if (!eventData.ecommerce || !eventData.ecommerce.items) {
-        return '';
+        return "";
     }
 
     const parts = [];
 
     // Add items and quantities
     eventData.ecommerce.items.forEach(item => {
-        const itemId = item.item_id || '';
+        const itemId = item.item_id || "";
         const quantity = item.quantity || 0;
         parts.push(`i_id=${itemId}&qt=${quantity}`);
     });
 
     // Join all parts and encode to base64
-    const value = parts.join('&');
+    const value = parts.join("&");
     return btoa(value);
 }
 
@@ -61,31 +61,31 @@ window.tagging_gtm_simple_hash = function(eventData) {
  */
 window.tagging_gtm_advanced_hash = function(eventData) {
     if (!eventData.ecommerce || !eventData.ecommerce.items) {
-        return '';
+        return "";
     }
 
     const parts = [];
 
     // Add items and quantities
     eventData.ecommerce.items.forEach(item => {
-        const itemId = item.item_id || '';
+        const itemId = item.item_id || "";
         const quantity = item.quantity || 0;
         parts.push(`i_id=${itemId}&qt=${quantity}`);
     });
 
     // Add user agent (normalized: lowercase, spaces removed)
-    const userAgent = navigator.userAgent || '';
-    const normalizedUserAgent = userAgent.toLowerCase().replace(/\s+/g, '');
+    const userAgent = navigator.userAgent || "";
+    const normalizedUserAgent = userAgent.toLowerCase().replace(/\s+/g, "");
     parts.push(`--ua=${normalizedUserAgent}`);
 
     // Join all parts and encode to base64
-    const value = parts.join('&');
+    const value = parts.join("&");
     return btoa(value);
 }
 
 window.tagging_gtm_save_hash = function(hash, marketingObject) {
     if (!hash || !marketingObject) {
-        console.error('Hash or marketingObject is missing');
+        console.error("Hash or marketingObject is missing");
         return;
     }
 
@@ -104,8 +104,7 @@ window.tagging_gtm_save_hash = function(hash, marketingObject) {
     .catch((err) => {
         console.error(`Error sending data to API`, err);
     });
-}
-SCRIPT;
+}';
     
     if ($isHyva): ?>
         <script><?= $mainScript ?></script><?php $hyvaCsp->registerInlineScript() ?>
