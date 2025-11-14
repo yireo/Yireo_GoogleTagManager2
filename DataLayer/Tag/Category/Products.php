@@ -2,6 +2,8 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Catalog\Model\Category;
 use Yireo\GoogleTagManager2\Config\Config;
@@ -53,7 +55,8 @@ class Products implements TagInterface
                 break;
             }
 
-            $product->setCategory($product);
+            /** @var Product $product */
+            $product->setCategory($category);
             $productData = $this->productDataMapper->mapByProduct($product);
             $productData['quantity'] = 1;
             $productData['index'] = $i;
