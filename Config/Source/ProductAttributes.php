@@ -14,15 +14,21 @@ class ProductAttributes implements OptionSourceInterface
     private ProductAttributeRepositoryInterface $productAttributeRepository;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
     private SortOrderFactory $sortOrderFactory;
+    private bool $onlyIncludeVisible;
+    private bool $onlyIncludeVisibleOnFront;
 
     public function __construct(
         ProductAttributeRepositoryInterface $productAttributeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        SortOrderFactory $sortOrderFactory
+        SortOrderFactory $sortOrderFactory,
+        bool $onlyIncludeVisible = true,
+        bool $onlyIncludeVisibleOnFront = true,
     ) {
         $this->productAttributeRepository = $productAttributeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->sortOrderFactory = $sortOrderFactory;
+        $this->onlyIncludeVisible = $onlyIncludeVisible;
+        $this->onlyIncludeVisibleOnFront = $onlyIncludeVisibleOnFront;
     }
 
     /**
@@ -32,8 +38,14 @@ class ProductAttributes implements OptionSourceInterface
     {
         $options = [['value' => '', 'label' => '']];
 
-        $this->searchCriteriaBuilder->addFilter('is_visible', 1);
-        $this->searchCriteriaBuilder->addFilter('is_visible_on_front', 1);
+        if ($this->onlyIncludeVisible) {
+            $this->searchCriteriaBuilder->addFilter('is_visible', 1);
+        }
+
+        if ($this->onlyIncludeVisibleOnFront) {
+            $this->searchCriteriaBuilder->addFilter('is_visible_on_front', 1);
+        }
+
         $sortOrder = $this->sortOrderFactory->create(['field' => 'attribute_code', 'direction' => 'asc']);
         $this->searchCriteriaBuilder->addSortOrder($sortOrder);
         $searchCriteria = $this->searchCriteriaBuilder->create();
