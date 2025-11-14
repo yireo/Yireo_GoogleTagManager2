@@ -66,7 +66,7 @@ class ProductDataMapper
 
         $productFields = $this->getProductFields();
         foreach ($productFields as $productAttributeCode) {
-            $dataLayerKey = $prefix . $productAttributeCode;
+            $dataLayerKey = $prefix.$productAttributeCode;
             $attributeValue = $this->getAttributeValue->getProductAttributeValue($product, $productAttributeCode);
             if ($attributeValue === null) {
                 continue;
@@ -77,17 +77,23 @@ class ProductDataMapper
 
         try {
             $category = $this->getProductCategory($product);
-            $productData[$prefix . 'list_id'] = $category->getId();
-            $productData[$prefix . 'list_name'] = $category->getName();
+            $productData[$prefix.'list_id'] = $category->getId();
+            $productData[$prefix.'list_name'] = $category->getName();
         } catch (NoSuchEntityException $noSuchEntityException) {
         }
 
-        $productData['price'] = $this->priceFormatter->format((float) $product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
+        $price = (float)$product->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue();
+        $productData['price'] = $this->priceFormatter->format($price);
 
         $simpleProductOption = $product->getCustomOption('simple_product');
-        if ($simpleProductOption && method_exists($simpleProductOption, 'getProduct') && $simpleProductOption->getProduct()) {
+        if ($simpleProductOption && method_exists(
+                $simpleProductOption,
+                'getProduct'
+            ) && $simpleProductOption->getProduct()) {
             $simpleProduct = $simpleProductOption->getProduct();
-            $productData['price'] = $this->priceFormatter->format((float) $simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue());
+            $productData['price'] = $this->priceFormatter->format(
+                (float)$simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
+            );
         }
 
         $productData = $this->attachCategoriesData($product, $productData);
@@ -102,15 +108,17 @@ class ProductDataMapper
     /**
      * @param ProductInterface $product
      * @return CategoryInterface
+     * @throws NoSuchEntityException
      */
-    private function getProductCategory($product)
+    private function getProductCategory(ProductInterface $product): CategoryInterface
     {
         /** @var Product $product */
         if ($this->config->getProductListValueOnCategory() == ProductListValue::CURRENT_CATEGORY
-            && $product->getCategory()
+            && $product->getCategory() instanceof CategoryInterface
         ) {
             return $product->getCategory();
         }
+
         return $this->categoryProvider->getFirstByProduct($product);
     }
 
@@ -142,7 +150,7 @@ class ProductDataMapper
                 continue;
             }
 
-            $key = 'item_category' . ($currentCategoriesCount === 1 ? '' : $currentCategoriesCount);
+            $key = 'item_category'.($currentCategoriesCount === 1 ? '' : $currentCategoriesCount);
             $data[$key] = $category->getName();
 
             $currentCategoriesCount++;
