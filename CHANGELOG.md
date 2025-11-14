@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.4] - 14 November 2025
+### Fixed
+- Fix typo of wrong setting of $product as category
+
 ## [3.10.3] - 22 October 2025
 ### Fixed
 - Do not add products in event if category display mode does not show products @samicoman #266
