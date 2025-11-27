@@ -6,6 +6,10 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Model\Category;
+use Magento\CatalogWidget\Block\Product\ProductsList;
+use Magento\Eav\Model\Entity\Collection\AbstractCollection;
+use Magento\Framework\App\Response\Http;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\Reindex;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
@@ -35,18 +39,23 @@ class CategoryPageTest extends PageTestCase
     {
         $this->assertEnabledFlagIsWorking();
 
+        /** @var Category $category */
         $category = $this->getCategoryByName('Category 999');
 
+        /** @var AbstractCollection $productCollection */
         $productCollection = $category->getProductCollection();
         $this->assertTrue($productCollection->count() >= 3, 'Product count is '.$productCollection->count());
 
         $this->dispatch('catalog/category/view/id/' . $category->getId());
         $this->assertRequestActionName('view');
 
-        $body = $this->getResponse()->getBody();
+        /** @var Http $response */
+        $response = $this->getResponse();
+        $body = $response->getBody();
         $this->assertStringContainsString($category->getName(), $body);
         $this->assertStringContainsString('"view_item_list"', $body);
 
+        /** @var ListProduct $productListBlock */
         $productListBlock = $this->layout->getBlock('category.products.list');
         $productListBlock->setCollection($productCollection);
         $this->assertInstanceOf(ListProduct::class, $productListBlock);
@@ -82,7 +91,7 @@ class CategoryPageTest extends PageTestCase
         }
     }
 
-    private function getProductsByCategory(CategoryInterface $category): array
+    private function getProductsByCategory(Category $category): array
     {
         return $category->getProductCollection()->toArray();
     }

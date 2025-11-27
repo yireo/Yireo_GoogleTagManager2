@@ -108,8 +108,9 @@ class OrderItemDataMapper
     }
 
     /**
-     * @param ProductInterface $product
-     * @param array $data
+     * @param OrderItemInterface $orderItem
+     * @param array              $data
+     *
      * @return array
      */
     private function parseDataLayerMapping(OrderItemInterface $orderItem, array $data): array

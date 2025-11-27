@@ -43,6 +43,7 @@ class Products implements TagInterface
      */
     public function get(): array
     {
+        /** @var Category $category */
         $category = $this->getCurrentCategory->get();
         if ($category->getDisplayMode() === Category::DM_PAGE) {
             return [];

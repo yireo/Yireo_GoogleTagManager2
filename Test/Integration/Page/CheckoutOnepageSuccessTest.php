@@ -7,6 +7,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class CheckoutOnepageSuccessTest extends PageTestCase
@@ -74,6 +75,8 @@ class CheckoutOnepageSuccessTest extends PageTestCase
         $searchResult = $orderRepository->getList($searchCriteriaBuilder->create());
         $orders = $searchResult->getItems();
         $this->assertNotEmpty($orders);
+
+        /** @var Order $order */
         $order = array_pop($orders);
         $this->assertNotEmpty($order);
         $this->assertNotEmpty($order->getId());

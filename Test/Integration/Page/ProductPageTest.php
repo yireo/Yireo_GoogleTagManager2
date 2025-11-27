@@ -4,6 +4,7 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\Response\Http;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetProduct;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
@@ -35,7 +36,9 @@ class ProductPageTest extends PageTestCase
         $this->dispatch('catalog/product/view/id/' . $product->getId());
         $this->assertRequestActionName('view');
 
-        $body = $this->getResponse()->getBody();
+        /** @var Http $response */
+        $response = $this->getResponse();
+        $body = $response->getBody();
         $this->assertStringContainsString($product->getName(), $body);
 
         $block = $this->layout->getBlock('yireo_googletagmanager2.data-layer');
