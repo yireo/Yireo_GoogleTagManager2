@@ -19,10 +19,12 @@ jobs:
           cd /tmp/magento
           composer config repositories.local-source path package-source/
           composer config --no-plugins allow-plugins true
-          composer require --prefer-source -- ${COMPOSER_NAME}:@dev phpstan/phpstan bitexpert/phpstan-magento phpstan/extension-installer
+          composer require --prefer-source -- ${COMPOSER_NAME}:@dev
+          composer require --dev --prefer-source -- phpstan/phpstan bitexpert/phpstan-magento phpstan/extension-installer
 
       - name: Run Magento 2 PHPStan Tests
         run: |
           export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
-          php -d memory_limit=4G ./vendor/bin/phpstan analyse ./vendor/$COMPOSER_NAME/
+          export LEVEL=`echo '<?= json_decode(file_get_contents("MODULE.json"), true)["phpstan_level"];' | php`
+          php -d memory_limit=4G /tmp/magento/vendor/bin/phpstan analyse --level $LEVEL ${GITHUB_WORKSPACE}
 
