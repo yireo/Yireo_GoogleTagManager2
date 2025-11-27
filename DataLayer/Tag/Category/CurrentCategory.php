@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
 use Yireo\GoogleTagManager2\Api\Data\MergeTagInterface;
@@ -27,6 +28,7 @@ class CurrentCategory implements MergeTagInterface
     /**
      * @return string[]
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function merge(): array
     {

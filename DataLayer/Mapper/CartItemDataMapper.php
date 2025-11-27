@@ -120,7 +120,7 @@ class CartItemDataMapper
     private function parseDataLayerMapping(CartItem $cartItem, array $data): array
     {
         if (empty($this->dataLayerMapping)) {
-            return [];
+            return $data;
         }
 
         foreach ($this->dataLayerMapping as $tagName => $tagValue) {

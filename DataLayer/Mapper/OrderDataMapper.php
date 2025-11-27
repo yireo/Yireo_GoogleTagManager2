@@ -124,7 +124,7 @@ class OrderDataMapper
     private function parseDataLayerMapping(OrderInterface $order, array $data): array
     {
         if (empty($this->dataLayerMapping)) {
-            return [];
+            return $data;
         }
 
         foreach ($this->dataLayerMapping as $tagName => $tagValue) {

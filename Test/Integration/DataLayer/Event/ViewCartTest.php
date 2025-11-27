@@ -55,6 +55,7 @@ class ViewCartTest extends TestCase
         $this->assertEquals('USD', $data['ecommerce']['currency']);
         $this->assertNotEquals(0.0, $data['ecommerce']['value']);
         $this->assertNotEmpty($data['ecommerce']['items'], 'No ecommerce items found');
-        $this->assertEquals(1, (int)$data['ecommerce']['items'][0]['quantity']);
+        $this->assertArrayHasKey('quantity', $data['ecommerce']['items'][0], json_encode($data));
+        $this->assertEquals(1, (int)$data['ecommerce']['items'][0]['quantity'], json_encode($data));
     }
 }

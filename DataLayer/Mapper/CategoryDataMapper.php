@@ -40,12 +40,12 @@ class CategoryDataMapper
         $categoryData = [];
         $categoryFields = $this->getCategoryFields();
         foreach ($categoryFields as $categoryAttributeCode) {
-            $dataLayerKey = $prefix . $categoryAttributeCode;
             $attributeValue = $this->getAttributeValue->getCategoryAttributeValue($category, $categoryAttributeCode);
             if (empty($attributeValue)) {
                 continue;
             }
 
+            $dataLayerKey = $prefix . $categoryAttributeCode;
             $categoryData[$dataLayerKey] = $attributeValue;
         }
 
@@ -59,7 +59,7 @@ class CategoryDataMapper
      */
     private function getCategoryFields(): array
     {
-        return array_filter(array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes()));
+        return array_unique(array_merge(['id', 'name'], $this->config->getCategoryEavAttributeCodes()));
     }
 
     /**
@@ -71,7 +71,7 @@ class CategoryDataMapper
     private function parseDataLayerMapping(CategoryInterface $category, array $data): array
     {
         if (empty($this->dataLayerMapping)) {
-            return [];
+            return $data;
         }
 
         foreach ($this->dataLayerMapping as $tagName => $tagValue) {

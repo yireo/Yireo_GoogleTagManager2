@@ -75,7 +75,7 @@ class CustomerDataMapper
     private function parseDataLayerMapping(CustomerInterface $customer, array $data): array
     {
         if (empty($this->dataLayerMapping)) {
-            return [];
+            return $data;
         }
 
         foreach ($this->dataLayerMapping as $tagName => $tagValue) {
