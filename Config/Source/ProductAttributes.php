@@ -22,7 +22,7 @@ class ProductAttributes implements OptionSourceInterface
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderFactory $sortOrderFactory,
         bool $onlyIncludeVisible = true,
-        bool $onlyIncludeVisibleOnFront = true,
+        bool $onlyIncludeVisibleOnFront = true
     ) {
         $this->productAttributeRepository = $productAttributeRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
