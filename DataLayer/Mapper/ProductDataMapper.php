@@ -87,9 +87,9 @@ class ProductDataMapper
 
         $simpleProductOption = $product->getCustomOption('simple_product');
         if ($simpleProductOption && method_exists(
-                $simpleProductOption,
-                'getProduct'
-            ) && $simpleProductOption->getProduct()) {
+            $simpleProductOption,
+            'getProduct'
+        ) && $simpleProductOption->getProduct()) {
             $simpleProduct = $simpleProductOption->getProduct();
             $productData['price'] = $this->priceFormatter->format(
                 (float)$simpleProduct->getPriceInfo()->getPrice(FinalPrice::PRICE_CODE)->getValue()
