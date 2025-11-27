@@ -1,0 +1,32 @@
+name: Magento 2 Static Tests
+#on: ['push', 'pull_request']
+on:
+  release:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  static-tests:
+    name: Magento 2 Static Tests
+    runs-on: self-hosted
+    #runs-on: ubuntu-latest
+    container:
+        image: yireo/magento2installed:2.4.7-p4
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Add module source
+        run: |
+          export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
+          cp -R ${GITHUB_WORKSPACE} /tmp/magento/package-source
+          cd /tmp/magento
+          composer config repositories.local-source path package-source/
+          composer require --prefer-source -- ${COMPOSER_NAME}:@dev bitexpert/phpstan-magento
+
+      - name: Run Magento 2 PHPStan Tests
+        run: |
+          export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
+          php -d memory_limit=4G ./vendor/bin/phpstan analyse ./vendor/$COMPOSER_NAME/
+
