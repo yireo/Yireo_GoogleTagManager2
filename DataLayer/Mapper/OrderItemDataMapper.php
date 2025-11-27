@@ -2,6 +2,7 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Mapper;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -10,6 +11,8 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
+use Yireo\GoogleTagManager2\Api\Data\OrderItemTagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
 class OrderItemDataMapper
@@ -18,23 +21,28 @@ class OrderItemDataMapper
     private ProductRepositoryInterface $productRepository;
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
+    private array $dataLayerMapping;
+
 
     /**
-     * @param ProductDataMapper $productDataMapper
+     * @param ProductDataMapper          $productDataMapper
      * @param ProductRepositoryInterface $productRepository
-     * @param PriceFormatter $priceFormatter
-     * @param ScopeConfigInterface $scopeConfig
+     * @param PriceFormatter             $priceFormatter
+     * @param ScopeConfigInterface       $scopeConfig
+     * @param array                      $dataLayerMapping
      */
     public function __construct(
         ProductDataMapper $productDataMapper,
         ProductRepositoryInterface $productRepository,
         PriceFormatter $priceFormatter,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        array $dataLayerMapping = []
     ) {
         $this->productDataMapper = $productDataMapper;
         $this->productRepository = $productRepository;
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
+        $this->dataLayerMapping = $dataLayerMapping;
     }
 
     /**
@@ -70,9 +78,9 @@ class OrderItemDataMapper
             unset($orderItemData['details']);
         }
 
-        return $orderItemData;
+        return $this->parseDataLayerMapping($orderItem, $orderItemData);
     }
-    
+
     /**
      * @param OrderItemInterface $orderItem
      * @return float
@@ -97,5 +105,36 @@ class OrderItemDataMapper
         }
 
         return $this->priceFormatter->format((float)$price);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array $data
+     * @return array
+     */
+    private function parseDataLayerMapping(OrderItemInterface $orderItem, array $data): array
+    {
+        if (empty($this->dataLayerMapping)) {
+            return [];
+        }
+
+        foreach ($this->dataLayerMapping as $tagName => $tagValue) {
+            if (is_string($tagValue) && array_key_exists($tagValue, $data)) {
+                $data[$tagName] = $data[$tagValue];
+                continue;
+            }
+
+            if ($tagValue instanceof OrderItemTagInterface) {
+                $tagValue->setOrderItem($orderItem);
+                $data[$tagName] = $tagValue->get();
+                continue;
+            }
+
+            if ($tagValue instanceof TagInterface) {
+                $data[$tagName] = $tagValue->get();
+            }
+        }
+
+        return $data;
     }
 }

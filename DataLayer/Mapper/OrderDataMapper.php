@@ -9,6 +9,8 @@ use Magento\Payment\Model\MethodInterface as PaymentMethod;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
+use Yireo\GoogleTagManager2\Api\Data\OrderTagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
@@ -21,6 +23,7 @@ class OrderDataMapper
     private CustomerRepositoryInterface $customerRepository;
     private Config $config;
     private OrderTotals $orderTotals;
+    private array $dataLayerMapping;
 
     /**
      * @param PriceFormatter $priceFormatter
@@ -35,7 +38,8 @@ class OrderDataMapper
         CustomerDataMapper $customerDataMapper,
         CustomerRepositoryInterface $customerRepository,
         Config $config,
-        OrderTotals $orderTotals
+        OrderTotals $orderTotals,
+        array $dataLayerMapping = []
     ) {
         $this->priceFormatter = $priceFormatter;
         $this->guestDataMapper = $guestDataMapper;
@@ -43,6 +47,7 @@ class OrderDataMapper
         $this->customerRepository = $customerRepository;
         $this->config = $config;
         $this->orderTotals = $orderTotals;
+        $this->dataLayerMapping = $dataLayerMapping;
     }
 
     /**
@@ -53,7 +58,7 @@ class OrderDataMapper
      */
     public function mapByOrder(OrderInterface $order): array
     {
-        return [
+        $orderData= [
             'currency' => $order->getOrderCurrencyCode(),
             'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'id' => $order->getIncrementId(),
@@ -69,6 +74,8 @@ class OrderDataMapper
             'payment_type' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
             'customer' => $this->getCustomerData($order),
         ];
+
+        return $this->parseDataLayerMapping($order, $orderData);
     }
 
     /**
@@ -106,5 +113,37 @@ class OrderDataMapper
         }
 
         return $paymentMethod->getTitle();
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param array          $data
+     *
+     * @return array
+     */
+    private function parseDataLayerMapping(OrderInterface $order, array $data): array
+    {
+        if (empty($this->dataLayerMapping)) {
+            return [];
+        }
+
+        foreach ($this->dataLayerMapping as $tagName => $tagValue) {
+            if (is_string($tagValue) && array_key_exists($tagValue, $data)) {
+                $data[$tagName] = $data[$tagValue];
+                continue;
+            }
+
+            if ($tagValue instanceof OrderTagInterface) {
+                $tagValue->setOrder($order);
+                $data[$tagName] = $tagValue->get();
+                continue;
+            }
+
+            if ($tagValue instanceof TagInterface) {
+                $data[$tagName] = $tagValue->get();
+            }
+        }
+
+        return $data;
     }
 }

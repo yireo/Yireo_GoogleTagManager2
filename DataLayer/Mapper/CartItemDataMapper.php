@@ -8,6 +8,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item as CartItem;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config;
+use Yireo\GoogleTagManager2\Api\Data\CartItemTagInterface;
+use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 use Yireo\GoogleTagManager2\Util\ProductProvider;
 
@@ -18,6 +20,8 @@ class CartItemDataMapper
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
     private bool $useProductProvider = false;
+    private array $dataLayerMapping;
+
 
     /**
      * @param ProductDataMapper $productDataMapper
@@ -30,13 +34,15 @@ class CartItemDataMapper
         ProductProvider $productProvider,
         PriceFormatter $priceFormatter,
         ScopeConfigInterface $scopeConfig,
-        bool $useProductProvider = false
+        bool $useProductProvider = false,
+        array $dataLayerMapping = []
     ) {
         $this->productDataMapper = $productDataMapper;
         $this->productProvider = $productProvider;
         $this->priceFormatter = $priceFormatter;
         $this->scopeConfig = $scopeConfig;
         $this->useProductProvider = $useProductProvider;
+        $this->dataLayerMapping = $dataLayerMapping;
     }
 
     /**
@@ -59,7 +65,7 @@ class CartItemDataMapper
         }
 
         $price = $this->getPrice($cartItem);
-        return array_merge($cartItemData, [
+        $cartItemData = array_merge($cartItemData, [
             'item_sku' => $cartItem->getSku(),
             'item_name' => $cartItem->getName(),
             'order_item_id' => $cartItem->getItemId(),
@@ -69,6 +75,9 @@ class CartItemDataMapper
             'price' => $price,
             'discount' => $this->getPriceDiscount($cartItem, $price)
         ]);
+
+        $cartItemData = $this->parseDataLayerMapping($cartItem, $cartItemData);
+        return $cartItemData;
     }
 
     /**
@@ -100,5 +109,37 @@ class CartItemDataMapper
     private function getPriceDiscount(CartItem $cartItem, float $price): float
     {
         return $cartItem->getDiscountAmount() / $cartItem->getQty();
+    }
+
+    /**
+     * @param CartItem $cartItem
+     * @param array    $data
+     *
+     * @return array
+     */
+    private function parseDataLayerMapping(CartItem $cartItem, array $data): array
+    {
+        if (empty($this->dataLayerMapping)) {
+            return [];
+        }
+
+        foreach ($this->dataLayerMapping as $tagName => $tagValue) {
+            if (is_string($tagValue) && array_key_exists($tagValue, $data)) {
+                $data[$tagName] = $data[$tagValue];
+                continue;
+            }
+
+            if ($tagValue instanceof CartItemTagInterface) {
+                $tagValue->setCartItem($cartItem);
+                $data[$tagName] = $tagValue->get();
+                continue;
+            }
+
+            if ($tagValue instanceof TagInterface) {
+                $data[$tagName] = $tagValue->get();
+            }
+        }
+
+        return $data;
     }
 }
