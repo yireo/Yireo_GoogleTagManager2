@@ -1,10 +1,5 @@
 name: Magento 2 Integration Tests
-#on: ['push', 'pull_request']
-on:
-  release:
-  push:
-    branches:
-      - 'main'
+on: ['push', 'pull_request']
 
 jobs:
   integration-tests:

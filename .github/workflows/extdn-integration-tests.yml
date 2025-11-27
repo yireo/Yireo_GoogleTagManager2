@@ -1,5 +1,5 @@
 name: ExtDN Integration Tests
-on: [push]
+#on: ['push']
 
 jobs:
   integration-tests:
