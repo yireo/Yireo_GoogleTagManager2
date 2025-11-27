@@ -1,0 +1,11 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+?>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.dispatchEvent(new CustomEvent('minicart_collapse'));
+    });
+</script>
