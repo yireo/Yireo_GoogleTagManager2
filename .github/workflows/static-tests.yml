@@ -18,6 +18,7 @@ jobs:
           cp -R ${GITHUB_WORKSPACE} /tmp/magento/package-source
           cd /tmp/magento
           composer config repositories.local-source path package-source/
+          composer config --no-plugins allow-plugins true
           composer require --prefer-source -- ${COMPOSER_NAME}:@dev bitexpert/phpstan-magento phpstan/extension-installer
 
       - name: Run Magento 2 PHPStan Tests
