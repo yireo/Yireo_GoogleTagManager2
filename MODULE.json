@@ -48,82 +48,82 @@
     "components": [],
     "config": [
         {
-            "path": "googletagmanager2\/settings\/funding",
+            "path": "googletagmanager2/settings/funding",
             "label": "Settings > Funding",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/enabled",
+            "path": "googletagmanager2/settings/enabled",
             "label": "Settings > Enabled",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/id",
+            "path": "googletagmanager2/settings/id",
             "label": "Settings > Container Public ID",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/debug",
+            "path": "googletagmanager2/settings/debug",
             "label": "Settings > Debug",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/debug_clicks",
+            "path": "googletagmanager2/settings/debug_clicks",
             "label": "Settings > Debug Clicks",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/wait_for_ui",
+            "path": "googletagmanager2/settings/wait_for_ui",
             "label": "Settings > Wait for user interaction",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/category_products",
+            "path": "googletagmanager2/settings/category_products",
             "label": "Settings > Maximum Products in Category",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/product_list_value_on_category",
+            "path": "googletagmanager2/settings/product_list_value_on_category",
             "label": "Settings > Product List Value on Category Page",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/product_eav_attributes",
+            "path": "googletagmanager2/settings/product_eav_attributes",
             "label": "Settings > Product EAV Attributes",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/category_eav_attributes",
+            "path": "googletagmanager2/settings/category_eav_attributes",
             "label": "Settings > Category EAV Attributes",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/customer_eav_attributes",
+            "path": "googletagmanager2/settings/customer_eav_attributes",
             "label": "Settings > Customer EAV Attributes",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/view_cart_occurances",
+            "path": "googletagmanager2/settings/view_cart_occurances",
             "label": "Settings > view_cart occurances",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/view_cart_on_mini_cart_expand_only",
+            "path": "googletagmanager2/settings/view_cart_on_mini_cart_expand_only",
             "label": "Settings > view_cart only with expanded minicart",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/serverside_enabled",
+            "path": "googletagmanager2/settings/serverside_enabled",
             "label": "Settings > Server-Side Tracking",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/serverside_gtm_url",
+            "path": "googletagmanager2/settings/serverside_gtm_url",
             "label": "Settings > Container URL",
             "description": ""
         },
         {
-            "path": "googletagmanager2\/settings\/order_states_for_purchase_event",
+            "path": "googletagmanager2/settings/order_states_for_purchase_event",
             "label": "Settings > Orders states for purchase event",
             "description": ""
         }
@@ -132,5 +132,6 @@
         "unit": 5,
         "integration": 28,
         "functional": 0
-    }
+    },
+    "phpcs_severity": "9"
 }
