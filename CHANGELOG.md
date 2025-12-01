@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.5] - 01 December 2025
+### Fixed
+- Prevent JS errors even though parent ID will skip click tracking
+- Other GitHub Action for PHPStan
+- Allow dataLayerMapping DI type in all data mappers
+- Explain DI types in README
+- Fix view-cart event again
+- Allow for DI config of `Yireo\GoogleTagManager2\Config\Source\ProductAttributes`
+
 ## [3.10.4] - 14 November 2025
 ### Fixed
 - Fix typo of wrong setting of $product as category
