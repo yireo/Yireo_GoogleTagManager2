@@ -17,6 +17,8 @@ jobs:
           test -z "$COMPOSER_NAME}" && (echo "No composer name found" && exit 1)
           cp -R $GITHUB_WORKSPACE /tmp/magento/package-source
           cd /tmp/magento
+          composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
+          composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
           composer config repositories.local-source path package-source/
           composer require --prefer-source -W -- $COMPOSER_NAME:@dev
 
@@ -26,4 +28,4 @@ jobs:
           export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
           cd /tmp/magento/dev/tests/unit/
           php -d memory_limit=4G ../../../vendor/bin/phpunit -c phpunit.xml.dist ../../../vendor/$COMPOSER_NAME/Test/Unit
-
+ 

@@ -1,5 +1,10 @@
 name: Magento 2 Integration Tests
-on: ['push', 'pull_request']
+#on: ['push', 'pull_request']
+on:
+  release:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   integration-tests:
@@ -18,10 +23,11 @@ jobs:
           MYSQL_DATABASE: magento2
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping"
       opensearch:
-        image: yireo/opensearch
+        image: yireo/opensearch-dummy
         env:
           'discovery.type': single-node
-          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+          #'xpack.security.enabled': false
+          ES_JAVA_OPTS: "-Xms256m -Xmx256m"
         options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
         image: redis
@@ -35,6 +41,8 @@ jobs:
           export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
           cp -R ${GITHUB_WORKSPACE} /tmp/magento/package-source
           cd /tmp/magento
+          composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
+          composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
           composer config repositories.local-source path package-source/
           composer require --prefer-source -- ${COMPOSER_NAME}:@dev yireo/magento2-integration-test-helper
 
