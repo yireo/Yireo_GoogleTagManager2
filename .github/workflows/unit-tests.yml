@@ -11,14 +11,19 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Configure GitLab
+        run: |
+          test -n "${{ secrets.GITLAB_TOKEN }}" || exit 0
+          cd /tmp/magento
+          composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
+          composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
+
       - name: Add module source
         run: |
           export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
           test -z "$COMPOSER_NAME}" && (echo "No composer name found" && exit 1)
           cp -R $GITHUB_WORKSPACE /tmp/magento/package-source
           cd /tmp/magento
-          composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
-          composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
           composer config repositories.local-source path package-source/
           composer require --prefer-source -W -- $COMPOSER_NAME:@dev
 
