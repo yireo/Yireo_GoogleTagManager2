@@ -44,7 +44,7 @@
             return;
         }
 
-        if (metaData && metaData.allowed_events) {
+        if (metaData && metaData.allowed_events && metaData.allowed_events.length > 0) {
             for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
                 window.addEventListener(allowedEvent, function () {
                     const eventDataCopy = Object.assign({}, eventData);
