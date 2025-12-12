@@ -71,8 +71,7 @@ Create the **GA4 Configuration** tag manually like described above. Next, instea
 - `CONTAINER_ID` should be replaced with your own numeric container ID (visible in GTM URL)
 - `CONTAINER_NAME` should be replaced with your own container name
 - `GTM_PUBLIC_ID` should be replaced with your own container public ID (starting with `GTM-`)
-
-After importing the adjusted JSON file make sure to change the **Measurement ID** of the second **Tag** into yours. Publish the new configuration.
+- `MEASUREMENT_ID` should be replaced with your own GA4 Measurement ID (starting with `G-`)
 
 ## Magento
 The following steps assume that the Yireo module was already installed and enabled properly. Within the Magento Admin Panel, navigate to the **Store Configuration** and open up the **Yireo GoogleTagManager** options (under the section **Yireo**). Make sure the option **Enabled** is set to **Yes**. Configure the Google Tag Manager key starting with `GTM-` under **Container Public ID**. Enable **Debug** to make sure everything is working fine.
