@@ -192,7 +192,7 @@
                     {
                         "type": "TEMPLATE",
                         "key": "measurementIdOverride",
-                        "value": "{{YIREO - MEASUREMENT ID}}"
+                        "value": "MEASUREMENT_ID"
                     }
                 ],
                 "fingerprint": "1670766142746",
