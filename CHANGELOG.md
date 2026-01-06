@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.6] - 06 January 2026
+### Fixed
+- Add `loki_theme` support
+- Update TUTORIAL.md to remove GA4 Measurement ID
+- Update gtm-example.json
+- Update measurementIdOverride value in JSON
+- Add check for `allowed_events` length in script-pusher
+
 ## [3.10.5] - 01 December 2025
 ### Fixed
 - Prevent JS errors even though parent ID will skip click tracking

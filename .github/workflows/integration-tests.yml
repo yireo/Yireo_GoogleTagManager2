@@ -7,7 +7,7 @@ jobs:
     #runs-on: self-hosted
     runs-on: ubuntu-latest
     container:
-        image: yireo/magento2installed:2.4.7-p4
+      image: yireo/magento2installed:2.4.8-p3
     services:
       mysql:
         image: mysql:8.0
@@ -16,12 +16,11 @@ jobs:
           MYSQL_USER: magento2
           MYSQL_PASSWORD: magento2
           MYSQL_DATABASE: magento2
-        options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping"
+        options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" 
       opensearch:
-        image: yireo/opensearch
+        image: yireo/opensearch:latest
         env:
           'discovery.type': single-node
-          #'xpack.security.enabled': false
           ES_JAVA_OPTS: "-Xms256m -Xmx256m"
         options: --health-cmd="curl localhost:9200/_cluster/health?wait_for_status=yellow&timeout=60s" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
@@ -30,6 +29,9 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+
+      - name: Enable log_bin_trust_function_creators
+        run: mysql -h mysql -uroot -proot -e "SET GLOBAL log_bin_trust_function_creators=1;"
 
       - name: Configure GitLab
         run: |
@@ -55,5 +57,7 @@ jobs:
           export MAGENTO_MODULE=${EXTENSION_VENDOR}_${EXTENSION_NAME}
           cd /tmp/magento/dev/tests/integration/
           cp -R ${GITHUB_WORKSPACE}/.github/workflows/integration-tests/* .
+          php ../../../vendor/bin/phpunit --atleast-version 9 && cp phpunit9.xml phpunit.xml
+          php ../../../vendor/bin/phpunit --atleast-version 10 && cp phpunit10.xml phpunit.xml
           php -d memory_limit=4G ../../../vendor/bin/phpunit -c phpunit.xml ../../../vendor/$COMPOSER_NAME/Test/Integration
 

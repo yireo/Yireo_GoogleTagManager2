@@ -7,7 +7,7 @@ jobs:
     #runs-on: self-hosted
     runs-on: ubuntu-latest
     container:
-        image: yireo/magento2installed:2.4.7-p4
+        image: yireo/magento2installed:2.4.8-p3
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -33,5 +33,6 @@ jobs:
         run: |
           export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
           export LEVEL=`echo '<?= json_decode(file_get_contents("MODULE.json"), true)["phpstan_level"];' | php`
+          test -f /tmp/magento/phpstan.neon || echo 'parameters:' > /tmp/magento/phpstan.neon
           php -d memory_limit=4G /tmp/magento/vendor/bin/phpstan analyse --level $LEVEL ${GITHUB_WORKSPACE}
 
