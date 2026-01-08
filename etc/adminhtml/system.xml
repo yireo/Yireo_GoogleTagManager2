@@ -135,6 +135,14 @@
                         <field id="serverside_enabled">1</field>
                     </depends>
                 </field>
+                <field id="use_base_currency" type="select" translate="label" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Quote and Purchase data in base currency</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, purchase data will be sent in base currency. If disabled, purchase data will be sent in store currency.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="max_transaction_value" translate="label" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Maximum Transaction Value</label>
                     <comment>Maximum transaction value for purchase events. When an order value exceeds this amount, the transaction_value_adjusted field will be capped at this value. Leave empty or 0 to disable.</comment>

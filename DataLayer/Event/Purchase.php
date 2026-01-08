@@ -49,6 +49,14 @@ class Purchase implements EventInterface
             return [];
         }
 
+        $currencyCode = $this->config->useBaseCurrency()
+            ? $order->getBaseCurrencyCode()
+            : $order->getOrderCurrencyCode();
+
+        $taxAmount = $this->config->useBaseCurrency()
+            ? (float)$order->getBaseTaxAmount()
+            : (float)$order->getTaxAmount();
+
         $orderValue = $this->orderTotals->getValueTotal($order);
         $valueAdjusted = $this->calculateValueAdjusted($orderValue);
 
@@ -57,10 +65,10 @@ class Purchase implements EventInterface
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
                 'affiliation' => $this->config->getStoreName(),
-                'currency' => $order->getOrderCurrencyCode(),
+                'currency' => $currencyCode,
+                'tax' => $this->priceFormatter->format($taxAmount),
                 'value' => $this->priceFormatter->format($orderValue),
                 'value_adjusted' => $this->priceFormatter->format($valueAdjusted),
-                'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
                 'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
                 'coupon' => $order->getCouponCode(),
                 'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
