@@ -1,0 +1,186 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * GoogleTagManager2 plugin for Magento
+ *
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright (c) 2023 Yireo (https://www.yireo.com/)
+ * @license     Open Software License
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Config\Config;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var Config $config */
+/** @var Template $block */
+$config = $block->getConfig();
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+?>
+<?php if ($config->isConsent()): ?>
+    <script>
+        function initYireoCookieConsentBanner() {
+            return {
+                showBanner: localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') !== 'false',
+                expanded: 'none',
+                modes: JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{"necessary": true,"analytics": false,"preferences": false,"marketing": false}'),
+                selectedModes: JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{"necessary": true,"analytics": true,"preferences": true,"marketing": true}'),
+                init() {
+                    this.$watch('showBanner', (val) => {
+                        console.log('showBanner', val);
+                        localStorage.setItem('yireoGoogleTagManager2ConsentBannerIsShowing', val)
+                    });
+                    this.$watch('modes', (val) => {
+                        this.selectedModes = val;
+                        localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(val));
+                    });
+                    this.setConsent(this.modes, 'default');
+                },
+                learnMore(item) {
+                    this.expanded = this.expanded === item ? 'none' : item;
+                },
+                pusher() {
+                    yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
+                },
+                setConsent(consent, mode = 'update') {
+                    const consentMode = {
+                        'functionality_storage': consent.necessary ? 'granted' : 'denied',
+                        'security_storage': consent.necessary ? 'granted' : 'denied',
+                        'ad_storage': consent.marketing ? 'granted' : 'denied',
+                        'ad_user_data': consent.marketing ? 'granted' : 'denied',
+                        'ad_personalization': consent.marketing ? 'granted' : 'denied',
+                        'analytics_storage': consent.analytics ? 'granted' : 'denied',
+                        'personalization_storage': consent.preferences ? 'granted' : 'denied',
+                    };
+
+                    window.dataLayer = window.dataLayer || [];
+                    this.pusher('consent', mode, consentMode);
+                    this.modes = consent;
+                    if (mode === 'update') {
+                        this.showBanner = false;
+                    }
+                },
+                setSelectedConsent() {
+                    this.setConsent(this.selectedModes);
+                }
+            };
+        }
+    </script>
+    <div id="yireo-cookie-consent-banner"
+         class="fixed top-0 left-0 right-0 w-screen h-screen flex lg:items-center justify-center text-left bg-black bg-opacity-50 z-50 overflow-y-scroll"
+         x-data="initYireoCookieConsentBanner()"
+         x-cloak
+         x-show="showBanner"
+         @yireo-show-consent-banner.window="showBanner = true"
+         @yireo-hide-consent-banner.window="showBanner = false"
+         @yireo-toggle-consent-banner.window="showBanner = !showBanner"
+    >
+        <div class="flex flex-col grow-1">
+            <div class="bg-white m-4 p-4 max-w-md shadow-xl">
+                <h2 class="text-xl font-medium title-font mb-3 text-primary"><?= $escaper->escapeHtml(__('Cookie settings')) ?></h2>
+                <p class="mb-4">
+                    <?= $escaper->escapeHtml(__('We use cookies to provide you with the best possible experience. They also allow us to analyze user behavior in order to constantly improve the website for you.')) ?>
+                    <?php if ($config->getPrivacyStatementUrl() !== null): ?>
+                        <a class="block underline text-secondary" target="_blank" href="<?= $escaper->escapeUrl($config->getPrivacyStatementUrl()) ?>">
+                            <?= $escaper->escapeHtml(__('Learn more')) ?>
+                        </a>
+                    <?php endif; ?>
+                </p>
+                <div class="w-full border-t border-gray-200 ">
+                    <div class="flex items-center flex-row gap-2 py-2">
+                        <input x-model="selectedModes.necessary" id="yireo-consent-necessary" type="checkbox" disabled />
+                        <label for="yireo-consent-necessary"><?= $escaper->escapeHtml(__('Essential')) ?></label>
+                        <button class="text-xs text-slate-400 hover:underline" @click="learnMore('necessary')">
+                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <span class="ml-2 sr-only">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+              </span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="expanded === 'necessary'" class="text-sm py-2">
+                        <?= $escaper->escapeHtml(__('Enables storage that supports the functionality of the website or app, e.g. language settings')) ?>
+                    </div>
+                </div>
+                <div class="w-full border-t border-gray-200">
+                    <div class="flex items-center flex-row gap-2 py-2">
+                        <input x-model="selectedModes.analytics" id="yireo-consent-analytics" type="checkbox" />
+                        <label for="yireo-consent-analytics"><?= $escaper->escapeHtml(__('Analytics')) ?></label>
+                        <button class="text-xs text-slate-400 hover:underline" @click="learnMore('analytics')">
+                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <span class="ml-2 sr-only">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+              </span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="expanded === 'analytics'" class="text-sm py-2">
+                        <?= $escaper->escapeHtml(__('Enables storage (such as cookies) related to analytics, e.g. visit duration')) ?>
+                    </div>
+                </div>
+                <div class="w-full border-t border-gray-200">
+                    <div class="flex items-center flex-row gap-2 py-2">
+                        <input x-model="selectedModes.preferences" id="yireo-consent-preferences" type="checkbox" />
+                        <label for="yireo-consent-preferences"><?= $escaper->escapeHtml(__('Preferences')) ?></label>
+                        <button class="text-xs text-slate-400 hover:underline" @click="learnMore('preferences')">
+                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <span class="ml-2 sr-only">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+              </span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="expanded === 'preferences'" class="text-sm py-2">
+                        <?= $escaper->escapeHtml(__('Enables storage related to personalisation, e.g. video recommendations')) ?>
+                    </div>
+                </div>
+                <div class="w-full border-y border-gray-200 mb-4">
+                    <div class="flex items-center flex-row gap-2 py-2">
+                        <input x-model="selectedModes.marketing" id="yireo-consent-marketing" type="checkbox" />
+                        <label for="yireo-consent-marketing"><?= $escaper->escapeHtml(__('Marketing')) ?></label>
+                        <button class="text-xs text-slate-400 hover:underline" @click="learnMore('marketing')">
+                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <span class="ml-2 sr-only">
+                <?= $escaper->escapeHtml(__('Learn more')) ?>
+              </span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="expanded === 'marketing'" class="text-sm py-2">
+                        <?= $escaper->escapeHtml(__('Enables storage (such as cookies) related to advertising')) ?>
+                    </div>
+                </div>
+                <div class="flex items-center flex-col lg:flex-row gap-2 py-2">
+                    <button @click.prevent="setConsent({
+                                             necessary: true,
+                                             analytics: true,
+                                             preferences: true,
+                                             marketing: true
+                                         })"
+                            class="btn btn-primary w-full lg:w-auto "
+                    >
+                        <span class="text-center w-full"><?= $escaper->escapeHtml(__('Accept All')) ?></span>
+                    </button>
+                    <button @click.prevent="setSelectedConsent()"
+                            class="btn btn-secondary w-full lg:w-auto text-center"
+                    >
+                        <span class="text-center w-full"><?= $escaper->escapeHtml(__('Accept Selection')) ?></span>
+                    </button>
+                    <button @click.prevent="setConsent({
+                                             necessary: true,
+                                             analytics: false,
+                                             preferences: false,
+                                             marketing: false
+                                         })"
+                            class="text-secondary w-full lg:w-auto text-center"
+                    >
+                        <?= $escaper->escapeHtml(__('Reject All')) ?>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
