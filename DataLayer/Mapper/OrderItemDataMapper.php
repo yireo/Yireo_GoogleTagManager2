@@ -21,7 +21,7 @@ class OrderItemDataMapper
     private ProductRepositoryInterface $productRepository;
     private PriceFormatter $priceFormatter;
     private ScopeConfigInterface $scopeConfig;
-    private array $dataLayerMapping;gst
+    private array $dataLayerMapping;
 
 
     /**
