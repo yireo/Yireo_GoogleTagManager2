@@ -17,6 +17,7 @@
                 <serverside_enabled>0</serverside_enabled>
                 <serverside_gtm_url/>
                 <order_states_for_purchase_event>new,payment_review,pending_payment,holded,processing,complete</order_states_for_purchase_event>
+                <use_base_currency>0</use_base_currency>
             </settings>
         </googletagmanager2>
     </default>

@@ -230,6 +230,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether to use base currency for purchase data
+     *
+     * @return bool
+     */
+    public function useBaseCurrency(): bool
+    {
+        return (bool)$this->getModuleConfigValue('use_base_currency', false);
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
