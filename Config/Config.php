@@ -230,6 +230,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Get the maximum transaction value threshold
+     *
+     * @return float
+     */
+    public function getMaxTransactionValue(): float
+    {
+        return (float)$this->getModuleConfigValue('max_transaction_value', 0);
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
