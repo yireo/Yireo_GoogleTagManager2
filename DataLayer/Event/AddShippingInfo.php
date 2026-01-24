@@ -12,24 +12,29 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\ShippingMethodManagementInterface;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
+use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartValue;
 
 class AddShippingInfo implements EventInterface
 {
     private CartItems $cartItems;
+    private CartValue $cartValue;
     private ShippingMethodManagementInterface $shippingMethodManagement;
     private CheckoutSession $checkoutSession;
 
     /**
      * @param CartItems $cartItems
+     * @param CartValue $cartValue
      * @param ShippingMethodManagementInterface $shippingMethodManagement
      * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         CartItems $cartItems,
+        CartValue $cartValue,
         ShippingMethodManagementInterface $shippingMethodManagement,
         CheckoutSession $checkoutSession
     ) {
         $this->cartItems = $cartItems;
+        $this->cartValue = $cartValue;
         $this->shippingMethodManagement = $shippingMethodManagement;
         $this->checkoutSession = $checkoutSession;
     }
@@ -57,6 +62,8 @@ class AddShippingInfo implements EventInterface
         return [
             'event' => 'add_shipping_info',
             'ecommerce' => [
+                'currency' => $quote->getQuoteCurrencyCode(),
+                'value' => $this->cartValue->get(),
                 'shipping_tier' => $shippingMethod,
                 'items' => $this->cartItems->get(),
             ],
