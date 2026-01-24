@@ -230,6 +230,26 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether to use base currency for purchase data
+     *
+     * @return bool
+     */
+    public function useBaseCurrency(): bool
+    {
+        return (bool)$this->getModuleConfigValue('use_base_currency', false);
+    }
+
+    /**
+     * Get the maximum transaction value threshold
+     *
+     * @return float
+     */
+    public function getMaxTransactionValue(): float
+    {
+        return (float)$this->getModuleConfigValue('max_transaction_value', 0);
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
