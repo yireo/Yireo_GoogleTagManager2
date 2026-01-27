@@ -32,4 +32,28 @@ class OrderTotals
 
         return (float)$order->getShippingAmount() - (float)$order->getShippingDiscountAmount();
     }
+
+    /**
+     * Calculate the adjusted transaction value based on the configured maximum
+     * Note: This always uses store currency, not base currency
+     *
+     * @param OrderInterface $order
+     * @return float
+     */
+    public function getValueTotalAjusted(OrderInterface $order): float
+    {
+        $orderValue = (float)$order->getSubtotal() - abs((float)$order->getDiscountAmount());
+
+        if ($this->config->includeShippingInAdjustedTotal()) {
+            $orderValue += (float)$order->getShippingAmount() - (float)$order->getShippingDiscountAmount();
+        }
+
+        $maxTransactionValue = $this->config->getMaxTransactionValue();
+
+        if ($maxTransactionValue <= 0) {
+            return $orderValue;
+        }
+
+        return min($orderValue, $maxTransactionValue);
+    }
 }
