@@ -254,9 +254,9 @@ class Config implements ArgumentInterface
      *
      * @return bool
      */
-    public function includeShippingInAdjustedTotal(): bool
+    public function includeShippingInAdjustedValue(): bool
     {
-        return (bool)$this->getModuleConfigValue('include_shipping_in_adjusted_total', false);
+        return (bool)$this->getModuleConfigValue('include_shipping_in_adjusted_value', false);
     }
 
     /**

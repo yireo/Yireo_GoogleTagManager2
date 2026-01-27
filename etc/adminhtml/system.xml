@@ -151,7 +151,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="include_shipping_in_adjusted_total" type="select" translate="label" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="include_shipping_in_adjusted_value" type="select" translate="label" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Include Shipping in Adjusted Total</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled, shipping costs will be included in the adjusted transaction value calculation. This setting works in conjunction with the Maximum Transaction Value setting.</comment>

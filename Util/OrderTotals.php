@@ -44,7 +44,7 @@ class OrderTotals
     {
         $orderValue = (float)$order->getSubtotal() - abs((float)$order->getDiscountAmount());
 
-        if ($this->config->includeShippingInAdjustedTotal()) {
+        if ($this->config->includeShippingInAdjustedValue()) {
             $orderValue += (float)$order->getShippingAmount() - (float)$order->getShippingDiscountAmount();
         }
 
