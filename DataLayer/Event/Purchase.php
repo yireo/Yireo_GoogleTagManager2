@@ -58,7 +58,7 @@ class Purchase implements EventInterface
             : (float)$order->getTaxAmount();
 
         $orderValue = $this->orderTotals->getValueTotal($order);
-        $valueAdjusted = $this->calculateValueAdjusted($orderValue);
+        $valueAdjusted = $this->orderTotals->getValueTotalAjusted($order);
 
         return [
             'event' => 'purchase',
@@ -69,6 +69,7 @@ class Purchase implements EventInterface
                 'tax' => $this->priceFormatter->format($taxAmount),
                 'value' => $this->priceFormatter->format($orderValue),
                 'value_adjusted' => $this->priceFormatter->format($valueAdjusted),
+                'value_adjusted_currency' => $order->getOrderCurrencyCode(),
                 'shipping' => $this->priceFormatter->format($this->orderTotals->getShippingTotal($order)),
                 'coupon' => $order->getCouponCode(),
                 'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
@@ -118,22 +119,5 @@ class Purchase implements EventInterface
             Order::STATE_PROCESSING,
             Order::STATE_COMPLETE,
         ];
-    }
-
-    /**
-     * Calculate the adjusted transaction value based on the configured maximum
-     *
-     * @param float $orderValue
-     * @return float
-     */
-    private function calculateValueAdjusted(float $orderValue): float
-    {
-        $maxTransactionValue = $this->config->getMaxTransactionValue();
-
-        if ($maxTransactionValue <= 0) {
-            return $orderValue;
-        }
-
-        return min($orderValue, $maxTransactionValue);
     }
 }

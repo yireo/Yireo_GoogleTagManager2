@@ -250,6 +250,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether to include shipping in adjusted total
+     *
+     * @return bool
+     */
+    public function includeShippingInAdjustedValue(): bool
+    {
+        return (bool)$this->getModuleConfigValue('include_shipping_in_adjusted_value', false);
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
