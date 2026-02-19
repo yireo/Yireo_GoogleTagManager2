@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace Yireo\GoogleTagManager2\Util;
 
-use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\FilterGroup;
-use Magento\Framework\Api\Search\FilterGroupBuilder;
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
@@ -28,23 +25,14 @@ class CategoryProvider
      */
     private array $loadedCategories = [];
 
-    private CategoryListInterface $categoryListRepository;
-    private FilterBuilder $filterBuilder;
-    private SearchCriteriaBuilder $searchCriteriaBuilder;
-    private FilterGroupBuilder $filterGroupBuilder;
+    private CategoryCollectionFactory $categoryCollectionFactory;
     private StoreManagerInterface $storeManager;
 
     public function __construct(
-        CategoryListInterface $categoryListRepository,
-        FilterBuilder $filterBuilder,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
+        CategoryCollectionFactory $categoryCollectionFactory,
         StoreManagerInterface $storeManager
     ) {
-        $this->categoryListRepository = $categoryListRepository;
-        $this->filterBuilder = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->categoryCollectionFactory = $categoryCollectionFactory;
         $this->storeManager = $storeManager;
     }
 
@@ -156,34 +144,16 @@ class CategoryProvider
      */
     private function loadCategoriesByIds(array $categoryIds): array
     {
-        /** @var FilterGroup $entityIdFilterGroup */
-        $entityIdFilterGroup = $this->filterGroupBuilder->create();
-        $entityIdFilterGroup->setFilters([
-            $this->filterBuilder
-                ->setField('entity_id')
-                ->setConditionType('in')
-                ->setValue($categoryIds)
-                ->create(),
-        ]);
+        $collection = $this->categoryCollectionFactory->create();
+        $collection
+            ->addAttributeToSelect(['name', 'is_active'])
+            ->addIdFilter($categoryIds)
+            ->addAttributeToFilter('path', ['like' => '1/' . $this->getRootCategoryId() . '/%']);
 
-        /** @var FilterGroup $rootCategoryFilterGroup */
-        $rootCategoryFilterGroup = $this->filterGroupBuilder->create();
-        $rootCategoryFilterGroup->setFilters([
-            $this->filterBuilder
-                ->setField('path')
-                ->setConditionType('like')
-                ->setValue('1/' . $this->getRootCategoryId() . '/%')
-                ->create(),
-        ]);
+        /** @var Category[] $categories */
+        $categories = $collection->getItems();
 
-        $this->searchCriteriaBuilder->setFilterGroups([
-            $entityIdFilterGroup,
-            $rootCategoryFilterGroup,
-        ]);
-
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-
-        return $this->categoryListRepository->getList($searchCriteria)->getItems();
+        return $categories;
     }
 
     /**
