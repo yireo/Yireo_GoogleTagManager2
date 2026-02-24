@@ -10,7 +10,7 @@ jobs:
       image: yireo/magento2installed:2.4.8-p3
     services:
       mysql:
-        image: mysql:8.0
+        image: yireo/mariadb:10
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_USER: magento2
@@ -30,13 +30,18 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
-      - name: Enable log_bin_trust_function_creators
-        run: mysql -h mysql -uroot -proot -e "SET GLOBAL log_bin_trust_function_creators=1;"
+      - name: Apply patch for reporting memory under Alpine
+        run: cd /tmp/magento && curl -fsSL https://patch-diff.githubusercontent.com/raw/magento/magento2/pull/39216.diff | git apply
+
+      - name: Apply patch for changing MySQL client configuration
+        run: cd /tmp/magento && curl -fsSL https://patch-diff.githubusercontent.com/raw/magento/magento2/pull/40410.diff | git apply
 
       - name: Configure GitLab
         run: |
           test -n "${{ secrets.GITLAB_TOKEN }}" || exit 0
           cd /tmp/magento
+          test -f $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh
+          test -f $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh
           composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
           composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
 

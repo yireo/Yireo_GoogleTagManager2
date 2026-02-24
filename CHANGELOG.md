@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.10.7] - 24 February 2026
+### Fixed
+- Hyva product-clicks sometimes not working because of missing parent
+- Reset OrderItemDataMapper
+- Created config setting to send Cart & Purchase data in base currency or store currency
+- Added value and currency to `add_shipping_info` event
+- Added value adjusted field in purchase DL
+
 ## [3.10.6] - 06 January 2026
 ### Fixed
 - Add `loki_theme` support
