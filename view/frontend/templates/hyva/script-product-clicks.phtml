@@ -34,6 +34,10 @@ $productPath = $block->getProductPath();
         products.forEach(function(product) {
             product.addEventListener('click', function(event, s) {
                 let parentElement = yireoGoogleTagManager2FindParentElementWithName(event.target, 'form');
+                if (!parentElement) {
+                    return;
+                }
+
                 const inputElement = parentElement.querySelector('input[name="product"]');
                 const productId = inputElement.value;
                 const productData = window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' + productId] || {};
