@@ -2,7 +2,10 @@
 
 namespace Yireo\GoogleTagManager2\DataLayer\Tag\Category;
 
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Catalog\Model\Category;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Util\GetCurrentCategory;
@@ -40,6 +43,12 @@ class Products implements TagInterface
      */
     public function get(): array
     {
+        /** @var Category $category */
+        $category = $this->getCurrentCategory->get();
+        if ($category->getDisplayMode() === Category::DM_PAGE) {
+            return [];
+        }
+
         $productsData = [];
         $i = 1;
         foreach ($this->getCurrentCategoryProducts->getProducts() as $product) {
@@ -47,7 +56,8 @@ class Products implements TagInterface
                 break;
             }
 
-            $product->setCategory($this->getCurrentCategory->get());
+            /** @var Product $product */
+            $product->setCategory($category);
             $productData = $this->productDataMapper->mapByProduct($product);
             $productData['quantity'] = 1;
             $productData['index'] = $i;

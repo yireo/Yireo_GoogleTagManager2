@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+/** @version 3.10.7 */
+
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
 
@@ -9,5 +11,5 @@ $beginCheckoutEvent = $block->getData('begin_checkout_event');
 $encodedEvent = json_encode($beginCheckoutEvent->get());
 ?>
 <script>
-    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= $encodedEvent ?>;
+    window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= /* @noEscape */ $encodedEvent ?>;
 </script>

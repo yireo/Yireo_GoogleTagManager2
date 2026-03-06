@@ -2,6 +2,11 @@
 <csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
     <policies>
+        <policy id="frame-src">
+            <values>
+                <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
+            </values>
+        </policy>
         <policy id="script-src">
             <values>
                 <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>

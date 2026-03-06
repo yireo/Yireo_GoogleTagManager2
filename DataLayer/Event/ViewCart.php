@@ -72,7 +72,7 @@ class ViewCart implements EventInterface
             return [];
         }
 
-        return ['/checkout/cart/'];
+        return ['checkout/cart/'];
     }
 
     /**

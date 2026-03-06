@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+/** @version 3.10.7 */
+
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\Config\Config;
 
@@ -30,16 +32,16 @@ $events = ($config->waitForUserInteraction() === false)
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
-                j.src = '<?= $config->getGoogleTagmanagerUrl() ?>' + '/gtm.js?id=' + i + dl;
+                j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '<?= $gtmId ?>');
+            })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
             <?php endforeach; ?>
         };
 
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
         });
-    })([<?= $events ?>]);
+    })([<?= /* @noEscape */ $events ?>]);
 
     <?php if ($config->isDebug()): ?>
     window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;

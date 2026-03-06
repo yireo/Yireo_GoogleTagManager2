@@ -29,9 +29,10 @@ class DataLayerTest extends PageTestCase
         $layout = ObjectManager::getInstance()->get(LayoutInterface::class);
         $layout->getUpdate()->addHandle('datalayer_default');
 
+        /** @var Template $block */
         $block = $layout->createBlock(Template::class);
         $block->setNameInLayout('yireo_googletagmanager2.data-layer');
-        $block->setTemplate('Yireo_GoogleTagManager2::luma/data-layer.phtml');
+        $block->setTemplate('Yireo_GoogleTagManager2::luma/data-layer.phtml'); // @phpstan-ignore-line
         $block->setData('data_layer_view_model', ObjectManager::getInstance()->get(DataLayer::class));
         $block->setData('config', ObjectManager::getInstance()->get(Config::class));
         $html = $block->toHtml();
@@ -52,7 +53,7 @@ class DataLayerTest extends PageTestCase
         $this->layout->generateXml();
 
         $this->dispatch('/');
-        $body = $this->getResponse()->getBody(); // @phpstan-ignore-line
+        $body = $this->getResponse()->getBody();
 
         $this->assertContainerInLayout('before.body.end');
 

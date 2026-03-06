@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Customer\CustomerData\SectionPool;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\App\Response\Http as HttpResponse;
@@ -33,6 +34,8 @@ class AddToWishlistTest extends PageTestCase
         $this->loginCustomer();
 
         $productRepository = $this->objectManager->get(ProductRepositoryInterface::class);
+
+        /** @var Product $product */
         $product = $productRepository->get('simple');
         $product->setData('is_saleable', 1);
         $productRepository->save($product);
