@@ -25,5 +25,5 @@ If you want to show the cookie-settings button, if for example your footer add t
 ```
 Or for Hyva theme:
 ```html
-<a @click="$dispatch('yireo-show-consent-banner')" class="cursor-pointer">Cookie-settings</a>
+<a x-data="" @click="$dispatch('yireo-show-consent-banner')" class="cursor-pointer">Cookie-settings</a>
 ```
