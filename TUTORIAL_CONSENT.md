@@ -17,3 +17,13 @@ After importing the adjusted JSON file make sure to check all tags and variables
 The following steps assume that the Yireo module was already installed and enabled properly. 
 Within the Magento Admin Panel, navigate to the **Store Configuration** and open up the **Yireo GoogleTagManager** options (under the section **Yireo**). 
 Make sure the option **Enabled** is set to **Yes** within the consent group.
+
+## Show cookie-settings button
+If you want to show the cookie-settings button, if for example your footer add this code:
+```html
+<a onclick="yireoGoogleTagManager2BannerToggle()" href="#">Cookie-settings</a>
+```
+Or for Hyva theme:
+```html
+<a @click="$dispatch('yireo-show-consent-banner')" class="cursor-pointer">Cookie-settings</a>
+```

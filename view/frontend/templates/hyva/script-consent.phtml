@@ -36,7 +36,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 selectedModes: JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{"necessary": true,"analytics": true,"preferences": true,"marketing": true}'),
                 init() {
                     this.$watch('showBanner', (val) => {
-                        console.log('showBanner', val);
                         localStorage.setItem('yireoGoogleTagManager2ConsentBannerIsShowing', val)
                     });
                     this.$watch('modes', (val) => {
