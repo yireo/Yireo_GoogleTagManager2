@@ -81,6 +81,13 @@ $config = $block->getConfig();
         yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
     }
 
+    function consentEvent(eventName) {
+      const eventData = {
+        'event': eventName,
+      }
+      yireoGoogleTagManager2Pusher(eventData, 'dataLayer (consent-event) [script-consent.phtml]');
+    },
+
     function yireoGoogleTagManager2SetConsent(consent, mode = 'update') {
         const consentMode = {
             'functionality_storage': consent.necessary ? 'granted' : 'denied',
@@ -91,6 +98,26 @@ $config = $block->getConfig();
             'analytics_storage': consent.analytics ? 'granted' : 'denied',
             'personalization_storage': consent.preferences ? 'granted' : 'denied',
         };
+
+        if (mode === 'update') {
+          consentEvent('cookieConsentUpdate');
+        }
+        else{
+          consentEvent('cookieConsentInitial');
+        }
+
+        if(consent.necessary){
+          consentEvent('cookieConsentGranted');
+        }
+        if(consent.marketing){
+          consentEvent('cookieConsentMarketingGranted');
+        }
+        if(consent.analytics){
+          consentEvent('cookieConsentAnalyticsGranted');
+        }
+        if(consent.preferences){
+          consentEvent('cookieConsentPreferencesGranted');
+        }
 
         window.dataLayer = window.dataLayer || [];
         yireoGoogleTagManager2ConsentPusher('consent', mode, consentMode);

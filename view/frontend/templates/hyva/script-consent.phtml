@@ -49,6 +49,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 pusher() {
                     yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
                 },
+                consentEvent(eventName) {
+                    const eventData = {
+                        'event': eventName,
+                    }
+                    yireoGoogleTagManager2Pusher(eventData, 'dataLayer (consent-event) [script-consent.phtml]');
+                },
                 setConsent(consent, mode = 'update') {
                     const consentMode = {
                         'functionality_storage': consent.necessary ? 'granted' : 'denied',
@@ -62,6 +68,27 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
                     window.dataLayer = window.dataLayer || [];
                     this.pusher('consent', mode, consentMode);
+
+                    if (mode === 'update') {
+                        this.consentEvent('cookieConsentUpdate');
+                    }
+                    else{
+                        this.consentEvent('cookieConsentInitial');
+                    }
+
+                    if(consent.necessary){
+                        this.consentEvent('cookieConsentGranted');
+                    }
+                    if(consent.marketing){
+                        this.consentEvent('cookieConsentMarketingGranted');
+                    }
+                    if(consent.analytics){
+                        this.consentEvent('cookieConsentAnalyticsGranted');
+                    }
+                    if(consent.preferences){
+                        this.consentEvent('cookieConsentPreferencesGranted');
+                    }
+
                     this.modes = consent;
                     if (mode === 'update') {
                         this.showBanner = false;
