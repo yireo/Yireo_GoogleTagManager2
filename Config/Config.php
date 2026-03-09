@@ -230,6 +230,26 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether to use base currency for purchase data
+     *
+     * @return bool
+     */
+    public function useBaseCurrency(): bool
+    {
+        return (bool)$this->getModuleConfigValue('use_base_currency', false);
+    }
+
+    /**
+     * Get the maximum transaction value threshold
+     *
+     * @return float
+     */
+    public function getMaxTransactionValue(): float
+    {
+        return (float)$this->getModuleConfigValue('max_transaction_value', 0);
+    }
+
+    /**
      * Return a configuration value
      *
      * @param string $key
@@ -237,9 +257,9 @@ class Config implements ArgumentInterface
      *
      * @return mixed|null
      */
-    public function getModuleConfigValue(string $key, $defaultValue = null)
+    public function getModuleConfigValue(string $key, $defaultValue = null, $group = 'settings')
     {
-        return $this->getConfigValue('googletagmanager2/settings/' . $key, $defaultValue);
+        return $this->getConfigValue('googletagmanager2/' . $group . '/' . $key, $defaultValue);
     }
 
     /**
@@ -283,5 +303,34 @@ class Config implements ArgumentInterface
     private function isIdValid(): bool
     {
         return 0 === strpos($this->getId(), 'GTM-');
+    }
+
+    /**
+     * Check whether the consent component is enabled
+     *
+     * @return bool
+     */
+    public function isConsent(): bool
+    {
+        return (bool)$this->getModuleConfigValue(
+            'enabled',
+            false,
+            'consent'
+        );
+    }
+
+    /**
+     *
+     * Get the privacy statement url.
+     *
+     * @return string | null
+     */
+    public function getPrivacyStatementUrl(): string | null
+    {
+        return $this->getModuleConfigValue(
+            'privacy_statement_url',
+            null,
+            'consent'
+        );
     }
 }

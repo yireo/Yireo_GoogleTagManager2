@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+/** @version 3.10.7 */
+
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -15,6 +17,6 @@ $productPath = $block->getProductPath();
 ?>
 <script>
     require(['yireoGoogleTagManagerProductClicks'], function(clicks) {
-        clicks({productPath: '<?= $productPath ?>'});
+        clicks({productPath: '<?= $escaper->escapeJs($productPath) ?>'});
     });
 </script>

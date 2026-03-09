@@ -81,3 +81,23 @@ Product clicks are tracked through a specific template called `script-product-cl
     </arguments>
 </referenceBlock>
 ```
+
+## Extending or changing data mappers
+In various classes in the namespace `Yireo\GoogleTagManager2\DataLayer\Mapper`, like the `Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper` class, data is being fetched and mapped towards the structure that GTM expects (as we see it). If you want the structure to be different, you can use a DI type to hook into the constructor argument `dataLayerMapping` and add your own class:
+
+```xml
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Yireo\GoogleTagManager2\DataLayer\Mapper\ProductDataMapper">
+        <arguments>
+            <argument name="dataLayerMapping" xsi:type="array">
+                <item name="example" xsi:type="object">Yireo\Example\DataLayer\Mapper\AdditionalProductDataMapper</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
+```
+
+Next, your custom class `Yireo\Example\DataLayer\Mapper\AdditionalProductDataMapper` needs to implement the interface `Yireo\GoogleTagManager2\Api\Data\ProductTagInterface` (specific for this product data mapping) and/or `Yireo\GoogleTagManager2\Api\Data\TagInterface` (for generic data mapping).
+
+The XML property name `example` is the tag property added to GTM. If an existing property name, like `item_id`, is used, it will override the existing tag value.

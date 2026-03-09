@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+/** @version 3.10.7 */
+
 /**
  * GoogleTagManager2 plugin for Magento
  *
@@ -81,5 +83,13 @@ $commons = $block->getCommonsViewModel();
         if (false === isEmpty(attributes)) {
             yireoGoogleTagManager2Pusher(attributes, 'dataLayer (initial js) [script-additions.phtml]');
         }
+    });
+
+    window.addEventListener('toggle-cart', (event) => {
+        if (!event.detail || !event.detail.isOpen) {
+            return;
+        }
+
+        window.dispatchEvent(new CustomEvent('minicart_collapse'));
     });
 </script>

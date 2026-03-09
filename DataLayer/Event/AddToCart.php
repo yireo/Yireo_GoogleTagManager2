@@ -15,7 +15,7 @@ class AddToCart implements EventInterface
     private ProductDataMapper $productDataMapper;
     private CurrencyCode $currencyCode;
     private PriceFormatter $priceFormatter;
-    private Product $product;
+    private ?Product $product = null;
     private int $qty = 1;
 
     /**
