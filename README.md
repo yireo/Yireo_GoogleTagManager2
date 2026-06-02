@@ -19,6 +19,10 @@ Supported versions: Magento 2.3.7 or higher and 2.4.1 or higher (partially becau
 
 See `composer.json` for other requirements.
 
+## Additional modules
+- [Yireo_GoogleTagManager2LokiCheckout](https://github.com/yireo/Yireo_GoogleTagManager2LokiCheckout) - integration with Loki Checkout;
+- [Yireo_GoogleTagManager2HyvaCheckout](https://github.com/yireo/Yireo_GoogleTagManager2HyvaCheckout) - integration with Hyva Checkout;
+
 ## About version 3
 The `Yireo_GoogleTagManager2` module was refactored heavily: The architecture was redesigned, GA4 support was being added, GA3 support (aka UA/EE) was being removed, click-events were added and overall there was a huge extensibility being added. The refactoring has come available under a new major version 3. If you were not using this
 extension yet, you can just proceed with the composer installation which will pick this new version. If you were
