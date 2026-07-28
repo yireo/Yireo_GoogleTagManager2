@@ -9,6 +9,9 @@
         "composer-installer",
         "magento"
     ],
+    "extra": {
+        "label": "Yireo GoogleTagManager"
+    },
     "authors": [
         {
             "name": "Jisse Reitsma (Yireo)",
