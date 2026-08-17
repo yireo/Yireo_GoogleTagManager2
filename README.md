@@ -32,6 +32,7 @@ using major version 2 in the past, edit your `composer.json` file manually to us
 - [Installation](INSTALL.md)
 - [Usage](USAGE.md)
 - [Tutorial](TUTORIAL.md)
+- [Tutorial with Consent](TUTORIAL_CONSENT.md)
 - [FAQ](FAQ.md)
 - [Architecture](ARCHITECTURE.md)
 - [Testing](TESTING.md)
