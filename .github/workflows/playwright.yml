@@ -1,0 +1,276 @@
+name: Playwright test
+on: ['push', 'pull_request']
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.0-noble
+      options: --user root
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /tmp/ci-magento:/tmp/magento
+
+    env:
+      GIT_DEPTH: 1
+      GIT_STRATEGY: fetch
+      DOCKER_HOST: unix:///var/run/docker.sock
+      MAGENTO_BASE_URL: "http://php:8888/"
+      MAGENTO_BACKEND_FRONTNAME: "admin"
+      MAGENTO_ADMIN_FIRSTNAME: "CI"
+      MAGENTO_ADMIN_LASTNAME: "User"
+      MAGENTO_ADMIN_EMAIL: "admin@example.com"
+      MAGENTO_ADMIN_USER: "admin"
+      MAGENTO_ADMIN_PASSWORD: "Admin123!@#"
+      MAGENTO_LANGUAGE: "en_US"
+      MAGENTO_CURRENCY: "USD"
+      MAGENTO_TIMEZONE: "UTC"
+      MAGENTO_USE_REWRITES: "1"
+      MAGENTO_SEARCH_ENGINE: "opensearch"
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      COMPOSER_MEMORY_LIMIT: "-1"
+      MYSQL_HOST: "mysql"
+      MYSQL_USER: "magento2"
+      MYSQL_PASSWORD: "magento2"
+      MYSQL_DATABASE: "magento2"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_PORT: "3306"
+      OPENSEARCH_HOST: "opensearch"
+      OPENSEARCH_PORT: "9200"
+      OPENSEARCH_JAVA_OPTS: "-Xms128m -Xmx128m"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
+      MAGENTO_VERSION: "2.4.8-p3"
+      DISABLE_INVENTORY: true
+      DISABLE_GRAPHQL: true
+      DISABLE_ADOBE: true
+      GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+
+    services:
+      php:
+        image: yireo/magento2installed:2.4.8-p3
+        options: -v /tmp/ci-magento:/shared/magento
+        env:
+          MYSQL_HOST: "mysql"
+          MYSQL_USER: "magento2"
+          MYSQL_PASSWORD: "magento2"
+          MYSQL_DATABASE: "magento2"
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_PORT: "3306"
+          OPENSEARCH_HOST: "opensearch"
+          OPENSEARCH_PORT: "9200"
+          OPENSEARCH_JAVA_OPTS: "-Xms128m -Xmx128m"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
+          MAGENTO_VERSION: "2.4.8-p3"
+          DISABLE_INVENTORY: true
+          DISABLE_GRAPHQL: true
+          DISABLE_ADOBE: true
+          MAGENTO_BASE_URL: "http://php:8888/"
+          MAGENTO_BACKEND_FRONTNAME: "admin"
+          MAGENTO_ADMIN_FIRSTNAME: "CI"
+          MAGENTO_ADMIN_LASTNAME: "User"
+          MAGENTO_ADMIN_EMAIL: "admin@example.com"
+          MAGENTO_ADMIN_USER: "admin"
+          MAGENTO_ADMIN_PASSWORD: "Admin123!@#"
+          MAGENTO_LANGUAGE: "en_US"
+          MAGENTO_CURRENCY: "USD"
+          MAGENTO_TIMEZONE: "UTC"
+          MAGENTO_USE_REWRITES: "1"
+          MAGENTO_SEARCH_ENGINE: "opensearch"
+          COMPOSER_ALLOW_SUPERUSER: "1"
+          COMPOSER_MEMORY_LIMIT: "-1"
+
+      mysql:
+        image: yireo/mariadb:10
+        env:
+          MYSQL_DATABASE: magento2
+          MYSQL_USER: magento2
+          MYSQL_PASSWORD: magento2
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=1s
+          --health-timeout=5s
+          --health-retries=3
+
+      redis:
+        image: redis:latest
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=1s
+          --health-timeout=5s
+          --health-retries=3
+
+      opensearch:
+        image: yireo/opensearch
+        env:
+          OPENSEARCH_JAVA_OPTS: "-Xms256m -Xmx256m"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
+
+    steps:
+      - name: Install tooling
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates curl gnupg git jq
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+          chmod a+r /etc/apt/keyrings/docker.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
+          apt-get update
+          apt-get install -y docker-ce-cli
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Detecting Playwright tests
+        run: test -d $GITHUB_WORKSPACE/Test/Playwright || echo "SKIP_JOB=true" >> $GITHUB_ENV || true
+
+      - name: Configure Git safe directory
+        if: env.SKIP_JOB != 'true'
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Setting up module variables
+        if: env.SKIP_JOB != 'true'
+        run: |
+          echo COMPOSER_NAME=`jq '.name' composer.json -r` >> $GITHUB_ENV
+          echo MAGENTO_MODULE=`jq '.module_name' MODULE.json -r` >> $GITHUB_ENV
+
+      - name: Resolve PHP container name
+        if: env.SKIP_JOB != 'true'
+        run: |
+          if docker ps --filter "name=^php$" --filter "status=running" --format '{{.Names}}' | grep -qx 'php'; then
+            PHP_CONTAINER="php"
+          else
+            PHP_CONTAINER=$(docker ps -q --filter "ancestor=yireo/magento2installed:2.4.8-p3" --filter "status=running" | head -1)
+          fi
+          echo "PHP_CONTAINER=$PHP_CONTAINER" >> $GITHUB_ENV
+          echo "Using PHP container: $PHP_CONTAINER"
+
+      - name: Copy module source into PHP container
+        if: env.SKIP_JOB != 'true'
+        run: docker cp "$GITHUB_WORKSPACE" "$PHP_CONTAINER:/tmp/magento/package-source"
+
+      - name: Configure GitLab
+        if: env.SKIP_JOB != 'true'
+        run: |
+          test -n "${{ secrets.GITLAB_TOKEN }}" || exit 0
+          docker exec \
+            -u root \
+            -e COMPOSER_NAME="$COMPOSER_NAME" \
+            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
+            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $PHP_CONTAINER bash -lc '
+            cd /tmp/magento
+            composer config gitlab-domains gitlab.yireo.com
+            composer config --global --auth gitlab-token.gitlab.yireo.com "${{ secrets.GITLAB_TOKEN }}"
+            composer config repositories.loki-third-party composer https://gitlab.yireo.com/api/v4/group/loki-third-party/-/packages/composer/packages.json
+            composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
+            composer config repositories.loki-checkout-dev composer https://gitlab.yireo.com/api/v4/group/loki-checkout-dev/-/packages/composer/packages.json
+          '
+
+      - name: Configure Magento Marketplace
+        if: env.SKIP_JOB != 'true'
+        run: |
+          test -n "${{ secrets.MAGENTO_MARKETPLACE_PUBLIC_KEY }}" || exit 0
+          docker exec \
+            -u root \
+            -e COMPOSER_NAME="$COMPOSER_NAME" \
+            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
+            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $PHP_CONTAINER bash -lc '
+            composer config --global --auth http-basic.repo.magento.com "${{ secrets.MAGENTO_MARKETPLACE_PUBLIC_KEY }}" "${{ secrets.MAGENTO_MARKETPLACE_PRIVATE_KEY }}"
+          '
+
+      - name: Configure composer
+        if: env.SKIP_JOB != 'true'
+        run: |
+          docker exec \
+            -u root \
+            -e COMPOSER_NAME="$COMPOSER_NAME" \
+            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
+            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $PHP_CONTAINER bash -lc '
+            cd /tmp/magento
+            composer config --global --auth github-oauth.github.com "${{ secrets.COMPOSER_GITHUB_TOKEN }}"
+            test -f /tmp/magento/package-source/.github/workflows/composer-additional.sh && source /tmp/magento/package-source/.github/workflows/composer-additional.sh || true
+            test -f /tmp/magento/package-source/.github/workflows/composer-${MAGENTO_VERSION}.sh && source /tmp/magento/package-source/.github/workflows/composer-${MAGENTO_VERSION}.sh || true
+          '
+
+      - name: Add module source
+        if: env.SKIP_JOB != 'true'
+        run: |
+          docker exec \
+            -u root \
+            -e COMPOSER_NAME="$COMPOSER_NAME" \
+            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
+            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $PHP_CONTAINER bash -lc '
+            cd /tmp/magento
+            composer config repositories.local-source path /tmp/magento/package-source
+            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki-checkout/magento2-core-cli:@dev loki-checkout/magento2-sample-data:@dev loki-checkout/magento2-functional-tests:@dev yireo/magento2-enable-module-sequence:@dev
+          '
+
+      - name: Setup Magento
+        if: env.SKIP_JOB != 'true'
+        run: |
+          docker exec \
+            -u root \
+            -e COMPOSER_NAME="$COMPOSER_NAME" \
+            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
+            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $PHP_CONTAINER bash -lc '
+            cd /tmp/magento
+            GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh || true
+
+            bin/magento module:enable Yireo_EnableModuleSequence
+            bin/magento module:sequence LokiCheckout_FunctionalTests LokiCheckout_SampleData LokiCheckout_CoreCli "${MAGENTO_MODULE}"
+            bin/magento cache:flush
+            bin/magento setup:upgrade
+            bin/magento config:set dev/static/sign 0
+            bin/magento setup:static-content:deploy -f --area frontend en_US
+            bin/magento loki-checkout:sample-data:add-product
+            bin/magento loki-checkout:modules:dump
+
+            bin/magento config:set loki_checkout/functional_tests/token loki
+          '
+
+      - name: Copy Magento to shared volume
+        if: env.SKIP_JOB != 'true'
+        run: |
+          docker exec -u root $PHP_CONTAINER bash -lc 'mkdir -p /shared/magento && cp -R /tmp/magento/. /shared/magento/'
+
+      - name: Verify Magento installation
+        if: env.SKIP_JOB != 'true'
+        run: |
+          echo "Verifying Magento installation in workspace..."
+          test -f /tmp/magento/bin/magento || (echo "ERROR: Magento installation verification failed" && exit 1)
+          echo "Magento installation verified successfully"
+
+      - name: Wait for Magento front-end
+        if: env.SKIP_JOB != 'true'
+        run: |
+          echo "Waiting for Magento front-end at ${MAGENTO_BASE_URL}..."
+          for i in {1..60}; do
+            if curl -s "${MAGENTO_BASE_URL}" >/dev/null; then
+              echo "OK"; exit 0
+            fi
+            echo -n "."
+            sleep 1
+          done
+          echo "ERROR: Magento front-end not reachable"; exit 1
+
+      - name: Run Playwright tests
+        if: env.SKIP_JOB != 'true'
+        working-directory: /tmp/magento/vendor/loki-checkout/magento2-functional-tests/Test/Playwright/
+        run: |
+          echo "Installing npm dependencies..."
+          npm install
+          npx playwright install chromium
+
+          echo "Creating .env file..."
+          printf "TEST_URL=http://php:8888/\nTEST_TOKEN=loki\n" > .env
+
+          echo "Running Playwright tests for project ${MAGENTO_MODULE}"
+          CI=true TEST_TOKEN=loki MAGENTO_ROOT=/tmp/magento npx playwright test --project=${MAGENTO_MODULE}
+

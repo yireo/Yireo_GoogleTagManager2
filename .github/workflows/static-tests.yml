@@ -11,6 +11,10 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Cleanup PHP
+        run: |
+          test -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
+
       - name: Run Magento 2 PHPCS Tests
         run: |
           PHPCS_LEVEL=${{ env.PHPCS_LEVEL }}
@@ -29,37 +33,57 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Cleanup PHP
+        run: |
+          test -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true
+
       - name: Configure GitLab
         run: |
           test -n "${{ secrets.GITLAB_TOKEN }}" || exit 0
           cd /tmp/magento
-          test -f $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh
-          test -f $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh
           composer config gitlab-domains gitlab.yireo.com
-          composer config --auth gitlab-token.gitlab.yireo.com ${{ secrets.GITLAB_TOKEN }}
+          composer config --global --auth gitlab-token.gitlab.yireo.com "${{ secrets.GITLAB_TOKEN }}"
+          composer config repositories.loki-third-party composer https://gitlab.yireo.com/api/v4/group/loki-third-party/-/packages/composer/packages.json
           composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
+          composer config repositories.loki-checkout-dev composer https://gitlab.yireo.com/api/v4/group/loki-checkout-dev/-/packages/composer/packages.json
+
+      - name: Configure Magento Marketplace
+        run: |
+          test -n "${{ secrets.MAGENTO_MARKETPLACE_PUBLIC_KEY }}" || exit 0
+          cd /tmp/magento
+          composer config --global --auth http-basic.repo.magento.com "${{ secrets.MAGENTO_MARKETPLACE_PUBLIC_KEY }}" "${{ secrets.MAGENTO_MARKETPLACE_PRIVATE_KEY }}"
+
+      - name: Configure composer
+        run: |
+          cd /tmp/magento
+          composer config --global --auth github-oauth.github.com "${{ secrets.COMPOSER_GITHUB_TOKEN }}"
+          test -f $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-additional.sh || true
+          test -f $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh && source $GITHUB_WORKSPACE/.github/workflows/composer-${MAGENTO_VERSION}.sh || true
+
+      - name: Setting up module variables
+        run: |
+          echo COMPOSER_NAME=`jq '.name' composer.json -r` >> $GITHUB_ENV
+          echo MAGENTO_MODULE=`jq '.module_name' MODULE.json -r` >> $GITHUB_ENV
 
       - name: Add module source
         run: |
-          export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
-          export COMPOSER_DEV_REQUIREMENTS=`jq -r '.["require-dev"] // {} | to_entries | map("\(.key):\(.value)") | join(" ")' composer.json`
+          COMPOSER_DEV_REQUIREMENTS=`jq -r '.["require-dev"] // {} | to_entries | map("\(.key):\(.value)") | join(" ")' composer.json`
           cp -R ${GITHUB_WORKSPACE} /tmp/magento/package-source
           cd /tmp/magento
           composer config repositories.local-source path package-source/
           composer config --no-plugins allow-plugins true
           composer remove --dev magento/magento-coding-standard
-          test -z "$COMPOSER_DEV_REQUIREMENTS" || composer require --dev $COMPOSER_DEV_REQUIREMENTS
-          composer require --dev --prefer-source -- phpstan/phpstan:^2.0 bitexpert/phpstan-magento:^0.42 phpstan/extension-installer
-          composer require --prefer-source -- ${COMPOSER_NAME}:@dev yireo/magento2-integration-test-helper
+          test -z "$COMPOSER_DEV_REQUIREMENTS" || composer require -n --dev $COMPOSER_DEV_REQUIREMENTS
+          composer require -n --dev --prefer-source -- phpstan/phpstan:^2.0 bitexpert/phpstan-magento:^0.42 phpstan/extension-installer
+          composer require -n --prefer-source -- ${COMPOSER_NAME}:@dev
 
       - name: Run Magento 2 PHPStan Tests
         run: |
-          export COMPOSER_NAME=`cat .module.ini | grep COMPOSER_NAME | cut -f2 -d= | tr -d '"'`
-          export PHPSTAN_LEVEL=$(jq -r '.phpstan_level // 1' MODULE.json)
+          PHPSTAN_LEVEL=$(jq -r '.phpstan_level // 1' ${GITHUB_WORKSPACE}/MODULE.json)
           test -z "$PHPSTAN_LEVEL" && PHPSTAN_LEVEL=1
           test -f /tmp/magento/phpstan.neon || echo 'parameters:' > /tmp/magento/phpstan.neon
           echo "Testing for PHPStan level $PHPSTAN_LEVEL"
           cd /tmp/magento
-          export MODULE_PATH=$(realpath vendor/${COMPOSER_NAME})
-          php -d memory_limit=4G vendor/bin/phpstan analyse --level $PHPSTAN_LEVEL $MODULE_PATH
+          MODULE_PATH=$(realpath vendor/${COMPOSER_NAME})
+          php -d memory_limit=-1 vendor/bin/phpstan analyse -n --level $PHPSTAN_LEVEL $MODULE_PATH
 
