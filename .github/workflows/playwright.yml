@@ -206,6 +206,7 @@ jobs:
             -e MAGENTO_MODULE="$MAGENTO_MODULE" \
             -e MAGENTO_VERSION="$MAGENTO_VERSION" \
             $PHP_CONTAINER bash -lc '
+            set -e
             cd /tmp/magento
             composer config repositories.local-source path /tmp/magento/package-source
             composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki-checkout/magento2-core-cli:@dev loki-checkout/magento2-sample-data:@dev loki-checkout/magento2-functional-tests:@dev yireo/magento2-enable-module-sequence:@dev
@@ -220,8 +221,10 @@ jobs:
             -e MAGENTO_MODULE="$MAGENTO_MODULE" \
             -e MAGENTO_VERSION="$MAGENTO_VERSION" \
             $PHP_CONTAINER bash -lc '
+            set -e
             cd /tmp/magento
             GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
+            cat composer.json
 
             bin/magento module:enable Yireo_EnableModuleSequence
             bin/magento module:sequence LokiCheckout_FunctionalTests LokiCheckout_SampleData LokiCheckout_CoreCli "${MAGENTO_MODULE}"
