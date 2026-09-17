@@ -224,7 +224,10 @@ jobs:
             set -e
             cd /tmp/magento
             GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
+            composer config config.optimize-autoloader false
             cat composer.json
+            bin/magento module:status Magento_InventoryIndexer
+            bin/magento module:status | grep Inventory
 
             bin/magento module:enable Yireo_EnableModuleSequence
             bin/magento module:sequence LokiCheckout_FunctionalTests LokiCheckout_SampleData LokiCheckout_CoreCli "${MAGENTO_MODULE}"
