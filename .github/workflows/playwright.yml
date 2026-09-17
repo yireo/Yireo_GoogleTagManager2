@@ -221,7 +221,7 @@ jobs:
             -e MAGENTO_VERSION="$MAGENTO_VERSION" \
             $PHP_CONTAINER bash -lc '
             cd /tmp/magento
-            GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh || true
+            GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
 
             bin/magento module:enable Yireo_EnableModuleSequence
             bin/magento module:sequence LokiCheckout_FunctionalTests LokiCheckout_SampleData LokiCheckout_CoreCli "${MAGENTO_MODULE}"
