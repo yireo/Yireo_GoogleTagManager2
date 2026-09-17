@@ -21,3 +21,35 @@ Or just use `yarn`:
     npm run mocha
 
 
+
+## Playwright testing
+The folder `Test/Playwright` contains Playwright tests. They are run with the Playwright setup of the
+`loki-checkout/magento2-functional-tests` package (which also provides the endpoints used to configure the shop and
+to add a product to the cart):
+
+    cd vendor/loki-checkout/magento2-functional-tests/Test/Playwright/
+    npm install
+    npx playwright test --project=Yireo_GoogleTagManager2
+
+The folder `Test/Playwright/lib` contains test objects for the GTM `dataLayer`. The `test` exported from
+`lib/gtm-objects.ts` adds a `dataLayer` fixture, which stubs all requests to `googletagmanager.com` so that GTM itself
+does not modify the `dataLayer`:
+
+```ts
+import {test, expect, configureGtm, GTM_ID} from './lib/gtm-objects';
+
+test('product page', async ({page, dataLayer}) => {
+    await configureGtm(page, {'googletagmanager2/settings/wait_for_ui': 0});
+    await page.goto('/some-product.html');
+
+    await dataLayer.expectContainerLoaded(GTM_ID);
+    await dataLayer.expectState({page_type: 'product'});
+
+    const viewItem = await dataLayer.event('view_item').toHaveValidEcommerce();
+    await dataLayer.event('add_to_cart').where({ecommerce: {currency: 'USD'}}).notToBePushed();
+    await dataLayer.expectEventOrder(['view_item']);
+});
+```
+
+Assertions on events poll the `dataLayer`, so events that are pushed asynchronously (for instance via customer
+sections) are picked up as well.
