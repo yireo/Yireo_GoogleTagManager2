@@ -10,6 +10,7 @@ jobs:
         magento_version: ['2.4.7-p7', '2.4.8-p1', '2.4.8-p4', '2.4.9']
     container:
       image: yireo/magento2installed:${{ matrix.magento_version }}
+      options: --user root
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
