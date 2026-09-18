@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: yireo/magento2installed:2.4.8-p3
+      options: --user root
     services:
       mysql:
         image: yireo/mariadb:10
