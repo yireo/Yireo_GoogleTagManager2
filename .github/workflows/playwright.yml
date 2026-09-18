@@ -40,9 +40,9 @@ jobs:
       OPENSEARCH_JAVA_OPTS: "-Xms128m -Xmx128m"
       OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
       MAGENTO_VERSION: ${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
-      DISABLE_INVENTORY: ${{ vars.DISABLE_INVENTORY || true }}
-      DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || true }}
-      DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || true }}
+      DISABLE_INVENTORY: ${{ vars.DISABLE_INVENTORY || false }}
+      DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || false }}
+      DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || false }}
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
 
     services:
@@ -50,7 +50,38 @@ jobs:
         image: yireo/magento2installed:${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
         options: -v /tmp/ci-magento:/shared/magento
         env:
+          GIT_DEPTH: 1
+          GIT_STRATEGY: fetch
+          DOCKER_HOST: unix:///var/run/docker.sock
+          MAGENTO_BASE_URL: "http://php:8888/"
+          MAGENTO_BACKEND_FRONTNAME: "admin"
+          MAGENTO_ADMIN_FIRSTNAME: "CI"
+          MAGENTO_ADMIN_LASTNAME: "User"
+          MAGENTO_ADMIN_EMAIL: "admin@example.com"
+          MAGENTO_ADMIN_USER: "admin"
+          MAGENTO_ADMIN_PASSWORD: "Admin123!@#"
+          MAGENTO_LANGUAGE: "en_US"
+          MAGENTO_CURRENCY: "USD"
+          MAGENTO_TIMEZONE: "UTC"
+          MAGENTO_USE_REWRITES: "1"
+          MAGENTO_SEARCH_ENGINE: "opensearch"
+          COMPOSER_ALLOW_SUPERUSER: "1"
+          COMPOSER_MEMORY_LIMIT: "-1"
+          MYSQL_HOST: "mysql"
+          MYSQL_USER: "magento2"
+          MYSQL_PASSWORD: "magento2"
+          MYSQL_DATABASE: "magento2"
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_PORT: "3306"
+          OPENSEARCH_HOST: "opensearch"
+          OPENSEARCH_PORT: "9200"
+          OPENSEARCH_JAVA_OPTS: "-Xms128m -Xmx128m"
+          OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
           MAGENTO_VERSION: ${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
+          DISABLE_INVENTORY: ${{ vars.DISABLE_INVENTORY || false }}
+          DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || false }}
+          DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || false }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
 
       mysql:
         image: yireo/mariadb:10
@@ -59,20 +90,9 @@ jobs:
           MYSQL_USER: magento2
           MYSQL_PASSWORD: magento2
           MYSQL_ROOT_PASSWORD: root
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=20
-          --health-start-period=30s
 
       redis:
         image: redis:latest
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
 
       opensearch:
         image: yireo/opensearch
@@ -190,11 +210,14 @@ jobs:
       - name: Setup Magento
         if: env.SKIP_JOB != 'true'
         run: |
+          ENV_ARGS=""
+          for VAR in $(env | grep -oE '^(MAGENTO|MYSQL|OPENSEARCH|DISABLE)_[A-Z_]+'); do
+            ENV_ARGS="$ENV_ARGS -e $VAR"
+          done
           docker exec \
             -u root \
             -e COMPOSER_NAME="$COMPOSER_NAME" \
-            -e MAGENTO_MODULE="$MAGENTO_MODULE" \
-            -e MAGENTO_VERSION="$MAGENTO_VERSION" \
+            $ENV_ARGS \
             $PHP_CONTAINER bash -lc '
             set -e
             cd /tmp/magento
