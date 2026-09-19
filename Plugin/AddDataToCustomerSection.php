@@ -94,7 +94,7 @@ class AddDataToCustomerSection
             'customerLoggedIn' => 1,
             'customerId' => $customerId,
             'customerGroupId' => $customerGroup->getId(),
-            'customerGroupCode' => strtoupper($customerGroup->getCode())
+            'customerGroupCode' => strtoupper($customerGroup->getCode() ?? '')
         ], $customerGtmData);
     }
 }
