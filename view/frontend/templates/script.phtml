@@ -21,8 +21,8 @@ if (false === $config->isEnabled()) {
 
 <?php
 $events = ($config->waitForUserInteraction() === false)
-    ? "'load', 'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'"
-    : "'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'";
+    ? "'load', 'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'"
+    : "'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'";
 ?>
 <script>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
