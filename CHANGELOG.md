@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Use `mousemove` instead of `mouseover` to detect user interaction, because `mouseover` already fires when content renders underneath a stationary cursor
+- Do not render the GTM script and iframe when no GTM ID is configured
 
 ## [3.10.7] - 24 February 2026
 ### Fixed

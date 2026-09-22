@@ -97,6 +97,18 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Return the GTM IDs as a list, skipping empty values
+     *
+     * @return string[]
+     */
+    public function getIds(): array
+    {
+        $ids = array_map('trim', explode(',', $this->getId()));
+
+        return array_values(array_filter($ids));
+    }
+
+    /**
      * @return int
      */
     public function getMaximumCategoryProducts(): int

@@ -8,6 +8,18 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
-$url = sprintf('%s/ns.html?id=%s', $config->getGoogleTagmanagerUrl(), $config->getId());
+
+if (false === $config->isEnabled()) {
+    return;
+}
+
+$gtmIds = $config->getIds();
+
+if (empty($gtmIds)) {
+    return;
+}
 ?>
+<?php foreach ($gtmIds as $gtmId): ?>
+<?php $url = sprintf('%s/ns.html?id=%s', $config->getGoogleTagmanagerUrl(), $gtmId); ?>
 <noscript><iframe src="<?= $escaper->escapeUrl($url) ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<?php endforeach; ?>

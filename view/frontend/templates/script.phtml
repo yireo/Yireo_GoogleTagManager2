@@ -8,13 +8,14 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
-$gtmIds = explode(',', $config->getId());
 
-if (empty($gtmIds)) {
+if (false === $config->isEnabled()) {
     return;
 }
 
-if (false === $config->isEnabled()) {
+$gtmIds = $config->getIds();
+
+if (empty($gtmIds)) {
     return;
 }
 ?>
