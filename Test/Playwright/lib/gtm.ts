@@ -6,7 +6,7 @@ export const GTM_ID = 'GTM-PLAYWRIGHT';
 export const defaultConfig = {
     'googletagmanager2/settings/enabled': 1,
     'googletagmanager2/settings/id': GTM_ID,
-    'googletagmanager2/settings/debug': 0,
+    'googletagmanager2/settings/debug': 1,
     'googletagmanager2/settings/wait_for_ui': 0,
     'googletagmanager2/settings/serverside_enabled': 0,
     'googletagmanager2/settings/view_cart_occurances': 'everywhere',
@@ -19,7 +19,7 @@ const token = () => process.env.TEST_TOKEN;
  * Configure the store via the Loki_FunctionalTests endpoint
  */
 export async function configureGtm(page: Page, config: Record<string, any> = {}) {
-    const response = await page.request.post('/loki/index/configure?token=' + token(), {
+    const response = await page.request.post('/loki_functional_tests/index/configure?token=' + token(), {
         form: {
             config: JSON.stringify({config: {...defaultConfig, ...config}}),
         },
@@ -42,7 +42,7 @@ export async function configureGtm(page: Page, config: Record<string, any> = {})
  * Add the sample product to the cart of the current browser session
  */
 export async function addProductToCart(page: Page, qty: number = 1) {
-    const response = await page.request.get('/loki/index/addtocart?token=' + token() + '&qty=' + qty);
+    const response = await page.request.get('/loki_functional_tests/index/addtocart?token=' + token() + '&qty=' + qty);
     const data = await response.json();
     expect(data.error, 'Add to cart error').toBeUndefined();
 }
