@@ -42,6 +42,7 @@
         "yireo/magento2-csp-utilities": "^1.0"
     },
     "require-dev": {
+        "loki/magento2-functional-tests": "@dev",
         "yireo/magento2-integration-test-helper": "~0.0|^1.0"
     },
     "suggest": {
