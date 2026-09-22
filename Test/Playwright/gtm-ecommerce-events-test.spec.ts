@@ -50,7 +50,13 @@ test.describe('GTM ecommerce events', function () {
         await page.goto('/checkout/cart/');
         const sku = (await dataLayer.event('view_cart').toBePushed()).getItem(0)!.item_id;
 
-        await page.locator('#shopping-cart-table .action-delete').first().click();
+        // Hyva renders a button with the removal payload, Luma an anchor with a class
+        const removeButton = page.locator('#shopping-cart-table')
+            .locator('[data-cart-item-removed-payload], .action-delete')
+            .first();
+
+        await expect(removeButton, 'Remove button in cart').toBeVisible();
+        await removeButton.click();
         await page.waitForLoadState('domcontentloaded');
 
         await dataLayer.event('remove_from_cart').toHaveItem({item_id: sku});
