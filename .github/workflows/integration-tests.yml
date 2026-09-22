@@ -6,7 +6,7 @@ jobs:
     name: Magento 2 Integration Tests
     runs-on: ubuntu-latest
     container:
-      image: yireo/magento2installed:2.4.8-p3
+      image: yireo/magento2installed:2.4.8-p5
       options: --user root
     services:
       mysql:
@@ -41,11 +41,11 @@ jobs:
 
       - name: Apply patch for reporting memory under Alpine
         if: env.SKIP_JOB != 'true'
-        run: cd /tmp/magento && curl -fsSL https://patch-diff.githubusercontent.com/raw/magento/magento2/pull/39216.diff | git apply || true
+        run: cat /tmp/magento/patches/39216.diff | git apply || true
 
       - name: Apply patch for changing MySQL client configuration
         if: env.SKIP_JOB != 'true'
-        run: cd /tmp/magento && curl -fsSL https://patch-diff.githubusercontent.com/raw/magento/magento2/pull/40410.diff | git apply || true
+        run: cat /tmp/magento/patches/40410.diff | git apply || true
 
       - name: Setting up module variables
         if: env.SKIP_JOB != 'true'
