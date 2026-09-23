@@ -136,7 +136,12 @@ jobs:
           if docker ps --filter "name=^php$" --filter "status=running" --format '{{.Names}}' | grep -qx 'php'; then
             PHP_CONTAINER="php"
           else
-            PHP_CONTAINER=$(docker ps -q --filter "ancestor=yireo/magento2installed:2.4.8-p3" --filter "status=running" | head -1)
+            PHP_CONTAINER=$(docker ps -q --filter "ancestor=yireo/magento2installed:${MAGENTO_VERSION}" --filter "status=running" | head -1)
+          fi
+          if [ -z "$PHP_CONTAINER" ]; then
+            echo "ERROR: no running container found for image yireo/magento2installed:${MAGENTO_VERSION}"
+            docker ps
+            exit 1
           fi
           echo "PHP_CONTAINER=$PHP_CONTAINER" >> $GITHUB_ENV
           echo "Using PHP container: $PHP_CONTAINER"
@@ -157,11 +162,14 @@ jobs:
             $PHP_CONTAINER bash -lc '
             cd /tmp/magento
             composer config gitlab-domains gitlab.yireo.com
+            composer config gitlab-protocol http
             composer config --global --auth gitlab-token.gitlab.yireo.com "${{ secrets.GITLAB_TOKEN }}"
             composer config repositories.loki-extensions composer https://gitlab.yireo.com/api/v4/group/loki-extensions/-/packages/composer/packages.json
             composer config repositories.loki-third-party composer https://gitlab.yireo.com/api/v4/group/loki-third-party/-/packages/composer/packages.json
             composer config repositories.loki-checkout composer https://gitlab.yireo.com/api/v4/group/loki-checkout/-/packages/composer/packages.json
             composer config repositories.loki-checkout-dev composer https://gitlab.yireo.com/api/v4/group/loki-checkout-dev/-/packages/composer/packages.json
+            composer config repositories.loki-functional-tests vcs https://gitlab.yireo.com/loki-extensions/Loki_FunctionalTests.git
+            composer config repositories.loki-checkout-functional-tests vcs https://gitlab.yireo.com/loki-checkout-dev/LokiCheckout_FunctionalTests.git
           '
 
       - name: Configure Magento Marketplace
