@@ -31,6 +31,13 @@ to add a product to the cart):
     npm install
     npx playwright test --project=Yireo_GoogleTagManager2
 
+Tests that put a product in the cart need a catalog. A bare Magento install has none, in which case the
+`addtocart` endpoint reports `No product found.`. Seed a single simple product and category with:
+
+    php vendor/yireo/magento2-googletagmanager2/Test/Playwright/seed-catalog.php
+    bin/magento indexer:reindex
+    bin/magento cache:flush
+
 The folder `Test/Playwright/lib` contains test objects for the GTM `dataLayer`. The `test` exported from
 `lib/gtm-objects.ts` adds a `dataLayer` fixture, which stubs all requests to `googletagmanager.com` so that GTM itself
 does not modify the `dataLayer`:

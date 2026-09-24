@@ -40,11 +40,21 @@ export async function configureGtm(page: Page, config: Record<string, any> = {})
 
 /**
  * Add the sample product to the cart of the current browser session
+ *
+ * The endpoint ignores its own "qty" parameter (Loki\FunctionalTests\Controller\Index\Addtocart reads it
+ * with getParams(), which returns an array), so a higher quantity is built up by adding the product
+ * repeatedly to the same quote.
  */
-export async function addProductToCart(page: Page, qty: number = 1) {
-    const response = await page.request.get('/loki_functional_tests/index/addtocart?token=' + token() + '&qty=' + qty);
-    const data = await response.json();
-    expect(data.error, 'Add to cart error').toBeUndefined();
+export async function addProductToCart(page: Page, qty: number = 1, config: Record<string, any> = {}) {
+    for (let i = 0; i < qty; i++) {
+        const url = '/loki_functional_tests/index/addtocart'
+            + '?token=' + token()
+            + '&config=' + encodeURIComponent(JSON.stringify(config));
+
+        const response = await page.request.get(url);
+        const data = await response.json();
+        expect(data.error, 'Add to cart error').toBeUndefined();
+    }
 }
 
 /**
