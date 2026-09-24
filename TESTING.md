@@ -27,16 +27,12 @@ The folder `Test/Playwright` contains Playwright tests. They are run with the Pl
 `loki-checkout/magento2-functional-tests` package (which also provides the endpoints used to configure the shop and
 to add a product to the cart):
 
-    cd vendor/loki-checkout/magento2-functional-tests/Test/Playwright/
+    composer require loki/magento2-functional-tests
+    bin/magento module:enable Loki_FunctionalTests
+    bin/magento loki:modules:dump
+    cd vendor/loki/magento2-functional-tests/Test/Playwright/
     npm install
     npx playwright test --project=Yireo_GoogleTagManager2
-
-Tests that put a product in the cart need a catalog. A bare Magento install has none, in which case the
-`addtocart` endpoint reports `No product found.`. Seed a single simple product and category with:
-
-    php vendor/yireo/magento2-googletagmanager2/Test/Playwright/seed-catalog.php
-    bin/magento indexer:reindex
-    bin/magento cache:flush
 
 The folder `Test/Playwright/lib` contains test objects for the GTM `dataLayer`. The `test` exported from
 `lib/gtm-objects.ts` adds a `dataLayer` fixture, which stubs all requests to `googletagmanager.com` so that GTM itself
