@@ -16,12 +16,36 @@ export const defaultConfig = {
 const token = () => process.env.TEST_TOKEN;
 
 /**
- * Configure the store via the Loki_FunctionalTests endpoint
+ * Payload accepted by the Loki_FunctionalTests configure endpoint
+ *
+ * Every key is handled by Loki\FunctionalTests\Service\Configurator, except `product`, which comes from
+ * Loki\FunctionalTests\Service\ConfigureAction\Product. Keys that are left out are not touched at all.
  */
-export async function configureGtm(page: Page, config: Record<string, any> = {}) {
+export type ConfigurePayload = {
+    config?: Record<string, any>;
+    product?: boolean | Record<string, any>;
+    customer?: Record<string, any>;
+    address?: Record<string, any>;
+    modules?: Record<string, any>;
+    secure_config?: Record<string, any>;
+    [key: string]: any;
+};
+
+/**
+ * Configure the store via the Loki_FunctionalTests endpoint
+ *
+ * The payload is passed on as-is, so anything the endpoint understands can be used. Only `config` is
+ * treated specially: `defaultConfig` is merged underneath it, so tests only spell out what differs.
+ */
+export async function configureGtm(page: Page, payload: ConfigurePayload = {}) {
+    const requestData = {
+        ...payload,
+        config: {...defaultConfig, ...(payload.config ?? {})},
+    };
+
     const response = await page.request.post('/loki_functional_tests/index/configure?token=' + token(), {
         form: {
-            config: JSON.stringify({config: {...defaultConfig, ...config}}),
+            config: JSON.stringify(requestData),
         },
     });
 

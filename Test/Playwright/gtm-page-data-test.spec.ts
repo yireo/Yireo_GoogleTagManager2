@@ -21,7 +21,7 @@ test.describe('GTM page data', function () {
     });
 
     test('waits for user interaction before loading GTM when configured', async function ({page, dataLayer}) {
-        await configureGtm(page, {'googletagmanager2/settings/wait_for_ui': 1});
+        await configureGtm(page, {config: {'googletagmanager2/settings/wait_for_ui': 1}});
 
         await page.goto('/');
         await dataLayer.expectContainerNotLoaded();

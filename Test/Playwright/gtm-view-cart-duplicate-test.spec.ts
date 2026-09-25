@@ -31,18 +31,27 @@ async function expectViewCartPushedOnce(dataLayer: DataLayer, message: string) {
 }
 
 const cartPageConfig = {
-    'googletagmanager2/settings/view_cart_occurances': 'cart_page',
-    'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 0,
+    product: true,
+    config: {
+        'googletagmanager2/settings/view_cart_occurances': 'cart_page',
+        'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 0,
+    },
 };
 
 const everywhereConfig = {
-    'googletagmanager2/settings/view_cart_occurances': 'everywhere',
-    'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 0,
+    product: true,
+    config: {
+        'googletagmanager2/settings/view_cart_occurances': 'everywhere',
+        'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 0,
+    },
 };
 
 const minicartExpandConfig = {
-    'googletagmanager2/settings/view_cart_occurances': 'everywhere',
-    'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 1,
+    product: true,
+    config: {
+        'googletagmanager2/settings/view_cart_occurances': 'everywhere',
+        'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 1,
+    },
 };
 
 test.describe('GTM duplicate view_cart', function () {
@@ -52,12 +61,12 @@ test.describe('GTM duplicate view_cart', function () {
      * a different quantity than the `view_cart` that was already pushed, so the hash check does not
      * recognise it and the shopper gets a second `view_cart` for the same cart view.
      */
-    for (const [configName, config] of Object.entries({
+    for (const [configName, payload] of Object.entries({
         'view_cart_occurances=cart_page': cartPageConfig,
         'view_cart_occurances=everywhere': everywhereConfig,
     })) {
         test(`pushes view_cart once when the quantity is changed on the cart page (${configName})`, async function ({page, dataLayer}) {
-            await configureGtm(page, config);
+            await configureGtm(page, payload);
             await addProductToCart(page);
 
             await page.goto('/checkout/cart/');

@@ -1,3 +1,0 @@
-{
-  "extends": "../../../../loki-checkout/magento2-functional-tests/Test/Playwright/tsconfig.json"
-}

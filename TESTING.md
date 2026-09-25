@@ -42,7 +42,7 @@ does not modify the `dataLayer`:
 import {test, expect, configureGtm, GTM_ID} from './lib/gtm-objects';
 
 test('product page', async ({page, dataLayer}) => {
-    await configureGtm(page, {'googletagmanager2/settings/wait_for_ui': 0});
+    await configureGtm(page, {config: {'googletagmanager2/settings/wait_for_ui': 0}});
     await page.goto('/some-product.html');
 
     await dataLayer.expectContainerLoaded(GTM_ID);
@@ -56,3 +56,29 @@ test('product page', async ({page, dataLayer}) => {
 
 Assertions on events poll the `dataLayer`, so events that are pushed asynchronously (for instance via customer
 sections) are picked up as well.
+
+### Configuring the shop
+
+The second argument of `configureGtm()` is the payload of the `loki_functional_tests/index/configure` endpoint, so it
+accepts everything `Loki\FunctionalTests\Service\Configurator` understands. Store settings go under `config`, where
+they are merged on top of `defaultConfig`, and every other key is passed on untouched:
+
+```ts
+await configureGtm(page, {
+    product: true,
+    config: {
+        'googletagmanager2/settings/view_cart_occurances': 'cart_page',
+    },
+});
+```
+
+| Key | Purpose |
+|---|---|
+| `config` | Store configuration, as `path => value`. Merged on top of `defaultConfig`. |
+| `product` | `true` makes sure a saleable product exists, creating a dummy one if the catalog is empty. Pass an object (`{sku, name, price, qty, ...}`) to control it. |
+| `customer` | Customer to create and/or log in. |
+| `address` | Fields written to both the billing and shipping address of the current quote. |
+| `modules` | Modules to enable. |
+| `secure_config` | Configuration written through the encrypted backend model. |
+
+Keys that are left out are not touched at all, so a test only states what it actually needs.
