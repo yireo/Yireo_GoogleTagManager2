@@ -82,3 +82,9 @@ await configureGtm(page, {
 | `secure_config` | Configuration written through the encrypted backend model. |
 
 Keys that are left out are not touched at all, so a test only states what it actually needs.
+
+### Sample data
+`gtm-category-data-test.spec.ts` checks the category data of products (`item_list_id`, `item_list_name`,
+`item_category` ... `item_category5`) on category pages, product pages and in the cart. It relies on the Luma sample
+data (the product "Didi Sport Watch" in the category "Gear > Watches") and is skipped when that product is not
+available. Make sure the search index is up to date, otherwise category pages show no products.

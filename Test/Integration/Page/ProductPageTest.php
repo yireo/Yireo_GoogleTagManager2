@@ -5,7 +5,9 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Page;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Response\Http;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetProduct;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GtmCategoryTree;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLayout;
 
@@ -17,6 +19,8 @@ use Yireo\IntegrationTestHelper\Test\Integration\Traits\Layout\AssertHandleInLay
 class ProductPageTest extends PageTestCase
 {
     use GetProduct;
+    use GetCategory;
+    use GtmCategoryTree;
     use AssertHandleInLayout;
 
     /**
@@ -56,5 +60,39 @@ class ProductPageTest extends PageTestCase
         $this->assertNonEmptyValueInArray('price', $productData);
         $this->assertNonEmptyValueInArray('item_list_id', $productData);
         $this->assertNonEmptyValueInArray('item_list_name', $productData);
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/method 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoConfigFixture current_store catalog/seo/generate_category_product_rewrites 0
+     * @magentoConfigFixture static_content_on_demand_in_production 1
+     * @magentoDataFixture Yireo_GoogleTagManager2::Test/Integration/_files/gtm_category_tree.php
+     */
+    public function testValidDataLayerWithMultipleCategories()
+    {
+        $this->assertEnabledFlagIsWorking();
+
+        $product = $this->getProductBySku('gtm-multi-category');
+        $parent = $this->getCategoryByName('GTM Parent');
+
+        $this->dispatch('catalog/product/view/id/' . $product->getId());
+        $this->assertRequestActionName('view');
+
+        $body = $this->getResponse()->getBody();
+        $this->assertStringContainsString($product->getName(), $body);
+
+        $event = $this->getEventFromDataLayerEvents('view_item_event', 'view_item');
+        $this->assertCount(1, $event['ecommerce']['items']);
+
+        $productData = $event['ecommerce']['items'][0];
+        $this->assertSame('gtm-multi-category', $productData['item_id']);
+        $this->assertEquals($parent->getId(), $productData['item_list_id'], json_encode($productData));
+        $this->assertSame('GTM Parent', $productData['item_list_name'], json_encode($productData));
+        $this->assertValidGtmItemCategories($productData);
+
+        $this->assertStringNotContainsString('GTM Inactive', $body);
+        $this->assertStringNotContainsString('GTM Outside Root', $body);
     }
 }
