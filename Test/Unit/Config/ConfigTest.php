@@ -104,6 +104,38 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers Config::getMaxTransactionValue
+     */
+    public function testGetMaxTransactionValue()
+    {
+        $this->setScopeConfigValue('max_transaction_value', null);
+        $this->assertSame(0.0, $this->getTarget()->getMaxTransactionValue());
+
+        $this->setScopeConfigValue('max_transaction_value', '0');
+        $this->assertSame(0.0, $this->getTarget()->getMaxTransactionValue());
+
+        $this->setScopeConfigValue('max_transaction_value', '1500.50');
+        $this->assertSame(1500.5, $this->getTarget()->getMaxTransactionValue());
+    }
+
+    /**
+     * @test
+     * @covers Config::includeShippingInAdjustedValue
+     */
+    public function testIncludeShippingInAdjustedValue()
+    {
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', null);
+        $this->assertFalse($this->getTarget()->includeShippingInAdjustedValue());
+
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', '0');
+        $this->assertFalse($this->getTarget()->includeShippingInAdjustedValue());
+
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', '1');
+        $this->assertTrue($this->getTarget()->includeShippingInAdjustedValue());
+    }
+
+    /**
      * @return Config
      */
     private function getTarget(): Config
