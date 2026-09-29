@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not render the GTM script and iframe when no GTM ID is configured
 - Hyva: Strip internal `meta` data from events before pushing them to the dataLayer, like the Luma pusher already did
 - Do not break the customer section when the customer group of the session no longer exists
+- Do not break the customer section when the customer group has no code
+- Load the configured category EAV attributes (`category_eav_attributes`) again in the `CategoryProvider`
+- Dispatch `catalog_category_load_after` for every category loaded by the `CategoryProvider`
 
 ## [3.10.7] - 24 February 2026
 ### Fixed

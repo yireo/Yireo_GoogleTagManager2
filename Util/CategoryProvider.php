@@ -8,9 +8,12 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
+use Magento\Framework\Event\ManagerInterface as EventManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
 
 class CategoryProvider
@@ -27,13 +30,19 @@ class CategoryProvider
 
     private CategoryCollectionFactory $categoryCollectionFactory;
     private StoreManagerInterface $storeManager;
+    private Config $config;
+    private EventManagerInterface $eventManager;
 
     public function __construct(
         CategoryCollectionFactory $categoryCollectionFactory,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Config $config,
+        EventManagerInterface $eventManager
     ) {
         $this->categoryCollectionFactory = $categoryCollectionFactory;
         $this->storeManager = $storeManager;
+        $this->config = $config;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -145,15 +154,44 @@ class CategoryProvider
     private function loadCategoriesByIds(array $categoryIds): array
     {
         $collection = $this->categoryCollectionFactory->create();
+        foreach ($this->getAttributeCodesToSelect() as $attributeCode) {
+            try {
+                $collection->addAttributeToSelect($attributeCode);
+            } catch (LocalizedException $exception) {
+                // Skip attributes that are configured but do not exist
+            }
+        }
+
         $collection
-            ->addAttributeToSelect(['name', 'is_active'])
             ->addIdFilter($categoryIds)
             ->addAttributeToFilter('path', ['like' => '1/' . $this->getRootCategoryId() . '/%']);
 
         /** @var Category[] $categories */
         $categories = $collection->getItems();
 
+        // Keep observers of single category loads working, like with CategoryRepositoryInterface::get()
+        foreach ($categories as $category) {
+            $this->eventManager->dispatch(
+                'catalog_category_load_after',
+                ['category' => $category, 'data_object' => $category]
+            );
+        }
+
         return $categories;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAttributeCodesToSelect(): array
+    {
+        $attributeCodes = array_merge(['name', 'is_active'], $this->config->getCategoryEavAttributeCodes());
+        $attributeCodes = array_map('trim', $attributeCodes);
+        $attributeCodes = array_filter($attributeCodes, static function (string $attributeCode) {
+            return $attributeCode !== '' && $attributeCode !== 'id';
+        });
+
+        return array_values(array_unique($attributeCodes));
     }
 
     /**

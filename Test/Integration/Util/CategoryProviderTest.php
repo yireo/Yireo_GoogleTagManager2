@@ -274,9 +274,9 @@ class CategoryProviderTest extends TestCase
     }
 
     /**
-     * Documents a behaviour change of https://github.com/yireo/Yireo_GoogleTagManager2/pull/310: third party code
-     * that hooks into the loading of a single category (event "catalog_category_load_after", plugins on
-     * CategoryRepositoryInterface::get()) is no longer triggered for categories loaded by the CategoryProvider.
+     * Since https://github.com/yireo/Yireo_GoogleTagManager2/pull/310, categories are loaded via a collection. The
+     * CategoryProvider still dispatches "catalog_category_load_after" for every loaded category, so observers keep
+     * working. Plugins on CategoryRepositoryInterface::get() are no longer triggered though.
      */
     public function testCatalogCategoryLoadAfterIsDispatchedForEveryLoadedCategory()
     {

@@ -95,7 +95,7 @@ class AddDataToCustomerSection
         try {
             $customerGroup = $this->groupRepository->getById($customerGroupId);
             $customerGroupId = $customerGroup->getId();
-            $customerGroupCode = strtoupper($customerGroup->getCode());
+            $customerGroupCode = strtoupper((string)$customerGroup->getCode());
         } catch (NoSuchEntityException $e) {
         }
 
