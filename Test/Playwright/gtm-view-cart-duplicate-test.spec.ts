@@ -110,6 +110,8 @@ test.describe('GTM duplicate view_cart', function () {
     /**
      * Guard rail: any fix for the duplicates above must keep the customer-section `view_cart` working
      * away from the cart page, because that is the only source of `view_cart` when the minicart expands.
+     * On Luma, opening the minicart (`.action.showcart`) fires `minicart_collapse` through the
+     * `mage/dropdown` mixin, which releases the pending `view_cart`.
      */
     test('still pushes view_cart when the minicart is opened away from the cart page', async function ({page, dataLayer}) {
         await configureGtm(page, minicartExpandConfig);
@@ -119,7 +121,16 @@ test.describe('GTM duplicate view_cart', function () {
         await settle(page);
         await dataLayer.event('view_cart').notToBePushed({wait: 0});
 
-        await page.locator('#menu-cart-icon').click();
+        // addProductToCart() adds the product server-side, so the browser does not know that the cart
+        // section is outdated. Reload it, like a regular add-to-cart in the browser would.
+        await page.evaluate(() => new Promise(resolve => {
+            (window as any).require(['Magento_Customer/js/customer-data'], (customerData: any) => {
+                customerData.reload(['cart'], true).always(() => resolve(null));
+            });
+        }));
+        await settle(page);
+
+        await page.locator('.action.showcart').click();
         await settle(page);
 
         await expectViewCartPushedOnce(dataLayer, 'view_cart pushes after expanding the minicart');
