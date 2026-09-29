@@ -9,7 +9,6 @@ jobs:
       options: --user root
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - /tmp/ci-magento:/tmp/magento
 
     env:
       GIT_DEPTH: 1
@@ -48,7 +47,6 @@ jobs:
     services:
       php:
         image: yireo/magento2installed:${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
-        options: -v /tmp/ci-magento:/shared/magento
         env:
           GIT_DEPTH: 1
           GIT_STRATEGY: fetch
@@ -240,10 +238,11 @@ jobs:
             bin/magento config:set loki/functional_tests/token loki
           '
 
-      - name: Copy Magento to shared volume
+      - name: Copy Magento into job container
         if: env.SKIP_JOB != 'true'
         run: |
-          docker exec -u root $PHP_CONTAINER bash -lc 'mkdir -p /shared/magento && cp -R /tmp/magento/. /shared/magento/'
+          mkdir -p /tmp/magento
+          docker cp "$PHP_CONTAINER:/tmp/magento/." /tmp/magento/
 
       - name: Verify Magento installation
         if: env.SKIP_JOB != 'true'
