@@ -236,7 +236,7 @@ jobs:
             bin/magento setup:upgrade
             bin/magento config:set dev/static/sign 0
             bin/magento setup:static-content:deploy -f --area frontend en_US
-            bin/magento loki:modules:dump
+            bin/magento loki:functional-tests:modules:dump
             bin/magento config:set loki/functional_tests/token loki
           '
 
@@ -273,9 +273,9 @@ jobs:
           npm install
           npx playwright install chromium
 
-          echo "Creating .env file..."
-          printf "TEST_URL=http://php:8888/\nTEST_TOKEN=loki\n" > .env
+          echo "Creating /tmp/magento/.env.playwright..."
+          printf "TEST_URL=%s\nTEST_TOKEN=loki\nMODULE_NAME=%s\n" "${MAGENTO_BASE_URL}" "${MAGENTO_MODULE}" > /tmp/magento/.env.playwright
 
           echo "Running Playwright tests for project ${MAGENTO_MODULE}"
-          CI=true TEST_TOKEN=loki MAGENTO_ROOT=/tmp/magento npx playwright test --project=${MAGENTO_MODULE}
+          CI=true TEST_URL="${MAGENTO_BASE_URL}" TEST_TOKEN=loki MAGENTO_ROOT=/tmp/magento npx playwright test --project=${MAGENTO_MODULE}
 

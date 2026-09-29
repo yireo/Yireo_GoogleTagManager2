@@ -3,3 +3,5 @@ phpunit-log/
 .idea/
 package-lock.json
 .playwright
+.playwright
+.opencode

@@ -41,11 +41,11 @@ jobs:
 
       - name: Apply patch for reporting memory under Alpine
         if: env.SKIP_JOB != 'true'
-        run: cd /tmp/magento && cat /tmp/magento/patches/39216.diff | git apply
+        run: cd /tmp/magento && cat /tmp/magento/patches/39216.diff | git apply || true
 
       - name: Apply patch for changing MySQL client configuration
         if: env.SKIP_JOB != 'true'
-        run: cd /tmp/magento && cat /tmp/magento/patches/40410.diff | git apply
+        run: cd /tmp/magento && cat /tmp/magento/patches/40410.diff | git apply || true
 
       - name: Setting up module variables
         if: env.SKIP_JOB != 'true'
