@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use `mousemove` instead of `mouseover` to detect user interaction, because `mouseover` already fires when content renders underneath a stationary cursor
 - Do not render the GTM script and iframe when no GTM ID is configured
 - Hyva: Strip internal `meta` data from events before pushing them to the dataLayer, like the Luma pusher already did
+- Do not break the customer section when the customer group of the session no longer exists
 
 ## [3.10.7] - 24 February 2026
 ### Fixed

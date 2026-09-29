@@ -89,12 +89,21 @@ class AddDataToCustomerSection
         $customerId = $this->customerSession->getCustomerId();
         $customer = $this->customerRepository->getById($customerId);
         $customerGtmData = $this->customerDataMapper->mapByCustomer($customer);
-        $customerGroup = $this->groupRepository->getById($this->customerSession->getCustomerGroupId());
+        $customerGroupId = $this->customerSession->getCustomerGroupId();
+        $customerGroupCode = '';
+
+        try {
+            $customerGroup = $this->groupRepository->getById($customerGroupId);
+            $customerGroupId = $customerGroup->getId();
+            $customerGroupCode = strtoupper($customerGroup->getCode());
+        } catch (NoSuchEntityException $e) {
+        }
+
         return array_merge([
             'customerLoggedIn' => 1,
             'customerId' => $customerId,
-            'customerGroupId' => $customerGroup->getId(),
-            'customerGroupCode' => strtoupper($customerGroup->getCode())
+            'customerGroupId' => $customerGroupId,
+            'customerGroupCode' => $customerGroupCode
         ], $customerGtmData);
     }
 }
