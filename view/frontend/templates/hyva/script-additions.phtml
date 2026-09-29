@@ -60,6 +60,13 @@ $commons = $block->getCommonsViewModel();
             for (const [eventId, eventData] of Object.entries(gtmEvents)) {
                 yireoGoogleTagManager2Logger('found event in section "' + sectionName + '"', eventData);
 
+                if (sectionName === 'cart'
+                    && eventData.event === 'view_cart'
+                    && window.location.pathname.includes('checkout/cart/')) {
+                    yireoGoogleTagManager2Logger('skipping customerData view_cart on cart page', eventData);
+                    continue;
+                }
+
                 const metaData = eventData.meta;
                 yireoGoogleTagManager2Pusher(eventData, 'push (customerData "' + sectionName + '"  event "' + eventId + '")');
 
