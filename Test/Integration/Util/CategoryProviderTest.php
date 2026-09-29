@@ -4,6 +4,8 @@ namespace Yireo\GoogleTagManager2\Test\Integration\Util;
 
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Event\Config\Data as EventConfigData;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -11,6 +13,7 @@ use Yireo\GoogleTagManager2\DataLayer\Mapper\CategoryDataMapper;
 use Yireo\GoogleTagManager2\Exception\NotUsingSetProductSkusException;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetCategory;
 use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\GetProduct;
+use Yireo\GoogleTagManager2\Test\Integration\Stub\CategoryLoadAfterSpy;
 use Yireo\GoogleTagManager2\Util\CategoryProvider;
 
 /**
@@ -183,6 +186,151 @@ class CategoryProviderTest extends TestCase
             'Attribute "meta_title" configured in "category_eav_attributes" is not loaded: ' . json_encode($categoryData)
         );
         $this->assertSame('GTM Parent Meta Title', $categoryData['category_meta_title']);
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/category_eav_attributes id,name,meta_title,url_key,include_in_menu
+     * @dataProvider getConfiguredCategoryEavAttributes
+     */
+    public function testConfiguredCategoryEavAttributesOfAllTypesAreAvailable(string $dataLayerKey, string $expectedValue)
+    {
+        $product = $this->getProductBySku('gtm-multi-category');
+        $parentId = (int)$this->getCategoryByName('GTM Parent')->getId();
+        $categories = $this->createCategoryProvider()->getAllByProduct($product);
+        $this->assertArrayHasKey($parentId, $categories);
+
+        $categoryData = ObjectManager::getInstance()->get(CategoryDataMapper::class)
+            ->mapByCategory($categories[$parentId]);
+
+        $this->assertArrayHasKey($dataLayerKey, $categoryData, json_encode($categoryData));
+        $this->assertSame($expectedValue, (string)$categoryData[$dataLayerKey], json_encode($categoryData));
+    }
+
+    public static function getConfiguredCategoryEavAttributes(): array
+    {
+        return [
+            'text attribute' => ['category_meta_title', 'GTM Parent Meta Title'],
+            'url_key attribute' => ['category_url_key', 'gtm-parent'],
+            'boolean select attribute' => ['category_include_in_menu', 'Yes'],
+        ];
+    }
+
+    /**
+     * @magentoDataFixture Yireo_GoogleTagManager2::Test/Integration/_files/gtm_category_tree.php
+     * @magentoDataFixture Yireo_GoogleTagManager2::Test/Integration/_files/gtm_category_tree_store_values.php
+     * @magentoConfigFixture fixture_second_store_store googletagmanager2/settings/category_eav_attributes id,name,meta_title
+     */
+    public function testStoreViewSpecificValuesOfConfiguredCategoryEavAttributesAreUsed()
+    {
+        $storeManager = ObjectManager::getInstance()->get(StoreManagerInterface::class);
+        $currentStoreId = (int)$storeManager->getStore()->getId();
+        $parentId = (int)$this->getCategoryByName('GTM Parent')->getId();
+        $storeManager->setCurrentStore('fixture_second_store');
+
+        try {
+            $product = $this->getProductBySku('gtm-multi-category');
+            $categories = $this->createCategoryProvider()->getAllByProduct($product);
+            $this->assertArrayHasKey($parentId, $categories);
+            $categoryData = ObjectManager::getInstance()->get(CategoryDataMapper::class)
+                ->mapByCategory($categories[$parentId]);
+        } finally {
+            $storeManager->setCurrentStore($currentStoreId);
+        }
+
+        $this->assertSame('GTM Parent (Second Store)', $categoryData['category_name'] ?? null, json_encode($categoryData));
+        $this->assertSame(
+            'GTM Parent Meta Title (Second Store)',
+            $categoryData['category_meta_title'] ?? null,
+            json_encode($categoryData)
+        );
+    }
+
+    /**
+     * Proof for https://github.com/yireo/Yireo_GoogleTagManager2/pull/310: loading categories must not trigger a
+     * full load of every single category, so the number of queries should not grow with the number of categories.
+     */
+    public function testNumberOfQueriesDoesNotGrowWithNumberOfCategories()
+    {
+        $this->countQueriesForLoadingCategories(['GTM Inactive']);
+        $queriesForOneCategory = $this->countQueriesForLoadingCategories(['GTM Parent']);
+        $queriesForSixCategories = $this->countQueriesForLoadingCategories([
+            'GTM Child',
+            'GTM Grandchild',
+            'GTM Extra 1',
+            'GTM Extra 2',
+            'GTM Extra 3',
+            'GTM Store Disabled',
+        ]);
+
+        $this->assertSame(
+            $queriesForOneCategory,
+            $queriesForSixCategories,
+            sprintf(
+                'Loading 1 category took %d queries, loading 6 categories took %d queries',
+                $queriesForOneCategory,
+                $queriesForSixCategories
+            )
+        );
+    }
+
+    /**
+     * Documents a behaviour change of https://github.com/yireo/Yireo_GoogleTagManager2/pull/310: third party code
+     * that hooks into the loading of a single category (event "catalog_category_load_after", plugins on
+     * CategoryRepositoryInterface::get()) is no longer triggered for categories loaded by the CategoryProvider.
+     */
+    public function testCatalogCategoryLoadAfterIsDispatchedForEveryLoadedCategory()
+    {
+        $objectManager = ObjectManager::getInstance();
+        $eventConfig = $objectManager->get(EventConfigData::class);
+        $eventConfig->get('catalog_category_load_after');
+        $eventConfig->merge([
+            'catalog_category_load_after' => [
+                'gtm_test_category_load_after_spy' => [
+                    'instance' => CategoryLoadAfterSpy::class,
+                    'name' => 'gtm_test_category_load_after_spy',
+                ],
+            ],
+        ]);
+
+        $categoryIds = $this->getCategoryIdsByNames(['GTM Parent', 'GTM Child', 'GTM Extra 1']);
+        $categoryProvider = $this->createCategoryProvider();
+        $categoryProvider->addCategoryIds($categoryIds);
+        $this->assertCount(3, $categoryProvider->getLoadedCategories());
+
+        $spy = $objectManager->get(CategoryLoadAfterSpy::class);
+        $this->assertEqualsCanonicalizing($categoryIds, array_values(array_unique($spy->getCategoryIds())));
+    }
+
+    /**
+     * @param string[] $categoryNames
+     * @return int
+     */
+    private function countQueriesForLoadingCategories(array $categoryNames): int
+    {
+        $categoryIds = $this->getCategoryIdsByNames($categoryNames);
+        $categoryProvider = $this->createCategoryProvider();
+        $categoryProvider->addCategoryIds($categoryIds);
+
+        $profiler = ObjectManager::getInstance()->get(ResourceConnection::class)->getConnection()->getProfiler();
+        $profiler->setEnabled(true);
+        $profiler->clear();
+
+        try {
+            $categoryProvider->getLoadedCategories();
+            return (int)$profiler->getTotalNumQueries();
+        } finally {
+            $profiler->clear();
+            $profiler->setEnabled(false);
+        }
+    }
+
+    /**
+     * @param string[] $categoryNames
+     * @return int[]
+     */
+    private function getCategoryIdsByNames(array $categoryNames): array
+    {
+        return array_map(fn(string $name) => (int)$this->getCategoryByName($name)->getId(), $categoryNames);
     }
 
     private function createCategoryProvider(): CategoryProvider

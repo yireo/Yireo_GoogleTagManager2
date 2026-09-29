@@ -21,6 +21,8 @@ $parent = $getCategoryByName->execute('GTM Parent');
 $parent->setStoreId($secondStoreId);
 $parent->setName('GTM Parent (Second Store)');
 $categoryResource->saveAttribute($parent, 'name');
+$parent->setMetaTitle('GTM Parent Meta Title (Second Store)');
+$categoryResource->saveAttribute($parent, 'meta_title');
 
 /** @var Category $storeDisabled */
 $storeDisabled = $getCategoryByName->execute('GTM Store Disabled');
