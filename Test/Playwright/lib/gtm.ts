@@ -3,6 +3,8 @@ import {DataLayer} from './data-layer';
 
 export const GTM_ID = 'GTM-PLAYWRIGHT';
 
+export const HYVA_THEME = 'Hyva/default-csp';
+
 export const defaultConfig = {
     'googletagmanager2/settings/enabled': 1,
     'googletagmanager2/settings/id': GTM_ID,
@@ -60,6 +62,36 @@ export async function configureGtm(page: Page, payload: ConfigurePayload = {}) {
     if (data.error) {
         throw new Error('Configure error: ' + data.error);
     }
+
+    const themeErrors = data.result?.theme?.errors ?? [];
+    if (themeErrors.length > 0) {
+        throw new Error('Configure theme error: ' + themeErrors.join(', '));
+    }
+}
+
+/**
+ * Configure the store via the Loki_FunctionalTests endpoint, with Hyva as frontend theme
+ *
+ * The endpoint falls back to Magento/luma whenever `theme` is missing, so every configure call in a
+ * Hyva test must go through this function: A plain configureGtm() call silently switches back to Luma.
+ */
+export async function configureHyvaGtm(page: Page, payload: ConfigurePayload = {}) {
+    await configureGtm(page, {...payload, theme: HYVA_THEME});
+}
+
+/**
+ * Reload customer sections in the browser (Luma only)
+ *
+ * Luma only fetches customer sections when a cookie or the localStorage invalidation tells it to. Changes
+ * made server-side (by the configure or addtocart endpoint) do not do that, so the browser needs a nudge,
+ * like a regular action in the browser (login, add to cart) would give it.
+ */
+export async function reloadCustomerSections(page: Page, sections: string[]) {
+    await page.evaluate(sectionNames => new Promise(resolve => {
+        (window as any).require(['Magento_Customer/js/customer-data'], (customerData: any) => {
+            customerData.reload(sectionNames, true).always(() => resolve(null));
+        });
+    }), sections);
 }
 
 /**

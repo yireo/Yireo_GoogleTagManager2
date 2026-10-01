@@ -1,5 +1,10 @@
-import {test, expect, configureGtm, addProductToCart} from './lib/gtm-objects';
+import {test, expect, configureHyvaGtm, addProductToCart} from './lib/gtm-objects';
 import {Page} from '@playwright/test';
+
+/**
+ * Hyva variant of gtm-category-data-test.spec.ts: Every configure call goes through configureHyvaGtm(), because the
+ * configure endpoint falls back to Magento/luma when no theme is given.
+ */
 
 /**
  * Category data of products in the dataLayer (item_list_id, item_list_name, item_category...item_category5)
@@ -65,9 +70,9 @@ async function skipWithoutSampleData(page: Page) {
     test.skip(response.status() !== 200, `Luma sample data product "${product.url}" is not available`);
 }
 
-test.describe('GTM category data of products', function () {
+test.describe('GTM category data of products (Hyva)', function () {
     test.beforeEach(async function ({page}) {
-        await configureGtm(page, {config: firstCategoryConfig});
+        await configureHyvaGtm(page, {config: firstCategoryConfig});
         await skipWithoutSampleData(page);
     });
 
@@ -92,7 +97,7 @@ test.describe('GTM category data of products', function () {
     });
 
     test('uses the current category as list on a category page when configured', async function ({page, dataLayer}) {
-        await configureGtm(page, {
+        await configureHyvaGtm(page, {
             config: {'googletagmanager2/settings/product_list_value_on_category': 'current_category'},
         });
 
