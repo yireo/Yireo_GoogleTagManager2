@@ -138,11 +138,68 @@ class OrderTotalsTest extends TestCase
         $this->assertEquals(-3.0, (float)$order->getDiscountAmount(), 'discount_amount includes the shipping discount');
         $this->assertEquals(27.0, (float)$order->getGrandTotal());
 
+        $orderTotals = $this->getOrderTotals();
+        $this->assertSame(18.0, $orderTotals->getValueTotal($order), 'Value should only include the discount on items');
+        $this->assertSame(9.0, $orderTotals->getShippingTotal($order));
         $this->assertSame(
             27.0,
-            $this->getOrderTotals()->getValueTotalAjusted($order),
+            $orderTotals->getValueTotalAjusted($order),
             'Adjusted value including shipping should equal what the customer paid (excl. tax)'
         );
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/use_base_currency 0
+     */
+    public function testValueAndShippingTotalWithShippingDiscount(): void
+    {
+        $orderTotals = $this->getOrderTotals();
+        $order = $this->createOrderWithShippingDiscount();
+
+        $this->assertSame(90.0, $orderTotals->getValueTotal($order));
+        $this->assertSame(18.0, $orderTotals->getShippingTotal($order));
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/use_base_currency 1
+     */
+    public function testValueAndShippingTotalWithShippingDiscountInBaseCurrency(): void
+    {
+        $orderTotals = $this->getOrderTotals();
+        $order = $this->createOrderWithShippingDiscount();
+
+        $this->assertSame(45.0, $orderTotals->getValueTotal($order));
+        $this->assertSame(9.0, $orderTotals->getShippingTotal($order));
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/use_base_currency 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/max_transaction_value 0
+     * @magentoConfigFixture current_store googletagmanager2/settings/include_shipping_in_adjusted_value 1
+     */
+    public function testValueTotalAdjustedWithShippingDiscount(): void
+    {
+        $this->assertSame(
+            108.0,
+            $this->getOrderTotals()->getValueTotalAjusted($this->createOrderWithShippingDiscount())
+        );
+    }
+
+    /**
+     * Like createOrder(), but with a discount of 2 (base: 1) on shipping, which
+     * Magento also includes in discount_amount
+     */
+    private function createOrderWithShippingDiscount(): OrderInterface
+    {
+        $order = $this->createOrder();
+        $order->addData([
+            'discount_amount' => -12,
+            'shipping_discount_amount' => 2,
+            'base_discount_amount' => -6,
+            'base_shipping_discount_amount' => 1,
+        ]);
+
+        return $order;
     }
 
     private function placeOrder(): OrderInterface
