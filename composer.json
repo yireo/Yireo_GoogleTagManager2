@@ -43,7 +43,7 @@
     },
     "require-dev": {
         "loki/magento2-functional-tests": "@dev",
-        "yireo/magento2-integration-test-helper": "~0.0|^1.0"
+        "yireo/magento2-integration-test-helper": "~0.0"
     },
     "suggest": {
         "yireo/magento2-googletagmanager2-loki-checkout": "Use this if you are using the Loki Checkout",
