@@ -17,6 +17,7 @@
         "Yireo_CspUtilities"
     ],
     "modules": [
+        "Magento_AdminNotification",
         "Magento_Backend",
         "Magento_Catalog",
         "Magento_CatalogInventory",
@@ -43,6 +44,7 @@
         "Magento_Tax",
         "Magento_Theme",
         "Magento_User",
+        "Magento_Variable",
         "Yireo_CspUtilities"
     ],
     "components": [],
@@ -136,9 +138,29 @@
             "path": "googletagmanager2/settings/max_transaction_value",
             "label": "Settings > Maximum Transaction Value",
             "description": ""
+        },
+        {
+            "path": "googletagmanager2/settings/include_shipping_in_adjusted_value",
+            "label": "Settings > Include Shipping in Adjusted Total",
+            "description": ""
         }
     ],
-    "tests": [],
+    "tests": {
+        "unit": 8,
+        "integration": 85,
+        "functional": 36
+    },
     "module_name": "Yireo_GoogleTagManager2",
-    "composer_name": "yireo/magento2-googletagmanager2"
+    "composer_name": "yireo/magento2-googletagmanager2",
+    "php_versions": [
+        "7.4",
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4"
+    ],
+    "skip_magento_versions": [],
+    "skip_css_utils": false,
+    "phpcs_severity": 10,
+    "phpstan_level": 1
 }
