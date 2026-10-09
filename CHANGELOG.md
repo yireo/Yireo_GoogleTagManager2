@@ -5,11 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.10.8] - 09 October 2026
 ### Fixed
-- Use `mousemove` instead of `mouseover` to detect user interaction, because `mouseover` already fires when content renders underneath a stationary cursor
-- Do not render the GTM script and iframe when no GTM ID is configured
+- Discount amount already includes shipping discount
+- Prevent non-existing customer group dying (also mentioned in #312)
 - Hyva: Strip internal `meta` data from events before pushing them to the dataLayer, like the Luma pusher already did
-- Do not break the customer section when the customer group of the session no longer exists
+- Use `mousemove` instead of `mouseover` to detect user interaction, because `mouseover` already fires when content renders underneath a stationary cursor
+- Do not load gtm.js if disabled or now GTM IDs are present
+- Fix duplicate `view_cart` on Hyva cart page
+- Remove background of sponsoring box for Nebula compat
+- Switch from categoryListRepository to categoryCollection to load category data, causes a slight performance improvement
 - Do not break the customer section when the customer group has no code
 - Load the configured category EAV attributes (`category_eav_attributes`) again in the `CategoryProvider`
 - Dispatch `catalog_category_load_after` for every category loaded by the `CategoryProvider`

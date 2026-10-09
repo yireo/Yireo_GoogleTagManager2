@@ -210,7 +210,7 @@ jobs:
             set -e
             cd /tmp/magento
             composer config repositories.local-source path /tmp/magento/package-source
-            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki/magento2-functional-tests:@dev yireo/magento2-enable-module-sequence:@dev
+            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki/magento2-functional-tests:dev-main yireo/magento2-enable-module-sequence:@dev
           '
 
       - name: Setup Magento
@@ -230,12 +230,12 @@ jobs:
             GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
             bin/magento module:enable Yireo_EnableModuleSequence
             bin/magento module:sequence Loki_FunctionalTests ${MAGENTO_MODULE}
-            bin/magento cache:flush
             bin/magento setup:upgrade
             bin/magento config:set dev/static/sign 0
             bin/magento setup:static-content:deploy -f --area frontend en_US
             bin/magento loki:functional-tests:modules:dump
             bin/magento config:set loki/functional_tests/token loki
+            bin/magento cache:flush config
           '
 
       - name: Copy Magento into job container
