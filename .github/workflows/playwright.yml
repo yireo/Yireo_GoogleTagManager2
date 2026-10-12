@@ -1,5 +1,5 @@
 name: Playwright test
-on: ['push', 'pull_request']
+on: [push, pull_request]
 
 jobs:
   playwright:
@@ -43,10 +43,14 @@ jobs:
       DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || false }}
       DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || false }}
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+      ADDITIONAL_SETTINGS: ${{ secrets.ADDITIONAL_SETTINGS || '{}' }}
 
     services:
       php:
         image: yireo/magento2installed:${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
         env:
           GIT_DEPTH: 1
           GIT_STRATEGY: fetch
@@ -83,6 +87,9 @@ jobs:
 
       mysql:
         image: yireo/mariadb:10
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
         env:
           MYSQL_DATABASE: magento2
           MYSQL_USER: magento2
@@ -91,9 +98,15 @@ jobs:
 
       redis:
         image: redis:latest
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       opensearch:
         image: yireo/opensearch
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
         env:
           OPENSEARCH_JAVA_OPTS: "-Xms256m -Xmx256m"
           OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
@@ -116,7 +129,7 @@ jobs:
           fetch-depth: 1
 
       - name: Detecting Playwright tests
-        run: test -d $GITHUB_WORKSPACE/Test/Playwright || echo "SKIP_JOB=true" >> $GITHUB_ENV || true
+        run: find $GITHUB_WORKSPACE/Test/Playwright -name '*spec.ts' -not -path '*/node_modules/*' 2>/dev/null | grep -q . || echo "SKIP_JOB=true" >> $GITHUB_ENV
 
       - name: Configure Git safe directory
         if: env.SKIP_JOB != 'true'
@@ -213,7 +226,14 @@ jobs:
             set -e
             cd /tmp/magento
             composer config repositories.local-source path /tmp/magento/package-source
-            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki/magento2-functional-tests:dev-main yireo/magento2-enable-module-sequence:@dev \
+            EXTRA_PACKAGES=""
+            case "${COMPOSER_NAME}" in
+              loki-checkout/*) EXTRA_PACKAGES="loki-checkout/magento2-functional-tests:@dev" ;;
+            esac
+            composer require -n --prefer-source -- \
+              "${COMPOSER_NAME}:@dev" ${EXTRA_PACKAGES} \
+              loki/magento2-functional-tests:dev-main \
+              yireo/magento2-enable-module-sequence:@dev \
               hyva-themes/magento2-default-theme-csp \
               hyva-themes/magento2-theme-module \
               hyva-themes/magento2-base-layout-reset \
@@ -241,7 +261,11 @@ jobs:
             GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
             bin/magento module:enable Yireo_EnableModuleSequence
             bin/magento module:enable Hyva_Theme Hyva_BaseLayoutReset Hyva_Email Hyva_GraphqlTokens Hyva_GraphqlViewModel Hyva_OrderCancellationWebapi Hyva_CompatModuleFallback
-            bin/magento module:sequence Loki_FunctionalTests ${MAGENTO_MODULE}
+            EXTRA_MODULES=""
+            case "${COMPOSER_NAME}" in
+              loki-checkout/*) EXTRA_MODULES="LokiCheckout_FunctionalTests" ;;
+            esac
+            bin/magento module:sequence Loki_FunctionalTests ${EXTRA_MODULES} ${MAGENTO_MODULE}
             bin/magento setup:upgrade
             bin/magento config:set dev/static/sign 0
             bin/magento setup:static-content:deploy -f --area frontend en_US

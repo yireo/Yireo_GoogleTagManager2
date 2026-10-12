@@ -6,8 +6,11 @@ jobs:
     name: Magento PHPCS
     runs-on: ubuntu-latest
     container:
-        image: yireo/magento2installed:2.4.8-p3
-        options: --user root
+      image: yireo/magento2installed:2.4.8-p3
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      options: --user root
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -29,8 +32,11 @@ jobs:
     name: Magento PHPStan
     runs-on: ubuntu-latest
     container:
-        image: yireo/magento2installed:2.4.8-p3
-        options: --user root
+      image: yireo/magento2installed:2.4.8-p3
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      options: --user root
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
