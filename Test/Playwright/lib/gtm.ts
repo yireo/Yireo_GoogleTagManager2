@@ -76,7 +76,13 @@ export async function configureGtm(page: Page, payload: ConfigurePayload = {}) {
  * Hyva test must go through this function: A plain configureGtm() call silently switches back to Luma.
  */
 export async function configureHyvaGtm(page: Page, payload: ConfigurePayload = {}) {
-    await configureGtm(page, {...payload, theme: HYVA_THEME});
+    try {
+        await configureGtm(page, {...payload, theme: HYVA_THEME});
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        baseTest.skip(message.includes(`Theme "${HYVA_THEME}" not found`), `Hyvä theme "${HYVA_THEME}" is not installed`);
+        throw error;
+    }
 }
 
 /**

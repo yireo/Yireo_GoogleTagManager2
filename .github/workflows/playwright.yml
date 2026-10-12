@@ -194,6 +194,9 @@ jobs:
             $PHP_CONTAINER bash -lc '
             cd /tmp/magento
             composer config --global --auth github-oauth.github.com "${{ secrets.COMPOSER_GITHUB_TOKEN }}"
+            for HYVA_PACKAGE in magento2-default-theme-csp magento2-theme-module magento2-base-layout-reset magento2-email-module magento2-graphql-tokens magento2-graphql-view-model magento2-order-cancellation-webapi magento2-mollie-theme-bundle magento2-compat-module-fallback; do
+              composer config repositories.hyva-${HYVA_PACKAGE} vcs https://github.com/hyva-themes/${HYVA_PACKAGE}.git
+            done
             test -f /tmp/magento/package-source/.github/workflows/composer-additional.sh && source /tmp/magento/package-source/.github/workflows/composer-additional.sh || true
             test -f /tmp/magento/package-source/.github/workflows/composer-${MAGENTO_VERSION}.sh && source /tmp/magento/package-source/.github/workflows/composer-${MAGENTO_VERSION}.sh || true
           '
@@ -210,7 +213,15 @@ jobs:
             set -e
             cd /tmp/magento
             composer config repositories.local-source path /tmp/magento/package-source
-            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki/magento2-functional-tests:dev-main yireo/magento2-enable-module-sequence:@dev
+            composer require -n --prefer-source -- "${COMPOSER_NAME}:@dev" loki/magento2-functional-tests:dev-main yireo/magento2-enable-module-sequence:@dev \
+              hyva-themes/magento2-default-theme-csp \
+              hyva-themes/magento2-theme-module \
+              hyva-themes/magento2-base-layout-reset \
+              hyva-themes/magento2-email-module \
+              hyva-themes/magento2-graphql-tokens \
+              hyva-themes/magento2-graphql-view-model \
+              hyva-themes/magento2-order-cancellation-webapi \
+              hyva-themes/magento2-compat-module-fallback
           '
 
       - name: Setup Magento
@@ -229,6 +240,7 @@ jobs:
             cd /tmp/magento
             GITHUB_WORKSPACE=/tmp/magento/package-source /tmp/magento/package-source/.github/workflows/magento-install.sh
             bin/magento module:enable Yireo_EnableModuleSequence
+            bin/magento module:enable Hyva_Theme Hyva_BaseLayoutReset Hyva_Email Hyva_GraphqlTokens Hyva_GraphqlViewModel Hyva_OrderCancellationWebapi Hyva_CompatModuleFallback
             bin/magento module:sequence Loki_FunctionalTests ${MAGENTO_MODULE}
             bin/magento setup:upgrade
             bin/magento config:set dev/static/sign 0
