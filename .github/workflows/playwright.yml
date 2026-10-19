@@ -4,8 +4,9 @@ on: [push, pull_request]
 jobs:
   playwright:
     runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(vars.PLAYWRIGHT_JOB_TIMEOUT || '45') }}
     container:
-      image: mcr.microsoft.com/playwright:v1.62.0-noble
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
       options: --user root
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
@@ -42,15 +43,14 @@ jobs:
       DISABLE_INVENTORY: ${{ vars.DISABLE_INVENTORY || false }}
       DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || false }}
       DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || false }}
-      GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-      ADDITIONAL_SETTINGS: ${{ secrets.ADDITIONAL_SETTINGS || '{}' }}
+      GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN || '' }}
 
     services:
       php:
         image: yireo/magento2installed:${{ vars.MAGENTO_VERSION || '2.4.8-p3' }}
         credentials:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || '' }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || '' }}
         env:
           GIT_DEPTH: 1
           GIT_STRATEGY: fetch
@@ -83,13 +83,13 @@ jobs:
           DISABLE_INVENTORY: ${{ vars.DISABLE_INVENTORY || false }}
           DISABLE_GRAPHQL: ${{ vars.DISABLE_GRAPHQL || false }}
           DISABLE_ADOBE: ${{ vars.DISABLE_ADOBE || false }}
-          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN || '' }}
 
       mysql:
         image: yireo/mariadb:10
         credentials:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || '' }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || '' }}
         env:
           MYSQL_DATABASE: magento2
           MYSQL_USER: magento2
@@ -99,14 +99,14 @@ jobs:
       redis:
         image: redis:latest
         credentials:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || '' }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || '' }}
 
       opensearch:
         image: yireo/opensearch
         credentials:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || '' }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || '' }}
         env:
           OPENSEARCH_JAVA_OPTS: "-Xms256m -Xmx256m"
           OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
@@ -300,9 +300,30 @@ jobs:
           done
           echo "ERROR: Magento front-end not reachable"; exit 1
 
+      - name: Load integration details
+        if: env.SKIP_JOB != 'true'
+        env:
+          INTEGRATION_DETAILS: ${{ secrets.INTEGRATION_DETAILS || '' }}
+        shell: bash
+        run: |
+          [ -n "$INTEGRATION_DETAILS" ] || exit 0
+          while IFS= read -r line || [ -n "$line" ]; do
+            line="${line%$'\r'}"
+            case "$line" in ''|'#'*) continue ;; *=*) ;; *) echo "Skipping invalid line"; continue ;; esac
+            key="${line%%=*}"
+            value="${line#*=}"
+            echo "$key" | grep -qE '^[A-Za-z_][A-Za-z0-9_]*$' || { echo "Skipping invalid line"; continue; }
+            [ -n "$value" ] && echo "::add-mask::$value"
+            echo "$key=$value" >> "$GITHUB_ENV"
+          done <<< "$INTEGRATION_DETAILS"
+
       - name: Run Playwright tests
         if: env.SKIP_JOB != 'true'
         working-directory: /tmp/magento/vendor/loki/magento2-functional-tests/Test/Playwright/
+        env:
+          TEST_TIMEOUT: ${{ vars.TEST_TIMEOUT || '60000' }}
+          PLAYWRIGHT_RETRIES: ${{ vars.PLAYWRIGHT_RETRIES || '1' }}
+          PLAYWRIGHT_MAX_FAILURES: ${{ vars.PLAYWRIGHT_MAX_FAILURES || '5' }}
         run: |
           echo "Installing npm dependencies..."
           npm install
@@ -312,5 +333,5 @@ jobs:
           printf "TEST_URL=%s\nTEST_TOKEN=loki\nMODULE_NAME=%s\n" "${MAGENTO_BASE_URL}" "${MAGENTO_MODULE}" > /tmp/magento/.env.playwright
 
           echo "Running Playwright tests for project ${MAGENTO_MODULE}"
-          CI=true TEST_URL="${MAGENTO_BASE_URL}" TEST_TOKEN=loki MAGENTO_ROOT=/tmp/magento npx playwright test --project=${MAGENTO_MODULE}
+          CI=true TEST_URL="${MAGENTO_BASE_URL}" TEST_TOKEN=loki MAGENTO_ROOT=/tmp/magento TEST_TIMEOUT="${TEST_TIMEOUT}" npx playwright test --project=${MAGENTO_MODULE} --retries="${PLAYWRIGHT_RETRIES}" --max-failures="${PLAYWRIGHT_MAX_FAILURES}"
 

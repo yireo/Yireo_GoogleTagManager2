@@ -8,8 +8,8 @@ jobs:
     container:
       image: yireo/magento2installed:2.4.8-p3
       credentials:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME || '' }}
+        password: ${{ secrets.DOCKERHUB_TOKEN || '' }}
       options: --user root
     steps:
       - name: Checkout sources
