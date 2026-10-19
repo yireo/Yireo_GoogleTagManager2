@@ -22,8 +22,12 @@ class TriggerViewSearchResultDataLayerEvent
     public function afterExecute(Index $subject, $return)
     {
         $searchTerm = $subject->getRequest()->getParam('q');
-        $this->viewSearchResultEvent->setSearchTerm($searchTerm);
-        $this->customerSessionDataProvider->add('view_search_result', $this->viewSearchResultEvent->get());
+
+        if (is_string($searchTerm) || $searchTerm === null) {
+            $this->viewSearchResultEvent->setSearchTerm($searchTerm);
+            $this->customerSessionDataProvider->add('view_search_result', $this->viewSearchResultEvent->get());
+        }
+
         return $return;
     }
 }
