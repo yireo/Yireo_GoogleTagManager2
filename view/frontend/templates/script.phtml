@@ -28,7 +28,12 @@ $events = ($config->waitForUserInteraction() === false)
 <script>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
     (function (events) {
-        const initYireoGoogleTagManager2 = function () {
+        const initYireoGoogleTagManager2 = function (event) {
+            // Browsers fire a mousemove without any movement when content renders underneath a stationary cursor
+            if (event && event.type === 'mousemove' && event.movementX === 0 && event.movementY === 0) {
+                return;
+            }
+
             events.forEach(function (eventType) {
                 window.removeEventListener(eventType, initYireoGoogleTagManager2);
             });
@@ -48,7 +53,7 @@ $events = ($config->waitForUserInteraction() === false)
         };
 
         events.forEach(function (eventType) {
-            window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
+            window.addEventListener(eventType, initYireoGoogleTagManager2, {passive: true})
         });
     })([<?= /* @noEscape */ $events ?>]);
 
