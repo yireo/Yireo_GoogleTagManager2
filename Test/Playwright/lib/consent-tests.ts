@@ -83,10 +83,11 @@ export function defineConsentTests(options: {
             const command = await consent.waitForCommand('default', 'first');
 
             const entries = await dataLayer.getEntries();
-            const gtmIndex = entries.findIndex(entry => entry.event === 'gtm.js');
-            const pageDataIndex = entries.findIndex(entry => entry.page_type !== undefined);
-            expect(command.index, 'consent default before gtm.js').toBeLessThan(gtmIndex);
-            expect(command.index, 'consent default before page data').toBeLessThan(pageDataIndex);
+            const summary = JSON.stringify(entries.map(entry => Object.keys(entry ?? {}).join(',')));
+            const gtmIndex = entries.findIndex(entry => entry?.event === 'gtm.js');
+            const pageDataIndex = entries.findIndex(entry => entry?.page_type !== undefined);
+            expect(command.index, 'consent default before gtm.js: ' + summary).toBeLessThan(gtmIndex);
+            expect(command.index, 'consent default before page data: ' + summary).toBeLessThan(pageDataIndex);
         });
 
         test('pushes cookieConsentInitial on page load', async function ({page, dataLayer}) {
