@@ -87,7 +87,15 @@ class CategoryPageTest extends PageTestCase
         foreach ($event['ecommerce']['items'] as $productData) {
             $this->assertNotEmpty($productData['item_id']);
             $this->assertNotEmpty($productData['item_sku']);
-            $this->assertNotEmpty($productData['item_list_name']);
+            $this->assertSame('Category 999', $productData['item_list_name'], json_encode($productData));
+            $this->assertSame('Category 999', $productData['item_category'], json_encode($productData));
+        }
+
+        foreach ($products as $product) {
+            $this->assertMatchesRegularExpression(
+                '/YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_' . $product->getId() . '\'\] = \{[^\n]*"item_category":"Category 999"/',
+                $productListBlock->getProductDetailsHtml($product)
+            );
         }
     }
 

@@ -82,6 +82,60 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers Config::getIds
+     */
+    public function testGetIds()
+    {
+        $this->setScopeConfigValue('id', 'GTM-1234');
+        $this->assertEquals(['GTM-1234'], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', 'GTM-1234, GTM-5678');
+        $this->assertEquals(['GTM-1234', 'GTM-5678'], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', '');
+        $this->assertEquals([], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', null);
+        $this->assertEquals([], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', 'GTM-1234,,');
+        $this->assertEquals(['GTM-1234'], $this->getTarget()->getIds());
+    }
+
+    /**
+     * @test
+     * @covers Config::getMaxTransactionValue
+     */
+    public function testGetMaxTransactionValue()
+    {
+        $this->setScopeConfigValue('max_transaction_value', null);
+        $this->assertSame(0.0, $this->getTarget()->getMaxTransactionValue());
+
+        $this->setScopeConfigValue('max_transaction_value', '0');
+        $this->assertSame(0.0, $this->getTarget()->getMaxTransactionValue());
+
+        $this->setScopeConfigValue('max_transaction_value', '1500.50');
+        $this->assertSame(1500.5, $this->getTarget()->getMaxTransactionValue());
+    }
+
+    /**
+     * @test
+     * @covers Config::includeShippingInAdjustedValue
+     */
+    public function testIncludeShippingInAdjustedValue()
+    {
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', null);
+        $this->assertFalse($this->getTarget()->includeShippingInAdjustedValue());
+
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', '0');
+        $this->assertFalse($this->getTarget()->includeShippingInAdjustedValue());
+
+        $this->setScopeConfigValue('include_shipping_in_adjusted_value', '1');
+        $this->assertTrue($this->getTarget()->includeShippingInAdjustedValue());
+    }
+
+    /**
      * @return Config
      */
     private function getTarget(): Config

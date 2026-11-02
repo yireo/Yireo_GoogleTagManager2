@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-/** @version 3.10.7 */
+/** @version 3.10.8 */
 
 /**
  * GoogleTagManager2 plugin for Magento
@@ -65,12 +65,12 @@
         yireoGoogleTagManager2Logger(message, eventData);
         window.dataLayer = window.dataLayer || [];
 
-        if (eventData.ecommerce) {
+        if (copyEventData.ecommerce) {
             window.dataLayer.push({ecommerce: null});
         }
 
         try {
-            window.dataLayer.push(eventData);
+            window.dataLayer.push(copyEventData);
             window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS.push(eventHash);
         } catch(error) {
             doCallback(callback);

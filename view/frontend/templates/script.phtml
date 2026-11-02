@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-/** @version 3.10.7 */
+/** @version 3.10.8 */
 
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\Config\Config;
@@ -8,18 +8,32 @@ use Yireo\GoogleTagManager2\Config\Config;
 /** @var Config $config */
 /** @var Template $block */
 $config = $block->getConfig();
-$gtmIds = explode(',', $config->getId());
+
+if (false === $config->isEnabled()) {
+    return;
+}
+
+$gtmIds = $config->getIds();
+
+if (empty($gtmIds)) {
+    return;
+}
 ?>
 
 <?php
 $events = ($config->waitForUserInteraction() === false)
-    ? "'load', 'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'"
-    : "'keydown', 'mouseover', 'scroll', 'touchstart', 'wheel'";
+    ? "'load', 'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'"
+    : "'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'";
 ?>
 <script>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
     (function (events) {
-        const initYireoGoogleTagManager2 = function () {
+        const initYireoGoogleTagManager2 = function (event) {
+            // Browsers fire a mousemove without any movement when content renders underneath a stationary cursor
+            if (event && event.type === 'mousemove' && event.movementX === 0 && event.movementY === 0) {
+                return;
+            }
+
             events.forEach(function (eventType) {
                 window.removeEventListener(eventType, initYireoGoogleTagManager2);
             });
@@ -39,7 +53,7 @@ $events = ($config->waitForUserInteraction() === false)
         };
 
         events.forEach(function (eventType) {
-            window.addEventListener(eventType, initYireoGoogleTagManager2, {once: true, passive: true})
+            window.addEventListener(eventType, initYireoGoogleTagManager2, {passive: true})
         });
     })([<?= /* @noEscape */ $events ?>]);
 

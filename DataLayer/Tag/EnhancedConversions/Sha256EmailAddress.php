@@ -27,7 +27,7 @@ class Sha256EmailAddress implements TagInterface
     public function get(): string
     {
         $order = $this->getOrder();
-        return hash('sha256', trim(strtolower($order->getCustomerEmail())));
+        return hash('sha256', trim(strtolower($order->getCustomerEmail()), " \f\n\r\t\v\x00"));
     }
 
     /**

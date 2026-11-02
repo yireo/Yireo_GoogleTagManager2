@@ -112,7 +112,7 @@ class EnhancedConversions implements MergeTagInterface
     
     private function sha256(string $value): string
     {
-        return hash('sha256', trim(strtolower($value)));
+        return hash('sha256', trim(strtolower($value), " \f\n\r\t\v\x00"));
     }
 
     /**

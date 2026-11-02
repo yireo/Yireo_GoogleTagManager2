@@ -97,6 +97,18 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Return the GTM IDs as a list, skipping empty values
+     *
+     * @return string[]
+     */
+    public function getIds(): array
+    {
+        $ids = array_map('trim', explode(',', $this->getId()));
+
+        return array_values(array_filter($ids));
+    }
+
+    /**
      * @return int
      */
     public function getMaximumCategoryProducts(): int
@@ -247,6 +259,16 @@ class Config implements ArgumentInterface
     public function getMaxTransactionValue(): float
     {
         return (float)$this->getModuleConfigValue('max_transaction_value', 0);
+    }
+
+    /**
+     * Check whether to include shipping in adjusted total
+     *
+     * @return bool
+     */
+    public function includeShippingInAdjustedValue(): bool
+    {
+        return (bool)$this->getModuleConfigValue('include_shipping_in_adjusted_value', false);
     }
 
     /**

@@ -1,6 +1,6 @@
 {
     "name": "yireo/magento2-googletagmanager2",
-    "version": "3.10.7",
+    "version": "3.10.8",
     "license": "OSL-3.0",
     "type": "magento2-module",
     "homepage": "https://www.yireo.com/software/magento-extensions/googletagmanager2",
@@ -9,6 +9,9 @@
         "composer-installer",
         "magento"
     ],
+    "extra": {
+        "label": "Yireo GoogleTagManager"
+    },
     "authors": [
         {
             "name": "Jisse Reitsma (Yireo)",
@@ -34,12 +37,13 @@
         "magento/module-sales": "^100.0 || ^101.0 || ^102.0 || ^103.0",
         "magento/module-store": "^100.0 || ^101.0",
         "magento/module-tax": "^100.0",
-        "php": "^7.4|^8.1",
+        "php": ">=8.2 <8.6",
         "psr/log": "^1 || ^2 || ^3",
         "yireo/magento2-csp-utilities": "^1.0"
     },
     "require-dev": {
-        "yireo/magento2-integration-test-helper": "~0.0|^1.0"
+        "loki/magento2-functional-tests": "@dev",
+        "yireo/magento2-integration-test-helper": "~0.0"
     },
     "suggest": {
         "yireo/magento2-googletagmanager2-loki-checkout": "Use this if you are using the Loki Checkout",
