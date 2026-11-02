@@ -154,7 +154,7 @@ class ConfigTest extends TestCase
     {
         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
         $scopeConfig->method('getValue')->will($this->returnCallback(function($path) {
-            return $this->settings[$path];
+            return $this->settings[$path] ?? null;
         }));
 
         /*
@@ -189,13 +189,67 @@ class ConfigTest extends TestCase
         return $appState;
     }
 
+    public function testIsConsent()
+    {
+        $this->skipWithoutConsentSupport();
+
+        $this->setScopeConfigValue('enabled', 0, 'consent');
+        $this->assertFalse($this->getTarget()->isConsent());
+
+        $this->setScopeConfigValue('enabled', 1, 'consent');
+        $this->assertTrue($this->getTarget()->isConsent());
+
+        $this->setScopeConfigValue('enabled', 1, 'consent');
+        $this->setScopeConfigValue('enabled', 0);
+        $this->assertTrue($this->getTarget()->isConsent(), 'Consent flag must be independent of the GTM settings flag');
+    }
+
+    public function testGetPrivacyStatementUrl()
+    {
+        $this->skipWithoutConsentSupport();
+
+        $this->setScopeConfigValue('privacy_statement_url', '/privacy-policy', 'consent');
+        $this->assertSame('/privacy-policy', $this->getTarget()->getPrivacyStatementUrl());
+
+        $this->setScopeConfigValue('privacy_statement_url', '', 'consent');
+        $this->assertNull($this->getTarget()->getPrivacyStatementUrl());
+
+        $this->setScopeConfigValue('privacy_statement_url', null, 'consent');
+        $this->assertNull($this->getTarget()->getPrivacyStatementUrl());
+    }
+
+    public function testGetModuleConfigValueDefaultsToSettingsGroup()
+    {
+        $this->setScopeConfigValue('id', 'GTM-SETTINGS');
+        $this->setScopeConfigValue('id', 'GTM-CONSENT', 'consent');
+        $this->assertSame('GTM-SETTINGS', $this->getTarget()->getModuleConfigValue('id'));
+        $this->assertSame('fallback', $this->getTarget()->getModuleConfigValue('unknown', 'fallback'));
+    }
+
+    public function testGetModuleConfigValueWithGroup()
+    {
+        $this->skipWithoutConsentSupport();
+
+        $this->setScopeConfigValue('id', 'GTM-SETTINGS');
+        $this->setScopeConfigValue('id', 'GTM-CONSENT', 'consent');
+        $this->assertSame('GTM-CONSENT', $this->getTarget()->getModuleConfigValue('id', null, 'consent'));
+    }
+
+    private function skipWithoutConsentSupport(): void
+    {
+        if (!method_exists(Config::class, 'isConsent')) {
+            $this->markTestSkipped('Consent support (PR #198) is not available');
+        }
+    }
+
     /**
      * @param string $path
      * @param mixed $value
+     * @param string $group
      */
-    private function setScopeConfigValue(string $path, $value)
+    private function setScopeConfigValue(string $path, $value, string $group = 'settings')
     {
-        $path = 'googletagmanager2/settings/' . $path;
+        $path = 'googletagmanager2/' . $group . '/' . $path;
         $this->settings[$path] = $value;
     }
 }
