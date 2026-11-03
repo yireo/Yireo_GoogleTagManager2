@@ -1,0 +1,4 @@
+- hersir.py integration-tests --filter GetProductsFromCategoryBlockPlugin
+- hersir.py integration-tests --filter "GetProductsFromCategoryBlockPlugin|CategoryPageTest"
+- hersir docker-compose exec php-fpm vendor/bin/phpunit (unit); hersir integration-tests
+- hersir.py go; yireo-extension-builder check:all

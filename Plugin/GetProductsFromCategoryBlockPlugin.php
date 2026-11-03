@@ -41,9 +41,14 @@ class GetProductsFromCategoryBlockPlugin
         if ($maximumCategoryProducts <= 0) {
             return $collection;
         }
+
+        if (!$collection->isLoaded()) {
+            return $collection;
+        }
+
         $i = 0;
         foreach ($collection as $product) {
-            if ($i > $maximumCategoryProducts) {
+            if ($i >= $maximumCategoryProducts) {
                 break;
             }
 
