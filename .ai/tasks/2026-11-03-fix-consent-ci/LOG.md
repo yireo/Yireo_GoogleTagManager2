@@ -1,0 +1,8 @@
+- git checkout -b fix/consent-ci
+- implemented head consent default, Luma/Hyva consent script fixes
+- hersir.py integration-tests
+- hersir.py playwright gtm-consent
+- hersir.py go; yireo-extension-builder check:all
+- reindex + playwright gtm-category-data / gtm-view-cart-duplicate
+- local env: config:set opensearch_server_hostname opensearch (host.docker.internal unreachable), reindex
+- yireo-extension-builder check:php_lint/php_compat/php_cs/php_stan/extension_checker/unit_tests
