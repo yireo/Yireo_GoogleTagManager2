@@ -13,6 +13,7 @@ export const defaultConfig = {
     'googletagmanager2/settings/serverside_enabled': 0,
     'googletagmanager2/settings/view_cart_occurances': 'everywhere',
     'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 1,
+    'googletagmanager2/consent/enabled': 0,
 };
 
 const token = () => process.env.TEST_TOKEN;

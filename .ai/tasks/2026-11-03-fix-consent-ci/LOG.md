@@ -6,3 +6,5 @@
 - reindex + playwright gtm-category-data / gtm-view-cart-duplicate
 - local env: config:set opensearch_server_hostname opensearch (host.docker.internal unreachable), reindex
 - yireo-extension-builder check:php_lint/php_compat/php_cs/php_stan/extension_checker/unit_tests
+- merged fix/consent-ci into master, pushed
+- defaultConfig consent/enabled 0; playwright_only gtm-view-cart-duplicate, gtm-category-data, gtm-consent
