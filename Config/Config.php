@@ -345,9 +345,9 @@ class Config implements ArgumentInterface
      *
      * Get the privacy statement url.
      *
-     * @return string | null
+     * @return string|null
      */
-    public function getPrivacyStatementUrl(): string | null
+    public function getPrivacyStatementUrl(): ?string
     {
         return $this->getModuleConfigValue(
             'privacy_statement_url',
