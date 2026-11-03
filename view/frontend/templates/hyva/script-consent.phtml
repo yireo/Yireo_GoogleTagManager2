@@ -9,22 +9,17 @@ declare(strict_types=1);
  * @license     Open Software License
  */
 
-use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\Config\Config;
 
 /** @var Escaper $escaper */
-/** @var ViewModelRegistry $viewModels */
 /** @var Config $config */
-/** @var HyvaCsp $hyvaCsp */
 /** @var Template $block */
 $config = $block->getConfig();
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+$infoIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 border-current inline-flex" width="16" height="16" aria-hidden="true">'
+    . '<path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
 ?>
 <?php if ($config->isConsent()): ?>
     <script>
@@ -32,17 +27,15 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             return {
                 showBanner: localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') !== 'false',
                 expanded: 'none',
-                modes: JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{"necessary": true,"analytics": false,"preferences": false,"marketing": false}'),
-                selectedModes: JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{"necessary": true,"analytics": true,"preferences": true,"marketing": true}'),
+                modes: yireoGoogleTagManager2GetConsent(),
+                selectedModes: yireoGoogleTagManager2GetConsent(),
                 init() {
                     this.$watch('showBanner', (val) => {
                         localStorage.setItem('yireoGoogleTagManager2ConsentBannerIsShowing', val)
                     });
                     this.$watch('modes', (val) => {
-                        this.selectedModes = val;
-                        localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(val));
+                        this.selectedModes = Object.assign({}, val);
                     });
-                    this.setConsent(this.modes, 'default');
                 },
                 updateSelection() {
                     const checkbox = this.$event.target;
@@ -60,52 +53,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     const item = this.$el.dataset.mode;
                     this.expanded = this.expanded === item ? 'none' : item;
                 },
-                pusher() {
-                    yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
-                },
-                consentEvent(eventName) {
-                    const eventData = {
-                        'event': eventName,
-                    }
-                    yireoGoogleTagManager2Pusher(eventData, 'dataLayer (consent-event) [script-consent.phtml]');
-                },
-                setConsent(consent, mode = 'update') {
-                    const consentMode = {
-                        'functionality_storage': consent.necessary ? 'granted' : 'denied',
-                        'security_storage': consent.necessary ? 'granted' : 'denied',
-                        'ad_storage': consent.marketing ? 'granted' : 'denied',
-                        'ad_user_data': consent.marketing ? 'granted' : 'denied',
-                        'ad_personalization': consent.marketing ? 'granted' : 'denied',
-                        'analytics_storage': consent.analytics ? 'granted' : 'denied',
-                        'personalization_storage': consent.preferences ? 'granted' : 'denied',
-                    };
-
-                    window.dataLayer = window.dataLayer || [];
-                    this.pusher('consent', mode, consentMode);
-
-                    if (mode === 'update') {
-                        this.consentEvent('cookieConsentUpdate');
-                    } else {
-                        this.consentEvent('cookieConsentInitial');
-                    }
-
-                    if (consent.necessary) {
-                        this.consentEvent('cookieConsentGranted');
-                    }
-                    if (consent.marketing) {
-                        this.consentEvent('cookieConsentMarketingGranted');
-                    }
-                    if (consent.analytics) {
-                        this.consentEvent('cookieConsentAnalyticsGranted');
-                    }
-                    if (consent.preferences) {
-                        this.consentEvent('cookieConsentPreferencesGranted');
-                    }
-
-                    this.modes = consent;
-                    if (mode === 'update') {
-                        this.showBanner = false;
-                    }
+                setConsent(consent) {
+                    this.modes = yireoGoogleTagManager2SetConsent(consent);
+                    this.showBanner = false;
                 },
                 setConsentAll() {
                     this.setConsent({
@@ -173,7 +123,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         <input name="selected-modes[]" value="necessary" @change="updateSelection" :checked="isChecked" id="yireo-consent-necessary" type="checkbox" disabled/>
                         <label for="yireo-consent-necessary"><?= $escaper->escapeHtml(__('Essential')) ?></label>
                         <button class="text-xs text-slate-400 hover:underline" @click="learnMore" data-mode="necessary">
-                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <?= /* @noEscape */ $infoIcon ?>
                             <span class="ml-2 sr-only">
                 <?= $escaper->escapeHtml(__('Learn more')) ?>
               </span>
@@ -188,7 +138,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         <input name="selected-modes[]" value="analytics" @change="updateSelection" :checked="isChecked" id="yireo-consent-analytics" type="checkbox"/>
                         <label for="yireo-consent-analytics"><?= $escaper->escapeHtml(__('Analytics')) ?></label>
                         <button class="text-xs text-slate-400 hover:underline" @click="learnMore" data-mode="analytics">
-                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <?= /* @noEscape */ $infoIcon ?>
                             <span class="ml-2 sr-only">
                 <?= $escaper->escapeHtml(__('Learn more')) ?>
               </span>
@@ -203,7 +153,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         <input name="selected-modes[]" value="preferences" @change="updateSelection" :checked="isChecked" id="yireo-consent-preferences" type="checkbox"/>
                         <label for="yireo-consent-preferences"><?= $escaper->escapeHtml(__('Preferences')) ?></label>
                         <button class="text-xs text-slate-400 hover:underline" @click="learnMore" data-mode="preferences">
-                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <?= /* @noEscape */ $infoIcon ?>
                             <span class="ml-2 sr-only">
                 <?= $escaper->escapeHtml(__('Learn more')) ?>
               </span>
@@ -218,7 +168,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         <input name="selected-modes[]" value="marketing" @change="updateSelection" :checked="isChecked" id="yireo-consent-marketing" type="checkbox"/>
                         <label for="yireo-consent-marketing"><?= $escaper->escapeHtml(__('Marketing')) ?></label>
                         <button class="text-xs text-slate-400 hover:underline" @click="learnMore" data-mode="marketing">
-                            <?= $heroicons->informationCircleHtml("h-4 w-4 border-current inline-flex", 16, 16, ['aria-hidden' => 'true']) ?>
+                            <?= /* @noEscape */ $infoIcon ?>
                             <span class="ml-2 sr-only">
                 <?= $escaper->escapeHtml(__('Learn more')) ?>
               </span>

@@ -1,0 +1,72 @@
+<?php declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+use Yireo\GoogleTagManager2\Config\Config;
+
+/** @var Config $config */
+/** @var Template $block */
+$config = $block->getConfig();
+
+if (false === $config->isConsent()) {
+    return;
+}
+?>
+<script>
+    function yireoGoogleTagManager2Gtag() {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(arguments);
+    }
+
+    function yireoGoogleTagManager2PushConsent(consent, mode) {
+        yireoGoogleTagManager2Gtag('consent', mode, {
+            'functionality_storage': 'granted',
+            'security_storage': 'granted',
+            'ad_storage': consent.marketing ? 'granted' : 'denied',
+            'ad_user_data': consent.marketing ? 'granted' : 'denied',
+            'ad_personalization': consent.marketing ? 'granted' : 'denied',
+            'analytics_storage': consent.analytics ? 'granted' : 'denied',
+            'personalization_storage': consent.preferences ? 'granted' : 'denied'
+        });
+
+        const events = [mode === 'update' ? 'cookieConsentUpdate' : 'cookieConsentInitial', 'cookieConsentGranted'];
+        if (consent.marketing) {
+            events.push('cookieConsentMarketingGranted');
+        }
+        if (consent.analytics) {
+            events.push('cookieConsentAnalyticsGranted');
+        }
+        if (consent.preferences) {
+            events.push('cookieConsentPreferencesGranted');
+        }
+        events.forEach(function (eventName) {
+            window.dataLayer.push({'event': eventName});
+        });
+    }
+
+    function yireoGoogleTagManager2GetConsent() {
+        const stored = JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes') || '{}') || {};
+        return {
+            necessary: true,
+            analytics: stored.analytics === true,
+            preferences: stored.preferences === true,
+            marketing: stored.marketing === true
+        };
+    }
+
+    function yireoGoogleTagManager2SetConsent(consent) {
+        const modes = {
+            necessary: true,
+            analytics: consent.analytics === true,
+            preferences: consent.preferences === true,
+            marketing: consent.marketing === true
+        };
+        yireoGoogleTagManager2PushConsent(modes, 'update');
+        localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(modes));
+        return modes;
+    }
+
+    yireoGoogleTagManager2PushConsent(yireoGoogleTagManager2GetConsent(), 'default');
+</script>
+<?php if (isset($hyvaCsp)): ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
+<?php endif; ?>

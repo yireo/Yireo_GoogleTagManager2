@@ -34,12 +34,12 @@ $config = $block->getConfig();
         <p>
             <?= $escaper->escapeHtml(__('Enables storage that supports the functionality of the website or app, e.g. language settings')) ?>
         </p>
-        <label><input id="yireo-consent-analytics" type="checkbox" value="Analytics" checked><?= $escaper->escapeHtml(__("Analytics")) ?>
+        <label><input id="yireo-consent-analytics" type="checkbox" value="Analytics"><?= $escaper->escapeHtml(__("Analytics")) ?>
         </label>
         <p>
             <?= $escaper->escapeHtml(__('Enables storage (such as cookies) related to analytics, e.g. visit duration')) ?>
         </p>
-        <label><input id="yireo-consent-preferences" type="checkbox" value="Preferences" checked><?= $escaper->escapeHtml(__("Preferences")) ?>
+        <label><input id="yireo-consent-preferences" type="checkbox" value="Preferences"><?= $escaper->escapeHtml(__("Preferences")) ?>
         </label>
         <p>
             <?= $escaper->escapeHtml(__('Enables storage related to personalisation, e.g. video recommendations')) ?>
@@ -63,7 +63,7 @@ $config = $block->getConfig();
 
     function yireoGoogleTagManager2BannerToggle(isShowing = null) {
         if (isShowing === null) {
-            isShowing = !(localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') ?? true);
+            isShowing = localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') === 'false';
         }
         localStorage.setItem('yireoGoogleTagManager2ConsentBannerIsShowing', isShowing);
         yireoGoogleTagManager2BannerUpdate();
@@ -77,91 +77,39 @@ $config = $block->getConfig();
         yireoGoogleTagManager2BannerToggle(false);
     }
 
-    function yireoGoogleTagManager2ConsentPusher() {
-        yireoGoogleTagManager2Pusher(arguments, 'dataLayer (consent) [script-consent.phtml]');
-    }
-
-    function consentEvent(eventName) {
-      const eventData = {
-        'event': eventName,
-      }
-      yireoGoogleTagManager2Pusher(eventData, 'dataLayer (consent-event) [script-consent.phtml]');
-    },
-
-    function yireoGoogleTagManager2SetConsent(consent, mode = 'update') {
-        const consentMode = {
-            'functionality_storage': consent.necessary ? 'granted' : 'denied',
-            'security_storage': consent.necessary ? 'granted' : 'denied',
-            'ad_storage': consent.marketing ? 'granted' : 'denied',
-            'ad_user_data': consent.marketing ? 'granted' : 'denied',
-            'ad_personalization': consent.marketing ? 'granted' : 'denied',
-            'analytics_storage': consent.analytics ? 'granted' : 'denied',
-            'personalization_storage': consent.preferences ? 'granted' : 'denied',
+    (function () {
+        const checkbox = function (mode) {
+            return document.getElementById('yireo-consent-' + mode);
+        };
+        const setConsent = function (consent) {
+            yireoGoogleTagManager2SetConsent(consent);
+            yireoGoogleTagManager2BannerHide();
         };
 
-        if (mode === 'update') {
-          consentEvent('cookieConsentUpdate');
-        }
-        else{
-          consentEvent('cookieConsentInitial');
-        }
+        const current = yireoGoogleTagManager2GetConsent();
+        ['analytics', 'preferences', 'marketing'].forEach(function (mode) {
+            checkbox(mode).checked = current[mode];
+        });
 
-        if(consent.necessary){
-          consentEvent('cookieConsentGranted');
-        }
-        if(consent.marketing){
-          consentEvent('cookieConsentMarketingGranted');
-        }
-        if(consent.analytics){
-          consentEvent('cookieConsentAnalyticsGranted');
-        }
-        if(consent.preferences){
-          consentEvent('cookieConsentPreferencesGranted');
-        }
+        document.getElementById('yireo-btn-accept-all').addEventListener('click', function () {
+            setConsent({analytics: true, preferences: true, marketing: true});
+        });
+        document.getElementById('yireo-btn-accept-some').addEventListener('click', function () {
+            setConsent({
+                analytics: checkbox('analytics').checked,
+                preferences: checkbox('preferences').checked,
+                marketing: checkbox('marketing').checked
+            });
+        });
+        document.getElementById('yireo-btn-reject-all').addEventListener('click', function () {
+            setConsent({analytics: false, preferences: false, marketing: false});
+        });
 
-        window.dataLayer = window.dataLayer || [];
-        yireoGoogleTagManager2ConsentPusher('consent', mode, consentMode);
-        localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(consent));
-    }
-
-    document.getElementById('yireo-btn-accept-all').addEventListener('click', function () {
-        yireoGoogleTagManager2SetConsent({
-                                             necessary: true,
-                                             analytics: true,
-                                             preferences: true,
-                                             marketing: true
-                                         });
-        yireoGoogleTagManager2BannerHide();
-    });
-    document.getElementById('yireo-btn-accept-some').addEventListener('click', function () {
-        yireoGoogleTagManager2SetConsent({
-                                             necessary: true,
-                                             analytics: document.getElementById('yireo-consent-analytics').checked,
-                                             preferences: document.getElementById('yireo-consent-preferences').checked,
-                                             marketing: document.getElementById('yireo-consent-marketing').checked
-                                         });
-        yireoGoogleTagManager2BannerHide();
-    });
-    document.getElementById('yireo-btn-reject-all').addEventListener('click', function () {
-        yireoGoogleTagManager2SetConsent({
-                                             necessary: false,
-                                             analytics: false,
-                                             preferences: false,
-                                             marketing: false
-                                         });
-        yireoGoogleTagManager2BannerHide();
-    });
-    if (localStorage.getItem('yireoGoogleTagManager2ConsentModes') === null) {
-        yireoGoogleTagManager2SetConsent({
-                                             necessary: false,
-                                             analytics: false,
-                                             preferences: false,
-                                             marketing: false
-                                         }, 'default');
-        yireoGoogleTagManager2BannerShow();
-    } else {
-        yireoGoogleTagManager2SetConsent(JSON.parse(localStorage.getItem('yireoGoogleTagManager2ConsentModes')), 'default');
-        yireoGoogleTagManager2BannerUpdate();
-    }
+        if (localStorage.getItem('yireoGoogleTagManager2ConsentModes') === null) {
+            yireoGoogleTagManager2BannerShow();
+        } else {
+            yireoGoogleTagManager2BannerUpdate();
+        }
+    })();
 </script>
 <?php endif; ?>

@@ -13,6 +13,16 @@
     <body>
         <referenceBlock name="head.additional">
             <block
+                name="yireo_googletagmanager2.script-consent-default"
+                template="Yireo_GoogleTagManager2::script-consent-default.phtml"
+                ifconfig="googletagmanager2/settings/enabled"
+                before="yireo_googletagmanager2.script">
+                <arguments>
+                    <argument name="config" xsi:type="object">Yireo\GoogleTagManager2\Config\Config</argument>
+                </arguments>
+            </block>
+
+            <block
                 name="yireo_googletagmanager2.script"
                 template="Yireo_GoogleTagManager2::script.phtml"
                 ifconfig="googletagmanager2/settings/enabled">
