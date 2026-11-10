@@ -62,7 +62,23 @@ if (false === $config->isConsent()) {
         };
         yireoGoogleTagManager2PushConsent(modes, 'update');
         localStorage.setItem('yireoGoogleTagManager2ConsentModes', JSON.stringify(modes));
+        yireoGoogleTagManager2SetConsentCookie(modes);
         return modes;
+    }
+
+    function yireoGoogleTagManager2SetConsentCookie(consent) {
+        const value = encodeURIComponent(JSON.stringify({
+            analytics: consent.analytics === true,
+            marketing: consent.marketing === true,
+            preferences: consent.preferences === true
+        }));
+        const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+        document.cookie = 'yireo_gtm2_consent=' + value + '; path=/; max-age=31536000; SameSite=Lax' + secure;
+    }
+
+    if (localStorage.getItem('yireoGoogleTagManager2ConsentModes') !== null
+        && document.cookie.indexOf('yireo_gtm2_consent=') === -1) {
+        yireoGoogleTagManager2SetConsentCookie(yireoGoogleTagManager2GetConsent());
     }
 
     yireoGoogleTagManager2PushConsent(yireoGoogleTagManager2GetConsent(), 'default');
