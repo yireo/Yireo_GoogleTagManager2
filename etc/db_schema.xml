@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="yireo_gtm_serverside_context" resource="default" engine="innodb" comment="Yireo GoogleTagManager2 server-side tracking context">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="quote_id" unsigned="true" nullable="false" comment="Quote ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Order ID"/>
+        <column xsi:type="varchar" name="client_id" nullable="false" length="64" comment="GA client ID"/>
+        <column xsi:type="varchar" name="session_id" nullable="true" length="64" comment="GA session ID"/>
+        <column xsi:type="varchar" name="user_id" nullable="true" length="64" comment="User ID"/>
+        <column xsi:type="text" name="consent" nullable="true" comment="Consent JSON"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="YIREO_GTM_SERVERSIDE_CONTEXT_QUOTE_ID">
+            <column name="quote_id"/>
+        </constraint>
+        <index referenceId="YIREO_GTM_SERVERSIDE_CONTEXT_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="YIREO_GTM_SERVERSIDE_CONTEXT_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="yireo_gtm_serverside_event" resource="default" engine="innodb" comment="Yireo GoogleTagManager2 server-side tracking outbox">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+        <column xsi:type="varchar" name="event_name" nullable="false" length="64" comment="Event name"/>
+        <column xsi:type="varchar" name="dedup_key" nullable="false" length="191" comment="Deduplication key"/>
+        <column xsi:type="mediumtext" name="payload" nullable="false" comment="Measurement Protocol payload"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="16" default="pending" comment="Status"/>
+        <column xsi:type="smallint" name="attempts" unsigned="true" nullable="false" default="0" comment="Attempts"/>
+        <column xsi:type="text" name="last_error" nullable="true" comment="Last error"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created at"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated at"/>
+        <column xsi:type="timestamp" name="sent_at" on_update="false" nullable="true" comment="Sent at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="YIREO_GTM_SERVERSIDE_EVENT_DEDUP_KEY">
+            <column name="dedup_key"/>
+        </constraint>
+        <index referenceId="YIREO_GTM_SERVERSIDE_EVENT_STATUS_ATTEMPTS" indexType="btree">
+            <column name="status"/>
+            <column name="attempts"/>
+        </index>
+        <index referenceId="YIREO_GTM_SERVERSIDE_EVENT_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+</schema>

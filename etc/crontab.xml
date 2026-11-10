@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="yireo_gtm2_serverside_process" instance="Yireo\GoogleTagManager2\ServerSide\Cron\Outbox" method="processPending">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="yireo_gtm2_serverside_retry" instance="Yireo\GoogleTagManager2\ServerSide\Cron\Outbox" method="retryFailed">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="yireo_gtm2_serverside_cleanup" instance="Yireo\GoogleTagManager2\ServerSide\Cron\Outbox" method="cleanup">
+            <schedule>30 3 * * *</schedule>
+        </job>
+    </group>
+</config>

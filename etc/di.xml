@@ -52,4 +52,60 @@
             <argument name="schemaLocator" xsi:type="object">Yireo\GoogleTagManager2\Config\XmlConfig\SchemaLocator</argument>
         </arguments>
     </type>
+
+    <type name="Yireo\GoogleTagManager2\DataLayer\Event\Purchase">
+        <arguments>
+            <argument name="serverSideConfig" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Config</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface">
+        <plugin name="Yireo_GoogleTagManager2::serverSidePublishCheckoutSessionEvent" type="Yireo\GoogleTagManager2\ServerSide\Plugin\PublishCheckoutSessionEvent"/>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface">
+        <plugin name="Yireo_GoogleTagManager2::serverSidePublishCustomerSessionEvent" type="Yireo\GoogleTagManager2\ServerSide\Plugin\PublishCustomerSessionEvent"/>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="yireo_googletagmanager2_serverside_test" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Console\TestCommand</item>
+                <item name="yireo_googletagmanager2_serverside_process" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Console\ProcessCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\ServerSide\Console\TestCommand">
+        <arguments>
+            <argument name="sender" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Sender\Proxy</argument>
+            <argument name="contextCollector" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Context\ContextCollector\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\ServerSide\Console\ProcessCommand">
+        <arguments>
+            <argument name="processor" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Processor\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\ServerSide\Context\ContextCollector">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\GoogleTagManager2\ServerSide\SessionEventPublisher">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="googletagmanager2/serverside_tracking/api_secret" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

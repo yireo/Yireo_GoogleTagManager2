@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="Yireo_GoogleTagManager2::serverSideStoreContextAndPublishPurchase" instance="Yireo\GoogleTagManager2\ServerSide\Observer\StoreContextAndPublishPurchase"/>
+    </event>
+
+    <event name="sales_order_save_after">
+        <observer name="Yireo_GoogleTagManager2::serverSidePublishPurchaseOnOrderState" instance="Yireo\GoogleTagManager2\ServerSide\Observer\PublishPurchaseOnOrderState"/>
+    </event>
+
+    <event name="sales_order_invoice_pay">
+        <observer name="Yireo_GoogleTagManager2::serverSidePublishPurchaseOnInvoicePay" instance="Yireo\GoogleTagManager2\ServerSide\Observer\PublishPurchaseOnInvoicePay"/>
+    </event>
+
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="Yireo_GoogleTagManager2::serverSidePublishRefund" instance="Yireo\GoogleTagManager2\ServerSide\Observer\PublishRefund"/>
+    </event>
+</config>

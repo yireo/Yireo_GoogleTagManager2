@@ -31,4 +31,8 @@
     <event name="sales_order_place_after">
         <observer name="Yireo_GoogleTagManager2::triggerPurchaseDataLayerEvent" instance="Yireo\GoogleTagManager2\Observer\TriggerPurchaseDataLayerEvent" />
     </event>
+
+    <event name="controller_action_predispatch_checkout_index_index">
+        <observer name="Yireo_GoogleTagManager2::serverSidePublishBeginCheckout" instance="Yireo\GoogleTagManager2\ServerSide\Observer\PublishBeginCheckout" />
+    </event>
 </config>

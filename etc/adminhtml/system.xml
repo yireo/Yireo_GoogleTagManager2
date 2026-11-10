@@ -113,9 +113,9 @@
                     <comment>Generate the view_cart event only when expanding the minicart</comment>
                 </field>
                 <field id="serverside_enabled" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Server-Side Tracking</label>
+                    <label>Custom GTM container URL</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Only enable this, if you are using some kind of Server-Side Tracking extension already. Note that this extension does not enable Server-Side Tracking.</comment>
+                    <comment>Load the GTM container from a custom URL (for instance a server-side GTM container) and only trigger the browser purchase event for the configured order states. This does not send any data server-to-server: for that, use the group "Server-Side Tracking" instead.</comment>
                 </field>
                 <field id="serverside_gtm_url" type="text" translate="label" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Container URL</label>
@@ -129,10 +129,9 @@
                 <field id="order_states_for_purchase_event" type="multiselect" translate="label" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Orders states for purchase event</label>
                     <source_model>Yireo\GoogleTagManager2\Config\Source\OrderStateOptions</source_model>
-                    <comment>Order states at which to trigger the purchase event. Note that this only makes sense when using Server-Side Tracking, because otherwise no purchase event will be triggered ever. When Server-Side Tracking is disabled in this extension, the default of this setting will be to trigger at any state.</comment>
+                    <comment>Order states at which to trigger the purchase event. This is used by the setting "Custom GTM container URL" and by the server-side purchase trigger "When the order reaches one of the configured order states". When neither is used, the purchase event is triggered at any state.</comment>
                     <depends>
                         <field id="enabled">1</field>
-                        <field id="serverside_enabled">1</field>
                     </depends>
                 </field>
                 <field id="use_base_currency" type="select" translate="label" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -155,6 +154,106 @@
                     <label>Include Shipping in Adjusted Total</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled, shipping costs will be included in the adjusted transaction value calculation. This setting works in conjunction with the Maximum Transaction Value setting.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="serverside_tracking" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Server-Side Tracking</label>
+                <field id="enabled" type="select" translate="label comment" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Send ecommerce events server-to-server using the GA4 Measurement Protocol</comment>
+                </field>
+                <field id="destination" type="select" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Destination</label>
+                    <source_model>Yireo\GoogleTagManager2\ServerSide\Config\Source\Destination</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sgtm_url" type="text" translate="label comment" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server-side GTM URL</label>
+                    <comment>Full URL of your server-side GTM container (for instance https://sgtm.example.com). Events are sent to this URL plus /mp/collect.</comment>
+                    <validate>validate-url</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="destination">sgtm</field>
+                    </depends>
+                </field>
+                <field id="measurement_id" type="text" translate="label comment" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Measurement ID</label>
+                    <comment>GA4 Measurement ID, starting with "G-"</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="api_secret" type="obscure" translate="label comment" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API secret</label>
+                    <comment>Measurement Protocol API secret (GA4 Admin, Data Streams, Measurement Protocol API secrets)</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="events" type="multiselect" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Events</label>
+                    <source_model>Yireo\GoogleTagManager2\ServerSide\Config\Source\Events</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="purchase_trigger" type="select" translate="label comment" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Purchase trigger</label>
+                    <source_model>Yireo\GoogleTagManager2\ServerSide\Config\Source\PurchaseTrigger</source_model>
+                    <comment>The order states are configured with the setting "Orders states for purchase event"</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="suppress_browser_purchase" type="select" translate="label comment" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Suppress browser purchase event</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Do not push the purchase event in the browser, when the purchase event is sent server-side</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="dispatch_mode" type="select" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Dispatch mode</label>
+                    <source_model>Yireo\GoogleTagManager2\ServerSide\Config\Source\DispatchMode</source_model>
+                    <comment>Cron sends pending events every minute. Message queue requires the consumer yireo_gtm2.serverside.event to run.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="require_consent" type="select" translate="label comment" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Require analytics consent</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Only applies when the consent banner of this extension is enabled</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="validation_mode" type="select" translate="label comment" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Validation mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Send events to the validation endpoint (/debug/mp/collect) instead. Events are not recorded by GA4.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="max_attempts" type="text" translate="label" sortOrder="23" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Maximum attempts</label>
+                    <validate>validate-digits validate-greater-than-zero</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="retention_days" type="text" translate="label" sortOrder="24" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Retention of sent events (days)</label>
+                    <validate>validate-digits validate-greater-than-zero</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

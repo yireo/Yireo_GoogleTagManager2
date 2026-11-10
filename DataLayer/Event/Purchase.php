@@ -8,6 +8,7 @@ use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
+use Yireo\GoogleTagManager2\ServerSide\Config as ServerSideConfig;
 use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -15,24 +16,28 @@ use Yireo\GoogleTagManager2\Util\PriceFormatter;
 class Purchase implements EventInterface
 {
     private ?OrderInterface $order = null;
+    private bool $serverSide = false;
     private OrderItems $orderItems;
     private Config $config;
     private PriceFormatter $priceFormatter;
     private Session $checkoutSession;
     private OrderTotals $orderTotals;
+    private ?ServerSideConfig $serverSideConfig;
 
     public function __construct(
         OrderItems $orderItems,
         Config $config,
         PriceFormatter $priceFormatter,
         Session $checkoutSession,
-        OrderTotals $orderTotals
+        OrderTotals $orderTotals,
+        ?ServerSideConfig $serverSideConfig = null
     ) {
         $this->orderItems = $orderItems;
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
         $this->checkoutSession = $checkoutSession;
         $this->orderTotals = $orderTotals;
+        $this->serverSideConfig = $serverSideConfig;
     }
 
     /**
@@ -45,7 +50,7 @@ class Purchase implements EventInterface
             return [];
         }
 
-        if ($this->config->hasServerSideTracking() && false === in_array($order->getState(), $this->getOrderStates())) {
+        if (false === $this->serverSide && $this->isSuppressedInBrowser($order)) {
             return [];
         }
 
@@ -87,6 +92,22 @@ class Purchase implements EventInterface
     {
         $this->order = $order;
         return $this;
+    }
+
+    public function setServerSide(bool $serverSide = true): Purchase
+    {
+        $this->serverSide = $serverSide;
+        return $this;
+    }
+
+    private function isSuppressedInBrowser(OrderInterface $order): bool
+    {
+        if ($this->serverSideConfig && $this->serverSideConfig->suppressBrowserPurchase((int)$order->getStoreId())) {
+            return true;
+        }
+
+        return $this->config->hasServerSideTracking()
+            && false === in_array($order->getState(), $this->getOrderStates());
     }
 
     private function getOrder(): ?OrderInterface

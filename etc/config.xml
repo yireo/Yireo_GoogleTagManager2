@@ -21,6 +21,21 @@
                 <max_transaction_value>0</max_transaction_value>
                 <include_shipping_in_adjusted_value>0</include_shipping_in_adjusted_value>
             </settings>
+            <serverside_tracking>
+                <enabled>0</enabled>
+                <destination>ga4</destination>
+                <sgtm_url/>
+                <measurement_id/>
+                <api_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+                <events>purchase,refund,add_to_cart,remove_from_cart,begin_checkout,add_shipping_info,add_payment_info,login,sign_up,add_to_wishlist</events>
+                <purchase_trigger>order_place</purchase_trigger>
+                <suppress_browser_purchase>1</suppress_browser_purchase>
+                <dispatch_mode>cron</dispatch_mode>
+                <require_consent>1</require_consent>
+                <validation_mode>0</validation_mode>
+                <max_attempts>5</max_attempts>
+                <retention_days>30</retention_days>
+            </serverside_tracking>
         </googletagmanager2>
     </default>
 </config>
