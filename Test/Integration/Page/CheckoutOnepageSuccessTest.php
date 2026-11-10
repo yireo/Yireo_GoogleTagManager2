@@ -8,10 +8,13 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Yireo\GoogleTagManager2\Test\Integration\FixtureTrait\ServerSideConfig;
 use Yireo\GoogleTagManager2\Test\Integration\PageTestCase;
 
 class CheckoutOnepageSuccessTest extends PageTestCase
 {
+    use ServerSideConfig;
+
     private ?CheckoutSession $checkoutSession = null;
 
     /**
@@ -65,6 +68,50 @@ class CheckoutOnepageSuccessTest extends PageTestCase
         $this->assertDataLayerEquals('Success Page', 'page_title');
         $this->assertDataLayerContains('sha256_email_address');
         $this->assertDataLayerContains('sha256_customer_telephone');
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     * @magentoAppArea frontend
+     * @magentoDataFixture Magento/Checkout/_files/orders.php
+     * @return void
+     */
+    public function testSuccessPagePurchaseEvent()
+    {
+        $this->loadSuccessPage();
+        $this->assertDataLayerEventExists('purchase', 'purchase');
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id test
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     * @magentoAppArea frontend
+     * @magentoDataFixture Magento/Checkout/_files/orders.php
+     * @return void
+     */
+    public function testSuccessPageWithSuppressedBrowserPurchase()
+    {
+        $this->configureServerSide(['serverside_tracking/suppress_browser_purchase' => '1']);
+        $this->loadSuccessPage();
+        $this->assertArrayNotHasKey('purchase', $this->getEventsFromDataLayer());
+    }
+
+    private function loadSuccessPage(): void
+    {
+        $order = $this->getOrder();
+        $checkoutSession = $this->_objectManager->get(CheckoutSession::class);
+        $checkoutSession->setLastRealOrderId($order->getIncrementId());
+        $checkoutSession->setLastRealOrder($order);
+
+        $page = $this->_objectManager->create(PageFactory::class)->create();
+        $page->addHandle(['default', 'checkout_onepage_success']);
+        $page->getLayout()->generateXml();
+        $page->getLayout()->generateElements();
     }
 
     private function getOrder(): OrderInterface
