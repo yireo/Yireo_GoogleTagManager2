@@ -101,3 +101,11 @@ In various classes in the namespace `Yireo\GoogleTagManager2\DataLayer\Mapper`, 
 Next, your custom class `Yireo\Example\DataLayer\Mapper\AdditionalProductDataMapper` needs to implement the interface `Yireo\GoogleTagManager2\Api\Data\ProductTagInterface` (specific for this product data mapping) and/or `Yireo\GoogleTagManager2\Api\Data\TagInterface` (for generic data mapping).
 
 The XML property name `example` is the tag property added to GTM. If an existing property name, like `item_id`, is used, it will override the existing tag value.
+
+## Server-side tracking
+The namespace `Yireo\GoogleTagManager2\ServerSide` sends events via the GA4 Measurement Protocol. Browser events that
+are added to the checkout or customer session (`CheckoutSessionDataProviderInterface::add()` and
+`CustomerSessionDataProviderInterface::add()`) are picked up by a plugin and published server-side as well. Order
+events (`purchase`, `refund`) are triggered by observers in `etc/events.xml`. All events go through
+`ServerSide\EventPublisher` into the outbox table `yireo_gtm_serverside_event`, which is processed by cron or by the
+message queue consumer `yireo_gtm2.serverside.event`. See [SERVERSIDE.md](SERVERSIDE.md).
