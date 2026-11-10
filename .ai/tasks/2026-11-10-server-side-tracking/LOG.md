@@ -1,0 +1,9 @@
+- `hersir go` (initial env start)
+- `hersir exec -- bin/magento setup:upgrade` / `setup:di:compile`
+- `hersir exec -- vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist <module>/Test/Unit`
+- `hersir integration-tests --filter ServerSide|CheckoutOnepageSuccess`
+- `hersir integration-tests` (full)
+- `hersir playwright gtm-serverside`
+- `hersir exec -- bin/magento yireo_googletagmanager2:serverside:test` / `:process`
+- `yireo-extension-builder check:all` (pre-review)
+- reset dev mode; unit + integration tests; `hersir go`; `yireo-extension-builder check:all`
