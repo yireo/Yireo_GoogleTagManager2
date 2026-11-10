@@ -7,3 +7,4 @@
 - `hersir exec -- bin/magento yireo_googletagmanager2:serverside:test` / `:process`
 - `yireo-extension-builder check:all` (pre-review)
 - reset dev mode; unit + integration tests; `hersir go`; `yireo-extension-builder check:all`
+- final: `hersir go` rc=0; `yireo-extension-builder check:all` all passed
