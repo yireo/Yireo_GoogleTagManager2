@@ -14,3 +14,9 @@ package-lock.json
 .playwright
 .opencode
 .yireo-extension-builder.json
+.php-cs-fixer.cache
+.ai/
+.playwright/
+.opencode/
+.gitlab-ci-local/
+MEMORY.md
