@@ -108,4 +108,4 @@ are added to the checkout or customer session (`CheckoutSessionDataProviderInter
 `CustomerSessionDataProviderInterface::add()`) are picked up by a plugin and published server-side as well. Order
 events (`purchase`, `refund`) are triggered by observers in `etc/events.xml`. All events go through
 `ServerSide\EventPublisher` into the outbox table `yireo_gtm_serverside_event`, which is processed by cron or by the
-message queue consumer `yireo_gtm2.serverside.event`. See [SERVERSIDE.md](SERVERSIDE.md).
+message queue consumer `yireo_gtm2.serverside.event`. See [Server-side tracking](README.md#server-side-tracking).
