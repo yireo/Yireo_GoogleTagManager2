@@ -20,6 +20,8 @@ trait ServerSideConfig
             'serverside_tracking/enabled' => '1',
             'serverside_tracking/measurement_id' => 'G-TEST123',
             'serverside_tracking/api_secret' => $encryptor->encrypt('secret'),
+            'serverside_tracking/events' => 'purchase,refund,add_to_cart,remove_from_cart,begin_checkout,'
+                . 'add_shipping_info,add_payment_info,login,sign_up,add_to_wishlist',
             'serverside_tracking/purchase_trigger' => 'order_place',
             'serverside_tracking/dispatch_mode' => 'cron',
             'serverside_tracking/require_consent' => '0',

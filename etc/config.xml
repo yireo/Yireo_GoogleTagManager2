@@ -27,7 +27,7 @@
                 <sgtm_url/>
                 <measurement_id/>
                 <api_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
-                <events>purchase,refund,add_to_cart,remove_from_cart,begin_checkout,add_shipping_info,add_payment_info,login,sign_up,add_to_wishlist</events>
+                <events>purchase,refund</events>
                 <purchase_trigger>order_place</purchase_trigger>
                 <suppress_browser_purchase>1</suppress_browser_purchase>
                 <dispatch_mode>cron</dispatch_mode>
