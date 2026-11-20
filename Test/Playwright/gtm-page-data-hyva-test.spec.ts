@@ -35,4 +35,18 @@ test.describe('GTM page data (Hyva)', function () {
         await page.mouse.wheel(0, 100);
         await dataLayer.expectContainerLoaded(GTM_ID);
     });
+
+    test('does not load the GTM container but still pushes the start event when load_container is disabled', async function ({page, dataLayer}) {
+        await configureHyvaGtm(page, {config: {'googletagmanager2/settings/load_container': 0}});
+
+        await page.goto('/');
+        await page.mouse.move(100, 100);
+
+        await dataLayer.expectEnabled();
+        await dataLayer.expectEntry({event: 'gtm.js'});
+        await dataLayer.expectContainerNotLoaded();
+        await dataLayer.expectState({
+            page_type: 'cms/index/index',
+        });
+    });
 });

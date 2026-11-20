@@ -77,6 +77,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether the extension inserts the gtm.js container script itself
+     *
+     * @return bool
+     */
+    public function loadContainer(): bool
+    {
+        return (bool)$this->getModuleConfigValue('load_container');
+    }
+
+    /**
      * Check whether mouse clicks are debugged as well
      *
      * @return bool
