@@ -48,6 +48,7 @@ class ProductDetailsBlockTest extends TestCase
         return [
             'category page' => ['catalog_category_view'],
             'search result page' => ['catalogsearch_result_index'],
+            'advanced search result page' => ['catalogsearch_advanced_result'],
         ];
     }
 }
