@@ -7,6 +7,7 @@
                 <id/>
                 <debug>0</debug>
                 <wait_for_ui>0</wait_for_ui>
+                <load_container>1</load_container>
                 <category_products>100</category_products>
                 <product_eav_attributes>material</product_eav_attributes>
                 <category_eav_attributes>id,name</category_eav_attributes>

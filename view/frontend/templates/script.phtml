@@ -41,13 +41,16 @@ $events = ($config->waitForUserInteraction() === false)
             <?php foreach($gtmIds as $gtmId): ?>
             (function (w, d, s, l, i) {
                 w[l] = w[l] || [];
+                // Always push the start event: a container loaded elsewhere (like a Google tag gateway) relies on it
                 w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+                <?php if ($config->loadContainer()): ?>
                 var f = d.getElementsByTagName(s)[0],
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
                 j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
+                <?php endif; ?>
             })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
             <?php endforeach; ?>
         };

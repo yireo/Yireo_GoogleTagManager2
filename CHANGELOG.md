@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Setting **Load GTM container script** (`load_container`, default *Yes*): When set to *No*, the `gtm.js` start event and all dataLayer events are still pushed, but the container script is not inserted, so that a container loaded by a first-party Google tag gateway is not downloaded twice
+
 ### Fixed
 - Ignore `mousemove` events without any movement when waiting for user interaction, because browsers fire these when content renders underneath a stationary cursor
 

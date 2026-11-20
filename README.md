@@ -102,6 +102,7 @@ The extension has the following configuration options:
 - **Container Public ID**: The ID of your Google Tags container (starting with `GTM-`).
 - **Debug**: Enable this for additional debugging in a logfile and the browser console.
 - **Debug Clicks**: Enable this for additional debugging when clicking on specific links.
+- **Load GTM container script** (default *Yes*): When set to *No*, the extension still pushes the `gtm.js` start event and all dataLayer events, but no longer inserts the `gtm.js` script itself. Use this when the container is already loaded by something else, like a first-party Google tag gateway (for instance the one of Cloudflare) that injects its own loader. Without this, the container is downloaded twice.
 - **Maximum Products in Category**: Instead of listing all products on a specific category page, only list the first products.
 - **Product EAV Attributes**: Product attributes to include when listing products in a specific event.
 - **Category EAV Attributes**: Category attributes to include when listing categories in a specific event.
