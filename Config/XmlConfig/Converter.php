@@ -5,17 +5,10 @@ namespace Yireo\GoogleTagManager2\Config\XmlConfig;
 use DOMDocument;
 use DOMNode;
 use Magento\Framework\Config\ConverterInterface;
-use Magento\Framework\ObjectManagerInterface;
-use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 
 class Converter implements ConverterInterface
 {
-    private ObjectManagerInterface $objectManager;
-
-    public function __construct(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
+    public const TAG_CLASS_KEY = '__tag_class';
 
     /**
      * Convert dom node tree to array
@@ -89,7 +82,7 @@ class Converter implements ConverterInterface
             }
 
             if ($tagType === 'object') {
-                $result[$tagName] = $this->getDataFromTagClass((string)$childNode->nodeValue);
+                $result[$tagName] = [self::TAG_CLASS_KEY => (string)$childNode->nodeValue];
                 continue;
             }
 
@@ -97,19 +90,5 @@ class Converter implements ConverterInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param string $tagClassName
-     * @return array|mixed
-     */
-    private function getDataFromTagClass(string $tagClassName)
-    {
-        $tagObject = $this->objectManager->get($tagClassName);
-        if (!$tagObject instanceof TagInterface) {
-            return [];
-        }
-
-        return $tagObject->get();
     }
 }
