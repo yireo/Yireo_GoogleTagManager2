@@ -19,7 +19,10 @@ if (empty($gtmIds)) {
     return;
 }
 ?>
-<?php foreach ($gtmIds as $gtmId): ?>
+<?php foreach ($gtmIds as $gtmIndex => $gtmId): ?>
 <?php $url = sprintf('%s/ns.html?id=%s', $config->getGoogleTagmanagerUrl(), $gtmId); ?>
+<?php if ($gtmIndex === 0): ?>
+<?php $url .= $config->getEnvironmentQuery(); ?>
+<?php endif; ?>
 <noscript><iframe src="<?= $escaper->escapeUrl($url) ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <?php endforeach; ?>

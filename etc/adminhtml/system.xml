@@ -37,6 +37,22 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="environment_auth" translate="label comment" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GTM Environment Auth</label>
+                    <comment><![CDATA[Value of <code>gtm_auth</code> in the snippet under <b>GTM &gt; Admin &gt; Environments &gt; Get Snippet</b>. Only applied to the first container ID. <b>Warning</b>: Only set this for development or staging (preferably via <code>bin/magento config:set --lock-env</code>), so that it never ends up in production.]]></comment>
+                    <backend_model>Yireo\GoogleTagManager2\Config\Backend\EnvironmentAuth</backend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="environment_preview" translate="label comment" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GTM Environment Preview</label>
+                    <comment><![CDATA[Value of <code>gtm_preview</code> (like <code>env-6</code>). Both this value and the GTM Environment Auth need to be set.]]></comment>
+                    <backend_model>Yireo\GoogleTagManager2\Config\Backend\EnvironmentPreview</backend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="debug" type="select" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

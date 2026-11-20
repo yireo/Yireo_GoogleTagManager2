@@ -38,7 +38,8 @@ $events = ($config->waitForUserInteraction() === false)
                 window.removeEventListener(eventType, initYireoGoogleTagManager2);
             });
 
-            <?php foreach($gtmIds as $gtmId): ?>
+            <?php foreach($gtmIds as $gtmIndex => $gtmId): ?>
+            <?php $environmentQuery = $gtmIndex === 0 ? $config->getEnvironmentQuery() : ''; ?>
             (function (w, d, s, l, i) {
                 w[l] = w[l] || [];
                 w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
@@ -49,7 +50,7 @@ $events = ($config->waitForUserInteraction() === false)
                 if (nonce) {
                     j.setAttribute('nonce', nonce);
                 }
-                j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
+                j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl<?php if ($environmentQuery !== ''): ?> + '<?= $escaper->escapeJs($environmentQuery) ?>'<?php endif; ?>;
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
             <?php endforeach; ?>

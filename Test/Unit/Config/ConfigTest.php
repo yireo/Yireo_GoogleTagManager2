@@ -13,6 +13,7 @@ namespace Yireo\GoogleTagManager2\Test\Unit\Config;
 
 use Magento\Framework\App\State as AppState;
 use Magento\Store\Model\StoreManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
@@ -101,6 +102,31 @@ class ConfigTest extends TestCase
 
         $this->setScopeConfigValue('id', 'GTM-1234,,');
         $this->assertEquals(['GTM-1234'], $this->getTarget()->getIds());
+    }
+
+    #[DataProvider('getEnvironmentQueryProvider')]
+    public function testGetEnvironmentQuery($auth, $preview, string $expected)
+    {
+        $this->setScopeConfigValue('environment_auth', $auth);
+        $this->setScopeConfigValue('environment_preview', $preview);
+        $this->assertSame($expected, $this->getTarget()->getEnvironmentQuery());
+    }
+
+    public static function getEnvironmentQueryProvider(): array
+    {
+        return [
+            'not configured' => [null, null, ''],
+            'empty' => ['', '', ''],
+            'only auth' => ['abc123', '', ''],
+            'only preview' => ['', 'env-6', ''],
+            'valid' => ['Ab_c-12', 'env-6', '&gtm_auth=Ab_c-12&gtm_preview=env-6&gtm_cookies_win=x'],
+            'valid with whitespace' => [' Ab_c-12 ', ' env-6 ', '&gtm_auth=Ab_c-12&gtm_preview=env-6&gtm_cookies_win=x'],
+            'invalid auth' => ["abc';alert(1)//", 'env-6', ''],
+            'auth with query' => ['abc&foo=bar', 'env-6', ''],
+            'invalid preview' => ['abc123', 'env-6&foo=bar', ''],
+            'preview without number' => ['abc123', 'env-', ''],
+            'preview with newline' => ['abc123', "env-6\n", '&gtm_auth=abc123&gtm_preview=env-6&gtm_cookies_win=x'],
+        ];
     }
 
     /**

@@ -5,6 +5,8 @@
             <settings>
                 <enabled>0</enabled>
                 <id/>
+                <environment_auth/>
+                <environment_preview/>
                 <debug>0</debug>
                 <wait_for_ui>0</wait_for_ui>
                 <category_products>100</category_products>

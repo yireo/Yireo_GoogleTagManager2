@@ -13,6 +13,9 @@ use Yireo\GoogleTagManager2\Config\Source\ViewCartOccurancesOptions;
 
 class Config implements ArgumentInterface
 {
+    public const ENVIRONMENT_AUTH_PATTERN = '/^[A-Za-z0-9_-]+$/D';
+    public const ENVIRONMENT_PREVIEW_PATTERN = '/^env-[0-9]+$/D';
+
     private ScopeConfigInterface $scopeConfig;
     private CookieHelper $cookieHelper;
     private StoreManagerInterface $storeManager;
@@ -106,6 +109,24 @@ class Config implements ArgumentInterface
         $ids = array_map('trim', explode(',', $this->getId()));
 
         return array_values(array_filter($ids));
+    }
+
+    /**
+     * Return the GTM environment query (gtm_auth, gtm_preview) or an empty string when not (properly) configured
+     *
+     * @return string
+     */
+    public function getEnvironmentQuery(): string
+    {
+        $auth = trim((string)$this->getModuleConfigValue('environment_auth'), " \n\r\t\v\0");
+        $preview = trim((string)$this->getModuleConfigValue('environment_preview'), " \n\r\t\v\0");
+
+        if (false === (bool)preg_match(self::ENVIRONMENT_AUTH_PATTERN, $auth)
+            || false === (bool)preg_match(self::ENVIRONMENT_PREVIEW_PATTERN, $preview)) {
+            return '';
+        }
+
+        return '&gtm_auth=' . rawurlencode($auth) . '&gtm_preview=' . rawurlencode($preview) . '&gtm_cookies_win=x';
     }
 
     /**

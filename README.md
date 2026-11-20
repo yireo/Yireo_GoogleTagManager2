@@ -228,6 +228,16 @@ In Google Analytics, go to **Reports**: There should be 1 user reported there. N
 
 In the Google Tag Manager, use **Preview** in your workspace to open up a new browser window to your Magento shop in debugging mode. Next, within Google Analytics, use the **DebugView**. Besides generic events like `pageview`, there should also be more specific e-commerce events like `view_item_list` and `view_item`. 
 
+### GTM environments (development / staging)
+Google Tag Manager [environments](https://support.google.com/tagmanager/answer/6311518) share the same container ID, but load a different container version by adding `gtm_auth` and `gtm_preview` to the container URL. In **GTM > Admin > Environments**, choose **Actions > Get Snippet** for your environment and copy the values of `gtm_auth` (like `aBcD3fG_hIjK1mN`) and `gtm_preview` (like `env-6`) into the Magento options **GTM Environment Auth** and **GTM Environment Preview**. Both values need to be set and valid, otherwise they are ignored. When multiple container IDs are configured, the environment is only added to the first one.
+
+Make sure these values never end up in production, because visitors would then receive an unpublished container version. Preferably, set them only in the `app/etc/env.php` of your development or staging environment:
+
+```bash
+bin/magento config:set --lock-env googletagmanager2/settings/environment_auth aBcD3fG_hIjK1mN
+bin/magento config:set --lock-env googletagmanager2/settings/environment_preview env-6
+```
+
 ## Tutorial with Consent
 Read the [Tutorial](#tutorial) to get yourself familiar with it. This will only substitute the `Alternatively` and `Magento` parts.
 
