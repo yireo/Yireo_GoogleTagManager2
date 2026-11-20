@@ -42,6 +42,7 @@ using major version 2 in the past, edit your `composer.json` file manually to us
 - [Tutorial](#tutorial)
 - [Tutorial with Consent](#tutorial-with-consent)
 - [Server-Side Tracking](#server-side-tracking)
+- [Content Security Policy](#content-security-policy)
 - [PWA compatibility](#pwa-compatibility)
 - [FAQ](#faq)
 - [Architecture](#architecture)
@@ -369,6 +370,39 @@ bin/magento yireo_googletagmanager2:serverside:test --store=1 --live # Send a te
 bin/magento yireo_googletagmanager2:serverside:process --limit=100   # Send pending events and retry failed events
 ```
 
+
+## Content Security Policy
+By default, this module adds the Google Tag Manager and Google Analytics hosts to the Magento CSP whitelist (`etc/csp_whitelist.xml`). The inline GTM loader script receives a CSP nonce (via `Yireo_CspUtilities`) and passes that nonce on to the `gtm.js` script that it inserts.
+
+Scripts and pixels that your GTM container loads from other vendors (remarketing, ad networks, Meta, etc.) are not whitelisted by this module. If these show up in CSP reports (for instance, in Sansec Watch), either whitelist them in your own module, or limit the tags in your GTM container.
+
+### Opting in to `strict-dynamic`
+With `'strict-dynamic'`, scripts that are loaded by a trusted (nonced) script are trusted as well, so the vendor scripts loaded by GTM no longer need to be whitelisted. This module does not enable this, because it is a site-wide setting with big consequences. If you want to opt in, configure it yourself in the `etc/config.xml` of a custom module, preferably only for the checkout:
+
+```xml
+<config>
+    <default>
+        <csp>
+            <policies>
+                <storefront_checkout_index_index>
+                    <scripts>
+                        <inline>0</inline>
+                        <dynamic>1</dynamic>
+                    </scripts>
+                </storefront_checkout_index_index>
+            </policies>
+        </csp>
+    </default>
+</config>
+```
+
+Before you do so, take the following into account:
+
+- Browsers that support `'strict-dynamic'` ignore the host whitelist, `'self'` and `'unsafe-inline'` for scripts. Every script that is not nonced, hashed or loaded by a trusted script is blocked. On Luma, this includes `require.js` and most `<script src>` tags. Test the entire page carefully.
+- Magento only adds nonces to the CSP header when inline scripts are disabled (`<inline>0</inline>`). The storefront allows inline scripts by default (except for the checkout), so enabling `<dynamic>1</dynamic>` for `storefront` blocks all inline scripts, including GTM, unless you also disable inline scripts there.
+- `'strict-dynamic'` only applies to scripts. Pixels, beacons and frames (`img-src`, `connect-src`, `frame-src`) of other vendors are still reported.
+- Security: anyone with access to your GTM container can then run any script without it showing up in CSP reports. GTM is a known vector for skimming attacks, and on payment pages this affects PCI DSS 4.0 requirements 6.4.3 and 11.6.1. With full page caching, a nonce is reused for all visitors of a cached page, which weakens its protection.
+- Keep the host whitelist in place: it is the fallback for browsers that do not support `'strict-dynamic'`.
 
 ## PWA compatibility
 This frontend extension will be completely replaced by React or Vue functionality, and therefore, this extension will not be made compatible with PWA.

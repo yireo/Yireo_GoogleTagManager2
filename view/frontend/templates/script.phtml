@@ -27,7 +27,7 @@ $events = ($config->waitForUserInteraction() === false)
 ?>
 <script>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
-    (function (events) {
+    (function (events, nonce) {
         const initYireoGoogleTagManager2 = function (event) {
             // Browsers fire a mousemove without any movement when content renders underneath a stationary cursor
             if (event && event.type === 'mousemove' && event.movementX === 0 && event.movementY === 0) {
@@ -46,6 +46,9 @@ $events = ($config->waitForUserInteraction() === false)
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
+                if (nonce) {
+                    j.setAttribute('nonce', nonce);
+                }
                 j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
@@ -55,7 +58,10 @@ $events = ($config->waitForUserInteraction() === false)
         events.forEach(function (eventType) {
             window.addEventListener(eventType, initYireoGoogleTagManager2, {passive: true})
         });
-    })([<?= /* @noEscape */ $events ?>]);
+    })(
+        [<?= /* @noEscape */ $events ?>],
+        document.currentScript ? (document.currentScript.nonce || document.currentScript.getAttribute('nonce')) : ''
+    );
 
     <?php if ($config->isDebug()): ?>
     window.YIREO_GOOGLETAGMANAGER2_DEBUG = true;

@@ -30,7 +30,7 @@
             <values>
                 <value id="*.googletagmanager.com" type="host">*.googletagmanager.com</value>
                 <value id="*.google-analytics.com" type="host">*.google-analytics.com</value>
-                <value id=".com" type="host">www.googletagmanager.com</value>
+                <value id="www.googletagmanager.com" type="host">www.googletagmanager.com</value>
                 <value id="ssl.gstatic.com" type="host">ssl.gstatic.com</value>
                 <value id="www.gstatic.com" type="host">www.gstatic.com</value>
             </values>
