@@ -91,6 +91,50 @@ class ProcessorTest extends TestCase
         $this->assertSame('pending', $this->getOutboxRows()[0]['status']);
     }
 
+    public function testProcessingStopsAfterRepeatedConnectionFailures(): void
+    {
+        $this->configureServerSide(['serverside_tracking/max_attempts' => '5']);
+        $this->clearOutbox();
+        $this->sender->status = 0;
+        foreach (range(1, 5) as $index) {
+            $this->publish('add_to_cart:connection' . $index);
+        }
+
+        ObjectManager::getInstance()->create(Processor::class)->processPending();
+
+        $statuses = array_column($this->getOutboxRows(), 'status');
+        $this->assertCount(3, $this->sender->requests);
+        $this->assertSame(['failed', 'failed', 'failed', 'pending', 'pending'], $statuses);
+    }
+
+    public function testHttpErrorsDoNotStopProcessing(): void
+    {
+        $this->configureServerSide(['serverside_tracking/max_attempts' => '5']);
+        $this->clearOutbox();
+        $this->sender->status = 500;
+        foreach (range(1, 5) as $index) {
+            $this->publish('add_to_cart:http' . $index);
+        }
+
+        ObjectManager::getInstance()->create(Processor::class)->processPending();
+        $this->assertCount(5, $this->sender->requests);
+    }
+
+    public function testCronSkipsWhenDisabled(): void
+    {
+        $this->configureServerSide();
+        $this->clearOutbox();
+        $this->publish('add_to_cart:disabled');
+        $this->configureServerSide(['serverside_tracking/enabled' => '0']);
+
+        $outbox = ObjectManager::getInstance()->create(Outbox::class);
+        $outbox->processPending();
+        $outbox->retryFailed();
+
+        $this->assertCount(0, $this->sender->requests);
+        $this->assertSame('pending', $this->getOutboxRows()[0]['status']);
+    }
+
     private function publish(string $dedupKey): void
     {
         $eventPublisher = ObjectManager::getInstance()->create(EventPublisher::class);

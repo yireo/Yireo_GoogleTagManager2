@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
-    <group id="default">
+    <group id="yireo_gtm2_serverside">
         <job name="yireo_gtm2_serverside_process" instance="Yireo\GoogleTagManager2\ServerSide\Cron\Outbox" method="processPending">
             <schedule>* * * * *</schedule>
         </job>

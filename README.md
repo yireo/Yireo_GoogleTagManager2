@@ -328,7 +328,11 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
   server-side event is skipped), the `purchase` event is still pushed in the browser, so that GTM consent mode can
   handle it.
 - **Dispatch mode**:
-    - *Cron* (default): Pending events are sent by the cron job `yireo_gtm2_serverside_process` every minute.
+    - *Cron* (default): Pending events are sent by the cron job `yireo_gtm2_serverside_process` every minute. All
+      server-side cron jobs run in their own cron group `yireo_gtm2_serverside` (in a separate process), so that a
+      slow endpoint never delays the other cron jobs. Every run stops after 50 seconds, or after 3 connection failures
+      in a row, and continues with the next run. When server-side tracking is disabled in all stores, nothing is
+      processed.
     - *Message queue*: Every event is published to the topic `yireo_gtm2.serverside.event` (connection `db`). Make
       sure the consumer is running: `bin/magento queue:consumers:start yireo_gtm2.serverside.event`.
 - **Require analytics consent** (default *Yes*): Only applies when a consent source is active: by default, this is the
