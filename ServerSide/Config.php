@@ -14,6 +14,7 @@ class Config
 {
     private const TRIM_CHARACTERS = " \n\r\t\v\0";
     public const GA4_ENDPOINT = 'https://www.google-analytics.com';
+    public const SECURE_URL_PATTERN = '#^https://[a-z0-9.\-]+(:\d+)?(/\S*)?$#i';
     private const PREFIX = 'googletagmanager2/serverside_tracking/';
 
     private ScopeConfigInterface $scopeConfig;
@@ -68,16 +69,12 @@ class Config
     {
         $baseUrl = self::GA4_ENDPOINT;
         $sgtmUrl = $this->getSgtmUrl($storeId);
-        if ($this->getDestination($storeId) === Destination::SGTM && self::isSecureUrl($sgtmUrl)) {
+        $isSecure = (bool)preg_match(self::SECURE_URL_PATTERN, $sgtmUrl);
+        if ($this->getDestination($storeId) === Destination::SGTM && $isSecure) {
             $baseUrl = $sgtmUrl;
         }
 
         return $baseUrl . ($validation ? '/debug/mp/collect' : '/mp/collect');
-    }
-
-    public static function isSecureUrl(string $url): bool
-    {
-        return parse_url($url, PHP_URL_SCHEME) === 'https' && (string)parse_url($url, PHP_URL_HOST) !== '';
     }
 
     public function getEvents(?int $storeId = null): array

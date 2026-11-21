@@ -13,7 +13,7 @@ class SgtmUrl extends Value
         $value = trim((string)$this->getValue(), " \n\r\t\v\0");
         $this->setValue($value);
 
-        if ($value !== '' && false === Config::isSecureUrl($value)) {
+        if ($value !== '' && false === (bool)preg_match(Config::SECURE_URL_PATTERN, $value)) {
             throw new InvalidConfig('Invalid server-side GTM URL. It should be a valid URL starting with "https://"');
         }
 

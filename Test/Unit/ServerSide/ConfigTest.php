@@ -39,12 +39,14 @@ class ConfigTest extends TestCase
         $this->assertSame('https://www.google-analytics.com/mp/collect', $this->getConfig()->getEndpointUrl());
     }
 
-    public function testIsSecureUrl(): void
+    public function testSecureUrlPattern(): void
     {
-        $this->assertTrue(Config::isSecureUrl('https://sgtm.example.com'));
-        $this->assertFalse(Config::isSecureUrl('http://sgtm.example.com'));
-        $this->assertFalse(Config::isSecureUrl('https://'));
-        $this->assertFalse(Config::isSecureUrl('sgtm.example.com'));
+        $this->assertSame(1, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com'));
+        $this->assertSame(1, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com:8443/path'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'http://sgtm.example.com'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'sgtm.example.com'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://user@sgtm.example.com'));
     }
 
     public function testEventsAndSuppression(): void
