@@ -51,6 +51,42 @@ class SuppressionTest extends TestCase
         $this->assertSame('purchase', $this->getBrowserPurchaseEvent()['event'] ?? null);
     }
 
+    /**
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     */
+    public function testBrowserPurchaseIsNotSuppressedWithoutConsent(): void
+    {
+        $this->configureServerSide([
+            'serverside_tracking/suppress_browser_purchase' => '1',
+            'serverside_tracking/require_consent' => '1',
+            'consent/enabled' => '1',
+        ]);
+
+        $this->assertSame('purchase', $this->getBrowserPurchaseEvent()['event'] ?? null);
+
+        $_COOKIE['yireo_gtm2_consent'] = rawurlencode('{"analytics":false,"marketing":true}');
+        $this->assertSame('purchase', $this->getBrowserPurchaseEvent()['event'] ?? null);
+        unset($_COOKIE['yireo_gtm2_consent']);
+    }
+
+    /**
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     */
+    public function testBrowserPurchaseIsSuppressedWithConsent(): void
+    {
+        $this->configureServerSide([
+            'serverside_tracking/suppress_browser_purchase' => '1',
+            'serverside_tracking/require_consent' => '1',
+            'consent/enabled' => '1',
+        ]);
+
+        $_COOKIE['yireo_gtm2_consent'] = rawurlencode('{"analytics":true}');
+        $event = $this->getBrowserPurchaseEvent();
+        unset($_COOKIE['yireo_gtm2_consent']);
+
+        $this->assertSame([], $event);
+    }
+
     private function getBrowserPurchaseEvent(): array
     {
         $sessionDataProvider = ObjectManager::getInstance()->get(CheckoutSessionDataProvider::class);

@@ -324,7 +324,9 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
       the group **Settings**)
     - *When an invoice is paid*
 - **Suppress browser purchase event** (default *Yes*): When the `purchase` event is sent server-side, it is no longer
-  pushed to the `dataLayer` in the browser.
+  pushed to the `dataLayer` in the browser. When analytics consent is required but not granted (so that the
+  server-side event is skipped), the `purchase` event is still pushed in the browser, so that GTM consent mode can
+  handle it.
 - **Dispatch mode**:
     - *Cron* (default): Pending events are sent by the cron job `yireo_gtm2_serverside_process` every minute.
     - *Message queue*: Every event is published to the topic `yireo_gtm2.serverside.event` (connection `db`). Make

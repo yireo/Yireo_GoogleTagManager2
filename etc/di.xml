@@ -57,7 +57,7 @@
 
     <type name="Yireo\GoogleTagManager2\DataLayer\Event\Purchase">
         <arguments>
-            <argument name="serverSideConfig" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Config</argument>
+            <argument name="browserPurchaseSuppressor" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\BrowserPurchaseSuppressor</argument>
         </arguments>
     </type>
 

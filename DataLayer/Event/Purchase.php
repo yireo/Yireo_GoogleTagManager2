@@ -8,7 +8,7 @@ use Magento\Sales\Model\Order;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Order\OrderItems;
-use Yireo\GoogleTagManager2\ServerSide\Config as ServerSideConfig;
+use Yireo\GoogleTagManager2\ServerSide\BrowserPurchaseSuppressor;
 use Yireo\GoogleTagManager2\Util\OrderTotals;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -22,7 +22,7 @@ class Purchase implements EventInterface
     private PriceFormatter $priceFormatter;
     private Session $checkoutSession;
     private OrderTotals $orderTotals;
-    private ?ServerSideConfig $serverSideConfig;
+    private ?BrowserPurchaseSuppressor $browserPurchaseSuppressor;
 
     public function __construct(
         OrderItems $orderItems,
@@ -30,14 +30,14 @@ class Purchase implements EventInterface
         PriceFormatter $priceFormatter,
         Session $checkoutSession,
         OrderTotals $orderTotals,
-        ?ServerSideConfig $serverSideConfig = null
+        ?BrowserPurchaseSuppressor $browserPurchaseSuppressor = null
     ) {
         $this->orderItems = $orderItems;
         $this->config = $config;
         $this->priceFormatter = $priceFormatter;
         $this->checkoutSession = $checkoutSession;
         $this->orderTotals = $orderTotals;
-        $this->serverSideConfig = $serverSideConfig;
+        $this->browserPurchaseSuppressor = $browserPurchaseSuppressor;
     }
 
     /**
@@ -102,7 +102,7 @@ class Purchase implements EventInterface
 
     private function isSuppressedInBrowser(OrderInterface $order): bool
     {
-        if ($this->serverSideConfig && $this->serverSideConfig->suppressBrowserPurchase((int)$order->getStoreId())) {
+        if ($this->browserPurchaseSuppressor && $this->browserPurchaseSuppressor->isSuppressed($order)) {
             return true;
         }
 
