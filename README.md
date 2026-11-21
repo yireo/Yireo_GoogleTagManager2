@@ -329,7 +329,8 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
     - *Cron* (default): Pending events are sent by the cron job `yireo_gtm2_serverside_process` every minute.
     - *Message queue*: Every event is published to the topic `yireo_gtm2.serverside.event` (connection `db`). Make
       sure the consumer is running: `bin/magento queue:consumers:start yireo_gtm2.serverside.event`.
-- **Require analytics consent** (default *Yes*): Only applies when the consent banner of this extension is enabled.
+- **Require analytics consent** (default *Yes*): Only applies when a consent source is active: by default, this is the
+  consent banner of this extension (see [Using a third-party consent manager](#using-a-third-party-consent-manager)).
   Events are only sent when the customer granted analytics consent.
 - **Send customer ID as user_id** (default *No*): Send the Magento customer ID of logged-in customers as `user_id`, so
   that GA4 can link events across devices. Only enable this when your privacy policy allows it.
@@ -351,17 +352,78 @@ send any data server-to-server.
   maximum number of attempts is reached, so fix outages quickly.
 - **Use the same Measurement ID** in the browser and in this configuration, otherwise server-side events can not be
   linked to the session of the visitor.
-- **Consent**: The consent check only works with the consent banner of this extension. When you use a third-party
-  consent tool, either set **Require analytics consent** to *No* or make sure that it calls
-  `yireoGoogleTagManager2SetConsent()`.
+- **Consent**: By default, the consent check only works with the consent banner of this extension. When you use a
+  third-party consent tool, add your own consent resolver (see below), make sure that the tool calls
+  `yireoGoogleTagManager2SetConsent()`, or set **Require analytics consent** to *No*. Without an active consent
+  source, events are sent without a consent check.
 - **Orders without a browser**: For orders created in the Admin Panel (or without stored browser context), a random
   `client_id` is used. With **Require analytics consent** enabled, these events are skipped, because consent is
   unknown.
 
+### Using a third-party consent manager
+The consent of the customer is read by a class implementing
+`Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface`. The default implementation
+`CookieConsentResolver` reads the cookie `yireo_gtm2_consent` and is only active when the consent banner of this
+extension is enabled. To use a third-party consent manager (Cookiebot, OneTrust, ...), add your own implementation and
+configure it as preference in the `etc/di.xml` of your own module:
+
+```xml
+<preference
+    for="Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface"
+    type="Vendor\Module\ServerSide\CookiebotConsentResolver"/>
+```
+
+- `isActive(?int $storeId)`: Return `true` when your consent manager is used in this store. Only then **Require
+  analytics consent** is applied.
+- `getConsent(?int $storeId)`: Return an array with the boolean keys `analytics`, `marketing` and `preferences`, or
+  `null` when the consent is unknown (which skips the event, when consent is required).
+
+For example, for Cookiebot (which stores its consent in the cookie `CookieConsent`):
+
+```php
+<?php declare(strict_types=1);
+
+namespace Vendor\Module\ServerSide;
+
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
+
+class CookiebotConsentResolver implements ConsentResolverInterface
+{
+    public function __construct(
+        private CookieManagerInterface $cookieManager
+    ) {
+    }
+
+    public function isActive(?int $storeId = null): bool
+    {
+        return true;
+    }
+
+    public function getConsent(?int $storeId = null): ?array
+    {
+        $value = rawurldecode((string)$this->cookieManager->getCookie('CookieConsent'));
+        if ($value === '') {
+            return null;
+        }
+
+        return [
+            'analytics' => str_contains($value, 'statistics:true'),
+            'marketing' => str_contains($value, 'marketing:true'),
+            'preferences' => str_contains($value, 'preferences:true'),
+        ];
+    }
+}
+```
+
+The consent is read when the order is placed (and stored with the order context), so that events sent later still
+use the consent of the customer.
+
 ### How it works
 - **Context**: GA4 needs the `client_id` of the browser to stitch server-side events to the browser session. The
   `client_id` is read from the `_ga` cookie, the `session_id` from the `_ga_<MEASUREMENT_ID>` cookie and the consent
-  from the cookie `yireo_gtm2_consent` (written by `yireoGoogleTagManager2SetConsent()` of the consent banner). When an
+  from the consent resolver (by default, the cookie `yireo_gtm2_consent`, written by
+  `yireoGoogleTagManager2SetConsent()` of the consent banner). When an
   order is placed, this context is stored in the table `yireo_gtm_serverside_context`, so that events triggered later
   (in the Admin Panel, via cron or via a payment webhook) still use the original `client_id`. If no `_ga` cookie is
   found, a random `client_id` is generated. The customer ID of logged-in customers is only sent as `user_id` when

@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\ServerSide;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
+use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
 use Yireo\GoogleTagManager2\ServerSide\Config\Source\Destination;
 use Yireo\GoogleTagManager2\ServerSide\Config\Source\DispatchMode;
 use Yireo\GoogleTagManager2\ServerSide\Config\Source\PurchaseTrigger;
@@ -17,13 +18,16 @@ class Config
 
     private ScopeConfigInterface $scopeConfig;
     private EncryptorInterface $encryptor;
+    private ConsentResolverInterface $consentResolver;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        EncryptorInterface $encryptor
+        EncryptorInterface $encryptor,
+        ConsentResolverInterface $consentResolver
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->encryptor = $encryptor;
+        $this->consentResolver = $consentResolver;
     }
 
     public function isEnabled(?int $storeId = null): bool
@@ -119,8 +123,8 @@ class Config
 
     public function requireConsent(?int $storeId = null): bool
     {
-        return $this->isFlag('googletagmanager2/consent/enabled', $storeId)
-            && $this->isFlag(self::PREFIX . 'require_consent', $storeId);
+        return $this->isFlag(self::PREFIX . 'require_consent', $storeId)
+            && $this->consentResolver->isActive($storeId);
     }
 
     public function sendUserId(?int $storeId = null): bool

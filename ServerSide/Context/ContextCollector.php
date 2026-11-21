@@ -3,6 +3,7 @@
 namespace Yireo\GoogleTagManager2\ServerSide\Context;
 
 use Magento\Customer\Model\Session as CustomerSession;
+use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
 use Yireo\GoogleTagManager2\ServerSide\Config;
 
 class ContextCollector
@@ -10,15 +11,18 @@ class ContextCollector
     private CookieReader $cookieReader;
     private CustomerSession $customerSession;
     private Config $config;
+    private ConsentResolverInterface $consentResolver;
 
     public function __construct(
         CookieReader $cookieReader,
         CustomerSession $customerSession,
-        Config $config
+        Config $config,
+        ConsentResolverInterface $consentResolver
     ) {
         $this->cookieReader = $cookieReader;
         $this->customerSession = $customerSession;
         $this->config = $config;
+        $this->consentResolver = $consentResolver;
     }
 
     public function collect(?int $storeId = null): Context
@@ -29,7 +33,7 @@ class ContextCollector
             $this->cookieReader->getClientId() ?? $this->generateClientId(),
             $this->cookieReader->getSessionId($this->config->getMeasurementId($storeId)),
             $customerId > 0 ? (string)$customerId : null,
-            $this->cookieReader->getConsent()
+            $this->consentResolver->getConsent($storeId)
         );
     }
 

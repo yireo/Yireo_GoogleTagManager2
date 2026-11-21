@@ -6,6 +6,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use PHPUnit\Framework\TestCase;
 use Yireo\GoogleTagManager2\ServerSide\Config;
+use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
 
 class ConfigTest extends TestCase
 {
@@ -64,7 +65,7 @@ class ConfigTest extends TestCase
         $this->assertTrue($this->getConfig()->suppressBrowserPurchase());
     }
 
-    public function testRequireConsentOnlyWithConsentEnabled(): void
+    public function testRequireConsentOnlyWithActiveConsentResolver(): void
     {
         $this->values = ['serverside_tracking/require_consent' => '1'];
         $this->assertFalse($this->getConfig()->requireConsent());
@@ -95,6 +96,11 @@ class ConfigTest extends TestCase
         $encryptor = $this->createMock(EncryptorInterface::class);
         $encryptor->method('decrypt')->willReturn('secret');
 
-        return new Config($scopeConfig, $encryptor);
+        $consentResolver = $this->createMock(ConsentResolverInterface::class);
+        $consentResolver->method('isActive')->willReturnCallback(function () {
+            return (bool)($this->values['consent/enabled'] ?? false);
+        });
+
+        return new Config($scopeConfig, $encryptor, $consentResolver);
     }
 }

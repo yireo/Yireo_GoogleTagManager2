@@ -53,6 +53,8 @@
         </arguments>
     </type>
 
+    <preference for="Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface" type="Yireo\GoogleTagManager2\ServerSide\Consent\CookieConsentResolver"/>
+
     <type name="Yireo\GoogleTagManager2\DataLayer\Event\Purchase">
         <arguments>
             <argument name="serverSideConfig" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Config</argument>
