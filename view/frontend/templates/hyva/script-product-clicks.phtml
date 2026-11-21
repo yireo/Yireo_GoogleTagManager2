@@ -30,14 +30,20 @@ $productPath = $block->getProductPath();
     }
 
     function yireoGoogleTagManager2FindProductId(element) {
+        const productItem = element.closest('[data-entity_id]');
+        const entityId = productItem ? productItem.getAttribute('data-entity_id') : '';
+        if (/^\d+$/.test(entityId)) {
+            return entityId;
+        }
+
         const form = yireoGoogleTagManager2FindParentElementWithName(element, 'form');
         const inputElement = form ? form.querySelector('input[name="product"]') : null;
-        if (inputElement) {
+        if (inputElement && inputElement.value) {
             return inputElement.value;
         }
 
         const itemInfo = element.closest('[id^="product-item-info_"]');
-        const matches = itemInfo ? itemInfo.id.match(/_(\d+)$/) : null;
+        const matches = itemInfo ? itemInfo.id.match(/^product-item-info_(\d+)$/) : null;
 
         return matches ? matches[1] : null;
     }
