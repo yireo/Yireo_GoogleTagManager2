@@ -47,6 +47,8 @@ class ConfigTest extends TestCase
         $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://'));
         $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'sgtm.example.com'));
         $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://user@sgtm.example.com'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com/?x=1'));
+        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com/#a'));
     }
 
     public function testEventsAndSuppression(): void

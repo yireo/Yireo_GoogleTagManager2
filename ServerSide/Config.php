@@ -14,7 +14,7 @@ class Config
 {
     private const TRIM_CHARACTERS = " \n\r\t\v\0";
     public const GA4_ENDPOINT = 'https://www.google-analytics.com';
-    public const SECURE_URL_PATTERN = '#^https://[a-z0-9.\-]+(:\d+)?(/\S*)?$#i';
+    public const SECURE_URL_PATTERN = '#^https://[a-z0-9.\-]+(:\d+)?(/[^\s?\#]*)?$#i';
     private const PREFIX = 'googletagmanager2/serverside_tracking/';
 
     private ScopeConfigInterface $scopeConfig;
