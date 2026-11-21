@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\Config\XmlConfig;
 use DOMDocument;
 use DOMNode;
 use Magento\Framework\Config\ConverterInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class Converter implements ConverterInterface
 {
@@ -15,6 +16,7 @@ class Converter implements ConverterInterface
      *
      * @param DOMDocument $source
      * @return array
+     * @throws LocalizedException
      */
     public function convert($source): array
     {
@@ -45,6 +47,7 @@ class Converter implements ConverterInterface
     /**
      * @param DOMNode $node
      * @return array
+     * @throws LocalizedException
      */
     private function toArray(DOMNode $node): array
     {
@@ -65,6 +68,12 @@ class Converter implements ConverterInterface
             }
 
             $tagName = $childNode->attributes->getNamedItem('name')->nodeValue;
+            if ($tagName === self::TAG_CLASS_KEY) {
+                throw new LocalizedException(
+                    __('The item name "%1" is reserved in data_layer.xml', self::TAG_CLASS_KEY)
+                );
+            }
+
             $tagType = $childNode->attributes->getNamedItem('type')->nodeValue;
             if ($tagType === 'string') {
                 $result[$tagName] = (string)$childNode->nodeValue;
