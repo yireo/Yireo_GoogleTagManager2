@@ -253,6 +253,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="send_user_id" type="select" translate="label comment" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send customer ID as user_id</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Send the Magento customer ID of logged-in customers as user_id. Only enable this when your privacy policy allows it.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="validation_mode" type="select" translate="label comment" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Validation mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

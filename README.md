@@ -331,6 +331,8 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
       sure the consumer is running: `bin/magento queue:consumers:start yireo_gtm2.serverside.event`.
 - **Require analytics consent** (default *Yes*): Only applies when the consent banner of this extension is enabled.
   Events are only sent when the customer granted analytics consent.
+- **Send customer ID as user_id** (default *No*): Send the Magento customer ID of logged-in customers as `user_id`, so
+  that GA4 can link events across devices. Only enable this when your privacy policy allows it.
 - **Validation mode**: Send events to the validation endpoint (`/debug/mp/collect`) instead. GA4 does not record
   these events. Validation messages are logged when **Debug** is enabled.
 - **Maximum attempts** (default 5) and **Retention of sent events (days)** (default 30).
@@ -362,8 +364,8 @@ send any data server-to-server.
   from the cookie `yireo_gtm2_consent` (written by `yireoGoogleTagManager2SetConsent()` of the consent banner). When an
   order is placed, this context is stored in the table `yireo_gtm_serverside_context`, so that events triggered later
   (in the Admin Panel, via cron or via a payment webhook) still use the original `client_id`. If no `_ga` cookie is
-  found, a random `client_id` is generated. The `user_id` is the customer ID of logged-in customers. No IP address or
-  user agent is forwarded.
+  found, a random `client_id` is generated. The customer ID of logged-in customers is only sent as `user_id` when
+  **Send customer ID as user_id** is enabled. No IP address or user agent is forwarded.
 - **Payload**: The existing `DataLayer\Event\*` classes generate the GA4 event data, which is converted into a
   Measurement Protocol payload by `ServerSide\Payload\MeasurementProtocolMapper`. A refund is based on the credit memo
   (`ServerSide\Payload\CreditmemoRefund`), so partial refunds are supported.

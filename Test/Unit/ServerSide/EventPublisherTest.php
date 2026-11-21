@@ -39,6 +39,25 @@ class EventPublisherTest extends TestCase
         $this->assertSame(10, $this->getPublisher()->publish(['event' => 'purchase'], 1, 'purchase:1', new Context('1.2')));
     }
 
+    public function testUserIdIsNotSentByDefault(): void
+    {
+        $this->outboxRepository->expects($this->once())->method('add')
+            ->with(1, 'purchase', 'purchase:1', $this->logicalNot($this->stringContains('user_id')))
+            ->willReturn(10);
+
+        $this->getPublisher()->publish(['event' => 'purchase'], 1, 'purchase:1', new Context('1.2', null, '42'));
+    }
+
+    public function testUserIdIsSentWhenEnabled(): void
+    {
+        $this->config->method('sendUserId')->willReturn(true);
+        $this->outboxRepository->expects($this->once())->method('add')
+            ->with(1, 'purchase', 'purchase:1', $this->stringContains('"user_id":"42"'))
+            ->willReturn(10);
+
+        $this->getPublisher()->publish(['event' => 'purchase'], 1, 'purchase:1', new Context('1.2', null, '42'));
+    }
+
     public function testSkipDisabledEvent(): void
     {
         $this->outboxRepository->expects($this->never())->method('add');

@@ -66,6 +66,10 @@ class EventPublisher
             return null;
         }
 
+        if (false === $this->config->sendUserId($storeId)) {
+            $context = $context->withoutUserId();
+        }
+
         $payload = $this->json->serialize($this->mapper->map($dataLayerEvent, $context));
         $outboxId = $this->outboxRepository->add($storeId, $eventName, $dedupKey, $payload);
         if ($outboxId === null) {

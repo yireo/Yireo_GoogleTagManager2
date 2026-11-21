@@ -41,6 +41,11 @@ class Context
         return $this->consent;
     }
 
+    public function withoutUserId(): Context
+    {
+        return new Context($this->clientId, $this->sessionId, null, $this->consent);
+    }
+
     public function hasConsent(string $type): bool
     {
         return is_array($this->consent) && ($this->consent[$type] ?? false) === true;

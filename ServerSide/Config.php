@@ -123,6 +123,11 @@ class Config
             && $this->isFlag(self::PREFIX . 'require_consent', $storeId);
     }
 
+    public function sendUserId(?int $storeId = null): bool
+    {
+        return $this->isFlag(self::PREFIX . 'send_user_id', $storeId);
+    }
+
     public function isValidationMode(?int $storeId = null): bool
     {
         return $this->isFlag(self::PREFIX . 'validation_mode', $storeId);

@@ -34,6 +34,7 @@
                 <suppress_browser_purchase>1</suppress_browser_purchase>
                 <dispatch_mode>cron</dispatch_mode>
                 <require_consent>1</require_consent>
+                <send_user_id>0</send_user_id>
                 <validation_mode>0</validation_mode>
                 <max_attempts>5</max_attempts>
                 <retention_days>30</retention_days>
