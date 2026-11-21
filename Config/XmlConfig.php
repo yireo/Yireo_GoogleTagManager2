@@ -68,6 +68,11 @@ class XmlConfig
         return [];
     }
 
+    public function _resetState(): void
+    {
+        $this->resolvedDefaults = [];
+    }
+
     private function resolveTags(array $data): array
     {
         foreach ($data as $key => $value) {
