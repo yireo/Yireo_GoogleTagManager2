@@ -5,21 +5,21 @@ namespace Yireo\GoogleTagManager2\ServerSide\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Creditmemo;
+use Psr\Log\LoggerInterface;
 use Throwable;
-use Yireo\GoogleTagManager2\Logger\Debugger;
 use Yireo\GoogleTagManager2\ServerSide\OrderEventPublisher;
 
 class PublishRefund implements ObserverInterface
 {
     private OrderEventPublisher $orderEventPublisher;
-    private Debugger $debugger;
+    private LoggerInterface $logger;
 
     public function __construct(
         OrderEventPublisher $orderEventPublisher,
-        Debugger $debugger
+        LoggerInterface $logger
     ) {
         $this->orderEventPublisher = $orderEventPublisher;
-        $this->debugger = $debugger;
+        $this->logger = $logger;
     }
 
     public function execute(Observer $observer)
@@ -27,7 +27,9 @@ class PublishRefund implements ObserverInterface
         try {
             $this->doExecute($observer);
         } catch (Throwable $exception) {
-            $this->debugger->debug('Server-side observer ' . self::class . ' failed', $exception->getMessage());
+            $this->logger->error(
+                'Server-side tracking observer ' . self::class . ' failed: ' . $exception->getMessage()
+            );
         }
     }
 
