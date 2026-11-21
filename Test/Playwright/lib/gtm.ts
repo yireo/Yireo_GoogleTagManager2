@@ -10,6 +10,7 @@ export const defaultConfig = {
     'googletagmanager2/settings/id': GTM_ID,
     'googletagmanager2/settings/debug': 1,
     'googletagmanager2/settings/wait_for_ui': 0,
+    'googletagmanager2/settings/load_container': 1,
     'googletagmanager2/settings/serverside_enabled': 0,
     'googletagmanager2/settings/view_cart_occurances': 'everywhere',
     'googletagmanager2/settings/view_cart_on_mini_cart_expand_only': 1,
