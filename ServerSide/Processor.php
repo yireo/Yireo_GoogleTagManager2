@@ -70,7 +70,7 @@ class Processor
         } catch (Throwable $exception) {
             $this->outboxRepository->markFailed($id, $exception->getMessage());
             $this->debugger->debug('Server-side event ' . $id . ' failed', $exception->getMessage());
-            return new SendResult(false, 0, $exception->getMessage());
+            return new SendResult(false, -1, $exception->getMessage());
         }
 
         if ($result->isSuccess()) {
