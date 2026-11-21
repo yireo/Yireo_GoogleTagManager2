@@ -12,8 +12,18 @@ function readTemplateScript(relativePath) {
     return match[1];
 }
 
-function createElement(tagName, { id = '', value = '', parentElement = null } = {}) {
-    return { tagName: tagName.toUpperCase(), id, value, parentElement, children: [] };
+function createElement(tagName, { id = '', value = '', parentElement = null, attributes = {} } = {}) {
+    return {
+        tagName: tagName.toUpperCase(),
+        id,
+        value,
+        parentElement,
+        attributes,
+        children: [],
+        getAttribute(name) {
+            return Object.prototype.hasOwnProperty.call(this.attributes, name) ? this.attributes[name] : null;
+        }
+    };
 }
 
 function attach(parent, child) {
@@ -25,6 +35,11 @@ function attach(parent, child) {
 function matchesSelector(element, selector) {
     if (selector === 'input[name="product"]') {
         return element.tagName === 'INPUT' && element.name === 'product';
+    }
+
+    const attribute = selector.match(/^\[([\w-]+)\]$/);
+    if (attribute) {
+        return element.getAttribute(attribute[1]) !== null;
     }
 
     const prefix = selector.match(/^\[id\^="(.+)"\]$/);
@@ -55,14 +70,17 @@ function decorate(element) {
     return element;
 }
 
-function buildTile({ withForm, withInput, tileId = 'product-item-info_42' }) {
+function buildTile({ withForm, withInput, tileId = 'product-item-info_42', inputValue = '42', entityId = null }) {
     const tile = decorate(createElement('div', { id: tileId }));
     let container = tile;
     if (withForm) {
         container = attach(tile, decorate(createElement('form')));
     }
+    if (entityId !== null) {
+        container.attributes['data-entity_id'] = entityId;
+    }
     if (withInput) {
-        const input = attach(container, decorate(createElement('input', { value: '42' })));
+        const input = attach(container, decorate(createElement('input', { value: inputValue })));
         input.name = 'product';
     }
     const link = attach(container, decorate(createElement('a')));
@@ -119,6 +137,42 @@ describe('Hyva product click tracking', function () {
 
         assert.strictEqual(pushes.length, 1);
         assert.strictEqual(pushes[0].ecommerce.items[0].item_id, '42');
+    });
+
+    it('pushes select_item with the data-entity_id of a Hyva tile without form', function () {
+        const { link } = buildTile({ withForm: false, withInput: false, tileId: 'unrelated', entityId: '42' });
+        const pushes = clickProduct(link);
+
+        assert.strictEqual(pushes.length, 1);
+        assert.strictEqual(pushes[0].ecommerce.items[0].item_id, '42');
+    });
+
+    it('prefers the data-entity_id of the tile over a product input of another product', function () {
+        const { link } = buildTile({ withForm: true, withInput: true, inputValue: '7', tileId: 'unrelated', entityId: '42' });
+        const pushes = clickProduct(link);
+
+        assert.strictEqual(pushes.length, 1);
+        assert.strictEqual(pushes[0].ecommerce.items[0].item_id, '42');
+    });
+
+    it('ignores a non-numeric data-entity_id', function () {
+        const { link } = buildTile({ withForm: true, withInput: true, tileId: 'unrelated', entityId: 'abc' });
+        const pushes = clickProduct(link);
+
+        assert.strictEqual(pushes.length, 1);
+        assert.strictEqual(pushes[0].ecommerce.items[0].item_id, '42');
+    });
+
+    it('pushes nothing for an empty product input', function () {
+        const { link } = buildTile({ withForm: true, withInput: true, inputValue: '', tileId: 'unrelated' });
+
+        assert.deepStrictEqual(clickProduct(link), []);
+    });
+
+    it('ignores a product-item-info wrapper id with a trailing suffix', function () {
+        const { link } = buildTile({ withForm: false, withInput: false, tileId: 'product-item-info_42_7' });
+
+        assert.deepStrictEqual(clickProduct(link), []);
     });
 
     it('pushes nothing when no product id can be found', function () {
