@@ -4,11 +4,11 @@ namespace Yireo\GoogleTagManager2\Test\Unit\Config;
 
 use DOMDocument;
 use Magento\Framework\Config\DataInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Yireo\GoogleTagManager2\Api\Data\TagInterface;
 use Yireo\GoogleTagManager2\Config\XmlConfig;
 use Yireo\GoogleTagManager2\Config\XmlConfig\Converter;
@@ -126,16 +126,56 @@ XML;
         return new XmlConfig($dataStorage, $objectManager, $storeManager);
     }
 
+    public function testResetStateClearsResolvedDefaults(): void
+    {
+        $xmlConfig = $this->createXmlConfig($storeId, $currencies, $calls);
+
+        $storeId = 1;
+        $xmlConfig->getDefault();
+        $xmlConfig->_resetState();
+        $xmlConfig->getDefault();
+
+        $this->assertSame(2, $calls);
+    }
+
+    public function testConverterRejectsReservedItemName(): void
+    {
+        $this->expectException(LocalizedException::class);
+        $this->convertXml(<<<'XML'
+<data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <default>
+        <item name="__tag_class" xsi:type="string">Test\CurrencyTag</item>
+    </default>
+</data_layer>
+XML);
+    }
+
+    public function testConverterRejectsReservedItemNameInNestedArray(): void
+    {
+        $this->expectException(LocalizedException::class);
+        $this->convertXml(<<<'XML'
+<data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <events>
+        <event id="view_item">
+            <item name="nested" xsi:type="array">
+                <item name="__tag_class" xsi:type="string">Test\CurrencyTag</item>
+            </item>
+        </event>
+    </events>
+</data_layer>
+XML);
+    }
+
+    private function convertXml(string $xml): array
+    {
+        $document = new DOMDocument();
+        $document->loadXML($xml);
+
+        return $this->createConverter()->convert($document);
+    }
+
     private function createConverter(): Converter
     {
-        $tag = $this->createStub(TagInterface::class);
-        $tag->method('get')->willReturn('USD');
-        $objectManager = $this->createStub(ObjectManagerInterface::class);
-        $objectManager->method('get')->willReturn($tag);
-
-        $constructor = (new ReflectionClass(Converter::class))->getConstructor();
-        $arguments = $constructor && $constructor->getNumberOfRequiredParameters() > 0 ? [$objectManager] : [];
-
-        return new Converter(...$arguments);
+        return new Converter();
     }
 }
