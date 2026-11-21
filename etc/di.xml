@@ -55,6 +55,12 @@
 
     <preference for="Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface" type="Yireo\GoogleTagManager2\ServerSide\Consent\CookieConsentResolver"/>
 
+    <type name="Yireo\GoogleTagManager2\ServerSide\Config">
+        <arguments>
+            <argument name="consentResolver" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface\Proxy</argument>
+        </arguments>
+    </type>
+
     <type name="Yireo\GoogleTagManager2\DataLayer\Event\Purchase">
         <arguments>
             <argument name="browserPurchaseSuppressor" xsi:type="object">Yireo\GoogleTagManager2\ServerSide\BrowserPurchaseSuppressor</argument>
