@@ -312,7 +312,8 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
 - **Destination**:
     - *Google Analytics 4 (Measurement Protocol)*: Events are sent to `https://www.google-analytics.com/mp/collect`.
     - *Server-side GTM container*: Events are sent to `<Server-side GTM URL>/mp/collect`. Your sGTM container needs a
-      Measurement Protocol client to handle these requests.
+      Measurement Protocol client to handle these requests. The URL must start with `https://`, because the API
+      secret is part of the request URL. When the URL is not a valid HTTPS URL, events are sent to GA4 instead.
 - **Measurement ID** (`G-XXXXXXX`) and **API secret**. The API secret is stored encrypted and is never logged.
 - **Events**: The events to send server-side: `purchase` and `refund` (default), plus optionally `add_to_cart`,
   `remove_from_cart`, `begin_checkout`, `add_shipping_info`, `add_payment_info`, `login`, `sign_up` and

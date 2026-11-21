@@ -31,8 +31,19 @@ class ConfigTest extends TestCase
         $this->values['serverside_tracking/destination'] = 'sgtm';
         $this->assertSame('https://sgtm.example.com/mp/collect', $this->getConfig()->getEndpointUrl());
 
+        $this->values['serverside_tracking/sgtm_url'] = 'http://sgtm.example.com';
+        $this->assertSame('https://www.google-analytics.com/mp/collect', $this->getConfig()->getEndpointUrl());
+
         $this->values['serverside_tracking/sgtm_url'] = '';
         $this->assertSame('https://www.google-analytics.com/mp/collect', $this->getConfig()->getEndpointUrl());
+    }
+
+    public function testIsSecureUrl(): void
+    {
+        $this->assertTrue(Config::isSecureUrl('https://sgtm.example.com'));
+        $this->assertFalse(Config::isSecureUrl('http://sgtm.example.com'));
+        $this->assertFalse(Config::isSecureUrl('https://'));
+        $this->assertFalse(Config::isSecureUrl('sgtm.example.com'));
     }
 
     public function testEventsAndSuppression(): void

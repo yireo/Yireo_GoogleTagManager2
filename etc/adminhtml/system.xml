@@ -191,7 +191,8 @@
                 </field>
                 <field id="sgtm_url" type="text" translate="label comment" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Server-side GTM URL</label>
-                    <comment>Full URL of your server-side GTM container (for instance https://sgtm.example.com). Events are sent to this URL plus /mp/collect.</comment>
+                    <comment>Full HTTPS URL of your server-side GTM container (for instance https://sgtm.example.com). Events are sent to this URL plus /mp/collect.</comment>
+                    <backend_model>Yireo\GoogleTagManager2\Config\Backend\SgtmUrl</backend_model>
                     <validate>validate-url</validate>
                     <depends>
                         <field id="enabled">1</field>

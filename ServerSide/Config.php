@@ -63,11 +63,17 @@ class Config
     public function getEndpointUrl(?int $storeId = null, bool $validation = false): string
     {
         $baseUrl = self::GA4_ENDPOINT;
-        if ($this->getDestination($storeId) === Destination::SGTM && $this->getSgtmUrl($storeId) !== '') {
-            $baseUrl = $this->getSgtmUrl($storeId);
+        $sgtmUrl = $this->getSgtmUrl($storeId);
+        if ($this->getDestination($storeId) === Destination::SGTM && self::isSecureUrl($sgtmUrl)) {
+            $baseUrl = $sgtmUrl;
         }
 
         return $baseUrl . ($validation ? '/debug/mp/collect' : '/mp/collect');
+    }
+
+    public static function isSecureUrl(string $url): bool
+    {
+        return parse_url($url, PHP_URL_SCHEME) === 'https' && (string)parse_url($url, PHP_URL_HOST) !== '';
     }
 
     public function getEvents(?int $storeId = null): array
