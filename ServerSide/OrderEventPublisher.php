@@ -56,7 +56,7 @@ class OrderEventPublisher
     public function publishPurchase(OrderInterface $order): ?int
     {
         $storeId = (int)$order->getStoreId();
-        $dedupKey = 'purchase:' . $order->getIncrementId();
+        $dedupKey = 'purchase:' . $order->getEntityId();
         if (false === $this->config->isEventEnabled('purchase', $storeId) || $this->outboxRepository->exists($dedupKey)) {
             return null;
         }

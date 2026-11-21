@@ -367,7 +367,7 @@ send any data server-to-server.
   Measurement Protocol payload by `ServerSide\Payload\MeasurementProtocolMapper`. A refund is based on the credit memo
   (`ServerSide\Payload\CreditmemoRefund`), so partial refunds are supported.
 - **Outbox**: Every event is stored in the table `yireo_gtm_serverside_event` with a unique deduplication key (for
-  instance `purchase:<increment ID>` or `refund:<credit memo ID>`), so that an order is never sent twice. The status
+  instance `purchase:<order ID>` or `refund:<credit memo ID>`), so that an order is never sent twice. The status
   of every event (`pending`, `processing`, `sent`, `failed`) and the last error are stored as well.
 - **Retries**: Failed events are retried every 15 minutes by the cron job `yireo_gtm2_serverside_retry`, until the
   maximum number of attempts is reached. Sent and failed events are removed by the cron job

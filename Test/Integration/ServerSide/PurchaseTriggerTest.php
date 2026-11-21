@@ -37,7 +37,7 @@ class PurchaseTriggerTest extends TestCase
 
         $rows = $this->getOutboxRows('purchase');
         $this->assertCount(1, $rows);
-        $this->assertSame('purchase:' . $order->getIncrementId(), $rows[0]['dedup_key']);
+        $this->assertSame('purchase:' . $order->getEntityId(), $rows[0]['dedup_key']);
         $this->assertSame('pending', $rows[0]['status']);
 
         $payload = json_decode($rows[0]['payload'], true);
