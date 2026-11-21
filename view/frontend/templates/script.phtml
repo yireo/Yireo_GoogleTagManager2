@@ -42,7 +42,9 @@ $events = ($config->waitForUserInteraction() === false)
             <?php $environmentQuery = $gtmIndex === 0 ? $config->getEnvironmentQuery() : ''; ?>
             (function (w, d, s, l, i) {
                 w[l] = w[l] || [];
+                // Always push the start event: a container loaded elsewhere (like a Google tag gateway) relies on it
                 w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+                <?php if ($config->loadContainer()): ?>
                 var f = d.getElementsByTagName(s)[0],
                     j = d.createElement(s),
                     dl = l != 'dataLayer' ? '&l=' + l : '';
@@ -52,6 +54,7 @@ $events = ($config->waitForUserInteraction() === false)
                 }
                 j.src = '<?= $escaper->escapeJs($config->getGoogleTagmanagerUrl()) ?>' + '/gtm.js?id=' + i + dl<?php if ($environmentQuery !== ''): ?> + '<?= $escaper->escapeJs($environmentQuery) ?>'<?php endif; ?>;
                 f.parentNode.insertBefore(j, f);
+                <?php endif; ?>
             })(window, document, 'script', 'dataLayer', '<?= $escaper->escapeJs($gtmId) ?>');
             <?php endforeach; ?>
         };

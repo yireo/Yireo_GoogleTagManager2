@@ -71,6 +71,19 @@ class ConfigTest extends TestCase
 
     /**
      * @test
+     * @covers Config::loadContainer
+     */
+    public function testLoadContainer()
+    {
+        $this->setScopeConfigValue('load_container', 1);
+        $this->assertTrue($this->getTarget()->loadContainer());
+
+        $this->setScopeConfigValue('load_container', 0);
+        $this->assertFalse($this->getTarget()->loadContainer());
+    }
+
+    /**
+     * @test
      * @covers Config::getId
      */
     public function testGetId()

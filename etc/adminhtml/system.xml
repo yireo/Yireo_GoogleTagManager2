@@ -74,6 +74,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="load_container" type="select" translate="label comment" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Load GTM container script</label>
+                    <comment>When set to No, the extension still pushes the gtm.js start event and all dataLayer events, but no longer inserts the gtm.js script itself. Use this when the container is already loaded by something else, for instance a first-party Google tag gateway (like the one of Cloudflare) that injects its own loader.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="category_products" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Maximum Products in Category</label>
                     <comment>Maximum number of products to load in a specific category overview. 0 to disable</comment>
