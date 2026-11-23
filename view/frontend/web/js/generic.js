@@ -17,6 +17,7 @@ define([
     'use strict';
 
     var moduleConfig = {};
+    var pendingEvents = {};
 
     var isDisabled = function () {
         if (isValidConfig() === false) {
@@ -76,13 +77,28 @@ define([
         logger('customerData section "' + sectionName + '" contains event "' + eventId + '"', eventData);
 
         const metaData = Object.assign({}, eventData.meta);
-        if (metaData && metaData.allowed_events) {
-            for (const [allowedEventKey, allowedEvent] of Object.entries(metaData.allowed_events)) {
-                $(window).on(allowedEvent, function () {
-                    pusher(eventData, 'push (allowed event "' + allowedEventKey + '") [generic.js]');
-                });
-            }
+        if (Array.isArray(metaData.allowed_events) && metaData.allowed_events.length > 0) {
+            metaData.allowed_events.forEach(function (allowedEvent) {
+                const pendingKey = allowedEvent + '|' + eventData.event;
+                const isListening = pendingKey in pendingEvents;
+                pendingEvents[pendingKey] = eventData;
+                if (isListening) {
+                    return;
+                }
 
+                $(window).on(allowedEvent, function () {
+                    const pendingEventData = pendingEvents[pendingKey];
+                    pusher(pendingEventData, 'push (allowed event "' + allowedEvent + '") [generic.js]');
+                });
+            });
+
+            return;
+        }
+
+        if (sectionName === 'cart'
+            && eventData.event === 'view_cart'
+            && window.location.pathname.includes('checkout/cart/')) {
+            logger('skipping customerData view_cart on cart page', eventData);
             return;
         }
 
