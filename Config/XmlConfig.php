@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\Config;
 
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Config\DataInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\ObjectManagerInterface;
@@ -23,17 +22,17 @@ class XmlConfig
 
     /**
      * @param DataInterface $dataStorage
-     * @param ObjectManagerInterface|null $objectManager
-     * @param StoreManagerInterface|null $storeManager
+     * @param ObjectManagerInterface $objectManager
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         DataInterface $dataStorage,
-        ?ObjectManagerInterface $objectManager = null,
-        ?StoreManagerInterface $storeManager = null
+        ObjectManagerInterface $objectManager,
+        StoreManagerInterface $storeManager
     ) {
         $this->dataStorage = $dataStorage;
-        $this->objectManager = $objectManager ?: ObjectManager::getInstance();
-        $this->storeManager = $storeManager ?: $this->objectManager->get(StoreManagerInterface::class);
+        $this->objectManager = $objectManager;
+        $this->storeManager = $storeManager;
     }
 
     public function getDefault(): array
