@@ -128,4 +128,35 @@ test.describe('GTM duplicate view_cart (Hyva)', function () {
 
         await expectViewCartPushedOnce(dataLayer, 'view_cart pushes after expanding the minicart');
     });
+
+    /**
+     * Regression test for https://github.com/yireo/Yireo_GoogleTagManager2/issues/296: the page-based
+     * `view_cart` carries `allowed_events: []`, which hyva/script-pusher.phtml once treated as "wait for an
+     * event" and therefore never pushed on the cart page.
+     */
+    for (const [configName, payload] of Object.entries({
+        'view_cart_occurances=cart_page': cartPageConfig,
+        'view_cart_occurances=everywhere': everywhereConfig,
+        'view_cart_occurances=everywhere, minicart expand only': minicartExpandConfig,
+    })) {
+        test(`pushes view_cart once when opening the cart page (${configName})`, async function ({page, dataLayer}) {
+            await configureHyvaGtm(page, payload);
+            await addProductToCart(page);
+
+            await page.goto('/checkout/cart/');
+            await settle(page);
+
+            await expectViewCartPushedOnce(dataLayer, 'view_cart pushes after opening the cart page');
+        });
+    }
+
+    test('pushes view_cart from customer data away from the cart page (everywhere)', async function ({page, dataLayer}) {
+        await configureHyvaGtm(page, everywhereConfig);
+        await addProductToCart(page);
+
+        await page.goto('/');
+        await settle(page);
+
+        await expectViewCartPushedOnce(dataLayer, 'view_cart pushes on the homepage');
+    });
 });
