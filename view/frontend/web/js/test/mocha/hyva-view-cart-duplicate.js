@@ -225,4 +225,44 @@ describe('Hyva view_cart duplicate handling', function () {
         assert.strictEqual(addToCartPushes.length, 1);
     });
 
+    it('pushes a page-based view_cart with empty allowed_events at once on the cart page (#296)', function () {
+        const runtime = createRuntime('/checkout/cart/');
+
+        runtime.context.yireoGoogleTagManager2Pusher(
+            viewCartEvent({ value: 10, quantity: 1, allowedEvents: [] }),
+            'push (page-based event) [data-layer.phtml]'
+        );
+
+        assert.strictEqual(getViewCartPushes(runtime.window).length, 1);
+    });
+
+    it('registers a single minicart listener and pushes the newest payload after repeated reloads', function () {
+        const runtime = createRuntime('/category/example/');
+        for (let quantity = 1; quantity <= 3; quantity += 1) {
+            dispatchPrivateContent(runtime, viewCartEvent({
+                value: quantity * 10,
+                quantity,
+                allowedEvents: ['minicart_collapse']
+            }));
+        }
+
+        dispatchToggleCart(runtime, true);
+        dispatchToggleCart(runtime, true);
+
+        const viewCartPushes = getViewCartPushes(runtime.window);
+        assert.strictEqual(viewCartPushes.length, 1);
+        assert.strictEqual(viewCartPushes[0].ecommerce.value, 30);
+        assert.strictEqual(viewCartPushes[0].ecommerce.items[0].quantity, 3);
+    });
+
+    it('does not mutate the meta data of the deferred event', function () {
+        const runtime = createRuntime('/category/example/');
+        const event = viewCartEvent({ value: 10, quantity: 1, allowedEvents: ['minicart_collapse'] });
+
+        runtime.context.yireoGoogleTagManager2Pusher(event, 'push (page-based event) [data-layer.phtml]');
+        dispatchToggleCart(runtime, true);
+
+        assert.strictEqual(getViewCartPushes(runtime.window).length, 1);
+        assert.deepStrictEqual(event.meta.allowed_events, ['minicart_collapse']);
+    });
 });
