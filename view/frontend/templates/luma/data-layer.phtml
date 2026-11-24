@@ -11,7 +11,7 @@ $dataLayerViewModel = $block->getDataLayerViewModel();
 $dataLayerJson = $dataLayerViewModel->getDataLayerAsJson();
 $dataLayerEventsJsonChunks = $dataLayerViewModel->getDataLayerEventsAsJsonChunks();
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     require(['yireoGoogleTagManagerPush'], function (pusher) {
         pusher(<?= /* @noEscape */ $dataLayerJson ?>, 'push (initial page) [data-layer.phtml]');
         <?php foreach ($dataLayerEventsJsonChunks as $dataLayerEventsJsonChunk): ?>

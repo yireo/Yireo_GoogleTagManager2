@@ -40,7 +40,7 @@
         "magento/module-tax": "^100.0",
         "php": ">=8.2 <8.6",
         "psr/log": "^1 || ^2 || ^3",
-        "yireo/magento2-csp-utilities": "^1.0"
+        "yireo/magento2-csp-utilities": "^2.0"
     },
     "require-dev": {
         "loki/magento2-functional-tests": "@dev",

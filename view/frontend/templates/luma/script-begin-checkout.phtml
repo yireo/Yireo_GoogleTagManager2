@@ -13,6 +13,6 @@ $beginCheckoutEvent = $block->getData('begin_checkout_event');
 $dataLayerViewModel = $block->getData('data_layer_view_model');
 $encodedEvent = $dataLayerViewModel->toJson($beginCheckoutEvent->get());
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= /* @noEscape */ $encodedEvent ?>;
 </script>

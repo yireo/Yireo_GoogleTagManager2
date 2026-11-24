@@ -9,8 +9,10 @@
  * @copyright   Copyright (c) 2023 Yireo (http://www.yireo.com/)
  * @license     Open Software License
  */
+
+/** @var \Magento\Framework\View\Element\Template $block */
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     function yireoGoogleTagManager2Pusher(eventData, message, callback) {
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
 
