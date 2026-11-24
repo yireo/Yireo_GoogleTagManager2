@@ -9,7 +9,7 @@ test.describe('GTM CSP nonce (Hyva)', function () {
     test('passes the nonce of the GTM loader on to gtm.js', async function ({page, dataLayer}) {
         await configureHyvaGtm(page);
 
-        await page.goto('/');
+        await page.goto('/checkout/cart/');
         await dataLayer.expectContainerLoaded(GTM_ID);
 
         await expectGtmScriptToInheritNonce(page);
