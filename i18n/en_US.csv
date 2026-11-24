@@ -13,3 +13,5 @@
 "Accept Selection","Accept Selection"
 "Reject All","Reject All"
 "The item name ""%1"" is reserved in data_layer.xml","The item name ""%1"" is reserved in data_layer.xml"
+"Include Coupon Code","Include Coupon Code"
+"If enabled, the coupon code is added to the begin_checkout, add_payment_info, purchase and refund events. Disable this to avoid sending (possibly sensitive) coupon codes to third parties.","If enabled, the coupon code is added to the begin_checkout, add_payment_info, purchase and refund events. Disable this to avoid sending (possibly sensitive) coupon codes to third parties."

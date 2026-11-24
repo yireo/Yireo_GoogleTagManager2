@@ -65,7 +65,7 @@ class Purchase implements EventInterface
         $orderValue = $this->orderTotals->getValueTotal($order);
         $valueAdjusted = $this->orderTotals->getValueTotalAjusted($order);
 
-        return [
+        $data = [
             'event' => 'purchase',
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
@@ -82,6 +82,12 @@ class Purchase implements EventInterface
                 'items' => $this->orderItems->setOrder($order)->get(),
             ]
         ];
+
+        if (false === $this->config->includeCoupon()) {
+            unset($data['ecommerce']['coupon']);
+        }
+
+        return $data;
     }
 
     /**

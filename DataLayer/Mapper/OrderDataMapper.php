@@ -75,6 +75,10 @@ class OrderDataMapper
             'customer' => $this->getCustomerData($order),
         ];
 
+        if (false === $this->config->includeCoupon()) {
+            unset($orderData['coupon']);
+        }
+
         return $this->parseDataLayerMapping($order, $orderData);
     }
 

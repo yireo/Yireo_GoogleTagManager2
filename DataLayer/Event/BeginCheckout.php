@@ -4,6 +4,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Event;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartValue;
 use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
@@ -19,12 +20,14 @@ class BeginCheckout implements EventInterface
      * @param CartItems $cartItems
      * @param CartValue $cartValue
      * @param CurrencyCode $currencyCode
+     * @param Config $config
      */
     public function __construct(
         private readonly CheckoutSession $checkoutSession,
         CartItems $cartItems,
         CartValue $cartValue,
-        CurrencyCode $currencyCode
+        CurrencyCode $currencyCode,
+        private readonly Config $config
     ) {
         $this->cartItems = $cartItems;
         $this->cartValue = $cartValue;
@@ -33,7 +36,7 @@ class BeginCheckout implements EventInterface
 
     public function get(): array
     {
-        return [
+        $data = [
             'event' => 'begin_checkout',
             'ecommerce' => [
                 'currency' => $this->currencyCode->get(),
@@ -42,5 +45,11 @@ class BeginCheckout implements EventInterface
                 'items' => $this->cartItems->get()
             ]
         ];
+
+        if (false === $this->config->includeCoupon()) {
+            unset($data['ecommerce']['coupon']);
+        }
+
+        return $data;
     }
 }

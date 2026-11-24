@@ -23,6 +23,7 @@
                 <use_base_currency>0</use_base_currency>
                 <max_transaction_value>0</max_transaction_value>
                 <include_shipping_in_adjusted_value>0</include_shipping_in_adjusted_value>
+                <include_coupon>1</include_coupon>
             </settings>
             <serverside_tracking>
                 <enabled>0</enabled>

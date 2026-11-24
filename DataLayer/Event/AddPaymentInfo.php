@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\DataLayer\Event;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote as Cart;
 use Yireo\GoogleTagManager2\Api\Data\EventInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 use Yireo\GoogleTagManager2\Util\PriceFormatter;
 
@@ -19,11 +20,14 @@ class AddPaymentInfo implements EventInterface
     /**
      * @param CartRepositoryInterface $cartRepository
      * @param CartItems $cartItems
+     * @param PriceFormatter $priceFormatter
+     * @param Config $config
      */
     public function __construct(
         CartRepositoryInterface  $cartRepository,
         CartItems $cartItems,
-        PriceFormatter $priceFormatter
+        PriceFormatter $priceFormatter,
+        private readonly Config $config
     ) {
         $this->cartItems = $cartItems;
         $this->cartRepository = $cartRepository;
@@ -38,7 +42,7 @@ class AddPaymentInfo implements EventInterface
         /** @var Cart $cart */
         $cart = $this->cartRepository->get($this->cartId);
 
-        return [
+        $data = [
             'event' => 'add_payment_info',
             'ecommerce' => [
                 'currency' => $cart->getQuoteCurrencyCode(),
@@ -49,6 +53,12 @@ class AddPaymentInfo implements EventInterface
                 'items' => $this->cartItems->get()
             ]
         ];
+
+        if (false === $this->config->includeCoupon()) {
+            unset($data['ecommerce']['coupon']);
+        }
+
+        return $data;
     }
 
     /**

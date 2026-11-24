@@ -283,6 +283,16 @@ class Config implements ArgumentInterface
     }
 
     /**
+     * Check whether to include the coupon code in events
+     *
+     * @return bool
+     */
+    public function includeCoupon(): bool
+    {
+        return (bool)$this->getModuleConfigValue('include_coupon', true);
+    }
+
+    /**
      * Get the maximum transaction value threshold
      *
      * @return float

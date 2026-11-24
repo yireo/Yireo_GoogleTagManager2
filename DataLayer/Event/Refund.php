@@ -36,7 +36,7 @@ class Refund implements EventInterface
     public function get(): array
     {
         $order = $this->order;
-        return [
+        $data = [
             'event' => 'refund',
             'ecommerce' => [
                 'transaction_id' => $order->getIncrementId(),
@@ -51,6 +51,12 @@ class Refund implements EventInterface
                 'items' => $this->orderItems->setOrder($order)->get(),
             ]
         ];
+
+        if (false === $this->config->includeCoupon()) {
+            unset($data['ecommerce']['coupon']);
+        }
+
+        return $data;
     }
 
     /**

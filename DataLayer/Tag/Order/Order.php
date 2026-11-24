@@ -43,7 +43,7 @@ class Order implements MergeTagInterface
     public function merge(): array
     {
         $order = $this->getOrder();
-        return [
+        $data = [
             'currency' => (string)$order->getOrderCurrencyCode(),
             'value' => $this->priceFormatter->format($this->orderTotals->getValueTotal($order)),
             'tax' => $this->priceFormatter->format((float)$order->getTaxAmount()),
@@ -54,6 +54,12 @@ class Order implements MergeTagInterface
             'payment_method' => $order->getPayment() ? $order->getPayment()->getMethod() : '',
             'payment_type' => $order->getPayment() ? $order->getPayment()->getMethod() : ''
         ];
+
+        if (false === $this->config->includeCoupon()) {
+            unset($data['coupon']);
+        }
+
+        return $data;
     }
 
     /**
