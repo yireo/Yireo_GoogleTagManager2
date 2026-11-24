@@ -2,7 +2,6 @@
 
 namespace Yireo\GoogleTagManager2\ViewModel;
 
-use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\LayoutInterface;
@@ -15,7 +14,6 @@ class DataLayer implements ArgumentInterface
 {
     private TagParser $variableParser;
     private LayoutInterface $layout;
-    private SerializerInterface $serializer;
 
     /**
      * @var ProcessorInterface[]
@@ -26,20 +24,17 @@ class DataLayer implements ArgumentInterface
     /**
      * @param TagParser $variableParser
      * @param LayoutInterface $layout
-     * @param SerializerInterface $serializer
      * @param XmlConfig $xmlConfig
      * @param array $processors
      */
     public function __construct(
         TagParser $variableParser,
         LayoutInterface $layout,
-        SerializerInterface $serializer,
         XmlConfig $xmlConfig,
         array $processors = []
     ) {
         $this->variableParser = $variableParser;
         $this->layout = $layout;
-        $this->serializer = $serializer;
         $this->processors = $processors;
         $this->xmlConfig = $xmlConfig;
     }
@@ -110,11 +105,16 @@ class DataLayer implements ArgumentInterface
     }
 
     /**
+     * @param array $data
      * @return string
+     * @throws \JsonException
      */
     public function toJson(array $data): string
     {
-        return (string)$this->serializer->serialize($data);
+        return json_encode(
+            $data,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR
+        );
     }
 
     /**
