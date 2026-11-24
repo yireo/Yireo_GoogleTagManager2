@@ -4,11 +4,14 @@
 
 use Magento\Framework\View\Element\Template;
 use Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout;
+use Yireo\GoogleTagManager2\ViewModel\DataLayer;
 
 /** @var Template $block */
 /** @var BeginCheckout $beginCheckoutEvent */
 $beginCheckoutEvent = $block->getData('begin_checkout_event');
-$encodedEvent = json_encode($beginCheckoutEvent->get());
+/** @var DataLayer $dataLayerViewModel */
+$dataLayerViewModel = $block->getData('data_layer_view_model');
+$encodedEvent = $dataLayerViewModel->toJson($beginCheckoutEvent->get());
 ?>
 <script>
     window.YIREO_GOOGLETAGMANAGER2_BEGIN_CHECKOUT = <?= /* @noEscape */ $encodedEvent ?>;

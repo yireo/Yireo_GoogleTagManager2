@@ -12,7 +12,6 @@ namespace Yireo\GoogleTagManager2\ViewModel;
 
 use Magento\Directory\Model\Currency;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Yireo\GoogleTagManager2\Config\Config;
 
@@ -23,23 +22,19 @@ class Commons implements ArgumentInterface
 {
     private DataLayer $dataLayer;
     private Config $config;
-    private SerializerInterface $serializer;
 
     /**
      * Commons constructor.
      *
      * @param DataLayer $dataLayer
      * @param Config $config
-     * @param SerializerInterface $serializer
      */
     public function __construct(
         DataLayer $dataLayer,
-        Config $config,
-        SerializerInterface $serializer
+        Config $config
     ) {
         $this->dataLayer = $dataLayer;
         $this->config = $config;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -62,6 +57,6 @@ class Commons implements ArgumentInterface
      */
     public function getConfigurationAsJson(): string
     {
-        return $this->serializer->serialize($this->getConfiguration());
+        return $this->dataLayer->toJson($this->getConfiguration());
     }
 }

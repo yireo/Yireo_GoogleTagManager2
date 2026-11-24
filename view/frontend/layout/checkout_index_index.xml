@@ -61,6 +61,7 @@
                 ifconfig="googletagmanager2/settings/enabled">
                 <arguments>
                     <argument name="begin_checkout_event" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Event\BeginCheckout</argument>
+                    <argument name="data_layer_view_model" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>
                 </arguments>
             </block>
         </referenceContainer>
