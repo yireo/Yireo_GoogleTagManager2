@@ -55,7 +55,7 @@ $config = $block->getConfig();
     <button id="yireo-btn-reject-all" class="cookie-consent-button btn-grayscale"><?= $escaper->escapeHtml(__("Reject All")) ?></button>
 </div>
 
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     function yireoGoogleTagManager2BannerUpdate() {
         const isShowing = localStorage.getItem('yireoGoogleTagManager2ConsentBannerIsShowing') !== 'false';
         document.getElementById('yireo-cookie-consent-banner').style.display = isShowing ? 'block' : 'none';

@@ -17,7 +17,7 @@ use Yireo\GoogleTagManager2\ViewModel\Commons;
 /** @var Commons $commons */
 $commons = $block->getCommonsViewModel();
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     window.addEventListener('private-content-loaded', function(event) {
         window.dataLayer = window.dataLayer || [];
 

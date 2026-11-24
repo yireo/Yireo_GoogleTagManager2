@@ -25,7 +25,7 @@ $events = ($config->waitForUserInteraction() === false)
     ? "'load', 'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'"
     : "'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'";
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
     (function (events, nonce) {
         const initYireoGoogleTagManager2 = function (event) {

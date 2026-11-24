@@ -4,23 +4,34 @@ namespace Yireo\GoogleTagManager2\Plugin;
 
 use Magento\Framework\View\Element\Template;
 use Yireo\CspUtilities\Util\ReplaceInlineScripts;
+use Yireo\CspUtilities\ViewModel\CspMarker;
 
 class AddCspInlineScripts
 {
-    private ReplaceInlineScripts $replaceInlineScripts;
-
     public function __construct(
-        ReplaceInlineScripts $replaceInlineScripts
+        private readonly ReplaceInlineScripts $replaceInlineScripts,
+        private readonly CspMarker $cspMarker
     ) {
-        $this->replaceInlineScripts = $replaceInlineScripts;
+    }
+
+    public function beforeToHtml(Template $block): void
+    {
+        if ($this->isAllowed($block) && false === $block->hasData('csp_marker')) {
+            $block->setData('csp_marker', $this->cspMarker);
+        }
     }
 
     public function afterToHtml(Template $block, $html): string
     {
-        if (false === strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
+        if (false === $this->isAllowed($block)) {
             return (string)$html;
         }
 
         return $this->replaceInlineScripts->replace((string)$html);
+    }
+
+    private function isAllowed(Template $block): bool
+    {
+        return false !== strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.');
     }
 }

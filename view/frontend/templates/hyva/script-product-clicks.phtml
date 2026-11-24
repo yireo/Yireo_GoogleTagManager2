@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
 
 $productPath = $block->getProductPath();
 ?>
-<script>
+<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
     function yireoGoogleTagManager2FindParentElementWithName(element, parentTagName) {
         if (!element.parentElement) {
             return null;
