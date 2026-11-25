@@ -56,7 +56,7 @@ class AddCspInlineScriptsTest extends TestCase
         $layout = ObjectManager::getInstance()->get(LayoutInterface::class);
         /** @var Template $block */
         $block = $layout->createBlock($class, $name . '-' . uniqid());
-        $block->setTemplate('Yireo_GoogleTagManager2::hyva/script-pusher.phtml');
+        $block->setTemplate('Yireo_GoogleTagManager2::hyva/script-pusher.phtml'); // @phpstan-ignore-line
 
         return (string)$block->toHtml();
     }
