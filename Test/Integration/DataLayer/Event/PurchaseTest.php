@@ -15,6 +15,8 @@ use Yireo\GoogleTagManager2\DataLayer\Event\Purchase;
  */
 class PurchaseTest extends TestCase
 {
+    private const COUPON_CODE = 'GTMTEST';
+
     /**
      * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
      * @magentoConfigFixture current_store googletagmanager2/settings/method 1
@@ -130,6 +132,45 @@ class PurchaseTest extends TestCase
         $this->assertSame(90.0, $ecommerce['value_adjusted'], 'value_adjusted should be in order currency');
         $this->assertArrayHasKey('value_adjusted_currency', $ecommerce);
         $this->assertSame('USD', $ecommerce['value_adjusted_currency']);
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/include_coupon 1
+     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     */
+    public function testIncludesOrderCouponWhenEnabled(): void
+    {
+        $ecommerce = $this->getEcommerceDataWithCoupon();
+
+        $this->assertSame(self::COUPON_CODE, $ecommerce['coupon']);
+    }
+
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/include_coupon 0
+     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     */
+    public function testOmitsOrderCouponWhenDisabled(): void
+    {
+        $ecommerce = $this->getEcommerceDataWithCoupon();
+
+        $this->assertArrayNotHasKey('coupon', $ecommerce);
+    }
+
+    private function getEcommerceDataWithCoupon(): array
+    {
+        $order = $this->getOrder();
+        $order->setCouponCode(self::COUPON_CODE);
+
+        $purchaseEvent = ObjectManager::getInstance()->create(Purchase::class);
+        $data = $purchaseEvent->setOrder($order)->get();
+        $this->assertSame('purchase', $data['event']);
+        $this->assertArrayHasKey('ecommerce', $data);
+
+        return $data['ecommerce'];
     }
 
     private function getEcommerceData(): array
