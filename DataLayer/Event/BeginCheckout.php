@@ -11,9 +11,11 @@ use Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode;
 
 class BeginCheckout implements EventInterface
 {
+    private CheckoutSession $checkoutSession;
     private CartItems $cartItems;
     private CartValue $cartValue;
     private CurrencyCode $currencyCode;
+    private Config $config;
 
     /**
      * @param CheckoutSession $checkoutSession
@@ -23,15 +25,17 @@ class BeginCheckout implements EventInterface
      * @param Config $config
      */
     public function __construct(
-        private readonly CheckoutSession $checkoutSession,
+        CheckoutSession $checkoutSession,
         CartItems $cartItems,
         CartValue $cartValue,
         CurrencyCode $currencyCode,
-        private readonly Config $config
+        Config $config
     ) {
+        $this->checkoutSession = $checkoutSession;
         $this->cartItems = $cartItems;
         $this->cartValue = $cartValue;
         $this->currencyCode = $currencyCode;
+        $this->config = $config;
     }
 
     public function get(): array

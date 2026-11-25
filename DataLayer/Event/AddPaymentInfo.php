@@ -16,6 +16,7 @@ class AddPaymentInfo implements EventInterface
     private PriceFormatter $priceFormatter;
     private int $cartId;
     private string $paymentMethod;
+    private Config $config;
 
     /**
      * @param CartRepositoryInterface $cartRepository
@@ -27,11 +28,12 @@ class AddPaymentInfo implements EventInterface
         CartRepositoryInterface  $cartRepository,
         CartItems $cartItems,
         PriceFormatter $priceFormatter,
-        private readonly Config $config
+        Config $config
     ) {
         $this->cartItems = $cartItems;
         $this->cartRepository = $cartRepository;
         $this->priceFormatter = $priceFormatter;
+        $this->config = $config;
     }
 
     /**
