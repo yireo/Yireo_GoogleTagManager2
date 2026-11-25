@@ -15,19 +15,21 @@ use Yireo\GoogleTagManager2\Config\XmlConfig\Converter;
 
 class XmlConfigTest extends TestCase
 {
+    private const TAG_CLASS = 'Yireo\\GoogleTagManager2\\DataLayer\\Tag\\CurrencyCode';
+
     private const XML = <<<'XML'
 <data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <default>
-        <item name="currency_code" xsi:type="object">Test\CurrencyTag</item>
+        <item name="currency_code" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
         <item name="static" xsi:type="string">foo</item>
     </default>
     <events>
         <event id="other_event">
-            <item name="currency_code" xsi:type="object">Test\CurrencyTag</item>
+            <item name="currency_code" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
         </event>
         <event id="view_item">
             <item name="nested" xsi:type="array">
-                <item name="currency_code" xsi:type="object">Test\CurrencyTag</item>
+                <item name="currency_code" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
             </item>
         </event>
     </events>
@@ -44,7 +46,7 @@ XML;
         $this->assertStringNotContainsString('USD', json_encode($converted));
         $this->assertStringNotContainsString('EUR', json_encode($converted));
         $this->assertSame(
-            [Converter::TAG_CLASS_KEY => 'Test\CurrencyTag'],
+            [Converter::TAG_CLASS_KEY => self::TAG_CLASS],
             $converted['default'][0]['currency_code']
         );
         $this->assertSame('foo', $converted['default'][0]['static']);
@@ -114,7 +116,7 @@ XML;
         $dataStorage->method('get')->willReturnCallback(fn (string $path) => $converted[$path]);
 
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $objectManager->method('get')->with('Test\CurrencyTag')->willReturn($tag);
+        $objectManager->method('get')->with(self::TAG_CLASS)->willReturn($tag);
 
         $store = $this->createStub(StoreInterface::class);
         $store->method('getId')->willReturnCallback(function () use (&$storeId) {
@@ -138,13 +140,42 @@ XML;
         $this->assertSame(2, $calls);
     }
 
+    public function testNonTagClassIsNeverInstantiated(): void
+    {
+        $converted = $this->convertXml(<<<'XML'
+<data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <default>
+        <item name="not_a_tag" xsi:type="object">Magento\Framework\DataObject</item>
+        <item name="unknown" xsi:type="object">Test\UnknownClass</item>
+    </default>
+</data_layer>
+XML);
+
+        $dataStorage = $this->createStub(DataInterface::class);
+        $dataStorage->method('get')->willReturnCallback(fn (string $path) => $converted[$path]);
+
+        $objectManager = $this->createMock(ObjectManagerInterface::class);
+        $objectManager->expects($this->never())->method('get');
+        $objectManager->expects($this->never())->method('create');
+
+        $store = $this->createStub(StoreInterface::class);
+        $store->method('getId')->willReturn(1);
+        $storeManager = $this->createStub(StoreManagerInterface::class);
+        $storeManager->method('getStore')->willReturn($store);
+
+        $default = (new XmlConfig($dataStorage, $objectManager, $storeManager))->getDefault();
+
+        $this->assertSame([], $default[0]['not_a_tag']);
+        $this->assertSame([], $default[0]['unknown']);
+    }
+
     public function testConverterRejectsReservedItemName(): void
     {
         $this->expectException(LocalizedException::class);
         $this->convertXml(<<<'XML'
 <data_layer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <default>
-        <item name="__tag_class" xsi:type="string">Test\CurrencyTag</item>
+        <item name="__tag_class" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
     </default>
 </data_layer>
 XML);
@@ -158,7 +189,7 @@ XML);
     <events>
         <event id="view_item">
             <item name="nested" xsi:type="array">
-                <item name="__tag_class" xsi:type="string">Test\CurrencyTag</item>
+                <item name="__tag_class" xsi:type="string">Yireo\GoogleTagManager2\DataLayer\Tag\CurrencyCode</item>
             </item>
         </event>
     </events>

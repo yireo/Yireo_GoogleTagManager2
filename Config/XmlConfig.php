@@ -92,6 +92,10 @@ class XmlConfig
 
     private function getDataFromTagClass(string $tagClassName)
     {
+        if (false === is_a($tagClassName, TagInterface::class, true)) {
+            return [];
+        }
+
         $tagObject = $this->objectManager->get($tagClassName);
         if (!$tagObject instanceof TagInterface) {
             return [];
