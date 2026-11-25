@@ -39,7 +39,7 @@
         </referenceBlock>
 
         <referenceContainer name="product.info.form.content">
-            <block name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
+            <block class="Yireo\GoogleTagManager2\Block\Script" name="yireo_googletagmanager2.product-details" template="Yireo_GoogleTagManager2::product/details.phtml">
                 <arguments>
                     <argument name="product_details" xsi:type="object">Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct</argument>
                     <argument name="data_layer" xsi:type="object">Yireo\GoogleTagManager2\ViewModel\DataLayer</argument>

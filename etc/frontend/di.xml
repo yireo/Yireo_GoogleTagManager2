@@ -4,7 +4,7 @@
         <plugin name="Yireo_GoogleTagManager2::addProductDetails" type="Yireo\GoogleTagManager2\Plugin\AddProductDetails"/>
     </type>
 
-    <type name="Magento\Framework\View\Element\Template">
+    <type name="Yireo\GoogleTagManager2\Block\Script">
         <plugin name="Yireo_GoogleTagManager2::addCspInlineScripts" type="Yireo\GoogleTagManager2\Plugin\AddCspInlineScripts"/>
     </type>
 

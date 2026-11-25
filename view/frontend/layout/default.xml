@@ -13,6 +13,7 @@
     <body>
         <referenceBlock name="head.additional">
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.script-consent-default"
                 template="Yireo_GoogleTagManager2::script-consent-default.phtml"
                 ifconfig="googletagmanager2/settings/enabled"
@@ -23,6 +24,7 @@
             </block>
 
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.script"
                 template="Yireo_GoogleTagManager2::script.phtml"
                 ifconfig="googletagmanager2/settings/enabled">
@@ -34,6 +36,7 @@
 
         <referenceContainer name="after.body.start">
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.iframe"
                 template="Yireo_GoogleTagManager2::iframe.phtml"
                 ifconfig="googletagmanager2/settings/enabled">
@@ -45,6 +48,7 @@
 
         <container name="yireo_googletagmanager2.data-layer.container" after="before.body.end">
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.data-layer"
                 template="Yireo_GoogleTagManager2::luma/data-layer.phtml"
                 ifconfig="googletagmanager2/settings/enabled">
@@ -81,6 +85,7 @@
             </block>
 
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.script-additions"
                 template="Yireo_GoogleTagManager2::luma/script-additions.phtml"
                 ifconfig="googletagmanager2/settings/enabled"
@@ -92,6 +97,7 @@
             </block>
 
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.script-product-clicks"
                 template="Yireo_GoogleTagManager2::luma/script-product-clicks.phtml"
                 after="yireo_googletagmanager2.data-layer"
@@ -102,6 +108,7 @@
             </block>
 
             <block
+                    class="Yireo\GoogleTagManager2\Block\Script"
                     name="yireo_googletagmanager2.script-consent"
                     template="Yireo_GoogleTagManager2::luma/script-consent.phtml"
                     ifconfig="googletagmanager2/settings/enabled"

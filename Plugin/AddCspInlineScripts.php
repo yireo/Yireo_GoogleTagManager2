@@ -17,7 +17,7 @@ class AddCspInlineScripts
 
     public function afterToHtml(Template $block, $html): string
     {
-        if (false === strstr((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
+        if (false === str_starts_with((string)$block->getNameInLayout(), 'yireo_googletagmanager2.')) {
             return (string)$html;
         }
 

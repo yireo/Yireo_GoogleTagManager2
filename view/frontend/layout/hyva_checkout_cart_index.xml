@@ -4,6 +4,7 @@
     <body>
         <referenceContainer name="after.body.start">
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.cart.script-additions"
                 template="Yireo_GoogleTagManager2::hyva/cart-script-additions.phtml"/>
         </referenceContainer>
