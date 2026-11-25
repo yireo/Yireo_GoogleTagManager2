@@ -98,23 +98,41 @@ class DataLayer implements ArgumentInterface
     {
         $jsonChunks = [];
         foreach ($this->getDataLayerEvents() as $dataLayerEvent) {
-            $jsonChunks[] = $this->toJson($dataLayerEvent);
+            $jsonChunk = $this->encode($dataLayerEvent);
+            if ($jsonChunk !== null) {
+                $jsonChunks[] = $jsonChunk;
+            }
         }
 
         return $jsonChunks;
     }
 
     /**
+     * Encode data as JSON that is safe to print within an inline script, falling back to an empty object
+     *
      * @param array $data
      * @return string
-     * @throws \JsonException
      */
     public function toJson(array $data): string
     {
-        return json_encode(
-            $data,
-            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR
-        );
+        return $this->encode($data) ?? '{}';
+    }
+
+    /**
+     * @param array $data
+     * @return string|null
+     */
+    private function encode(array $data): ?string
+    {
+        try {
+            return json_encode(
+                $data,
+                JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+                | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR
+            );
+        } catch (\JsonException $jsonException) {
+            return null;
+        }
     }
 
     /**
