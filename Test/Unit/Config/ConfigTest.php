@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Cookie\Helper\Cookie as CookieHelper;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Config\SecureUrlValidator;
 
 class ConfigTest extends TestCase
 {
@@ -115,6 +116,51 @@ class ConfigTest extends TestCase
 
         $this->setScopeConfigValue('id', 'GTM-1234,,');
         $this->assertEquals(['GTM-1234'], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', "GTM-1234, gtm-abc, test, GTM-, GTM-12\"><script>, GTM-AB CD, GTM-5678\t");
+        $this->assertEquals(['GTM-1234', 'GTM-5678'], $this->getTarget()->getIds());
+
+        $this->setScopeConfigValue('id', "GTM-1234\n");
+        $this->assertEquals(['GTM-1234'], $this->getTarget()->getIds());
+    }
+
+    public function testIsEnabledRequiresValidIdInProductionMode()
+    {
+        $this->deployMode = AppState::MODE_PRODUCTION;
+        $this->setScopeConfigValue('enabled', 1);
+
+        $this->setScopeConfigValue('id', 'GTM-"><script>');
+        $this->assertFalse($this->getTarget()->isEnabled());
+
+        $this->setScopeConfigValue('id', 'test, GTM-ABC123');
+        $this->assertTrue($this->getTarget()->isEnabled());
+    }
+
+    #[DataProvider('getGoogleTagmanagerUrlProvider')]
+    public function testGetGoogleTagmanagerUrl(int $serverSide, ?string $url, string $expected)
+    {
+        $this->setScopeConfigValue('serverside_enabled', $serverSide);
+        $this->setScopeConfigValue('serverside_gtm_url', $url);
+        $this->assertSame($expected, $this->getTarget()->getGoogleTagmanagerUrl());
+    }
+
+    public static function getGoogleTagmanagerUrlProvider(): array
+    {
+        $default = 'https://www.googletagmanager.com';
+        return [
+            [0, 'https://gtm.example.com', $default],
+            [1, null, $default],
+            [1, '', $default],
+            [1, 'https://gtm.example.com', 'https://gtm.example.com'],
+            [1, ' https://gtm.example.com/path/ ', 'https://gtm.example.com/path'],
+            [1, 'http://gtm.example.com', $default],
+            [1, 'javascript:alert(1)//', $default],
+            [1, 'https://gtm.example.com/\'+alert(1)+\'', $default],
+            [1, 'https://127.0.0.1', $default],
+            [1, 'https://[::1]', $default],
+            [1, 'https://localhost', $default],
+            [1, '//gtm.example.com', $default],
+        ];
     }
 
     #[DataProvider('getEnvironmentQueryProvider')]
@@ -183,7 +229,7 @@ class ConfigTest extends TestCase
         $storeManager = $this->createMock(StoreManagerInterface::class);
         $cookieHelper = $this->getCookieHelperMock();
         $appState = $this->getAppState();
-        return new Config($scopeConfig, $storeManager, $cookieHelper, $appState);
+        return new Config($scopeConfig, $storeManager, $cookieHelper, $appState, new SecureUrlValidator());
     }
 
     /**

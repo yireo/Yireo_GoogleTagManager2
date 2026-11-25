@@ -3,34 +3,39 @@
 namespace Yireo\GoogleTagManager2\Config\Backend;
 
 use Magento\Framework\App\Config\Value;
-use Magento\Framework\App\State;
+use Yireo\GoogleTagManager2\Config\Config;
 use Yireo\GoogleTagManager2\Exception\InvalidConfig;
 
 class ContainerId extends Value
 {
+    private const TRIM_CHARACTERS = " \f\n\r\t\v\x00";
+
     public function beforeSave()
     {
-        if (false === $this->validate()) {
-            throw new InvalidConfig('Invalid container ID "' . $this->getValue() . '". It should start with "GTM-"');
+        $value = trim((string)$this->getValue(), self::TRIM_CHARACTERS);
+        $this->setValue($value);
+
+        if (false === $this->validate($value)) {
+            throw new InvalidConfig(
+                'Invalid container ID. Every comma-separated ID should look like "GTM-" plus uppercase letters and digits'
+            );
         }
 
         return parent::beforeSave();
     }
 
-    private function validate(): bool
+    private function validate(string $value): bool
     {
-        if ($this->_appState->getMode() === State::MODE_DEVELOPER) {
+        if ($value === '') {
             return true;
         }
 
-        if (empty($this->getValue())) {
-            return true;
+        foreach (explode(',', $value) as $id) {
+            if (false === (bool)preg_match(Config::CONTAINER_ID_PATTERN, trim($id, self::TRIM_CHARACTERS))) {
+                return false;
+            }
         }
 
-        if (preg_match('/^GTM-/', $this->getValue())) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }

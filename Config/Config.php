@@ -15,11 +15,15 @@ class Config implements ArgumentInterface
 {
     public const ENVIRONMENT_AUTH_PATTERN = '/^[A-Za-z0-9_-]+$/D';
     public const ENVIRONMENT_PREVIEW_PATTERN = '/^env-[0-9]+$/D';
+    public const CONTAINER_ID_PATTERN = '/^GTM-[A-Z0-9]+$/D';
+    private const DEFAULT_GTM_URL = 'https://www.googletagmanager.com';
+    private const TRIM_CHARACTERS = " \f\n\r\t\v\x00";
 
     private ScopeConfigInterface $scopeConfig;
     private CookieHelper $cookieHelper;
     private StoreManagerInterface $storeManager;
     private AppState $appState;
+    private SecureUrlValidator $secureUrlValidator;
 
     /**
      * Config constructor.
@@ -27,17 +31,21 @@ class Config implements ArgumentInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param CookieHelper $cookieHelper
+     * @param AppState $appState
+     * @param SecureUrlValidator $secureUrlValidator
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
         CookieHelper $cookieHelper,
-        AppState $appState
+        AppState $appState,
+        SecureUrlValidator $secureUrlValidator
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->cookieHelper = $cookieHelper;
         $this->appState = $appState;
+        $this->secureUrlValidator = $secureUrlValidator;
     }
 
     /**
@@ -110,15 +118,15 @@ class Config implements ArgumentInterface
     }
 
     /**
-     * Return the GTM IDs as a list, skipping empty values
+     * Return the GTM IDs as a list, skipping empty and invalid values
      *
      * @return string[]
      */
     public function getIds(): array
     {
-        $ids = array_map('trim', explode(',', $this->getId()));
+        $ids = array_map(fn ($id) => trim($id, self::TRIM_CHARACTERS), explode(',', $this->getId()));
 
-        return array_values(array_filter($ids));
+        return array_values(array_filter($ids, fn ($id) => (bool)preg_match(self::CONTAINER_ID_PATTERN, $id)));
     }
 
     /**
@@ -252,15 +260,16 @@ class Config implements ArgumentInterface
      */
     public function getGoogleTagmanagerUrl(): string
     {
-        $default = 'https://www.googletagmanager.com';
         if (false === $this->hasServerSideTracking()) {
-            return $default;
+            return self::DEFAULT_GTM_URL;
         }
 
-        return $this->getModuleConfigValue(
-            'serverside_gtm_url',
-            $default
-        );
+        $url = trim((string)$this->getModuleConfigValue('serverside_gtm_url'), self::TRIM_CHARACTERS);
+        if (false === $this->secureUrlValidator->isValid($url)) {
+            return self::DEFAULT_GTM_URL;
+        }
+
+        return rtrim($url, '/');
     }
 
     public function getOrderStatesForPurchaseEvent(): array
@@ -365,7 +374,7 @@ class Config implements ArgumentInterface
      */
     private function isIdValid(): bool
     {
-        return 0 === strpos($this->getId(), 'GTM-');
+        return $this->getIds() !== [];
     }
 
     /**
