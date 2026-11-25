@@ -10,6 +10,7 @@ use Magento\Eav\Model\Attribute;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderFactory;
 use Magento\Framework\Data\OptionSourceInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 
 class CustomerAttributes implements OptionSourceInterface
 {
@@ -45,6 +46,9 @@ class CustomerAttributes implements OptionSourceInterface
                 continue;
             }
 
+            if (in_array($customerAttribute->getAttributeCode(), Config::CUSTOMER_ATTRIBUTE_DENY_LIST, true)) {
+                continue;
+            }
 
             $options[] = [
                 'value' => $customerAttribute->getAttributeCode(),

@@ -188,6 +188,15 @@ class ConfigTest extends TestCase
         ];
     }
 
+    public function testGetCustomerEavAttributeCodesSkipsDeniedAttributes()
+    {
+        $this->setScopeConfigValue('customer_eav_attributes', 'firstname,password_hash,email, rp_token ,lastname,');
+        $this->assertSame(['firstname', 'lastname'], $this->getTarget()->getCustomerEavAttributeCodes());
+
+        $this->setScopeConfigValue('customer_eav_attributes', null);
+        $this->assertSame([], $this->getTarget()->getCustomerEavAttributeCodes());
+    }
+
     /**
      * @test
      * @covers Config::getMaxTransactionValue

@@ -16,6 +16,19 @@ class Config implements ArgumentInterface
     public const ENVIRONMENT_AUTH_PATTERN = '/^[A-Za-z0-9_-]+$/D';
     public const ENVIRONMENT_PREVIEW_PATTERN = '/^env-[0-9]+$/D';
     public const CONTAINER_ID_PATTERN = '/^GTM-[A-Z0-9]+$/D';
+    public const CUSTOMER_ATTRIBUTE_DENY_LIST = [
+        'password_hash',
+        'rp_token',
+        'rp_token_created_at',
+        'confirmation',
+        'email',
+        'dob',
+        'taxvat',
+        'gender',
+        'failures_num',
+        'first_failure',
+        'lock_expires',
+    ];
     private const DEFAULT_GTM_URL = 'https://www.googletagmanager.com';
     private const TRIM_CHARACTERS = " \f\n\r\t\v\x00";
 
@@ -176,7 +189,17 @@ class Config implements ArgumentInterface
      */
     public function getCustomerEavAttributeCodes(): array
     {
-        return explode(',', (string)$this->getModuleConfigValue('customer_eav_attributes'));
+        $codes = [];
+        foreach (explode(',', (string)$this->getModuleConfigValue('customer_eav_attributes')) as $code) {
+            $code = trim($code, self::TRIM_CHARACTERS);
+            if ($code === '' || in_array($code, self::CUSTOMER_ATTRIBUTE_DENY_LIST, true)) {
+                continue;
+            }
+
+            $codes[] = $code;
+        }
+
+        return $codes;
     }
 
     /**
