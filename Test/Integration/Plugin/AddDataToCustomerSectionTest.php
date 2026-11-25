@@ -37,6 +37,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testGuestGetsGuestGroupCode()
     {
@@ -52,6 +54,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testLoggedInCustomerGetsUppercasedGroupCode()
     {
@@ -70,6 +74,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testCustomGroupCodeIsUppercased()
     {
@@ -89,6 +95,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testNullGroupCodeDoesNotBreakPlugin()
     {
@@ -111,6 +119,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testNullGroupCodeDoesNotBreakCustomerSectionLoad()
     {
@@ -133,6 +143,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testMissingGroupDoesNotBreakCustomerSectionLoad()
     {
@@ -154,6 +166,8 @@ class AddDataToCustomerSectionTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      */
     public function testGtmEventsAreMergedOnceForLoggedInCustomer()
     {

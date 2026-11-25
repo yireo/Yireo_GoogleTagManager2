@@ -11,6 +11,8 @@ class CustomerSessionDataProviderTest extends AbstractController
 {
     /**
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      * @return void
      */
     public function testSettingOnce()

@@ -135,6 +135,10 @@ class ExceptionSafeTrackingTest extends TestCase
         $this->assertSame($result, $plugin->afterExecute($subject, $result));
     }
 
+    /**
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
+     */
     public function testCartSectionPluginReturnsResultWhenTrackingFails()
     {
         $plugin = $this->create(AddDataToCartSection::class, [

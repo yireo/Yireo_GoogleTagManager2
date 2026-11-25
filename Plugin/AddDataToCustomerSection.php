@@ -19,6 +19,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
 use Psr\Log\LoggerInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Throwable;
 
 class AddDataToCustomerSection
@@ -29,6 +30,7 @@ class AddDataToCustomerSection
     private CustomerDataMapper $customerDataMapper;
     private CustomerRepositoryInterface $customerRepository;
     private LoggerInterface $logger;
+    private Config $config;
 
     /**
      * Customer constructor.
@@ -38,6 +40,7 @@ class AddDataToCustomerSection
      * @param CustomerDataMapper $customerDataMapper
      * @param CustomerRepositoryInterface $customerRepository
      * @param LoggerInterface $logger
+     * @param Config $config
      */
     public function __construct(
         CustomerSession $customerSession,
@@ -45,7 +48,8 @@ class AddDataToCustomerSection
         CustomerSessionDataProviderInterface $customerSessionDataProvider,
         CustomerDataMapper $customerDataMapper,
         CustomerRepositoryInterface $customerRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Config $config
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
@@ -53,6 +57,7 @@ class AddDataToCustomerSection
         $this->customerDataMapper = $customerDataMapper;
         $this->customerRepository = $customerRepository;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -66,8 +71,12 @@ class AddDataToCustomerSection
             return $result;
         }
 
-
         try {
+            if (false === $this->config->isEnabled()) {
+                $this->customerSessionDataProvider->clear();
+                return $result;
+            }
+
             $gtmData = $this->getGtmData();
             $gtmOnce = $this->customerSessionDataProvider->get();
             $this->customerSessionDataProvider->clear();

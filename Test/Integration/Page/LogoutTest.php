@@ -15,6 +15,8 @@ class LogoutTest extends PageTestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      * @return void
      */
     public function testLogout()

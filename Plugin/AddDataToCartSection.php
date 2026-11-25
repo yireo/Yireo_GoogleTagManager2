@@ -15,6 +15,7 @@ use Yireo\GoogleTagManager2\DataLayer\Event\ViewCart as ViewCartEvent;
 use Yireo\GoogleTagManager2\DataLayer\Tag\Cart\CartItems;
 use Yireo\GoogleTagManager2\SessionDataProvider\CheckoutSessionDataProvider;
 use Psr\Log\LoggerInterface;
+use Yireo\GoogleTagManager2\Config\Config;
 use Throwable;
 
 class AddDataToCartSection
@@ -23,23 +24,27 @@ class AddDataToCartSection
     private CheckoutSessionDataProvider $checkoutSessionDataProvider;
     private ViewCartEvent $viewCartEvent;
     private LoggerInterface $logger;
+    private Config $config;
 
     /**
      * @param CheckoutCart $checkoutCart
      * @param CheckoutSessionDataProvider $checkoutSessionDataProvider
      * @param ViewCartEvent $viewCartEvent
      * @param LoggerInterface $logger
+     * @param Config $config
      */
     public function __construct(
         CheckoutCart $checkoutCart,
         CheckoutSessionDataProvider $checkoutSessionDataProvider,
         ViewCartEvent $viewCartEvent,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Config $config
     ) {
         $this->checkoutCart = $checkoutCart;
         $this->checkoutSessionDataProvider = $checkoutSessionDataProvider;
         $this->viewCartEvent = $viewCartEvent;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -50,6 +55,11 @@ class AddDataToCartSection
     public function afterGetSectionData(CustomerData $subject, $result)
     {
         try {
+            if (false === $this->config->isEnabled()) {
+                $this->checkoutSessionDataProvider->clear();
+                return $result;
+            }
+
             $quoteId = $this->checkoutCart->getQuote()->getId();
             if (empty($result) || !is_array($result) || empty($quoteId)) {
                 return $result;

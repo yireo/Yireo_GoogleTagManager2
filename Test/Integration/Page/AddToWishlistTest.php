@@ -22,6 +22,8 @@ class AddToWishlistTest extends PageTestCase
 
     /**
      * @magentoAppArea frontend
+     * @magentoConfigFixture current_store googletagmanager2/settings/enabled 1
+     * @magentoConfigFixture current_store googletagmanager2/settings/id GTM-TEST123
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
      * @magentoConfigFixture current_store cataloginventory/options/show_out_of_stock 1
      * @return void
