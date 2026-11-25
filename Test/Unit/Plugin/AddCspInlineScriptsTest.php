@@ -35,7 +35,7 @@ class AddCspInlineScriptsTest extends TestCase
     public function testReplacesScriptsOfModuleBlock(): void
     {
         $replaceInlineScripts = $this->createMock(ReplaceInlineScripts::class);
-        $replaceInlineScripts->expects($this->once())->method('replace')->with('<script></script>')->willReturn('replaced');
+        $replaceInlineScripts->expects($this->once())->method('replaceMarked')->with('<script></script>')->willReturn('replaced');
 
         $plugin = new AddCspInlineScripts($replaceInlineScripts, new CspMarker());
 
@@ -48,7 +48,7 @@ class AddCspInlineScriptsTest extends TestCase
     public function testSkipsScriptsOfOtherBlock(): void
     {
         $replaceInlineScripts = $this->createMock(ReplaceInlineScripts::class);
-        $replaceInlineScripts->expects($this->never())->method('replace');
+        $replaceInlineScripts->expects($this->never())->method('replaceMarked');
 
         $plugin = new AddCspInlineScripts($replaceInlineScripts, new CspMarker());
 

@@ -27,7 +27,7 @@ class AddCspInlineScripts
             return (string)$html;
         }
 
-        return $this->replaceInlineScripts->replace((string)$html);
+        return $this->replaceInlineScripts->replaceMarked((string)$html);
     }
 
     private function isAllowed(Template $block): bool
