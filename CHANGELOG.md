@@ -5,11 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.10.9] - 25 November 2026
 ### Added
-- Setting **Load GTM container script** (`load_container`, default *Yes*): When set to *No*, the `gtm.js` start event and all dataLayer events are still pushed, but the container script is not inserted, so that a container loaded by a first-party Google tag gateway is not downloaded twice
+- Server-side tracking of ecommerce events via the GA4 Measurement Protocol or a server-side GTM URL (purchase and refund by default), with an outbox for deduplication and retries, cron or message queue dispatch, CLI commands, a configurable `user_id` and a pluggable consent resolver for third-party consent managers
+- Consent mode banner for Luma and Hyvä with consent settings, privacy statement link, cookie-settings button and Dutch translations; the consent default is pushed before the GTM loader
+- Support for GTM environments (`gtm_auth`, `gtm_preview`) (#307)
+- Setting **Load GTM container script** (`load_container`) to push dataLayer events without inserting the container script, e.g. with a first-party Google tag gateway
+- Setting to exclude coupon codes from events (`include_coupon`)
+- CSP: mark inline scripts for Yireo_CspUtilities and pass the CSP nonce on to `gtm.js`; `strict-dynamic` documented (#315)
 
 ### Fixed
-- Ignore `mousemove` events without any movement when waiting for user interaction, because browsers fire these when content renders underneath a stationary cursor
+- Security: validate GTM container IDs, the container URL and the server-side GTM URL (HTTPS only, no internal hosts or IP literals, preventing SSRF)
+- Security: HTML-safe JSON for all data layer output, so request data cannot break out of inline scripts, and invalid UTF-8 no longer breaks page rendering
+- Security: never expose sensitive customer attributes (like `password_hash`, `rp_token`) in the data layer and redact personal data in debug logs
+- Security: respect Magento cookie restriction mode before loading GTM and for server-side consent
+- Security: bind SQL values in server-side repositories, only instantiate data layer classes implementing `TagInterface`, only resolve enabled and visible products and active categories from the request, skip GTM section data when GTM is disabled and limit the CSP plugin to module blocks
+- Failing tracking no longer breaks placing an order, checkout steps, search results or the customer and cart sections
+- Store-dependent data layer tags (like the currency code) no longer keep the value of the first store view that warmed the config cache (#320)
+- `select_item` is pushed for Hyvä product tiles without a product input and on (advanced) search result pages (#256, #276, #318)
+- `view_cart` with `allowed_events` on Luma and Hyvä (#296), empty coupon in `begin_checkout`, `gtm.js` loaded by a `mousemove` without movement, category product collection loaded before pagination (#311) and a TypeError when the search query is an array
 
 ## [3.10.8] - 09 October 2026
 ### Fixed
