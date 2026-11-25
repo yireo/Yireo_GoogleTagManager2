@@ -24,7 +24,7 @@ class CheckoutSessionDataProvider implements CheckoutSessionDataProviderInterfac
     {
         $gtmData = $this->get();
         $gtmData[$identifier] = $data;
-        $this->debugger->debug('CheckoutSessionDataProvider::add(): ' . $identifier, $data);
+        $this->debugger->debug('CheckoutSessionDataProvider::add(): ' . $identifier);
         $this->checkoutSession->setYireoGtmData($gtmData);
     }
     

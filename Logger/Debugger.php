@@ -20,18 +20,23 @@ class Debugger
      */
     private $logger;
 
+    private PiiRedactor $piiRedactor;
+
     /**
      * Debugger constructor.
      *
      * @param Config $config
      * @param LoggerInterface $logger
+     * @param PiiRedactor $piiRedactor
      */
     public function __construct(
         Config $config,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        PiiRedactor $piiRedactor
     ) {
         $this->config = $config;
         $this->logger = $logger;
+        $this->piiRedactor = $piiRedactor;
     }
 
     /**
@@ -47,7 +52,7 @@ class Debugger
         }
 
         if (!empty($data)) {
-            $msg .= ': ' . var_export($data, true);
+            $msg .= ': ' . var_export($this->piiRedactor->redact($data), true);
         }
 
         $this->logger->notice($msg);

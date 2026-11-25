@@ -65,11 +65,25 @@ class SenderTest extends TestCase
         $this->assertFalse($this->getSender()->send(1, '{}', true)->isSuccess());
     }
 
-    private function getSender(): Sender
+    public function testPayloadIsNotLogged(): void
+    {
+        $this->curl->method('getStatus')->willReturn(204);
+        $this->curl->method('getBody')->willReturn('');
+
+        $debugger = $this->createMock(Debugger::class);
+        $debugger->expects($this->once())->method('debug')->with(
+            $this->stringContains('returned 204'),
+            $this->callback(fn ($data) => !str_contains(var_export($data, true), 'john@example.com'))
+        );
+
+        $this->getSender($debugger)->send(1, '{"user_id":"john@example.com"}', false);
+    }
+
+    private function getSender(?Debugger $debugger = null): Sender
     {
         $curlFactory = $this->createMock(CurlFactory::class);
         $curlFactory->method('create')->willReturn($this->curl);
 
-        return new Sender($curlFactory, $this->config, $this->createMock(Debugger::class));
+        return new Sender($curlFactory, $this->config, $debugger ?? $this->createMock(Debugger::class));
     }
 }

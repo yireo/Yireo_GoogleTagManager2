@@ -12,6 +12,7 @@ namespace Yireo\GoogleTagManager2\Util;
 
 use Psr\Log\LoggerInterface;
 use Yireo\GoogleTagManager2\Config\Config;
+use Yireo\GoogleTagManager2\Logger\PiiRedactor;
 
 class Debug
 {
@@ -25,18 +26,23 @@ class Debug
      */
     private $logger;
 
+    private PiiRedactor $piiRedactor;
+
     /**
      * Data constructor.
      *
      * @param Config $config
      * @param LoggerInterface $logger
+     * @param PiiRedactor $piiRedactor
      */
     public function __construct(
         Config $config,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        PiiRedactor $piiRedactor
     ) {
         $this->config = $config;
         $this->logger = $logger;
+        $this->piiRedactor = $piiRedactor;
     }
 
     /**
@@ -54,7 +60,7 @@ class Debug
         }
 
         if ($variable !== null) {
-            $string .= ': ' . var_export($variable, true);
+            $string .= ': ' . var_export($this->piiRedactor->redact($variable), true);
         }
 
         $this->logger->info('Yireo_GoogleTagManager: ' . $string);

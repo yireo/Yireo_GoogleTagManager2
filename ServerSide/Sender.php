@@ -53,7 +53,6 @@ class Sender
         }
 
         $this->debugger->debug('Server-side tracking request to ' . $endpoint . ' returned ' . $status, [
-            'payload' => $payload,
             'response' => $body,
         ]);
 

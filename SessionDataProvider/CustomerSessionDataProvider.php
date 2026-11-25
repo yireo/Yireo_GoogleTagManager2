@@ -23,7 +23,7 @@ class CustomerSessionDataProvider implements CustomerSessionDataProviderInterfac
     {
         $gtmData = $this->get();
         $gtmData[$identifier] = $data;
-        $this->debugger->debug('CustomerSessionDataProvider::add(): ' . $identifier, $data);
+        $this->debugger->debug('CustomerSessionDataProvider::add(): ' . $identifier);
         $this->customerSession->setYireoGtmData($gtmData);
     }
 
