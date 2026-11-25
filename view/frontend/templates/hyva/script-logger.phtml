@@ -4,7 +4,7 @@
 
 /** @var \Magento\Framework\View\Element\Template $block */
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     function yireoGoogleTagManager2Logger(...args) {
         const debug = window.YIREO_GOOGLETAGMANAGER2_DEBUG || false;
         if (false === debug) {

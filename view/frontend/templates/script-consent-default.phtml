@@ -11,7 +11,7 @@ if (false === $config->isConsent()) {
     return;
 }
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     function yireoGoogleTagManager2Gtag() {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push(arguments);

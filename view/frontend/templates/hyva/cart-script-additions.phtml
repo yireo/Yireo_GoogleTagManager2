@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     document.addEventListener('DOMContentLoaded', function () {
         window.dispatchEvent(new CustomEvent('minicart_collapse'));
     });

@@ -12,7 +12,7 @@
 
 /** @var \Magento\Framework\View\Element\Template $block */
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     function yireoGoogleTagManager2Pusher(eventData, message, callback) {
         window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS = window.YIREO_GOOGLETAGMANAGER2_PAST_EVENTS || [];
 
