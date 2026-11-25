@@ -18,6 +18,10 @@ $gtmIds = $config->getIds();
 if (empty($gtmIds)) {
     return;
 }
+
+if ($config->getCookieRestrictionModeName() !== '' && false === $config->isConsent()) {
+    return;
+}
 ?>
 <?php foreach ($gtmIds as $gtmIndex => $gtmId): ?>
 <?php $url = sprintf('%s/ns.html?id=%s', $config->getGoogleTagmanagerUrl(), $gtmId); ?>
