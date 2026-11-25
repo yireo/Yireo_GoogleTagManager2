@@ -33,6 +33,7 @@
         "Magento_Directory",
         "Magento_Eav",
         "Magento_Indexer",
+        "Magento_MediaGalleryUiApi",
         "Magento_Msrp",
         "Magento_Payment",
         "Magento_Quote",
@@ -65,6 +66,16 @@
             "description": ""
         },
         {
+            "path": "googletagmanager2/settings/environment_auth",
+            "label": "Settings > GTM Environment Auth",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/settings/environment_preview",
+            "label": "Settings > GTM Environment Preview",
+            "description": ""
+        },
+        {
             "path": "googletagmanager2/settings/debug",
             "label": "Settings > Debug",
             "description": ""
@@ -77,6 +88,11 @@
         {
             "path": "googletagmanager2/settings/wait_for_ui",
             "label": "Settings > Wait for user interaction",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/settings/load_container",
+            "label": "Settings > Load GTM container script",
             "description": ""
         },
         {
@@ -116,7 +132,7 @@
         },
         {
             "path": "googletagmanager2/settings/serverside_enabled",
-            "label": "Settings > Server-Side Tracking",
+            "label": "Settings > Custom GTM container URL",
             "description": ""
         },
         {
@@ -143,12 +159,97 @@
             "path": "googletagmanager2/settings/include_shipping_in_adjusted_value",
             "label": "Settings > Include Shipping in Adjusted Total",
             "description": ""
+        },
+        {
+            "path": "googletagmanager2/settings/include_coupon",
+            "label": "Settings > Include Coupon Code",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/enabled",
+            "label": "Server-Side Tracking > Enabled",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/destination",
+            "label": "Server-Side Tracking > Destination",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/sgtm_url",
+            "label": "Server-Side Tracking > Server-side GTM URL",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/measurement_id",
+            "label": "Server-Side Tracking > Measurement ID",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/api_secret",
+            "label": "Server-Side Tracking > API secret",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/events",
+            "label": "Server-Side Tracking > Events",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/purchase_trigger",
+            "label": "Server-Side Tracking > Purchase trigger",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/suppress_browser_purchase",
+            "label": "Server-Side Tracking > Suppress browser purchase event",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/dispatch_mode",
+            "label": "Server-Side Tracking > Dispatch mode",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/require_consent",
+            "label": "Server-Side Tracking > Require analytics consent",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/send_user_id",
+            "label": "Server-Side Tracking > Send customer ID as user_id",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/validation_mode",
+            "label": "Server-Side Tracking > Validation mode",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/max_attempts",
+            "label": "Server-Side Tracking > Maximum attempts",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/serverside_tracking/retention_days",
+            "label": "Server-Side Tracking > Retention of sent events (days)",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/consent/enabled",
+            "label": "Consent > Enabled",
+            "description": ""
+        },
+        {
+            "path": "googletagmanager2/consent/privacy_statement_url",
+            "label": "Consent > Privacy statement URL",
+            "description": ""
         }
     ],
     "tests": {
-        "unit": 8,
-        "integration": 85,
-        "functional": 36
+        "unit": 83,
+        "integration": 190,
+        "functional": 48
     },
     "module_name": "Yireo_GoogleTagManager2",
     "composer_name": "yireo/magento2-googletagmanager2",
