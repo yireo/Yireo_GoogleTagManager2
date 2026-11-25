@@ -187,10 +187,7 @@
                 <field id="include_coupon" type="select" translate="label comment" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Include Coupon Code</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If enabled, the coupon code is added to the begin_checkout, add_payment_info, purchase and refund events. Disable this to avoid sending (possibly sensitive) coupon codes to third parties.</comment>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
+                    <comment>If enabled, the coupon code is added to the begin_checkout, add_payment_info, purchase and refund events, also for server-side tracking. Disable this to avoid sending (possibly sensitive) coupon codes to third parties.</comment>
                 </field>
             </group>
             <group id="serverside_tracking" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
