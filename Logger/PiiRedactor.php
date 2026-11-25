@@ -32,12 +32,12 @@ class PiiRedactor
     private function isPiiKey(string $key): bool
     {
         $key = strtolower($key);
-        if (in_array($key, self::KEYS, true) || str_contains($key, 'email')) {
+        if (in_array($key, self::KEYS, true) || strpos($key, 'email') !== false) {
             return true;
         }
 
         foreach (self::KEY_PREFIXES as $prefix) {
-            if (str_starts_with($key, $prefix)) {
+            if (strpos($key, $prefix) === 0) {
                 return true;
             }
         }
