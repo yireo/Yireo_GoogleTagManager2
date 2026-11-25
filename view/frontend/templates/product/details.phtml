@@ -20,6 +20,6 @@ if ($product instanceof ProductInterface) {
 $product = $productDetails->getProduct();
 $productData = $dataLayer->toJson($productDetails->merge());
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     window['YIREO_GOOGLETAGMANAGER2_PRODUCT_DATA_ID_<?= $escaper->escapeJs($product->getId()) ?>'] = <?= /* @noEscape */ $productData ?>;
 </script>

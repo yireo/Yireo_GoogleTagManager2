@@ -55,6 +55,7 @@
 
         <referenceContainer name="yireo_googletagmanager2.data-layer.container">
             <block
+                class="Yireo\GoogleTagManager2\Block\Script"
                 name="yireo_googletagmanager2.script-begin-checkout"
                 template="Yireo_GoogleTagManager2::luma/script-begin-checkout.phtml"
                 after="yireo_googletagmanager2.data-layer"

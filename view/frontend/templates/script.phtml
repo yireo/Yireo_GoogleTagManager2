@@ -24,13 +24,50 @@ if (empty($gtmIds)) {
 $events = ($config->waitForUserInteraction() === false)
     ? "'load', 'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'"
     : "'keydown', 'mousemove', 'scroll', 'touchstart', 'wheel'";
+
+$cookieRestriction = null;
+$cookieRestrictionName = $config->getCookieRestrictionModeName();
+if ($cookieRestrictionName !== '' && false === $config->isConsent()) {
+    $events .= ", 'click'";
+    $cookieRestriction = ['name' => $cookieRestrictionName, 'websiteId' => $config->getCurrentWebsiteId()];
+}
+
+$cookieRestrictionJson = json_encode(
+    $cookieRestriction,
+    JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR
+);
 ?>
-<script <?= /* @noEscape */ $block->getData('csp_marker')?->getAttribute() ?>>
+<script<?= /* @noEscape */ $block->getCspMarkerAttribute() ?>>
     window.YIREO_GOOGLETAGMANAGER2_ENABLED = true;
     (function (events, nonce) {
+        const cookieRestriction = <?= /* @noEscape */ $cookieRestrictionJson ?>;
+        const isAllowedByCookieRestriction = function () {
+            if (!cookieRestriction) {
+                return true;
+            }
+
+            const cookie = document.cookie.split('; ').find(function (part) {
+                return part.indexOf(cookieRestriction.name + '=') === 0;
+            });
+            if (!cookie) {
+                return false;
+            }
+
+            try {
+                const allowed = JSON.parse(decodeURIComponent(cookie.substring(cookieRestriction.name.length + 1)));
+                return parseInt(allowed[cookieRestriction.websiteId], 10) === 1;
+            } catch (error) {
+                return false;
+            }
+        };
+
         const initYireoGoogleTagManager2 = function (event) {
             // Browsers fire a mousemove without any movement when content renders underneath a stationary cursor
             if (event && event.type === 'mousemove' && event.movementX === 0 && event.movementY === 0) {
+                return;
+            }
+
+            if (false === isAllowedByCookieRestriction()) {
                 return;
             }
 

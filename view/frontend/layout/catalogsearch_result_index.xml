@@ -12,6 +12,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <block
+            class="Yireo\GoogleTagManager2\Block\Script"
             name="yireo_googletagmanager2.product-details"
             template="Yireo_GoogleTagManager2::product/details.phtml"
             ifconfig="googletagmanager2/settings/enabled">

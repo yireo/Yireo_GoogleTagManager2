@@ -289,7 +289,7 @@ class Config implements ArgumentInterface
      */
     public function includeCoupon(): bool
     {
-        return (bool)$this->getModuleConfigValue('include_coupon', true);
+        return (bool)$this->getModuleConfigValue('include_coupon');
     }
 
     /**
