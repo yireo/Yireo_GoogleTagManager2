@@ -1,0 +1,37 @@
+schema_version: "1.6.0"
+id: YIREO-GOOGLETAGMANAGER2-2026-001
+published: "2026-11-25T00:00:00Z"
+modified: "2026-11-25T00:00:00Z"
+aliases:
+  - GHSA-2hrg-j7vj-gxqf
+summary: Cross-site scripting via request-derived data layer values in inline scripts
+details: >
+  The data layer events, the Luma configuration of Commons::getConfigurationAsJson() and the Luma
+  begin_checkout event were JSON-encoded without JSON_HEX_TAG, JSON_HEX_AMP, JSON_HEX_APOS and
+  JSON_HEX_QUOT and printed unescaped into inline script elements. Values derived from the request,
+  like page_path (the current URL including its query string, taken from the raw REQUEST_URI) or the
+  coupon code, could therefore contain a closing script tag and break out of the inline script, allowing
+  an attacker to execute JavaScript in the storefront when a victim opens a crafted URL. Version 3.10.9
+  encodes all data layer output with HTML-safe JSON flags. The same release also hardens the
+  configuration against admin-controlled issues, like server-side requests to internal hosts via the
+  server-side GTM URL and exposing sensitive customer attributes in the data layer.
+severity:
+  - type: CVSS_V3
+    score: "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+affected:
+  - package:
+      ecosystem: Packagist
+      name: yireo/magento2-googletagmanager2
+    ranges:
+      - type: ECOSYSTEM
+        events:
+          - introduced: "3.0.0"
+          - fixed: "3.10.9"
+references:
+  - type: ADVISORY
+    url: https://github.com/yireo/Yireo_GoogleTagManager2/security/advisories/GHSA-2hrg-j7vj-gxqf
+  - type: PACKAGE
+    url: https://github.com/yireo/Yireo_GoogleTagManager2
+database_specific:
+  cwe_ids:
+    - CWE-79
