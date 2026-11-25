@@ -70,7 +70,7 @@ class JsonHexTagTest extends TestCase
         $block = $layout->createBlock((string)$blockNode['class'] ?: Template::class);
         $block->setTemplate((string)$blockNode['template']);
         foreach ($blockNode->xpath('arguments/argument') as $argument) {
-            $className = trim((string)$argument);
+            $className = trim((string)$argument, " \f\n\r\t\v\x00");
             if (class_exists($className)) {
                 $block->setData((string)$argument['name'], $objectManager->get($className));
             }

@@ -35,12 +35,12 @@ class ProductDetailsBlockTest extends TestCase
         $this->assertNotNull($productDetails);
         $this->assertSame(
             'Yireo\GoogleTagManager2\DataLayer\Tag\Product\CurrentProduct',
-            trim($productDetails->textContent)
+            trim($productDetails->textContent, " \f\n\r\t\v\x00")
         );
 
         $dataLayer = $xpath->query('arguments/argument[@name="data_layer"]', $block)->item(0);
         $this->assertNotNull($dataLayer);
-        $this->assertSame('Yireo\GoogleTagManager2\ViewModel\DataLayer', trim($dataLayer->textContent));
+        $this->assertSame('Yireo\GoogleTagManager2\ViewModel\DataLayer', trim($dataLayer->textContent, " \f\n\r\t\v\x00"));
     }
 
     public static function getProductListLayoutHandles(): array
