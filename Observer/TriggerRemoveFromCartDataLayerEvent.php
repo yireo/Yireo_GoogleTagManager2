@@ -7,21 +7,37 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Api\Data\CartItemInterface;
 use Yireo\GoogleTagManager2\Api\CheckoutSessionDataProviderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Event\RemoveFromCart as RemoveFromCartEvent;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class TriggerRemoveFromCartDataLayerEvent implements ObserverInterface
 {
     private CheckoutSessionDataProviderInterface $checkoutSessionDataProvider;
     private RemoveFromCartEvent $removeFromCartEvent;
+    private LoggerInterface $logger;
 
     public function __construct(
         CheckoutSessionDataProviderInterface $checkoutSessionDataProvider,
-        RemoveFromCartEvent $removeFromCartEvent
+        RemoveFromCartEvent $removeFromCartEvent,
+        LoggerInterface $logger
     ) {
         $this->checkoutSessionDataProvider = $checkoutSessionDataProvider;
         $this->removeFromCartEvent = $removeFromCartEvent;
+        $this->logger = $logger;
     }
 
     public function execute(Observer $observer)
+    {
+        try {
+            $this->doExecute($observer);
+        } catch (Throwable $exception) {
+            $this->logger->error(
+                'GTM data layer observer ' . self::class . ' failed: ' . $exception->getMessage()
+            );
+        }
+    }
+
+    private function doExecute(Observer $observer): void
     {
         /** @var CartItemInterface $quoteItem */
         $quoteItem = $observer->getData('quote_item');

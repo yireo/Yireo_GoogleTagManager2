@@ -18,6 +18,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Yireo\GoogleTagManager2\Api\CustomerSessionDataProviderInterface;
 use Yireo\GoogleTagManager2\DataLayer\Mapper\CustomerDataMapper;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class AddDataToCustomerSection
 {
@@ -26,6 +28,7 @@ class AddDataToCustomerSection
     private CustomerSessionDataProviderInterface $customerSessionDataProvider;
     private CustomerDataMapper $customerDataMapper;
     private CustomerRepositoryInterface $customerRepository;
+    private LoggerInterface $logger;
 
     /**
      * Customer constructor.
@@ -34,27 +37,28 @@ class AddDataToCustomerSection
      * @param CustomerSessionDataProviderInterface $customerSessionDataProvider
      * @param CustomerDataMapper $customerDataMapper
      * @param CustomerRepositoryInterface $customerRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         CustomerSession $customerSession,
         GroupRepositoryInterface $groupRepository,
         CustomerSessionDataProviderInterface $customerSessionDataProvider,
         CustomerDataMapper $customerDataMapper,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        LoggerInterface $logger
     ) {
         $this->customerSession = $customerSession;
         $this->groupRepository = $groupRepository;
         $this->customerSessionDataProvider = $customerSessionDataProvider;
         $this->customerDataMapper = $customerDataMapper;
         $this->customerRepository = $customerRepository;
+        $this->logger = $logger;
     }
 
     /**
      * @param CustomerData $subject
      * @param mixed $result
      * @return mixed
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
     public function afterGetSectionData(CustomerData $subject, $result)
     {
@@ -63,9 +67,14 @@ class AddDataToCustomerSection
         }
 
 
-        $gtmData = $this->getGtmData();
-        $gtmOnce = $this->customerSessionDataProvider->get();
-        $this->customerSessionDataProvider->clear();
+        try {
+            $gtmData = $this->getGtmData();
+            $gtmOnce = $this->customerSessionDataProvider->get();
+            $this->customerSessionDataProvider->clear();
+        } catch (Throwable $exception) {
+            $this->logger->error('GTM data layer plugin ' . self::class . ' failed: ' . $exception->getMessage());
+            return $result;
+        }
 
         return array_merge_recursive($result, ['gtm' => $gtmData, 'gtm_events' => $gtmOnce]);
     }
