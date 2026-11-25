@@ -2,12 +2,14 @@
 
 namespace Yireo\GoogleTagManager2\ServerSide\Context;
 
+use InvalidArgumentException;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class ContextRepository
 {
     public const TABLE = 'yireo_gtm_serverside_context';
+    private const LOAD_FIELDS = ['order_id', 'quote_id'];
 
     private ResourceConnection $resourceConnection;
     private Json $json;
@@ -52,12 +54,16 @@ class ContextRepository
         $connection = $this->resourceConnection->getConnection();
         return $connection->delete(
             $this->resourceConnection->getTableName(self::TABLE),
-            ['created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ' . max(1, $days) . ' DAY)']
+            ['created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)' => max(1, $days)]
         );
     }
 
     private function load(string $field, int $value): ?Context
     {
+        if (false === in_array($field, self::LOAD_FIELDS, true)) {
+            throw new InvalidArgumentException(sprintf('Unknown field "%s"', $field));
+        }
+
         if ($value <= 0) {
             return null;
         }

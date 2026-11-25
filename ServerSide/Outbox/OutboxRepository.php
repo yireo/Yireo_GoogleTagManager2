@@ -69,7 +69,7 @@ class OutboxRepository
             ->limit($limit);
 
         if ($olderThanMinutes > 0) {
-            $select->where('created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ' . $olderThanMinutes . ' MINUTE)');
+            $select->where('created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? MINUTE)', $olderThanMinutes);
         }
 
         return array_map('intval', $connection->fetchCol($select));
@@ -126,7 +126,7 @@ class OutboxRepository
             ],
             [
                 'status = ?' => self::STATUS_PROCESSING,
-                'updated_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ' . max(1, $minutes) . ' MINUTE)',
+                'updated_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? MINUTE)' => max(1, $minutes),
             ]
         );
     }
@@ -137,7 +137,7 @@ class OutboxRepository
             $this->getTable(),
             [
                 'status IN (?)' => [self::STATUS_SENT, self::STATUS_FAILED],
-                'created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ' . max(1, $days) . ' DAY)',
+                'created_at < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)' => max(1, $days),
             ]
         );
     }
