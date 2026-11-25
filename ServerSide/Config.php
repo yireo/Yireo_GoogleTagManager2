@@ -5,6 +5,7 @@ namespace Yireo\GoogleTagManager2\ServerSide;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
+use Yireo\GoogleTagManager2\Config\SecureUrlValidator;
 use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
 use Yireo\GoogleTagManager2\ServerSide\Config\Source\Destination;
 use Yireo\GoogleTagManager2\ServerSide\Config\Source\DispatchMode;
@@ -14,21 +15,23 @@ class Config
 {
     private const TRIM_CHARACTERS = " \n\r\t\v\0";
     public const GA4_ENDPOINT = 'https://www.google-analytics.com';
-    public const SECURE_URL_PATTERN = '#^https://[a-z0-9.\-]+(:\d+)?(/[^\s?\#]*)?$#i';
     private const PREFIX = 'googletagmanager2/serverside_tracking/';
 
     private ScopeConfigInterface $scopeConfig;
     private EncryptorInterface $encryptor;
     private ConsentResolverInterface $consentResolver;
+    private SecureUrlValidator $secureUrlValidator;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         EncryptorInterface $encryptor,
-        ConsentResolverInterface $consentResolver
+        ConsentResolverInterface $consentResolver,
+        SecureUrlValidator $secureUrlValidator
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->encryptor = $encryptor;
         $this->consentResolver = $consentResolver;
+        $this->secureUrlValidator = $secureUrlValidator;
     }
 
     public function isEnabled(?int $storeId = null): bool
@@ -69,7 +72,7 @@ class Config
     {
         $baseUrl = self::GA4_ENDPOINT;
         $sgtmUrl = $this->getSgtmUrl($storeId);
-        $isSecure = (bool)preg_match(self::SECURE_URL_PATTERN, $sgtmUrl);
+        $isSecure = $this->secureUrlValidator->isValid($sgtmUrl);
         if ($this->getDestination($storeId) === Destination::SGTM && $isSecure) {
             $baseUrl = $sgtmUrl;
         }

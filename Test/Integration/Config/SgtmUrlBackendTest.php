@@ -41,6 +41,12 @@ class SgtmUrlBackendTest extends TestCase
             ['sgtm.example.com'],
             ['https://'],
             ['ftp://sgtm.example.com'],
+            ['https://127.0.0.1'],
+            ['https://169.254.169.254/latest/meta-data'],
+            ['https://[::1]:8443'],
+            ['https://localhost'],
+            ['https://intranet'],
+            ['https://metadata.google.internal'],
         ];
     }
 

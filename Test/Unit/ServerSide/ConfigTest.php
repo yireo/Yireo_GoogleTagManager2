@@ -4,7 +4,9 @@ namespace Yireo\GoogleTagManager2\Test\Unit\ServerSide;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Yireo\GoogleTagManager2\Config\SecureUrlValidator;
 use Yireo\GoogleTagManager2\ServerSide\Config;
 use Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface;
 
@@ -39,16 +41,24 @@ class ConfigTest extends TestCase
         $this->assertSame('https://www.google-analytics.com/mp/collect', $this->getConfig()->getEndpointUrl());
     }
 
-    public function testSecureUrlPattern(): void
+    #[DataProvider('getInternalSgtmUrls')]
+    public function testEndpointUrlRejectsInternalHosts(string $sgtmUrl): void
     {
-        $this->assertSame(1, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com'));
-        $this->assertSame(1, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com:8443/path'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'http://sgtm.example.com'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'sgtm.example.com'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://user@sgtm.example.com'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com/?x=1'));
-        $this->assertSame(0, preg_match(Config::SECURE_URL_PATTERN, 'https://sgtm.example.com/#a'));
+        $this->values = ['serverside_tracking/destination' => 'sgtm', 'serverside_tracking/sgtm_url' => $sgtmUrl];
+        $this->assertSame('https://www.google-analytics.com/mp/collect', $this->getConfig()->getEndpointUrl());
+    }
+
+    public static function getInternalSgtmUrls(): array
+    {
+        return [
+            ['https://127.0.0.1'],
+            ['https://169.254.169.254/latest/meta-data'],
+            ['https://10.0.0.1:8443'],
+            ['https://[::1]'],
+            ['https://localhost'],
+            ['https://metadata.google.internal'],
+            ['https://intranet'],
+        ];
     }
 
     public function testEventsAndSuppression(): void
@@ -105,6 +115,6 @@ class ConfigTest extends TestCase
             return (bool)($this->values['consent/enabled'] ?? false);
         });
 
-        return new Config($scopeConfig, $encryptor, $consentResolver);
+        return new Config($scopeConfig, $encryptor, $consentResolver, new SecureUrlValidator());
     }
 }
