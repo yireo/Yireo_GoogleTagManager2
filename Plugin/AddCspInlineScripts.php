@@ -8,10 +8,15 @@ use Yireo\CspUtilities\ViewModel\CspMarker;
 
 class AddCspInlineScripts
 {
+    private ReplaceInlineScripts $replaceInlineScripts;
+    private CspMarker $cspMarker;
+
     public function __construct(
-        private readonly ReplaceInlineScripts $replaceInlineScripts,
-        private readonly CspMarker $cspMarker
+        ReplaceInlineScripts $replaceInlineScripts,
+        CspMarker $cspMarker
     ) {
+        $this->replaceInlineScripts = $replaceInlineScripts;
+        $this->cspMarker = $cspMarker;
     }
 
     public function beforeToHtml(Template $block): void
@@ -32,6 +37,6 @@ class AddCspInlineScripts
 
     private function isAllowed(Template $block): bool
     {
-        return str_starts_with((string)$block->getNameInLayout(), 'yireo_googletagmanager2.');
+        return strpos((string)$block->getNameInLayout(), 'yireo_googletagmanager2.') === 0;
     }
 }
