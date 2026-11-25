@@ -8,6 +8,7 @@ class CookieReader
 {
     private const TRIM_CHARACTERS = " \n\r\t\v\0";
     public const CONSENT_COOKIE = 'yireo_gtm2_consent';
+    public const COOKIE_RESTRICTION_COOKIE = 'user_allowed_save_cookie';
 
     private CookieManagerInterface $cookieManager;
 
@@ -35,6 +36,28 @@ class CookieReader
     public function getConsent(): ?array
     {
         return $this->parseConsent((string)$this->cookieManager->getCookie(self::CONSENT_COOKIE));
+    }
+
+    public function isCookieRestrictionAllowed(int $websiteId): ?bool
+    {
+        return $this->parseCookieRestriction(
+            (string)$this->cookieManager->getCookie(self::COOKIE_RESTRICTION_COOKIE),
+            $websiteId
+        );
+    }
+
+    public function parseCookieRestriction(string $value, int $websiteId): ?bool
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        $data = json_decode(rawurldecode($value), true);
+        if (false === is_array($data)) {
+            return false;
+        }
+
+        return (int)($data[$websiteId] ?? 0) === 1;
     }
 
     public function parseClientId(string $value): ?string

@@ -341,8 +341,9 @@ All settings are found in **Stores > Configuration > Yireo > Yireo GoogleTagMana
     - *Message queue*: Every event is published to the topic `yireo_gtm2.serverside.event` (connection `db`). Make
       sure the consumer is running: `bin/magento queue:consumers:start yireo_gtm2.serverside.event`.
 - **Require analytics consent** (default *Yes*): Only applies when a consent source is active: by default, this is the
-  consent banner of this extension (see [Using a third-party consent manager](#using-a-third-party-consent-manager)).
-  Events are only sent when the customer granted analytics consent.
+  consent banner of this extension or, when that banner is disabled, the Magento cookie restriction mode (see
+  [Using a third-party consent manager](#using-a-third-party-consent-manager)). Events are only sent when the customer
+  granted analytics consent.
 - **Send customer ID as user_id** (default *No*): Send the Magento customer ID of logged-in customers as `user_id`, so
   that GA4 can link events across devices. Only enable this when your privacy policy allows it.
 - **Validation mode**: Send events to the validation endpoint (`/debug/mp/collect`) instead. GA4 does not record
@@ -363,7 +364,8 @@ send any data server-to-server.
   maximum number of attempts is reached, so fix outages quickly.
 - **Use the same Measurement ID** in the browser and in this configuration, otherwise server-side events can not be
   linked to the session of the visitor.
-- **Consent**: By default, the consent check only works with the consent banner of this extension. When you use a
+- **Consent**: By default, the consent check only works with the consent banner of this extension or the Magento cookie
+  restriction mode (the cookie `user_allowed_save_cookie` grants all consent types at once). When you use a
   third-party consent tool, add your own consent resolver (see below), make sure that the tool calls
   `yireoGoogleTagManager2SetConsent()`, or set **Require analytics consent** to *No*. Without an active consent
   source, events are sent without a consent check.
@@ -374,8 +376,9 @@ send any data server-to-server.
 ### Using a third-party consent manager
 The consent of the customer is read by a class implementing
 `Yireo\GoogleTagManager2\ServerSide\Consent\ConsentResolverInterface`. The default implementation
-`CookieConsentResolver` reads the cookie `yireo_gtm2_consent` and is only active when the consent banner of this
-extension is enabled. To use a third-party consent manager (Cookiebot, OneTrust, ...), add your own implementation and
+`CookieConsentResolver` reads the cookie `yireo_gtm2_consent` when the consent banner of this extension is enabled.
+When the banner is disabled but the Magento cookie restriction mode (**Stores > Configuration > General > Web > Default
+Cookie Settings**) is enabled, it reads the Magento cookie `user_allowed_save_cookie` instead. To use a third-party consent manager (Cookiebot, OneTrust, ...), add your own implementation and
 configure it as preference in the `etc/di.xml` of your own module:
 
 ```xml

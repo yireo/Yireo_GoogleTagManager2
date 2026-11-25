@@ -39,6 +39,29 @@ class CookieReaderTest extends TestCase
         $this->assertNull($reader->parseConsent('not-json'));
     }
 
+    public function testParseCookieRestriction(): void
+    {
+        $reader = $this->getReader();
+        $this->assertTrue($reader->parseCookieRestriction('{"1":1}', 1));
+        $this->assertTrue($reader->parseCookieRestriction(rawurlencode('{"1":1,"2":1}'), 2));
+        $this->assertFalse($reader->parseCookieRestriction('{"1":1}', 2));
+        $this->assertFalse($reader->parseCookieRestriction('{"1":0}', 1));
+        $this->assertFalse($reader->parseCookieRestriction('not-json', 1));
+        $this->assertNull($reader->parseCookieRestriction('', 1));
+    }
+
+    public function testIsCookieRestrictionAllowedReadsMagentoCookie(): void
+    {
+        $cookieManager = $this->createMock(CookieManagerInterface::class);
+        $cookieManager->method('getCookie')->willReturnMap([
+            ['user_allowed_save_cookie', null, '{"1":1}'],
+        ]);
+
+        $reader = new CookieReader($cookieManager);
+        $this->assertTrue($reader->isCookieRestrictionAllowed(1));
+        $this->assertFalse($reader->isCookieRestrictionAllowed(2));
+    }
+
     public function testGetSessionIdUsesMeasurementIdSuffix(): void
     {
         $cookieManager = $this->createMock(CookieManagerInterface::class);

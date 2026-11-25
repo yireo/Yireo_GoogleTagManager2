@@ -264,7 +264,7 @@
                 <field id="require_consent" type="select" translate="label comment" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Require analytics consent</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Only applies when the consent banner of this extension is enabled</comment>
+                    <comment>Only applies when the consent banner of this extension or the Magento cookie restriction mode is enabled</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
